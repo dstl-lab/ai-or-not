@@ -1,1 +1,1 @@
-# ai-or-not
+# ai-or-not-ai
