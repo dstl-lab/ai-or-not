@@ -36,7 +36,10 @@ def run_gws(args, params=None, body=None, timeout=60):
     try:
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
     except FileNotFoundError:
-        raise GwsError("the gws CLI is not installed or not on PATH") from None
+        raise GwsError(
+            "the gws CLI is not installed; run `brew install googleworkspace-cli` "
+            "(not `brew install gws`, which is a different tool)"
+        ) from None
     except subprocess.TimeoutExpired:
         raise GwsError(f"gws timed out after {timeout}s") from None
     if proc.returncode != 0:

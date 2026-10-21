@@ -6,17 +6,36 @@ about whether each one looks AI-generated, and why.
 
 The website is on the left and fully interactive. The questions sit in a panel on the right.
 
-## Quick start
+## Setup (first time on a computer)
 
-You need [uv](https://docs.astral.sh/uv/) and git. Then, from this folder:
+**1. Install the tools.** You need git and [uv](https://docs.astral.sh/uv/). uv installs the
+right Python version by itself.
+
+- macOS / Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh` (on a Mac, run
+  `xcode-select --install` first if `git --version` says git is missing)
+- Windows: install [Git for Windows](https://git-scm.com/download/win), then in PowerShell:
+  `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
+
+Open a new terminal afterwards so the `uv` command is found.
+
+**2. Get the code and start the app.**
 
 ```bash
+git clone https://github.com/dstl-lab/ai-or-not.git
+cd ai-or-not
 uv run aiornot serve
 ```
 
-The first run installs dependencies and downloads the 10 study websites (~1.6 GB; a few of them
-ship large data files, so allow 10–20 minutes). Then it opens
-http://localhost:8000. Answers are stored in `data/study.db`.
+The first run installs dependencies, then downloads the 10 study websites (~1.6 GB; allow
+10–20 minutes). Every computer gets byte-identical copies, because the exact version
+(git commit) of every site is pinned in `config/sites.json`. The app then opens
+http://localhost:8000.
+
+**3. Check it.** `uv run aiornot check` should list all 10 sites as `ok`. Then run a practice
+session (see below) before the first real participant.
+
+Answers are stored on this computer in `data/study.db`. To also mirror them to the lab's Google
+Sheet, see [Google Sheet](#google-sheet-optional).
 
 ## Running a session
 
@@ -36,18 +55,41 @@ answer is saved the moment it's clicked.
 
 ## Google Sheet (optional)
 
-SQLite is the main store; the Sheet is a live mirror for the team. It uses your existing
-`gws` (Google Workspace CLI) login:
+SQLite is the main store; the Sheet is a live, shared copy for the team. Each completed site
+becomes one row. If a participant edits answers later, that row is updated in place. Sync
+failures (e.g. offline) are retried automatically; the dashboard shows the status.
 
-```bash
-uv run aiornot sheet create
-```
+**One-time setup per computer:**
 
-That creates a spreadsheet called "AI or Not: study responses" in your Drive and links it. To use
-an existing spreadsheet instead, run `uv run aiornot sheet connect <url>`. Restart the server after
-linking. Each completed site becomes one row. If a participant edits answers later, that row is
-updated in place. Sync failures (e.g. offline) are retried automatically; the dashboard shows
-the status.
+1. Install the Google Workspace CLI (`gws`): `brew install googleworkspace-cli`.
+   Watch out: `brew install gws` installs an unrelated tool with the same command name.
+2. Sign in: `gws auth login`. If it asks for an OAuth client, run `gws auth setup` first;
+   that step needs a Google Cloud project, as described in the CLI's own documentation.
+3. Link a spreadsheet, then restart the server:
+   - **The lab's existing Sheet:** ask its owner to share it with your Google account as
+     *Editor* and send you the link, then run `uv run aiornot sheet connect "<sheet link>"`.
+   - **A new Sheet of your own:** `uv run aiornot sheet create` makes
+     "AI or Not: study responses" in your Drive.
+
+The link is saved per computer in `data/sheets.json` (not in git, like all study data), which is
+why each computer links once. `uv run aiornot check` shows which Sheet is linked.
+
+## Using more than one laptop
+
+Each laptop keeps its own `data/study.db`. To keep things combined:
+
+- Link every laptop to the **same** Google Sheet (above). Rows from all laptops land there
+  together, each tagged with its participant and session id.
+- Give participants IDs that are unique across laptops (e.g. `A01…` on one, `B01…` on the other).
+- For the full data (including answer-change history), export CSVs from each laptop
+  (`uv run aiornot export`) or collect each `data/study.db`.
+
+## Backing up the websites
+
+The sites are downloaded from their authors' GitHub repos. If an author deletes a repo, it can't
+be downloaded again. Once all 10 are downloaded, zip the `mirror/` folder and keep it with the
+lab's files. Unzipping it into a fresh checkout skips the download, and `uv run aiornot check`
+confirms the copies match the pinned versions.
 
 ## Changing the study
 
