@@ -69,6 +69,7 @@ const saver = {
   dirty: new Set(),
   timer: null,
   chain: Promise.resolve(),
+  pending: 0,
   failing: false,
 
   mark(siteId) {
@@ -83,7 +84,9 @@ const saver = {
     for (const siteId of this.dirty) {
       const payload = {};
       for (const q of state.questions) payload[q.id] = answersFor(siteId)[q.id] ?? null;
-      this.chain = this.chain.then(() => this.send(siteId, payload));
+      this.pending++;
+      this.chain = this.chain.then(() => this.send(siteId, payload))
+        .finally(() => { this.pending--; });
     }
     this.dirty.clear();
     return this.chain;
@@ -94,7 +97,7 @@ const saver = {
       try {
         await api(`/api/sessions/${sessionId}/sites/${siteId}/answers`, { method: "PUT", body: { answers } });
         this.failing = false;
-        if (!this.dirty.size) setStatus("All answers saved");
+        if (!this.dirty.size && this.pending === 1) setStatus("All answers saved");
         return;
       } catch (err) {
         if (err.status && err.status < 500) {
@@ -109,7 +112,7 @@ const saver = {
   },
 
   get busy() {
-    return this.dirty.size > 0 || this.failing;
+    return this.dirty.size > 0 || this.pending > 0 || this.failing;
   },
 };
 
