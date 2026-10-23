@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Researcher Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="admin">
+    <div class="admin-head">
+      <h1>Researcher dashboard</h1>
+      <span class="muted" id="updated"></span>
+      <a href="/">New session</a>
+    </div>
+
+    <div class="grid-3">
+      <section class="box">
+        <h2>Participants</h2>
+        <div class="stat" id="stat-participants">–</div>
+        <p class="muted" id="stat-participants-note"></p>
+      </section>
+      <section class="box">
+        <h2>Google Sheet</h2>
+        <div id="sheet"></div>
+      </section>
+      <section class="box">
+        <h2>Download data (CSV)</h2>
+        <div class="row" id="exports"></div>
+        <label class="check" style="margin: 12px 0 0">
+          <input type="checkbox" id="include-practice">
+          <span>Include practice sessions</span>
+        </label>
+      </section>
+    </div>
+
+    <section class="box">
+      <h2>Sessions</h2>
+      <table>
+        <thead><tr><th>Participant</th><th>Started</th><th>Progress</th><th>Time on sites</th><th>Status</th><th>Practice</th><th></th></tr></thead>
+        <tbody id="sessions"></tbody>
+      </table>
+    </section>
+
+    <section class="box">
+      <h2>Study websites <span class="muted" id="versions" style="font-weight: 400"></span></h2>
+      <table>
+        <thead><tr><th>#</th><th>Project</th><th>Award</th><th>Pinned version</th><th>Downloaded</th><th></th></tr></thead>
+        <tbody id="sites"></tbody>
+      </table>
+    </section>
+  </main>
+  <script type="module" src="/static/admin.js"></script>
+</body>
+</html>

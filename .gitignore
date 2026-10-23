@@ -1,0 +1,11 @@
+# Frozen copies of the study websites (re-create with `uv run aiornot mirror`)
+mirror/
+
+# Study data: SQLite database, Google Sheet link, CSV exports. Never commit participant data.
+data/
+
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store

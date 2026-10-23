@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Website Review Study</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="study">
+  <div class="study-layout" id="layout">
+    <main class="site-pane">
+      <div class="site-toolbar" aria-label="Website controls">
+        <button type="button" id="nav-back" title="Back" aria-label="Back" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" id="nav-forward" title="Forward" aria-label="Forward" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button type="button" id="nav-reload" title="Reload this page" aria-label="Reload">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
+        </button>
+        <button type="button" id="nav-home" title="Go to the website's first page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+          Start of website
+        </button>
+        <span class="spacer"></span>
+        <span class="site-label" id="toolbar-label"></span>
+      </div>
+      <div class="frame-wrap" id="frame-wrap">
+        <div class="frame-loading" id="frame-loading">Loading website…</div>
+      </div>
+    </main>
+
+    <aside class="panel" aria-label="Questions">
+      <header class="panel-head">
+        <div class="titles">
+          <div class="eyebrow" id="panel-eyebrow"></div>
+          <h1>Your impressions</h1>
+        </div>
+        <button type="button" class="icon-button" id="collapse" title="Hide questions" aria-label="Hide questions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6l6 6-6 6"/><path d="M5 6l6 6-6 6"/></svg>
+        </button>
+      </header>
+      <nav class="dots" id="dots" aria-label="Websites"></nav>
+      <form class="questions" id="questions" novalidate></form>
+      <footer class="panel-foot">
+        <div class="status" id="status" role="status" aria-live="polite"></div>
+        <div class="foot-buttons">
+          <button type="button" id="prev">Previous</button>
+          <button type="button" class="primary" id="next">Next website</button>
+        </div>
+      </footer>
+      <div class="panel-rail">
+        <button type="button" class="icon-button" id="expand" title="Show questions" aria-label="Show questions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 18l-6-6 6-6"/><path d="M19 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="rail-label" id="expand-label">Show questions</button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="done-screen" id="done" hidden>
+    <div class="card">
+      <h1>All done. Thank you!</h1>
+      <p class="muted">Your answers are saved. Please let the researcher know you've finished.</p>
+      <p class="card-foot"><a href="/">Researcher: start a new session</a></p>
+    </div>
+  </div>
+
+  <div class="done-screen" id="load-error" hidden>
+    <div class="card">
+      <h1>Couldn't open this session</h1>
+      <p class="muted" id="load-error-text"></p>
+      <p class="card-foot"><a href="/">Back to the start page</a></p>
+    </div>
+  </div>
+
+  <script type="module" src="/static/study.js"></script>
+</body>
+</html>
