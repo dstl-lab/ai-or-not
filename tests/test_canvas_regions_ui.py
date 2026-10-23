@@ -169,3 +169,67 @@ listeners.pointerup(event(260,180));
 listeners.click(event(260,180,{detail:1}));
 assert.equal(tool.draft.quote,'Chart area · Population');
 ''')
+
+
+
+def test_canvas_touch_events_block_chart_gestures_but_allow_scrolling_elsewhere():
+    run_checks(DRAW_SETUP + r"""
+for(const type of ['touchstart','touchmove','touchend','touchcancel']) {
+  let prevented=false,stopped=false;
+  const touch={type,target:canvas,touches:[],preventDefault(){prevented=true},stopImmediatePropagation(){stopped=true}};
+  assert.ok(listeners[type],`${type} must be captured before the chart`);
+  listeners[type](touch);
+  assert.ok(prevented && stopped,`${type} must not reach the chart`);
+  prevented=stopped=false;
+  listeners[type]({...touch,target:element('P')});
+  assert.equal(prevented,false,'scrolling outside the canvas must remain available');
+  assert.equal(stopped,false);
+}
+assert.equal(tool.draft,null,'a tap must not select the whole canvas');
+tool.cancel(false);
+assert.deepEqual(Object.keys(listeners),[]);
+""")
+
+
+def test_touch_lift_opens_editor_without_a_synthesized_click_after_all_fingers_lift():
+    run_checks(DRAW_SETUP + r"""
+listeners.pointerdown(event(120,110,{pointerType:'touch'}));
+listeners.touchstart(event(120,110,{type:'touchstart',touches:[{identifier:1}]}));
+listeners.pointermove(event(260,180,{pointerType:'touch'}));
+listeners.touchmove(event(260,180,{type:'touchmove',touches:[{identifier:1}]}));
+listeners.pointerup(event(260,180,{pointerType:'touch'}));
+listeners.touchend(event(260,180,{type:'touchend',touches:[{identifier:2}],detail:0}));
+assert.equal(tool.draft,null,'do not release gesture protection while another finger is down');
+listeners.touchend(event(260,180,{type:'touchend',target:element('P'),touches:[],detail:0}));
+assert.equal(tool.draft.quote,'Chart area · Population');
+for(const [key,value] of Object.entries({x:0.1,y:0.1,width:0.7,height:0.7}))
+  assert.ok(Math.abs(tool.draft.region[key]-value)<1e-9);
+assert.equal(shown[1],false);
+assert.equal(captured.size,0);
+assert.equal(frames.size,0);
+assert.deepEqual(Object.keys(listeners),[]);
+""")
+
+
+def test_touch_tiny_drag_and_cancel_do_not_create_a_note_and_can_retry():
+    run_checks(DRAW_SETUP + r"""
+const lift=()=>listeners.touchend(event(260,180,{type:'touchend',touches:[],detail:0}));
+listeners.pointerdown(event(120,110,{pointerType:'touch'}));
+listeners.pointerup(event(122,113,{pointerType:'touch'}));
+lift();
+assert.equal(tool.draft,null);
+assert.match(warning,/larger area/);
+listeners.pointerdown(event(120,110,{pointerType:'touch'}));
+listeners.pointerup(event(260,180,{pointerType:'touch'}));
+listeners.touchcancel(event(260,180,{type:'touchcancel',target:element('P'),touches:[]}));
+lift();
+assert.equal(tool.draft,null,'cancel must discard the pending box');
+listeners.pointerdown(event(120,110,{pointerType:'touch'}));
+listeners.touchcancel(event(150,130,{type:'touchcancel',touches:[]}));
+assert.equal(captured.size,0);
+assert.equal(tool.draft,null);
+listeners.pointerdown(event(120,110,{pointerType:'touch'}));
+listeners.pointerup(event(260,180,{pointerType:'touch'}));
+lift();
+assert.equal(tool.draft.selector,'#chart');
+""")

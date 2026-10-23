@@ -235,6 +235,19 @@ export class AnnotationTool {
           document.querySelector(".annotation-editor textarea")?.focus();
         } catch (err) { this.warn(err.message); }
       };
+      const touch = event => {
+        const finished = !drawing && selection && !event.touches.length;
+        if (event.target.tagName.toLowerCase() !== "canvas" && !finished) return;
+        block(event);
+        if (event.type === "touchcancel") {
+          release();
+          selection = null;
+        }
+        // A touch drag may not produce the click used by mouse selection.
+        if (event.type === "touchend" && finished) pick(event);
+      };
+      const touchEvents = ["touchstart", "touchmove", "touchend", "touchcancel"];
+      for (const type of touchEvents) doc.addEventListener(type, touch, {capture:true, passive:false});
       doc.addEventListener("pointermove", hover, true);
       doc.addEventListener("pointerout", leave, true);
       // Some canvas charts activate on mouseup before the click used to select a note.
@@ -248,6 +261,7 @@ export class AnnotationTool {
       doc.addEventListener("keydown", this.onKey, true);
       this.cleanup = () => {
         if (pendingFrame !== null) win.cancelAnimationFrame(pendingFrame);
+        for (const type of touchEvents) doc.removeEventListener(type, touch, true);
         doc.removeEventListener("pointermove", hover, true);
         doc.removeEventListener("pointerout", leave, true);
         for (const type of pressEvents) doc.removeEventListener(type, block, true);
