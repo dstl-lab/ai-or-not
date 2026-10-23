@@ -1,136 +1,166 @@
 # AI or Not: website perception study
 
-A study platform for the Data Science teaching & learning lab. Participants (students who have
-taken DSC 106) explore real DSC 106 final-project websites and answer closed-ended questions
-about whether each one looks AI-generated, and why.
+A local reviewer tool for exploring DSC106 final-project webpages and recording how
+AI-generated they appear. The webpage stays interactive on the left; a survey sidebar
+on the right saves answers to this computer.
 
-The website is on the left and fully interactive. The questions sit in a panel on the right.
+The immediate workflow is an **internal practice trial using the existing ten projects**.
+Creator surveys are collected externally and linked later by project ID and pinned commit.
 
-## Setup (first time on a computer)
+## Try the sidebar locally
 
-**1. Install the tools.** You need git and [uv](https://docs.astral.sh/uv/). uv installs the
-right Python version by itself.
-
-- macOS / Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh` (on a Mac, run
-  `xcode-select --install` first if `git --version` says git is missing)
-- Windows: install [Git for Windows](https://git-scm.com/download/win), then in PowerShell:
-  `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
-
-Open a new terminal afterwards so the `uv` command is found.
-
-**2. Get the code and start the app.**
+With git and [uv](https://docs.astral.sh/uv/) installed:
 
 ```bash
-git clone https://github.com/dstl-lab/ai-or-not.git
-cd ai-or-not
 uv run aiornot serve
 ```
 
-The first run installs dependencies, then downloads the 10 study websites (~1.6 GB; allow
-10–20 minutes). Every computer gets byte-identical copies, because the exact version
-(git commit) of every site is pinned in `config/sites.json`. The app then opens
-http://localhost:8000.
+Open [localhost:8000](http://localhost:8000/) in the Codex browser/sidebar or your browser.
+The first run downloads any missing project copies. Keep an internet connection: some
+projects still load fonts, scripts, or other resources externally.
 
-**3. Check it.** `uv run aiornot check` should list all 10 sites as `ok`. Then run a practice
-session (see below) before the first real participant.
+1. Enter a test ID, choose a background group, and tick **Practice run**. For the internship
+   group, also record whether the tester completed DSC106.
+2. Review each webpage. Rate AI appearance from **1 (Not at all) to 5 (Extremely)**, then
+   complete the **Review checks** that open below it. Allow about five minutes per webpage
+   including answers; there is no enforced time limit. **Jump to a website** opens navigation.
+3. **Page not working?** opens the technical-problem question even before choosing a rating.
+   If evaluation is impossible, choose **I could not evaluate the webpage** and leave its
+   appearance rating blank. The footer guides you to missing answers before allowing **Next**.
+4. After the initial reviews, continue to final questions about **two randomly selected
+   webpages**. Select up to three cues, then optionally expand **Page notes** and choose
+   **Annotate webpage**. Select a detail and write a short note in the editor above saved
+   notes. Click **Save note** to keep it, or **Cancel selection** / **Cancel** to leave the
+   annotation mode. Starting this stage locks the initial ratings.
+5. Finish, then inspect the session and downloads at [the dashboard](http://localhost:8000/admin).
+   Include practice sessions when downloading trial data.
 
-Answers are stored on this computer in `data/study.db`. To also mirror them to the lab's Google
-Sheet, see [Google Sheet](#google-sheet-optional).
+Ratings and choices save automatically. Annotation drafts save only after **Save note**;
+save or cancel a draft before moving to another webpage. Closing the tab warns about an
+unfinished draft. Wait for the saved indicator before closing the tab. The dashboard's
+**Resume** link reopens an interrupted session; earlier webpages remain editable until the
+final-question stage begins.
 
-## Running a session
+Each final webpage accepts up to three annotations, with notes of up to 500 characters.
+In annotation mode, drag across a canvas chart to draw a box around a specific area,
+then add a note. Boxes follow the canvas when the page scrolls or resizes; they do not
+track data points after zooming, rotating, or changing the chart.
+Use **Edit note** or **Remove** to revise a saved annotation; click its selected-element
+label to show the target again. Chart labels use the chart's accessible name when available.
+Highlights follow layout changes and clear if the selected element disappears. Repeat the
+interaction that revealed a dynamic element, then click its annotation to show it again.
+Annotations save locations and text, without screenshots or full interaction replays.
 
-1. Start the server (`uv run aiornot serve`) and check that the laptop is online. The sites load
-   D3 and fonts from the internet.
-2. **Do a practice run first:** enter any ID, tick *Practice run*, and click through a site or two.
-   Practice sessions are flagged and left out of exports.
-3. Enter the participant's ID (e.g. `P01`; no names) and click **Start session**. Hand over the laptop.
-4. The participant explores each site for about 4–5 minutes and answers the questions. **Next** unlocks
-   once every question for that site is answered. They can go back to earlier sites and change
-   answers until they click **Finish** on the last site.
-5. Open **Researcher dashboard** (http://localhost:8000/admin) to watch progress, check the Google
-   Sheet sync, and download CSVs.
+For a quick internal trial, you can temporarily lower `sites_per_session` in
+`config/sites.json` and restart the server. Its allowed range is 1–10. The current project
+list does not need to change. Excluding projects at setup requires enough eligible projects
+to fill the configured session size.
 
-If the browser is closed mid-session, reopen the session from the dashboard (**Resume**). Every
-answer is saved the moment it's clicked.
+## Researcher setup and assignment
+
+The setup form records three background labels: `lower_division`, `dsc106`, and
+`agentic_internship`. The internship group can include either DSC106 background. These are
+researcher-entered records, not an eligibility screening or consent system. Research approval,
+recruitment, and any required consent remain outside this tool.
+
+Each new session receives up to ten distinct projects from `study_sites`. Assignment favors
+projects with fewer existing assignments in that group, then distributes their presentation
+positions. Practice sessions do not affect this balancing. The dashboard shows assignments
+and completions by group. This is local balancing within **one computer's database**, not a
+guarantee of an exactly counterbalanced study.
+
+Use participant IDs rather than names. The researcher can exclude a participant's own or
+familiar projects before assignment; the survey also records familiarity discovered later.
+The wrapper uses labels such as “Website 3 of 10”; original project content can still reveal
+its authors or identity.
+
+## Configuration
+
+| Change | Where | Apply it |
+|---|---|---|
+| Questions, wording, choices | `config/questions.json` | Restart the server |
+| Active project list | `study_sites` in `config/sites.json` | Mirror missing projects, restart |
+| Number reviewed per session | `sites_per_session` in `config/sites.json` (default 10; maximum 10) | Restart |
+| Project versions | Pinned `commit` values in `config/sites.json` | Prepare copies before collecting data |
+
+Questions support `scale`, `single`, `multi`, `boolean`, `text`, and `annotation`. A question's `phase`
+is `review` by default or `followup` for the two final webpages. `required` defaults to true;
+`required_unless` can waive a missing answer when another choice has a specified value.
+Multi-select questions support `min_selected` and `max_selected`; text questions support
+`max_length`; annotation questions support `max_annotations` (three in this pilot).
+The included `reviewer-pilot-v1` questionnaire has three initial-review questions and two
+final-question fields: optional annotations and the cue checklist. Existing sessions keep
+their saved questionnaire, including the earlier `cue_example` field where applicable.
+
+Sessions save their own question and project definitions, version IDs, assigned order,
+and final-question selection. Exports use those saved definitions after configuration
+changes. Keep question IDs, stored option values, and project IDs stable across the study;
+wording changes create a new question version.
+
+Keep project commits and mirrored files fixed during a collection round. A session snapshot
+preserves definitions, **not another copy of the website files**. A changed or missing mirror
+blocks resuming an existing session until its original copy is restored. Use
+`uv run aiornot mirror --update` only when deliberately preparing a new set of project versions.
+
+## Data and external creator surveys
+
+SQLite at `data/study.db` is the source of truth. **Dashboard → Download data**, or:
+
+```bash
+uv run aiornot export
+```
+
+exports five tables: `responses_wide`, `responses_long`, `sessions`, `site_visits`, and
+`projects`. Add `--practice` to include internal trials. See the
+[data dictionary](docs/data-dictionary.md) for fields and missing-answer meanings.
+
+Give the external creator survey the same `site_id` and `site_commit` listed in
+`projects.csv`. Use both fields to join creator forecasts to reviewer judgments; project
+position is participant-specific and is not a project identifier.
+Saved annotations export as JSON in the wide and long tables and the optional Google Sheet.
+
+For a descriptive summary:
+
+```bash
+uv run --group analysis python -m analysis.summary
+```
+
+Add `--practice` to summarize internal trials. `analysis/load.py` loads all five tables as
+pandas DataFrames. Stop the server and back up `data/` after collection; it includes the
+answer history that CSVs do not export. Keep a backup of `mirror/` as well, since deleted
+upstream repositories may no longer be downloadable.
 
 ## Google Sheet (optional)
 
-SQLite is the main store; the Sheet is a live, shared copy for the team. Each completed site
-becomes one row. If a participant edits answers later, that row is updated in place. Sync
-failures (e.g. offline) are retried automatically; the dashboard shows the status.
+The Sheet is a convenience mirror, with one row per session and webpage. Completed-page
+answers sync in the background; later edits update that row. Local saving continues during
+sync failures, which appear on the dashboard and are retried.
 
-**One-time setup per computer:**
+1. Install the Google Workspace CLI: `brew install googleworkspace-cli` (the package named
+   `gws` is unrelated).
+2. Sign in with `gws auth login`; if required, use the CLI's `gws auth setup` instructions.
+3. Run `uv run aiornot sheet create`, or connect an accessible spreadsheet with
+   `uv run aiornot sheet connect "<sheet link>"`, then restart the server.
 
-1. Install the Google Workspace CLI (`gws`): `brew install googleworkspace-cli`.
-   Watch out: `brew install gws` installs an unrelated tool with the same command name.
-2. Sign in: `gws auth login`. If it asks for an OAuth client, run `gws auth setup` first;
-   that step needs a Google Cloud project, as described in the CLI's own documentation.
-3. Link a spreadsheet, then restart the server:
-   - **The lab's existing Sheet:** ask its owner to share it with your Google account as
-     *Editor* and send you the link, then run `uv run aiornot sheet connect "<sheet link>"`.
-   - **A new Sheet of your own:** `uv run aiornot sheet create` makes
-     "AI or Not: study responses" in your Drive.
+Link settings live in `data/sheets.json`. If the export columns change, link a new Sheet
+before writing the new schema; the sync guard refuses to overwrite an incompatible header.
+An actual external Google Sheet sync has not been verified as part of this internal trial.
 
-The link is saved per computer in `data/sheets.json` (not in git, like all study data), which is
-why each computer links once. `uv run aiornot check` shows which Sheet is linked.
+Each laptop has an independent database and assignment history. Sharing a Sheet combines
+visible answer rows but does not coordinate assignments or prevent duplicate participant IDs
+across laptops. Collect databases/exports separately and use IDs unique across computers.
 
-## Using more than one laptop
+## Commands and layout
 
-Each laptop keeps its own `data/study.db`. To keep things combined:
-
-- Link every laptop to the **same** Google Sheet (above). Rows from all laptops land there
-  together, each tagged with its participant and session id.
-- Give participants IDs that are unique across laptops (e.g. `A01…` on one, `B01…` on the other).
-- For the full data (including answer-change history), export CSVs from each laptop
-  (`uv run aiornot export`) or collect each `data/study.db`.
-
-## Backing up the websites
-
-The sites are downloaded from their authors' GitHub repos. If an author deletes a repo, it can't
-be downloaded again. Once all 10 are downloaded, zip the `mirror/` folder and keep it with the
-lab's files. Unzipping it into a fresh checkout skips the download, and `uv run aiornot check`
-confirms the copies match the pinned versions.
-
-## Changing the study
-
-| To change… | Edit | Then |
-|---|---|---|
-| The questions | `config/questions.json` | restart the server |
-| Which sites, or their order | `study_sites` in `config/sites.json` (ids from its `pool`) | `uv run aiornot mirror`, restart |
-| Refresh sites to their authors' latest version | — | `uv run aiornot mirror --update` |
-
-Question types: `boolean`, `single` (multiple choice), `multi` (multi-select), `scale` (e.g. 1–5).
-Each session records the question and site versions it used, so changes mid-study stay traceable.
-Avoid renaming option `value`s after data collection starts. Labels are safe to reword.
-
-## Data and analysis
-
-- **Dashboard → Download data**, or `uv run aiornot export`, writes four CSV tables
-  (described in [docs/data-dictionary.md](docs/data-dictionary.md)).
-- For pandas: `uv run --group analysis python -m analysis.summary` prints a first-look summary,
-  and `analysis/load.py` loads every table as a DataFrame.
-- Back up `data/study.db` after each session day. It's the complete record, including every answer change.
-
-## Commands
-
-| Command | What it does |
+| Command | Purpose |
 |---|---|
-| `uv run aiornot serve` | Run the study app (add `--no-browser`, `--port 8001`) |
-| `uv run aiornot check` | Validate config; show which sites are downloaded |
-| `uv run aiornot mirror` | Download/refresh the study sites (`--all` for the full pool) |
-| `uv run aiornot export` | Write all CSVs to `data/exports/<date>/` |
-| `uv run aiornot sheet create\|connect\|sync\|status` | Manage the Google Sheet link |
-| `uv run pytest` | Run the tests (requires Node.js for the browser timer regression test) |
+| `uv run aiornot serve` | Start locally; supports `--no-browser` and `--port 8001` |
+| `uv run aiornot check` | Validate config and check mirrored project commits |
+| `uv run aiornot mirror` | Download pinned active projects; `--all` includes the pool |
+| `uv run aiornot export` | Write CSVs to `data/exports/<date>/` |
+| `uv run aiornot sheet create\|connect\|sync\|status` | Manage the optional Sheet |
+| `uv run --group analysis pytest` | Run tests, including summary checks; Node.js is needed for browser logic tests |
 
-## How it works
-
-- **Sites are frozen copies.** Every DSC 106 project is a static GitHub Pages site served straight
-  from its repo, so the app downloads each repo at a pinned commit (`config/sites.json`) and serves
-  it from `/sites/<id>/`. Every participant sees exactly the same version, even if authors change
-  or delete their repos. Because the copies come from the app's own origin, a future version can
-  also observe in-site navigation (for page-triggered questions).
-- **Site identity is hidden.** Participants see "Website 3 of 10", never the project title or URL.
-  Links that leave a site open in a new tab so the study page stays put.
-- **Code layout:** `aiornot/` (Python: `app.py` API, `db.py` SQLite, `sheets.py` sync,
-  `export.py` CSV tables, `mirror.py` site copies), `web/` (plain HTML/CSS/JS, no build step),
-  `config/` (sites and questions), `analysis/` (pandas helpers), `docs/PLAN.md` (design decisions).
+`aiornot/` contains the API, storage, exports, and mirroring; `web/` is plain HTML/CSS/JS;
+`config/` holds projects and questions; `analysis/` contains pandas helpers.
+[docs/PLAN.md](docs/PLAN.md) records the current scope and remaining limitations.

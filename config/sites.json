@@ -1,5 +1,5 @@
 {
-  "_about": "Site pool: DSC 106 Spring 2026 final projects (https://dsc-courses.github.io/dsc106-2026-sp/showcase/). study_sites lists the sites every participant sees, in order. 'entry' is the page to open inside the site; 'commit' pins the exact version and is filled in by `uv run aiornot mirror`.",
+  "_about": "Site pool: DSC 106 Spring 2026 final projects (https://dsc-courses.github.io/dsc106-2026-sp/showcase/). study_sites lists active projects for balanced assignment, up to ten per session. 'entry' is the page to open inside the site; 'commit' pins the exact version and is filled in by `uv run aiornot mirror`.",
   "study_sites": [
     "breathing-smoke",
     "five-minute-fire",

@@ -123,7 +123,6 @@ class SheetSync:
         self.queue = queue.Queue()
         self.queued = set()
         self.lock = threading.Lock()
-        self.header_written_for = None
         self.thread = None
 
     @property
@@ -167,14 +166,6 @@ class SheetSync:
             return  # not configured yet; stays pending until a Sheet is linked
         sid = link["spreadsheet_id"]
         columns = self.exporter.sheet_columns()
-        if self.header_written_for != (sid, columns):
-            self.runner(
-                ["sheets", "spreadsheets", "values", "update"],
-                params={"spreadsheetId": sid, "range": f"{TAB}!A1", "valueInputOption": "RAW"},
-                body={"values": [columns]},
-            )
-            self.header_written_for = (sid, columns)
-
         values, revision = self.exporter.sheet_row(session_id, site_id, now())
         if values is None:
             return
@@ -182,6 +173,15 @@ class SheetSync:
             ["sheets", "spreadsheets", "values", "get"],
             params={"spreadsheetId": sid, "range": TAB},
         )
+        rows = data.get("values", [])
+        if rows and rows[0] != columns and any(any(cell != "" for cell in row) for row in rows):
+            raise GwsError("The linked Sheet has different columns. Link a new empty Sheet for this questionnaire; existing data has not been changed.")
+        if not rows or rows[0] != columns:
+            self.runner(
+                ["sheets", "spreadsheets", "values", "update"],
+                params={"spreadsheetId": sid, "range": f"{TAB}!A1", "valueInputOption": "RAW"},
+                body={"values": [columns]},
+            )
         session_col, site_col = columns.index("session_id"), columns.index("site_id")
         row = next((number for number, cells in enumerate(data.get("values", []), start=1)
                     if len(cells) > max(session_col, site_col)

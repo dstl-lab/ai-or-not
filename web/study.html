@@ -32,16 +32,29 @@
     </main>
 
     <aside class="panel" aria-label="Questions">
-      <header class="panel-head">
-        <div class="titles">
-          <div class="eyebrow" id="panel-eyebrow"></div>
-          <h1>Your impressions</h1>
-        </div>
-        <button type="button" class="icon-button" id="collapse" title="Hide questions" aria-label="Hide questions">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6l6 6-6 6"/><path d="M5 6l6 6-6 6"/></svg>
-        </button>
-      </header>
-      <nav class="dots" id="dots" aria-label="Websites"></nav>
+      <div class="panel-top">
+        <header class="panel-head">
+          <div class="titles">
+            <h1 id="panel-title">Your impressions</h1>
+            <div class="review-progress" id="panel-eyebrow"></div>
+          </div>
+          <button type="button" class="icon-button" id="collapse" title="Hide questions" aria-label="Hide questions">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6l6 6-6 6"/><path d="M5 6l6 6-6 6"/></svg>
+          </button>
+        </header>
+        <details class="website-navigation" id="website-navigation">
+          <summary>Jump to a website</summary>
+          <nav class="dots" id="dots" aria-label="Websites"></nav>
+        </details>
+      </div>
+      <div class="panel-tools">
+        <details class="review-instructions">
+          <summary>How to review</summary>
+          <p class="phase-guidance" id="phase-guidance"></p>
+        </details>
+        <button type="button" class="review-help" id="review-help">Page not working?</button>
+      </div>
+      <p class="previous-rating" id="previous-rating" hidden></p>
       <form class="questions" id="questions" novalidate></form>
       <footer class="panel-foot">
         <div class="status" id="status" role="status" aria-live="polite"></div>
@@ -71,6 +84,7 @@
     <div class="card">
       <h1>Couldn't open this session</h1>
       <p class="muted" id="load-error-text"></p>
+      <button type="button" class="primary" id="reload-session">Reload session</button>
       <p class="card-foot"><a href="/">Back to the start page</a></p>
     </div>
   </div>
