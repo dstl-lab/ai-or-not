@@ -120,7 +120,7 @@ Avoid renaming option `value`s after data collection starts. Labels are safe to 
 | `uv run aiornot mirror` | Download/refresh the study sites (`--all` for the full pool) |
 | `uv run aiornot export` | Write all CSVs to `data/exports/<date>/` |
 | `uv run aiornot sheet create\|connect\|sync\|status` | Manage the Google Sheet link |
-| `uv run pytest` | Run the tests |
+| `uv run pytest` | Run the tests (requires Node.js for the browser timer regression test) |
 
 ## How it works
 

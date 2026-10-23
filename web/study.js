@@ -310,8 +310,9 @@ function updateNavButtons() {
 
 const timer = {
   since: null,
+  stopped: false,
   start() {
-    if (document.visibilityState === "visible" && this.since === null) this.since = performance.now();
+    if (!this.stopped && document.visibilityState === "visible" && this.since === null) this.since = performance.now();
   },
   flush(beacon = false) {
     if (this.since === null) return;
@@ -391,6 +392,7 @@ async function onNext() {
 
 function showScreen(id, message) {
   timer.flush();
+  timer.stopped = true;
   state.frame?.remove();
   if (message) $("load-error-text").textContent = message;
   els.layout.hidden = true;

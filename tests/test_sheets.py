@@ -29,9 +29,9 @@ def test_completed_site_is_appended_then_updated_in_place(client, gws, paths):
 
     sync.sync_one(sid, "alpha")
     kinds = [c[0] for c in gws.calls]
-    assert kinds == ["update", "append"]  # header row, then the data row
+    assert kinds == ["update", "get", "append"]  # header row, then the data row
     header = gws.calls[0][2]["values"][0]
-    row = gws.calls[1][2]["values"][0]
+    row = gws.calls[2][2]["values"][0]
     assert header[:3] == ["synced_at", "participant_id", "session_id"]
     assert row[header.index("participant_id")] == "P01"
     assert row[header.index("cues")] == "gradients; emoji_icons"
@@ -65,3 +65,31 @@ def test_helpers():
     url = "https://docs.google.com/spreadsheets/d/1AbC-d_9/edit#gid=0"
     assert parse_spreadsheet_id(url) == "1AbC-d_9"
     assert parse_spreadsheet_id("1AbC-d_9") == "1AbC-d_9"
+
+
+def test_sync_finds_row_after_rows_move(client, gws, paths):
+    save_link(paths, "sheet123", "https://example", "Test")
+    sid = new_session(client)
+    finish_site(client, sid)
+    sync = client.app_state.sync
+    sync.sync_one(sid, "alpha")
+    other = list(gws.values[1])
+    other[2] = "another-session"
+    gws.values.insert(1, other)
+    client.put(f"/api/sessions/{sid}/sites/alpha/answers", json={"answers": {"confidence": 1}})
+    sync.sync_one(sid, "alpha")
+    assert gws.calls[-1][1]["range"] == "responses!A3"
+    assert gws.values[1] == other
+    assert client.app_state.db.sheet_row(sid, "alpha")["row_number"] == 3
+
+
+def test_sync_to_new_sheet_does_not_reuse_old_row(client, gws, paths):
+    save_link(paths, "old", "https://example", "Old")
+    sid = new_session(client)
+    finish_site(client, sid)
+    sync = client.app_state.sync
+    sync.sync_one(sid, "alpha")
+    save_link(paths, "new", "https://example", "New")
+    gws.values = []
+    sync.sync_one(sid, "alpha")
+    assert gws.calls[-1][0] == "append"

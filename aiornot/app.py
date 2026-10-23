@@ -205,6 +205,10 @@ def create_app(paths=None, runner=run_gws, start_sync=True):
         session = load_session(session_id)
         if not all(s["completed"] for s in site_states(session)):
             raise HTTPException(409, "Every website must be completed first")
+        answers = db.answers(session_id)
+        if any(missing_answers(questions, answers.get(site_id, {}))
+               for site_id in session["site_order"]):
+            raise HTTPException(422, "Every website must have complete answers")
         db.finish_session(session_id)
         return {"ok": True}
 

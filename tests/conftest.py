@@ -17,14 +17,23 @@ class FakeGws:
         self.calls = []
         self.rows = 1  # row 1 is the header
         self.fail = False
+        self.values = []
 
     def __call__(self, args, params=None, body=None):
         if self.fail:
             from aiornot.sheets import GwsError
             raise GwsError("network down")
         self.calls.append((args[-1], params, body))
+        if args[-1] == "get":
+            return {"values": self.values}
+        if args[-1] == "update":
+            row = int(params["range"].split("!A")[1])
+            while len(self.values) < row:
+                self.values.append([])
+            self.values[row - 1] = body["values"][0]
         if args[-1] == "append":
-            self.rows += 1
+            self.values.append(body["values"][0])
+            self.rows = len(self.values)
             return {"updates": {"updatedRange": f"responses!A{self.rows}:Z{self.rows}"}}
         return {}
 

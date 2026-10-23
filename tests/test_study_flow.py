@@ -114,3 +114,15 @@ def test_practice_sessions_are_excluded_from_exports_by_default(client):
     complete(client, sid, "alpha")
     assert len(client.get("/api/export/responses_wide.csv").text.strip().splitlines()) == 1
     assert len(client.get("/api/export/responses_wide.csv?practice=true").text.strip().splitlines()) == 2
+
+
+def test_finish_revalidates_previously_completed_answers(client):
+    sid = start(client)
+    for site in SITES:
+        answer(client, sid, site, FULL)
+        complete(client, sid, site)
+    answer(client, sid, "alpha", {"confidence": None})
+    assert client.post(f"/api/sessions/{sid}/finish").status_code == 422
+    assert client.app_state.db.get_session(sid)["finished_at"] is None
+    answer(client, sid, "alpha", {"confidence": 4})
+    assert client.post(f"/api/sessions/{sid}/finish").status_code == 200

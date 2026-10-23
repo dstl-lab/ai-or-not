@@ -178,9 +178,15 @@ class SheetSync:
         values, revision = self.exporter.sheet_row(session_id, site_id, now())
         if values is None:
             return
-        existing = self.db.sheet_row(session_id, site_id)
-        if existing and existing.get("row_number"):
-            row = existing["row_number"]
+        data = self.runner(
+            ["sheets", "spreadsheets", "values", "get"],
+            params={"spreadsheetId": sid, "range": TAB},
+        )
+        session_col, site_col = columns.index("session_id"), columns.index("site_id")
+        row = next((number for number, cells in enumerate(data.get("values", []), start=1)
+                    if len(cells) > max(session_col, site_col)
+                    and cells[session_col] == session_id and cells[site_col] == site_id), None)
+        if row is not None:
             self.runner(
                 ["sheets", "spreadsheets", "values", "update"],
                 params={"spreadsheetId": sid, "range": f"{TAB}!A{row}", "valueInputOption": "RAW"},
