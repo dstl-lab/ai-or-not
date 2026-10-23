@@ -161,12 +161,15 @@ body.study { overflow: hidden; --panel-width: clamp(400px, 33vw, 464px); }
 .website-navigation summary::after { content: ""; width: 6px; height: 6px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg); }
 .website-navigation[open] summary::after { transform: rotate(225deg); }
 .website-navigation summary::-webkit-details-marker, .review-instructions summary::-webkit-details-marker, .review-checks summary::-webkit-details-marker, .review-notes summary::-webkit-details-marker { display: none; }
-.panel-tools { position: relative; z-index: 1; flex-shrink: 0; background: var(--surface); border-bottom: 1px solid var(--border); }
-.review-instructions summary { display: flex; align-items: center; gap: 8px; width: fit-content; max-width: 55%; padding: 12px 24px; font-size: 12px; color: var(--muted); }
+.panel-tools { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; flex-shrink: 0; background: var(--surface); border-bottom: 1px solid var(--border); }
+.review-instructions { grid-column: 1; grid-row: 1 / span 2; min-width: 0; }
+.review-instructions summary { display: flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; padding: 12px 24px; font-size: 12px; color: var(--muted); }
 .review-instructions summary::before { content: ""; width: 6px; height: 6px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(-45deg); }
 .review-instructions[open] summary::before { transform: rotate(45deg); }
-.review-help { position: absolute; top: 4px; right: 16px; min-height: 32px; padding: 4px 8px; font-size: 12px; color: var(--accent); border-color: transparent; background: transparent; }
-.review-help:hover { border-color: transparent; background: var(--accent-soft); }
+.review-help, .review-notes-link { grid-column: 2; margin: 4px 16px 4px 0; min-height: 32px; padding: 4px 8px; font-size: 12px; color: var(--accent); border-color: transparent; background: transparent; }
+.review-help:hover, .review-notes-link:hover { border-color: transparent; background: var(--accent-soft); }
+.review-notes-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+.notes-count { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding-inline: 5px; border-radius: 4px; background: var(--accent-soft); font-size: 11px; font-variant-numeric: tabular-nums; }
 
 .dots { display: flex; gap: 4px; padding: 0 24px 20px; }
 .phase-guidance, .previous-rating { margin: 0; padding: 4px 24px 16px; font-size: 13px; line-height: 1.55; color: var(--muted); }
@@ -255,6 +258,8 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; font-size: 14px
 .status:not(:empty)::before { content: ""; flex: none; width: 6px; height: 6px; margin-top: 6px; border-radius: 50%; background: var(--accent); }
 .status.bad { color: var(--danger); }
 .status.bad::before { background: var(--danger); }
+.status.pending { color: var(--accent); }
+.status.pending::before { background: transparent; border: 1.5px solid currentColor; width: 8px; height: 8px; margin-top: 5px; }
 .foot-buttons { display: flex; gap: 8px; }
 .foot-buttons button { min-height: 48px; font-size: 14px; line-height: 1.4; font-weight: 600; }
 .foot-buttons #prev { color: var(--muted); border-color: transparent; background: var(--bg); padding-inline: 16px; }

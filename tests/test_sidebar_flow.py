@@ -209,7 +209,9 @@ def test_followup_keeps_required_cues_before_optional_saved_notes_and_refreshes_
   savedNotes.open = false; savedNotes.events.toggle?.();
   assert.equal(savedNotes.open, true, 'collapsing notes cannot hide active selection controls');
   savedNotes.open = false; annotationTool.armed = false; annotationTool.draft = {note: ''};
+  els.layout.classList.toggle('collapsed', true);
   annotationOptions.refresh();
+  assert.equal(els.layout.className.includes('collapsed'), false, 'a new note editor must be visible even if questions were hidden');
   assert.equal(savedNotes.open, true, 'active draft keeps notes visible');
   savedNotes.open = false; savedNotes.events.toggle?.();
   assert.equal(savedNotes.open, true, 'collapsing notes cannot hide Save or Cancel');
@@ -240,5 +242,104 @@ def test_selecting_a_website_collapses_website_navigation():
   saver.flush = async () => {}; loadFrame = () => {};
   await goTo(0);
   assert.equal(navigation.open, false);
+})().catch(err => {console.error(err); process.exitCode = 1;});
+""")
+
+
+
+def test_page_notes_shortcut_is_available_only_with_notes_and_reveals_them():
+    run_sidebar("""
+setup();
+assert.equal(els.notesLink.hidden, true);
+setup('followup', {annotations: [{id: 'one'}, {id: 'two'}]});
+assert.equal(els.notesLink.hidden, false);
+assert.equal(els.notesCount.textContent, '2');
+const notes = els.questions.querySelector('.review-notes');
+assert.equal(notes.open, false);
+wireEvents();
+els.notesLink.events.click();
+assert.equal(notes.open, true);
+assert.equal(notes.querySelector('fieldset').scrolled, true);
+setAnswer(state.byId.annotations, [{id: 'one'}]);
+assert.equal(els.notesCount.textContent, '1');
+assert.match(els.notesLink.getAttribute('aria-label'), /1 saved note/);
+assert.equal(state.answers.alpha.annotations.length, 1);
+""")
+
+
+def test_unsaved_note_status_wins_over_saved_answers_but_not_save_failures():
+    run_sidebar("""
+setup('followup');
+setStatus('All answers saved');
+assert.equal(els.status.textContent, 'All answers saved');
+annotationTool.draft = {note: ''};
+updateProgress();
+assert.match(els.status.textContent, /Note not saved/);
+assert.equal(els.next.textContent, 'Return to note');
+setStatus('All answers saved');
+assert.match(els.status.textContent, /Note not saved/, 'a background save must not imply the note was saved');
+setStatus('Could not save answers. Retrying…', true);
+assert.equal(els.status.textContent, 'Could not save answers. Retrying…');
+setStatus('All answers saved');
+warn('Return to the assigned webpage.');
+assert.equal(els.status.textContent, 'Return to the assigned webpage.');
+warn(''); annotationTool.draft = null; annotationTool.armed = true;
+updateProgress();
+assert.match(els.status.textContent, /Select a detail/);
+annotationTool.armed = false; updateProgress();
+assert.equal(els.status.textContent, 'All answers saved');
+""")
+
+
+def test_blocked_navigation_reopens_and_focuses_the_unsaved_note():
+    run_sidebar("""
+(async () => {
+  setup('followup');
+  annotationTool.draft = {note: 'Keep my draft'};
+  updateProgress();
+  const notes = els.questions.querySelector('.review-notes');
+  const fieldset = notes.querySelector('fieldset');
+  const input = new Element('textarea'); fieldset.append(input);
+  notes.open = false; els.layout.classList.toggle('collapsed', true);
+  await onNext();
+  assert.equal(notes.open, true);
+  assert.equal(fieldset.scrolled, true);
+  assert.equal(document.activeElement, input);
+  assert.match(els.status.textContent, /Note not saved/, 'returning to the editor is guidance, not an error');
+  assert.equal(els.layout.className.includes('collapsed'), false);
+  assert.equal(state.index, 0);
+  notes.open = false; document.activeElement = null;
+  await goTo(1);
+  assert.equal(notes.open, true);
+  assert.equal(document.activeElement, input);
+  assert.equal(state.index, 0);
+  assert.equal(calls.length, 0, 'a draft must not be submitted or leave this website');
+  assert.equal(annotationTool.draft.note, 'Keep my draft');
+})().catch(err => {console.error(err); process.exitCode = 1;});
+""")
+
+
+def test_collapsing_and_expanding_moves_focus_to_visible_controls():
+    run_sidebar("""
+setup(); wireEvents();
+elements.get('collapse').events.click();
+assert.equal(els.layout.className.includes('collapsed'), true);
+assert.equal(document.activeElement, elements.get('expand'));
+elements.get('expand').events.click();
+assert.equal(els.layout.className.includes('collapsed'), false);
+assert.equal(document.activeElement, elements.get('collapse'));
+elements.get('collapse').events.click();
+elements.get('expand-label').events.click();
+assert.equal(document.activeElement, elements.get('collapse'));
+""")
+
+
+def test_changing_websites_lands_focus_at_the_new_panel_heading():
+    run_sidebar("""
+(async () => {
+  setup(); saver.flush = async () => {}; loadFrame = () => {};
+  await goTo(1);
+  assert.equal(state.index, 1);
+  assert.equal(document.activeElement, els.title);
 })().catch(err => {console.error(err); process.exitCode = 1;});
 """)

@@ -35,7 +35,7 @@
       <div class="panel-top">
         <header class="panel-head">
           <div class="titles">
-            <h1 id="panel-title">Your impressions</h1>
+            <h1 id="panel-title" tabindex="-1">Your impressions</h1>
             <div class="review-progress" id="panel-eyebrow"></div>
           </div>
           <button type="button" class="icon-button" id="collapse" title="Hide questions" aria-label="Hide questions">
@@ -53,6 +53,9 @@
           <p class="phase-guidance" id="phase-guidance"></p>
         </details>
         <button type="button" class="review-help" id="review-help">Page not working?</button>
+        <button type="button" class="review-notes-link" id="review-notes-link" aria-controls="questions" hidden>
+          Page notes <span id="review-notes-count" class="notes-count">0</span>
+        </button>
       </div>
       <p class="previous-rating" id="previous-rating" hidden></p>
       <form class="questions" id="questions" novalidate></form>

@@ -392,7 +392,7 @@ export class AnnotationTool {
       box.append(mode);
     } else if (entries.length < limit) {
       box.append(button("Annotate webpage", () => this.start(), "annotation-add"));
-      if (!entries.length) {
+      if (!entries.length && !question.help) {
         const hint = document.createElement("p");
         hint.className = "annotation-empty";
         hint.textContent = "Select a detail on the webpage, then add a note.";

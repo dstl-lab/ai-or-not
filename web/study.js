@@ -12,6 +12,7 @@ const els = {
   questions: $("questions"), status: $("status"), prev: $("prev"), next: $("next"),
   title: $("panel-title"), rating: $("previous-rating"), guidance: $("phase-guidance"),
   reviewHelp: $("review-help"), websiteNavigation: $("website-navigation"),
+  notesLink: $("review-notes-link"), notesCount: $("review-notes-count"),
 };
 
 const state = {
@@ -313,41 +314,54 @@ function updateProgress() {
   } else if (missing[0] === "cues" && state.byId.cues?.max_selected) {
     nextAction = `Choose up to ${state.byId.cues.max_selected} cues`;
   }
-  els.next.textContent = missing.length ? nextAction
+  els.next.textContent = annotationTool?.draft ? "Return to note" : missing.length ? nextAction
     : last ? (state.phase === "review" && state.followupSites.length ? "Continue to final questions" : "Finish") : "Next website";
   const checks = els.questions.querySelector?.(".review-checks");
   if (checks) {
     const remaining = [...checks.querySelectorAll("fieldset.q")].filter(fieldset => missing.includes(fieldset.dataset.qid)).length;
     checks.querySelector(".section-meta").textContent = remaining ? `${remaining} remaining` : "Complete";
   }
+  const annotationQuestions = state.questions.filter(q => q.type === "annotation");
+  const count = annotationQuestions.reduce((total, q) => total + (a[q.id] || []).length, 0);
+  els.notesLink.hidden = !annotationQuestions.length;
+  els.notesCount.textContent = count;
+  els.notesLink.setAttribute("aria-label", `Page notes, ${count} saved note${count === 1 ? "" : "s"}, optional`);
   const notes = els.questions.querySelector?.(".review-notes");
   if (notes) {
-    const count = state.questions.filter(q => q.type === "annotation").reduce((total, q) => total + (a[q.id] || []).length, 0);
     notes.querySelector(".section-meta").textContent = `${count} note${count === 1 ? "" : "s"} · Optional`;
     if (annotationTool?.draft || annotationTool?.armed) notes.open = true;
   }
   for (const fieldset of els.questions.querySelectorAll("fieldset.q")) {
     fieldset.classList.toggle("missing", state.showMissing && missing.includes(fieldset.dataset.qid));
   }
+  renderStatus();
   return missing;
 }
 
 function revealQuestion(id) {
   const fieldset = els.questions.querySelector(`fieldset[data-qid="${id}"]`);
   if (!fieldset) return;
+  els.layout.classList.toggle("collapsed", false);
   const details = fieldset.closest("details");
   if (details) details.open = true;
   fieldset.scrollIntoView({ behavior: "smooth", block: "start" });
   fieldset.querySelector("input:not(:disabled), textarea, button")?.focus({ preventScroll: true });
 }
 
-// The status line shows a warning if there is one, otherwise the autosave state,
-// so a background save finishing can't hide a warning the participant needs to see.
+function revealAnnotation() {
+  const question = state.questions.find(q => q.type === "annotation");
+  if (question) revealQuestion(question.id);
+}
+
+// Warnings and save failures stay visible above note guidance and save confirmations.
 const status = { save: "", saveBad: false, warning: "" };
 
 function renderStatus() {
-  els.status.textContent = status.warning || status.save;
+  const noteStatus = annotationTool?.draft ? "Note not saved. Save note or Cancel to continue."
+    : annotationTool?.armed ? "Select a detail on the webpage. Esc cancels." : "";
+  els.status.textContent = status.warning || (status.saveBad ? status.save : noteStatus || status.save);
   els.status.classList.toggle("bad", Boolean(status.warning) || status.saveBad);
+  els.status.classList.toggle("pending", Boolean(noteStatus) && !status.warning && !status.saveBad);
 }
 
 function setStatus(text, bad = false) {
@@ -453,9 +467,11 @@ const timer = {
 
 async function goTo(index) {
   if (annotationTool?.draft) {
-    warn("Save or cancel your annotation before changing webpages.");
+    warn("Save or cancel your note before changing websites.");
+    revealAnnotation();
     return;
   }
+  const changedWebsite = state.index >= 0 && index !== state.index;
   const leaving = currentSite();
   if (leaving && index !== state.index && leaving.completed && missingIds(answersFor(leaving.id)).length) {
     // Editing a finished website must not leave it half-answered.
@@ -486,6 +502,7 @@ async function goTo(index) {
   updateProgress();
   setStatus(missingIds(answersFor(site.id)).length ? "" : "All answers saved");
   loadFrame(site);
+  if (changedWebsite) els.title.focus({preventScroll:true});
   api(`/api/sessions/${sessionId}/sites/${site.id}/open`, { method: "POST" }).catch(() => {});
   timer.start();
   els.next.disabled = false;
@@ -494,7 +511,8 @@ async function goTo(index) {
 async function onNext() {
   if (els.next.disabled) return;
   if (annotationTool?.draft) {
-    warn("Save or cancel your annotation before continuing.");
+    warn("");
+    revealAnnotation();
     return;
   }
   const site = currentSite();
@@ -528,6 +546,7 @@ async function onNext() {
         }
         state.index = -1;
         await goTo(0);
+        els.title.focus({preventScroll:true});
       } else {
         await api(`/api/sessions/${sessionId}/finish`, { method: "POST" });
         showScreen("done");
@@ -567,6 +586,7 @@ function wireEvents() {
   els.questions.addEventListener("input", (e) => e.target.tagName === "TEXTAREA" && onAnswer(e));
   els.next.addEventListener("click", onNext);
   els.reviewHelp?.addEventListener("click", () => revealQuestion("technical_issue"));
+  els.notesLink.addEventListener("click", revealAnnotation);
   els.prev.addEventListener("click", () => !els.next.disabled && state.index > 0 && goTo(state.index - 1));
 
   els.back.addEventListener("click", () => frameNavigation()?.back());
@@ -576,7 +596,11 @@ function wireEvents() {
   });
   els.home.addEventListener("click", () => loadFrame(currentSite()));
 
-  const setCollapsed = (collapsed) => els.layout.classList.toggle("collapsed", collapsed);
+  const setCollapsed = (collapsed) => {
+    els.layout.classList.toggle("collapsed", collapsed);
+    $(collapsed ? "expand" : "collapse").focus({preventScroll:true});
+    if (!collapsed && (annotationTool?.draft || annotationTool?.armed)) revealAnnotation();
+  };
   $("collapse").addEventListener("click", () => setCollapsed(true));
   $("expand").addEventListener("click", () => setCollapsed(false));
   $("expand-label").addEventListener("click", () => setCollapsed(false));
@@ -617,6 +641,7 @@ async function init() {
       const index = state.questions.findIndex(q => q.type === "annotation");
       if (index === -1 || !currentSite()) return;
       const q = state.questions[index];
+      if (annotationTool.draft) els.layout.classList.toggle("collapsed", false);
       els.questions.querySelector(`fieldset[data-qid="${q.id}"]`)?.replaceWith(renderQuestion(q, answersFor(currentSite().id)));
       updateProgress();
     },
