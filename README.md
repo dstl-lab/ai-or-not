@@ -105,7 +105,7 @@ Avoid renaming option `value`s after data collection starts. Labels are safe to 
 
 ## Data and analysis
 
-- **Dashboard → Download data**, or `uv run aiornot export`, writes four CSV tables
+- **Dashboard → Download data**, or `uv run aiornot export`, writes five CSV tables
   (described in [docs/data-dictionary.md](docs/data-dictionary.md)).
 - For pandas: `uv run --group analysis python -m analysis.summary` prints a first-look summary,
   and `analysis/load.py` loads every table as a DataFrame.
@@ -134,3 +134,23 @@ Avoid renaming option `value`s after data collection starts. Labels are safe to 
 - **Code layout:** `aiornot/` (Python: `app.py` API, `db.py` SQLite, `sheets.py` sync,
   `export.py` CSV tables, `mirror.py` site copies), `web/` (plain HTML/CSS/JS, no build step),
   `config/` (sites and questions), `analysis/` (pandas helpers), `docs/PLAN.md` (design decisions).
+
+## Element-marking prototype
+
+On `codex/element-marking`, participants can mark up to three actual elements on each site.
+After answering the AI-generated question, choose **Mark an element**, then click the website.
+A numbered outline appears around the selection. Choose a reason (shape, color, typography,
+spacing, wording, or another visual detail) to save it. **Escape** or **Cancel selection** exits
+marking; ordinary browsing resumes after a selection. Marks can be removed, or participants can
+choose **Nothing specific stood out**. Marking is optional in this prototype.
+
+Marks are saved locally and restored on session reload. The dashboard and CLI include a fifth
+CSV, `element_marks.csv`. Each mark stores its page, DOM selector, element label, document
+coordinates, viewport size, selected reason, AI judgment at selection, and computed visual styles
+including font, background, and border radius. No participant typing is required. Mark data is
+not currently mirrored to Google Sheets. Practice marks are excluded from exports by default.
+
+Outlines follow scrolling and resizing. A canvas or embedded cross-origin frame is selectable
+as one element; its internal drawings cannot be individually identified through DOM selection.
+Dynamic pages can replace elements, so recorded selectors may not identify the same object after
+content changes. This prototype stores selection metadata, not screenshots.

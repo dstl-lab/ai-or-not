@@ -3,9 +3,19 @@ import subprocess
 from pathlib import Path
 
 
+def browser_source():
+    web = Path(__file__).parents[1] / "web"
+    marking = (web / "marking.js").read_text()
+    marking = marking.replace("import { api, escapeHtml as h } from './api.js';", "")
+    marking = marking.replace("export function", "function").replace("export class", "class")
+    source = (web / "study.js").read_text()
+    source = source.replace('import { api } from "./api.js";', '')
+    source = source.replace('import { ElementMarker } from "./marking.js";', '')
+    return marking + source.removesuffix('init();\n')
+
+
 def test_completion_stops_timer_and_prevents_restart():
-    source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').removesuffix('init();\n')
+    source = browser_source()
     harness = '''
 const assert = require('node:assert/strict');
 let clock = 0, reports = [], interval, events = {};
@@ -39,8 +49,7 @@ assert.equal(timer.since, null);
 
 
 def test_close_warning_covers_queued_and_in_flight_saves():
-    source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').removesuffix('init();\n')
+    source = browser_source()
     harness = '''
 const assert = require('node:assert/strict');
 const events = {}, requests = [];

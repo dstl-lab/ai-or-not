@@ -1,19 +1,20 @@
 """Turn the database into analysis-ready tables (CSV) and Google Sheet rows.
 
-Four tables, all documented in docs/data-dictionary.md:
+Five tables, all documented in docs/data-dictionary.md:
 
     responses_long   one row per participant x site x question
     responses_wide   one row per participant x site, one column per question,
                      plus 0/1 columns for every multi-select option
     sessions         one row per session
     site_visits      one row per participant x site (timing only)
+    element_marks    selected page elements, reasons, and visual metadata
 """
 
 import csv
 import io
 import json
 
-TABLES = ("responses_long", "responses_wide", "sessions", "site_visits")
+TABLES = ("responses_long", "responses_wide", "sessions", "site_visits", "element_marks")
 
 VISIT_QUERY = """
 SELECT s.participant_id, v.session_id, s.practice, v.position AS site_position, v.site_id,
@@ -92,6 +93,28 @@ class Exporter:
 
     def table(self, name, include_practice=False):
         """(columns, rows) for one export table."""
+        if name == "element_marks":
+            records = self.db.export_rows(
+                "SELECT s.participant_id, m.session_id, m.site_id, s.practice, m.payload,"
+                " m.updated_at FROM element_marks m JOIN sessions s ON s.id=m.session_id"
+                " WHERE (? OR s.practice=0) ORDER BY s.started_at, m.site_id",
+                (int(include_practice),),
+            )
+            cols = ["participant_id", "session_id", "site_id", "practice", "updated_at",
+                    "none", "mark_number", "page", "selector", "tag", "label", "reason",
+                    "ai_judgment", "rect", "viewport", "styles"]
+            rows = []
+            for record in records:
+                payload = json.loads(record.pop("payload"))
+                for i, mark in enumerate(payload["marks"] or [{}], 1):
+                    row = {**record, **mark, "none": payload["none"],
+                           "mark_number": i if mark else ""}
+                    for key in ("rect", "viewport", "styles"):
+                        if key in row:
+                            row[key] = json.dumps(row[key])
+                    rows.append(row)
+            return cols, rows
+
         if name == "sessions":
             rows = self.db.list_sessions()
             if not include_practice:

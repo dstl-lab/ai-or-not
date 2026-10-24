@@ -77,3 +77,19 @@ Consider excluding (or analyzing separately) judgments where `seen_before` is `y
 The same columns as `responses_wide.csv` without the 0/1 indicator columns, plus `synced_at`
 (first column) and `revision` (last column). Practice sessions are included and marked
 `practice = TRUE`; filter them out in the Sheet.
+
+## `element_marks.csv` (element-marking prototype)
+
+One row per marked element, or one row with blank element fields for an explicit
+`none = True` response. Clearing all marks without selecting “Nothing specific stood out”
+produces an empty selection record with `none = False`.
+
+- Identifiers: `participant_id`, `session_id`, `site_id`, `practice`, `updated_at`.
+- Selection: `none`, `mark_number` (1–3), `reason` (`shape`, `color`, `font`, `spacing`,
+  `wording`, `other`), `ai_judgment` (the participant's AI judgment when selecting).
+- Element: `page` (path, query, hash), `selector` (DOM path), `tag`, `label` (short visible text).
+- Evidence: `rect` (JSON document x/y/width/height), `viewport` (JSON width/height),
+  `styles` (JSON computed CSS, including font, colors, background, radius, shadow, and gap).
+
+SQLite table `element_marks` stores the latest selection per session and site. Removing a mark
+replaces that selection; unlike survey answers, marks do not currently retain a revision history.

@@ -1,4 +1,5 @@
 import { api } from "./api.js";
+import { ElementMarker } from "./marking.js";
 
 const sessionId = location.pathname.split("/").filter(Boolean).pop();
 const $ = (id) => document.getElementById(id);
@@ -116,6 +117,11 @@ const saver = {
   },
 };
 
+const marker = new ElementMarker(() => ({
+  sessionId, site: currentSite(), answers: answersFor(currentSite().id),
+  saveAnswers: () => saver.flush(),
+}));
+
 // ---------------------------------------------------------------- rendering
 
 function option(type, name, value, label, checked) {
@@ -196,7 +202,13 @@ function renderQuestion(q, number, a) {
 
 function renderQuestions() {
   const a = answersFor(currentSite().id);
-  els.questions.replaceChildren(...state.questions.map((q, i) => renderQuestion(q, i + 1, a)));
+  const marks = document.createElement('section');
+  marks.id = 'element-marks';
+  marks.className = 'element-marks';
+  const questions = state.questions.map((q, i) => renderQuestion(q, i + 1, a));
+  questions.splice(2, 0, marks);
+  els.questions.replaceChildren(...questions);
+  marker.render();
   els.questions.scrollTop = 0;
 }
 
@@ -226,6 +238,7 @@ function updateProgress() {
   for (const fieldset of els.questions.querySelectorAll("fieldset.q")) {
     fieldset.classList.toggle("missing", state.showMissing && missing.includes(fieldset.dataset.qid));
   }
+  marker.render();
   return missing;
 }
 
@@ -251,6 +264,7 @@ function warn(text) {
 // ---------------------------------------------------------------- the website frame
 
 function loadFrame(site) {
+  marker.detach();
   state.frame?.remove();
   els.loading.hidden = false;
   // A fresh iframe per visit also gives each site its own clean back/forward history.
@@ -276,6 +290,7 @@ function onFrameLoad(frame, site) {
       win.location.replace(site.src);
       return;
     }
+    marker.attach(frame, site);
     win.document.addEventListener("click", (e) => openOutsideLinksInNewTab(e, site), true);
     win.navigation?.addEventListener("currententrychange", updateNavButtons);
   } catch {
@@ -341,6 +356,7 @@ async function goTo(index) {
     warn("Please finish these answers before leaving this website.");
     return;
   }
+  try { await marker.flush(); } catch (err) { warn(err.message); return; }
   await saver.flush();
   timer.flush();
   state.index = index;
@@ -372,6 +388,7 @@ async function onNext() {
 
   els.next.disabled = true;
   try {
+    await marker.flush();
     await saver.flush();
     const res = await api(`/api/sessions/${sessionId}/sites/${site.id}/complete`, { method: "POST" });
     state.sites = res.sites;
@@ -396,6 +413,7 @@ async function onNext() {
 function showScreen(id, message) {
   timer.flush();
   timer.stopped = true;
+  marker.detach();
   state.frame?.remove();
   if (message) $("load-error-text").textContent = message;
   els.layout.hidden = true;
@@ -432,7 +450,7 @@ function wireEvents() {
   // Bank time periodically so a crash or closed lid loses at most a minute.
   setInterval(() => { timer.flush(); timer.start(); }, 60_000);
   window.addEventListener("beforeunload", (e) => {
-    if (saver.busy) e.preventDefault();
+    if (saver.busy || marker.busy) e.preventDefault();
   });
 }
 
@@ -448,6 +466,7 @@ async function init() {
   state.questions = data.questions;
   state.byId = Object.fromEntries(data.questions.map((q) => [q.id, q]));
   state.answers = data.answers;
+  marker.data = data.marks || {};
   if (data.session.finished_at) {
     showScreen("done");
     return;
