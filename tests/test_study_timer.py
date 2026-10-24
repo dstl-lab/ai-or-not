@@ -91,3 +91,29 @@ const api = () => new Promise(resolve => requests.push(resolve));
 })().catch(err => {console.error(err); process.exitCode = 1;});
 '''
     subprocess.run(['node', '-e', harness + source + checks], check=True)
+
+
+def test_element_picker_prefers_specific_content_over_page_layers():
+    source = (Path(__file__).parents[1] / "web" / "marking.js").read_text()
+    source = source.replace("import { api, escapeHtml as h } from './api.js';", "")
+    source = source.replace("export function", "function").replace("export class", "class")
+    harness = '''
+const assert = require('node:assert/strict');
+function element(tag, width, height) {
+  return {
+    localName: tag,
+    getBoundingClientRect: () => ({width, height}),
+    matches: selectors => selectors.split(',').some(selector => selector.trim() === tag),
+  };
+}
+'''
+    checks = '''
+const canvas = element('canvas', 1000, 800);
+const section = element('section', 1000, 800);
+const heading = element('h1', 520, 130);
+const button = element('button', 200, 60);
+assert.equal(preferredTarget([canvas, heading, section], 1000, 800), heading);
+assert.equal(preferredTarget([section, button, heading], 1000, 800), button);
+assert.equal(preferredTarget([section], 1000, 800), section);
+'''
+    subprocess.run(['node', '-e', harness + source + checks], check=True)

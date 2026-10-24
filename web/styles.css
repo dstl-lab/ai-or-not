@@ -239,3 +239,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1
 .mark-list li { display: flex; justify-content: space-between; gap: 8px; align-items: center; font-size: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); }
 .mark-none { display: flex; gap: 8px; align-items: center; font-size: 13px; }
 .mark-save { color: var(--danger); }
+
+.mark-layer { display: grid; gap: 6px; font-size: 12px; margin-top: 12px; }
+.mark-layer select { max-width: 100%; width: 100%; padding: 8px; border: 1px solid var(--border-strong); border-radius: 6px; background: white; color: var(--text); }

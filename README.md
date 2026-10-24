@@ -140,9 +140,11 @@ Avoid renaming option `value`s after data collection starts. Labels are safe to 
 On `codex/element-marking`, participants can mark up to three actual elements on each site.
 After answering the AI-generated question, choose **Mark an element**, then click the website.
 A numbered outline appears around the selection. Choose a reason (shape, color, typography,
-spacing, wording, or another visual detail) to save it. **Escape** or **Cancel selection** exits
-marking; ordinary browsing resumes after a selection. Marks can be removed, or participants can
-choose **Nothing specific stood out**. Marking is optional in this prototype.
+spacing, wording, or another visual detail) to save it. When visual layers overlap, a selector lets
+the participant switch between the specific text, graphic, control, and surrounding area. **Escape**
+or the visible cancel button exits marking; ordinary browsing resumes after a selection. Saved marks
+can be removed from the list or by double-clicking their outline. Participants can also choose
+**Nothing specific stood out**. Marking is optional in this prototype.
 
 Marks are saved locally and restored on session reload. The dashboard and CLI include a fifth
 CSV, `element_marks.csv`. Each mark stores its page, DOM selector, element label, document
