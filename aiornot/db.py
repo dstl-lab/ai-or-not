@@ -58,6 +58,14 @@ CREATE TABLE IF NOT EXISTS response_history (
     recorded_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS element_marks (
+    session_id TEXT NOT NULL REFERENCES sessions(id),
+    site_id TEXT NOT NULL,
+    payload TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    PRIMARY KEY (session_id, site_id)
+);
+
 CREATE TABLE IF NOT EXISTS sheet_rows (
     session_id      TEXT NOT NULL REFERENCES sessions(id),
     site_id         TEXT NOT NULL,
@@ -247,6 +255,20 @@ class Database:
                     (stamp, session_id, site_id),
                 )
         return changed
+
+    def marks(self, session_id):
+        with self.connect() as conn:
+            rows = conn.execute("SELECT site_id, payload FROM element_marks WHERE session_id = ?",
+                                (session_id,)).fetchall()
+        return {r["site_id"]: json.loads(r["payload"]) for r in rows}
+
+    def save_marks(self, session_id, site_id, payload):
+        with self.connect() as conn:
+            conn.execute(
+                "INSERT INTO element_marks VALUES (?, ?, ?, ?) ON CONFLICT(session_id, site_id)"
+                " DO UPDATE SET payload = excluded.payload, updated_at = excluded.updated_at",
+                (session_id, site_id, json.dumps(payload), now()),
+            )
 
     # --- Google Sheet sync bookkeeping ---------------------------------
 

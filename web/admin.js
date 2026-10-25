@@ -2,6 +2,7 @@ import { api, escapeHtml as h, formatDuration, formatTime } from "./api.js";
 
 const $ = (id) => document.getElementById(id);
 const TABLES = [
+  ["element_marks", "Marked website elements"],
   ["responses_wide", "Answers (one row per site)"],
   ["responses_long", "Answers (one row per question)"],
   ["sessions", "Sessions"],

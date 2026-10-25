@@ -3,9 +3,19 @@ import subprocess
 from pathlib import Path
 
 
+def browser_source():
+    web = Path(__file__).parents[1] / "web"
+    marking = (web / "marking.js").read_text()
+    marking = marking.replace("import { api, escapeHtml as h } from './api.js';", "")
+    marking = marking.replace("export function", "function").replace("export class", "class")
+    source = (web / "study.js").read_text()
+    source = source.replace('import { api } from "./api.js";', '')
+    source = source.replace('import { ElementMarker } from "./marking.js";', '')
+    return marking + source.removesuffix('init();\n')
+
+
 def test_completion_stops_timer_and_prevents_restart():
-    source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').removesuffix('init();\n')
+    source = browser_source()
     harness = '''
 const assert = require('node:assert/strict');
 let clock = 0, reports = [], interval, events = {};
@@ -39,8 +49,7 @@ assert.equal(timer.since, null);
 
 
 def test_close_warning_covers_queued_and_in_flight_saves():
-    source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').removesuffix('init();\n')
+    source = browser_source()
     harness = '''
 const assert = require('node:assert/strict');
 const events = {}, requests = [];
@@ -80,5 +89,31 @@ const api = () => new Promise(resolve => requests.push(resolve));
  await second;
  assert.equal(warns(), false);
 })().catch(err => {console.error(err); process.exitCode = 1;});
+'''
+    subprocess.run(['node', '-e', harness + source + checks], check=True)
+
+
+def test_element_picker_prefers_specific_content_over_page_layers():
+    source = (Path(__file__).parents[1] / "web" / "marking.js").read_text()
+    source = source.replace("import { api, escapeHtml as h } from './api.js';", "")
+    source = source.replace("export function", "function").replace("export class", "class")
+    harness = '''
+const assert = require('node:assert/strict');
+function element(tag, width, height) {
+  return {
+    localName: tag,
+    getBoundingClientRect: () => ({width, height}),
+    matches: selectors => selectors.split(',').some(selector => selector.trim() === tag),
+  };
+}
+'''
+    checks = '''
+const canvas = element('canvas', 1000, 800);
+const section = element('section', 1000, 800);
+const heading = element('h1', 520, 130);
+const button = element('button', 200, 60);
+assert.equal(preferredTarget([canvas, heading, section], 1000, 800), heading);
+assert.equal(preferredTarget([section, button, heading], 1000, 800), button);
+assert.equal(preferredTarget([section], 1000, 800), section);
 '''
     subprocess.run(['node', '-e', harness + source + checks], check=True)

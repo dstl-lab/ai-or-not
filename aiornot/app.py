@@ -2,9 +2,10 @@
 frozen website copies under /sites/<site-id>/."""
 
 import mimetypes
+import math
 import re
 from contextlib import asynccontextmanager
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, Response
@@ -45,6 +46,23 @@ class TimeSpent(BaseModel):
 
 class SessionPatch(BaseModel):
     practice: bool
+
+
+class ElementMark(BaseModel):
+    page: str = Field(max_length=2000)
+    selector: str = Field(min_length=1, max_length=4000)
+    tag: str = Field(max_length=100)
+    label: str = Field(max_length=160)
+    reason: Literal["shape", "color", "font", "spacing", "wording", "other"]
+    rect: list[float] = Field(min_length=4, max_length=4)
+    viewport: list[float] = Field(min_length=2, max_length=2)
+    styles: dict[str, str] = Field(max_length=12)
+    ai_judgment: bool
+
+
+class MarkSelection(BaseModel):
+    marks: list[ElementMark] = Field(max_length=3)
+    none: bool = False
 
 
 def create_app(paths=None, runner=run_gws, start_sync=True):
@@ -151,6 +169,7 @@ def create_app(paths=None, runner=run_gws, start_sync=True):
             "session": session,
             "sites": site_states(session),
             "answers": db.answers(session_id),
+            "marks": db.marks(session_id),
             "questions": questions.to_client(),
             "config_changed": session["questions_version"] != questions.version,
         }
@@ -173,6 +192,25 @@ def create_app(paths=None, runner=run_gws, start_sync=True):
             sync.enqueue(session_id, site_id)  # keep the Sheet row current after edits
         current = db.answers(session_id).get(site_id, {})
         return {"changed": changed, "missing": missing_answers(questions, current)}
+
+    @app.put("/api/sessions/{session_id}/sites/{site_id}/marks")
+    def save_marks(session_id: str, site_id: str, body: MarkSelection):
+        session = load_session(session_id)
+        state = require_site(session, site_id)
+        if body.none and body.marks:
+            raise HTTPException(422, "Choose marks or nothing specific, not both")
+        answers = db.answers(session_id).get(site_id, {})
+        if "ai_generated" not in answers:
+            raise HTTPException(422, "Record your initial judgment first")
+        for mark in body.marks:
+            if not mark.page.startswith(state["home"]) or ".." in mark.page:
+                raise HTTPException(422, "Mark must belong to this website")
+            if not all(math.isfinite(v) and v >= 0 for v in mark.rect + mark.viewport):
+                raise HTTPException(422, "Invalid element coordinates")
+            if any(len(k) > 80 or len(v) > 300 for k, v in mark.styles.items()):
+                raise HTTPException(422, "Element style metadata is too long")
+        db.save_marks(session_id, site_id, body.model_dump())
+        return {"ok": True}
 
     @app.post("/api/sessions/{session_id}/sites/{site_id}/open")
     def open_site(session_id: str, site_id: str):
