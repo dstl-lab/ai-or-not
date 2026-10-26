@@ -84,6 +84,10 @@ The `annotations` answer is a JSON array. Every saved entry contains:
 | `viewport` | `{width, height}` of the embedded webpage viewport at capture time |
 | `note` | Reviewer explanation, nonempty and at most 500 characters |
 
+Bounds for thin SVG lines include their visible stroke. An embedded chart is recorded as
+its outer `iframe` element, with the frame title as `quote`; its internal chart state is
+not captured. Saved highlights are passive and do not intercept website interactions.
+
 New annotations also contain `styles`, a snapshot of computed CSS for the selected
 element: `background-color`, `background-image`, `color`, `font-family`, `font-size`,
 `font-weight`, `border-radius`, `box-shadow`, `display`, and `gap`. Each value is truncated

@@ -44,6 +44,9 @@ final-question stage begins.
 Each final webpage accepts up to three annotations, with notes of up to 500 characters.
 When elements overlap, use **Overlapping elements** in the note editor to select the
 text, control, graphic, or surrounding area you meant. Changing the layer keeps your note.
+Embedded charts are selected as a whole frame, labeled with their title. Their controls
+work normally again as soon as selection ends. Open dialogs restrict selection to their
+visible contents; thin SVG lines can be selected too.
 In annotation mode, drag across a canvas chart to draw a box around a specific area,
 then add a note. Boxes follow the canvas when the page scrolls or resizes; they do not
 track data points after zooming, rotating, or changing the chart.
@@ -51,10 +54,13 @@ Use **Edit note** or **Remove** to revise a saved annotation; click its selected
 label to show the target again. Chart labels use the chart's accessible name when available.
 Highlights follow layout changes and clear if the selected element disappears. Repeat the
 interaction that revealed a dynamic element, then click its annotation to show it again.
+The same guidance appears when a carousel moves the selected element into a hidden slide.
 Saved highlights let clicks and drags pass through, so the website remains interactive.
 Annotations save locations, text, and computed visual styles (such as fonts, colors,
 and rounded corners), without screenshots or full interaction replays. The metadata
 is included in the existing annotation JSON in CSV exports and the optional Google Sheet.
+See [mirrored-site validation](docs/mirrored-site-validation.md) for the browser checks and
+known warnings in the original frozen websites.
 
 For a quick internal trial, you can temporarily lower `sites_per_session` in
 `config/sites.json` and restart the server. Its allowed range is 1–10. The current project

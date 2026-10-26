@@ -11,7 +11,7 @@ page.addEventListener=(type,listener)=>listeners[type]=listener;
 page.removeEventListener=(type,listener)=>{assert.equal(listeners[type],listener);delete listeners[type]};
 page.elementsFromPoint=()=>stack;
 page.elementFromPoint=()=>stack[0] || null;
-page.querySelectorAll=selector=>selector==='.annotation-list .annotation-target' ? [] : semantic;
+page.querySelectorAll=selector=>selector==='.annotation-list .annotation-target' ? [] : semantic.filter(el=>el.matches(selector));
 win.requestAnimationFrame=callback=>{frames.set(++frameId,callback);return frameId};
 win.cancelAnimationFrame=id=>frames.delete(id);
 function node(tag,id,text,rect,css={}) {
@@ -183,4 +183,70 @@ assert.deepEqual(tool.draft.rect,{x:100,y:50,width:200,height:100});
 assert.equal(captured.size,0);
 action('Cancel');
 assert.deepEqual(Object.keys(listeners),[]);
+''')
+
+
+def test_embedded_chart_is_selectable_when_frame_pointer_events_are_disabled():
+    # Child-frame clicks cannot bubble to the study page; select its outer element instead.
+    run_checks(LAYER_SETUP + r'''
+const surrounding=node('SECTION','chapter','Storm trends',full);
+const embedded=node('IFRAME','storms-iframe','',full);
+embedded.setAttribute('title','Storm Timeline');
+attach(surrounding,embedded);
+stack=[surrounding];
+semantic=[embedded];
+pick();
+assert.equal(tool.draft.selector,'#storms-iframe');
+assert.equal(tool.draft.quote,'Storm Timeline');
+note().value='The embedded storm chart.';
+note().listeners.input();
+action('Save note');
+assert.equal(entries[0].selector,'#storms-iframe');
+assert.equal(Object.keys(entries[0].styles).length,10);
+assert.equal(page.head.children.length,0,'temporary selection rules must be removed');
+assert.deepEqual(Object.keys(listeners),[]);
+''')
+
+
+def test_modal_layers_exclude_obscured_controls_behind_the_dialog():
+    # Enlarged photos must not be mistaken for their clickable thumbnail behind the modal.
+    run_checks(LAYER_SETUP + r'''
+const thumbnail=node('BUTTON','thumbnail','Enlarge photo',small);
+const dialog=node('DIV','lightbox','',full);
+dialog.setAttribute('aria-modal','true');
+const photo=node('IMG','lb-img','',{left:0,top:0,width:700,height:500});
+attach(dialog,photo);
+stack=[photo,dialog,thumbnail,page.body];
+semantic=[thumbnail,photo];
+pick(photo);
+assert.equal(tool.draft.selector,'#lb-img');
+assert.equal(picker().children.length,2);
+assert.ok(picker().children.every(option=>!option.textContent.includes('Enlarge photo')));
+action('Cancel');
+''')
+
+
+def test_stroked_svg_lines_have_selectable_bounds_and_saved_highlights():
+    # A line's geometry has zero width or height even though its stroke is visible.
+    run_checks(LAYER_SETUP + r'''
+const chart=node('svg','chart','',full);
+const line=node('line','axis','',{left:50,top:30,width:0,height:100},
+  {stroke:'rgb(0, 0, 0)',strokeWidth:'2px'});
+line.namespaceURI='http://www.w3.org/2000/svg';
+line.getScreenCTM=()=>({a:2,b:0,c:0,d:2});
+attach(chart,line);
+stack=[line,chart];
+semantic=[line,chart];
+pick(line);
+assert.equal(tool.draft.selector,'#axis');
+assert.deepEqual(tool.draft.rect,{x:48,y:30,width:4,height:100});
+note().value='The thin axis.';
+note().listeners.input();
+action('Save note');
+assert.equal(page.documentElement.children.at(-1).style.width,'4px');
+assert.equal(warning,'');
+line.css.vectorEffect='non-scaling-stroke';
+assert.equal(captureTarget(line,win,tool.site).rect.width,2);
+line.css.stroke='none';
+assert.throws(()=>captureTarget(line,win,tool.site),/visible/);
 ''')

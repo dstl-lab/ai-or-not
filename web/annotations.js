@@ -6,32 +6,55 @@ const chartLabels = {
 };
 const controls = 'button,a,label,input,select,textarea,[role="button"]';
 const textTargets = "h1,h2,h3,h4,h5,h6,p";
-const contentTargets = `${textTargets},img,text,${Object.keys(chartLabels).join(",")}`;
+const contentTargets = `${textTargets},img,iframe,text,${Object.keys(chartLabels).join(",")}`;
+
+function elementBounds(target, win) {
+  const rect = target.getBoundingClientRect();
+  if (rect.width && rect.height || !(rect.width || rect.height) || target.namespaceURI !== "http://www.w3.org/2000/svg") return rect;
+  const style = win.getComputedStyle(target);
+  const matrix = target.getScreenCTM();
+  const scale = style.vectorEffect === "non-scaling-stroke" ? 1 : matrix && Math.max(Math.hypot(matrix.a, matrix.b), Math.hypot(matrix.c, matrix.d));
+  const stroke = style.stroke !== "none" && parseFloat(style.strokeWidth) * scale;
+  if (!(stroke > 0)) return rect;
+  const width = rect.width || stroke, height = rect.height || stroke;
+  const left = rect.left - (width - rect.width) / 2, top = rect.top - (height - rect.height) / 2;
+  return {left, top, width, height, right:left + width, bottom:top + height};
+}
+
+function visibleBounds(target, win, region = null) {
+  const rect = areaBounds(elementBounds(target, win), region);
+  let left = rect.left, top = rect.top, right = left + rect.width, bottom = top + rect.height;
+  for (let node = target; node; node = node.parentElement) {
+    const style = win.getComputedStyle(node);
+    if (["hidden", "collapse"].includes(style.visibility) || style.display === "none" || style.opacity === "0") return null;
+    if (node === target || node === win.document.documentElement || node === win.document.body) continue;
+    const clipX = ["hidden", "clip"].includes(style.overflowX), clipY = ["hidden", "clip"].includes(style.overflowY);
+    if (clipX || clipY) {
+      const clip = node.getBoundingClientRect();
+      if (clipX) { left = Math.max(left, clip.left); right = Math.min(right, clip.left + clip.width); }
+      if (clipY) { top = Math.max(top, clip.top); bottom = Math.min(bottom, clip.top + clip.height); }
+    }
+  }
+  return right > left && bottom > top ? {left, top, right, bottom, width:right - left, height:bottom - top} : null;
+}
 
 function targetsAt(win, x, y) {
   if (!Number.isFinite(x) || !Number.isFinite(y)) return [];
   const doc = win.document;
   const stack = doc.elementsFromPoint(x, y);
+  const modal = stack[0]?.closest('[aria-modal="true"],dialog');
   // Hit testing omits visible headings and chart labels with pointer-events:none.
   const semantic = [...doc.querySelectorAll(`${controls},${contentTargets}`)].filter(target => {
-    const rect = target.getBoundingClientRect();
-    return rect.width && rect.height && x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    const rect = elementBounds(target, win);
+    return rect.width && rect.height && x >= rect.left && x <= rect.left + rect.width && y >= rect.top && y <= rect.top + rect.height;
   });
   const elements = [];
   for (const target of [...stack, ...semantic]) {
     const element = target.closest(controls) || target.closest(textTargets) || target;
+    if (modal && !modal.contains(element)) continue;
     if (elements.includes(element)) continue;
-    const rect = element.getBoundingClientRect();
-    if (!rect.width || !rect.height) continue;
-    let visible = true;
-    for (let ancestor = element; ancestor; ancestor = ancestor.parentElement) {
-      const style = win.getComputedStyle(ancestor);
-      if (["hidden", "collapse"].includes(style.visibility) || style.display === "none" || style.opacity === "0") {
-        visible = false;
-        break;
-      }
-    }
-    if (visible) elements.push(element);
+    const rect = visibleBounds(element, win);
+    if (rect && x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) elements.push(element);
   }
   const content = elements.filter(element => !["html", "body"].includes(element.tagName.toLowerCase()));
   return content.length ? content : elements.slice(0, 1);
@@ -39,7 +62,7 @@ function targetsAt(win, x, y) {
 
 function preferredTarget(elements, win) {
   const area = element => {
-    const rect = element.getBoundingClientRect();
+    const rect = elementBounds(element, win);
     return rect.width * rect.height;
   };
   const compact = elements.filter(element => area(element) < win.innerWidth * win.innerHeight * .6);
@@ -47,11 +70,12 @@ function preferredTarget(elements, win) {
     const useful = compact.filter(element => element.matches(selector));
     if (useful.length) return useful.sort((a, b) => area(a) - area(b))[0];
   }
-  return compact[0] || elements[0];
+  return elements.find(element => element.matches("iframe")) || compact[0] || elements[0];
 }
 
 function targetLabel(target) {
   const tag = target.tagName.toLowerCase();
+  if (tag === "iframe") return (target.getAttribute("title") || "Embedded content").slice(0, 300);
   if (!Object.hasOwn(chartLabels, tag)) {
     return (target.innerText || target.textContent || target.getAttribute?.("aria-label") || target.tagName).trim().slice(0, 300);
   }
@@ -97,7 +121,7 @@ export function captureTarget(target, win, site, region = null) {
     const siblings = node.parentElement ? [...node.parentElement.children].filter(el => el.tagName === node.tagName) : [node];
     parts.unshift(`${tag}:nth-of-type(${siblings.indexOf(node) + 1})`);
   }
-  const rect = areaBounds(target.getBoundingClientRect(), region);
+  const rect = areaBounds(elementBounds(target, win), region);
   if (!rect.width || !rect.height) throw new Error("Choose a visible part of the webpage.");
   const style = win.getComputedStyle(target);
   const styles = {};
@@ -193,7 +217,8 @@ export class AnnotationTool {
       });
       doc.documentElement.append(outline, label);
       const cursor = doc.createElement("style");
-      cursor.textContent = "* { cursor: crosshair !important; } canvas { touch-action: none !important; }";
+      // Child-frame events do not bubble; select the frame itself until browsing resumes.
+      cursor.textContent = "* { cursor: crosshair !important; } canvas { touch-action: none !important; } iframe { pointer-events: none !important; }";
       doc.head.append(cursor);
       let pointer = null, pendingFrame = null, drawing = null, selection = null;
       const canvasPoint = (target, point) => {
@@ -215,7 +240,7 @@ export class AnnotationTool {
         pendingFrame = null;
         const target = drawing?.target || selection?.target || doc.elementFromPoint(pointer.x, pointer.y);
         if (target) {
-          const rect = areaBounds(target.getBoundingClientRect(), drawing ? drawnRegion() : selection?.region);
+          const rect = areaBounds(elementBounds(target, win), drawing ? drawnRegion() : selection?.region);
           Object.assign(outline.style, {display:"block", left:`${rect.left}px`, top:`${rect.top}px`, width:`${rect.width}px`, height:`${rect.height}px`});
           label.textContent = drawing || selection ? "Release to add a note"
             : target.tagName.toLowerCase() === "canvas" ? "Drag to draw an area" : "Click to annotate";
@@ -358,12 +383,7 @@ export class AnnotationTool {
       const target = doc.querySelector(entry.selector);
       const bounds = () => {
         if (!target?.isConnected) return null;
-        for (let node = target; node; node = node.parentElement) {
-          const style = win.getComputedStyle(node);
-          if (style.visibility === "hidden" || style.visibility === "collapse" || style.display === "none" || style.opacity === "0") return null;
-        }
-        const rect = target.getBoundingClientRect();
-        return rect.width && rect.height ? areaBounds(rect, entry.region) : null;
+        return visibleBounds(target, win, entry.region);
       };
       if (!bounds()) throw new Error(unavailable);
       if (scroll) target.scrollIntoView({block:"center", behavior:"instant"});

@@ -12,7 +12,9 @@ function element(tag, attributes={}, text='') {
     innerText:text, textContent:text, style:{}, attributes,
     getAttribute(name){return this.attributes[name] ?? null},
     matches(selectors){return selectors.split(',').some(selector=>selector===this.tagName.toLowerCase()
-      || selector==='[role="button"]' && this.getAttribute('role')==='button')},
+      || selector==='[role="button"]' && this.getAttribute('role')==='button'
+      || selector==='[aria-modal="true"]' && this.getAttribute('aria-modal')==='true')},
+    contains(other){for(let el=other;el;el=el.parentElement)if(el===this)return true;return false},
     closest(selectors){for(let el=this;el;el=el.parentElement)if(el.matches(selectors))return el;return null},
     setAttribute(name,value){this.attributes[name]=value},
     append(...children){for(const child of children){this.children.push(child);child.parentElement=this}},

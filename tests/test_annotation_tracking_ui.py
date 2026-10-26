@@ -157,3 +157,24 @@ flush();
 assert.equal(marker.style.left, '75px');
 assert.equal(marker.style.top, '190px');
 ''')
+
+
+def test_clipped_carousel_note_warns_until_its_slide_is_visible_again():
+    run(r'''
+const viewport={getBoundingClientRect:()=>({left:0,top:0,width:100,height:100})};
+target.parentElement=viewport;
+styles.set(viewport,{visibility:'visible',opacity:'1',display:'block',overflowX:'hidden',overflowY:'hidden'});
+tool.show(entry);
+const marker=markers.at(-1);
+rect={left:-90,top:20,width:30,height:40};
+flush();
+assert.equal(marker.removed,true);
+assert.match(warning,/not currently visible/);
+const count=markers.length;
+tool.show(entry);
+assert.equal(markers.length,count);
+rect={left:10,top:20,width:30,height:40};
+tool.show(entry);
+assert.equal(warning,'');
+assert.equal(markers.length,count+1);
+''')
