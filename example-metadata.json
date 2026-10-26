@@ -1,0 +1,32 @@
+[
+  {
+    "note": "The bold serif heading and muted colors shaped my impression of the page.",
+    "styles": {
+      "background-color": "rgba(0, 0, 0, 0)",
+      "background-image": "none",
+      "color": "rgb(244, 238, 230)",
+      "font-family": "Georgia, \"Times New Roman\", serif",
+      "font-size": "39.445px",
+      "font-weight": "700",
+      "border-radius": "0px",
+      "box-shadow": "none",
+      "display": "block",
+      "gap": "normal"
+    }
+  },
+  {
+    "note": "Estimating the value before revealing the answer made the interaction feel deliberate.",
+    "styles": {
+      "background-color": "rgba(255, 250, 244, 0.86)",
+      "background-image": "none",
+      "color": "rgb(184, 64, 32)",
+      "font-family": "Arial, Helvetica, sans-serif",
+      "font-size": "35.2px",
+      "font-weight": "900",
+      "border-radius": "999px 0px 0px 999px",
+      "box-shadow": "rgba(255, 255, 255, 0.72) 0px 1px 0px 0px inset, rgba(92, 56, 28, 0.08) 0px 12.8px 27.2px 0px",
+      "display": "block",
+      "gap": "normal"
+    }
+  }
+]
