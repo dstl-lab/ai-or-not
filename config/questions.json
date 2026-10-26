@@ -95,7 +95,7 @@
       "type": "multi",
       "phase": "followup",
       "prompt": "Which parts or qualities influenced your AI-appearance rating most?",
-      "help": "Select up to three. Your earlier rating is already saved.",
+      "help": "Select 1–3 cues. Your earlier rating is already saved.",
       "min_selected": 1,
       "max_selected": 3,
       "options": [

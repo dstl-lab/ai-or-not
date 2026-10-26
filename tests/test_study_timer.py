@@ -5,11 +5,11 @@ from pathlib import Path
 
 def test_completion_stops_timer_and_prevents_restart():
     source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
 let clock = 0, reports = [], interval, events = {};
-const element = {hidden: false, addEventListener() {}};
+const element = {focus() {}, hidden: false, addEventListener() {}};
 const document = {visibilityState: 'visible', getElementById: () => element,
   addEventListener: (name, fn) => events[name] = fn};
 const window = {addEventListener() {}};
@@ -40,11 +40,11 @@ assert.equal(timer.since, null);
 
 def test_close_warning_covers_queued_and_in_flight_saves():
     source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
 const events = {}, requests = [];
-const element = {addEventListener() {}, classList: {toggle() {}}};
+const element = {focus() {}, addEventListener() {}, classList: {toggle() {}}};
 const document = {getElementById: () => element, addEventListener() {}};
 const window = {addEventListener: (name, fn) => events[name] = fn};
 const location = {pathname: '/study/test'};
@@ -86,10 +86,10 @@ const api = () => new Promise(resolve => requests.push(resolve));
 
 def test_followup_uses_its_own_sites_and_preserves_primary_answers():
     source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
-const element = {textContent: '', hidden: false};
+const element = {focus() {}, textContent: '', hidden: false};
 const document = {getElementById: () => element};
 const location = {pathname: '/study/test'};
 '''
@@ -115,15 +115,15 @@ assert.equal(state.phase, 'review');
 
 def test_last_review_starts_followup_before_finishing():
     source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
 const calls = [];
-const element = {addEventListener() {}, textContent: '', hidden: false,
+const element = {focus() {}, addEventListener() {}, textContent: '', hidden: false,
   classList: {toggle() {}}, setAttribute() {}, querySelectorAll: () => []};
 const document = {getElementById: () => element};
 const location = {pathname: '/study/test'};
-const confirm = () => true;
+const confirmAction = async () => true;
 const data = {phase: 'followup', sites: [{id: 'alpha', completed: true}],
  followup_sites: [{id: 'alpha', completed: false}], questions: [{id: 'cues'}],
  followup_questions: [{id: 'cues'}], answers: {alpha: {ai_appearance: 4}}};
@@ -153,10 +153,10 @@ const api = async (path, opts = {}) => {
 
 def test_rejected_save_stays_pending_and_can_be_retried():
     source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
-const element = {textContent: '', classList: {toggle() {}}};
+const element = {focus() {}, textContent: '', classList: {toggle() {}}};
 const document = {getElementById: () => element};
 const location = {pathname: '/study/test'};
 let rejected = true;
@@ -179,13 +179,13 @@ const api = async () => {if (rejected) throw Object.assign(new Error('Try again'
 
 def test_next_cannot_submit_twice_while_a_save_is_pending():
     source = (Path(__file__).parents[1] / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
-const element = {textContent: '', hidden: false, classList: {toggle() {}}};
+const element = {focus() {}, textContent: '', hidden: false, classList: {toggle() {}}};
 const document = {getElementById: () => element};
 const location = {pathname: '/study/test'};
-const confirm = () => true;
+const confirmAction = async () => true;
 let saves = 0, release;
 const api = async () => ({sites: state.sites});
 '''
@@ -210,7 +210,7 @@ const api = async () => ({sites: state.sites});
 
 def test_unviewable_page_does_not_require_an_invented_appearance_rating():
     source = (Path(__file__).parents[1] / 'web' / 'study.js').read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
 const document = {getElementById: () => ({})};
@@ -228,7 +228,7 @@ assert.deepEqual(missingIds({ai_appearance: 3}), ['technical_issue']);
 
 def test_multi_selection_limit_leaves_selected_options_available_to_untick():
     source = (Path(__file__).parents[1] / 'web' / 'study.js').read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
 const document = {getElementById: () => ({})};
@@ -252,11 +252,11 @@ assert.equal(hint.textContent, '2 of 3 selected.');
 
 def test_text_answer_is_saved_on_input_without_waiting_for_blur():
     source = (Path(__file__).parents[1] / 'web' / 'study.js').read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
 const events = {}, requests = [];
-const element = {textContent: '', addEventListener: (name, fn) => events[name] = fn,
+const element = {focus() {}, textContent: '', addEventListener: (name, fn) => events[name] = fn,
  querySelectorAll: () => [], querySelector: () => null, classList: {toggle() {}}, setAttribute() {}};
 const document = {getElementById: () => element, addEventListener() {}};
 const window = {addEventListener() {}};
@@ -282,7 +282,7 @@ const api = async (path, options) => requests.push([path, options]);
 
 def test_scale_options_show_each_caption_and_accessible_numeric_rating():
     source = (Path(__file__).parents[1] / 'web' / 'study.js').read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace('import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     harness = '''
 const assert = require('node:assert/strict');
 class Element {

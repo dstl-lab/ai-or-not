@@ -1,4 +1,5 @@
 import { api } from "./api.js";
+import { confirmAction } from "./confirm.js";
 import { AnnotationTool } from "./annotations.js";
 
 let annotationTool;
@@ -312,7 +313,7 @@ function updateProgress() {
     if (missing.includes("ai_appearance")) nextAction = "Choose a rating";
     else if (missing.every(id => ["seen_before", "technical_issue"].includes(id))) nextAction = "Complete review checks";
   } else if (missing[0] === "cues" && state.byId.cues?.max_selected) {
-    nextAction = `Choose up to ${state.byId.cues.max_selected} cues`;
+    nextAction = `Select ${state.byId.cues.min_selected ?? 1}–${state.byId.cues.max_selected} cues`;
   }
   els.next.textContent = annotationTool?.draft ? "Return to note" : missing.length ? nextAction
     : last ? (state.phase === "review" && state.followupSites.length ? "Continue to final questions" : "Finish") : "Next website";
@@ -525,12 +526,21 @@ async function onNext() {
   }
   const last = state.index === state.sites.length - 1;
   const nextPhase = last && state.phase === "review" && state.followupSites.length > 0;
-  if (last && !confirm(nextPhase
-    ? "Continue to the final questions? Your webpage ratings will be saved and cannot be changed."
-    : "Finish the study? You won't be able to change your answers after this.")) return;
-
   els.next.disabled = true;
+  let restoreNextFocus = false;
   try {
+    if (last && !await confirmAction(nextPhase ? {
+      title: "Continue to final questions?",
+      message: "Your webpage ratings will be saved and cannot be changed.",
+      confirmLabel: "Continue to final questions",
+    } : {
+      title: "Finish the study?",
+      message: "You won't be able to change your answers after this.",
+      confirmLabel: "Finish study",
+    })) {
+      restoreNextFocus = true;
+      return;
+    }
     await saver.flush();
     const res = await api(`/api/sessions/${sessionId}/sites/${site.id}/complete`, { method: "POST" });
     state.sites = res.sites;
@@ -555,13 +565,18 @@ async function onNext() {
       await goTo(state.index + 1);
     }
   } catch (err) {
-    if (err.status === 422) {
+    const missing = err.status === 422 ? updateProgress()[0] : null;
+    if (missing) {
       state.showMissing = true;
-      revealQuestion(updateProgress()[0]);
+      updateProgress();
+      revealQuestion(missing);
+    } else {
+      restoreNextFocus = true;
     }
     warn(err.message);
   } finally {
     els.next.disabled = false;
+    if (restoreNextFocus) els.next.focus({preventScroll:true});
   }
 }
 

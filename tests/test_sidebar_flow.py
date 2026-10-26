@@ -73,9 +73,14 @@ const window = {addEventListener() {}};
 const location = {pathname: '/study/test'};
 const performance = {now: () => 0};
 const setInterval = () => {};
-const confirm = () => false;
-let calls = [], annotationOptions, sessionData;
-const api = async (...args) => {calls.push(args); return sessionData;};
+let resolveConfirmation;
+const confirmations = [];
+const confirmAction = options => {
+  confirmations.push(options);
+  return new Promise(resolve => resolveConfirmation = resolve);
+};
+let calls = [], annotationOptions, sessionData, apiError;
+const api = async (...args) => {calls.push(args); if (apiError) throw apiError; return sessionData;};
 class AnnotationTool {
   constructor(options) {annotationOptions = options; this.draft = null; this.armed = false;}
   render() {return new Element('div');}
@@ -86,7 +91,7 @@ class AnnotationTool {
 
 def run_sidebar(checks):
     source = (ROOT / "web" / "study.js").read_text()
-    source = source.replace('import { api } from "./api.js";', '').replace(
+    source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace(
         'import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
     questions = json.loads((ROOT / "config" / "questions.json").read_text())["questions"]
     legacy = json.loads((ROOT / "tests" / "fixtures" / "questions-legacy.json").read_text())["questions"]
@@ -190,7 +195,7 @@ def test_followup_keeps_required_cues_before_optional_saved_notes_and_refreshes_
   assert.ok(notes);
   assert.equal(notes.open, false, 'saved notes must not expand over the required cues');
   assert.equal(notes.querySelector('summary').textContent, 'Page notes 1 note · Optional');
-  assert.equal(els.next.textContent, 'Choose up to 3 cues');
+  assert.equal(els.next.textContent, 'Select 1–3 cues');
   assert.match(els.rating.textContent, /4 out of 5/);
   assert.equal(els.questions.querySelector('fieldset[data-qid="ai_appearance"]'), null);
   sessionData = {phase: 'followup', sites: state.sites, followup_sites: state.sites,
@@ -342,4 +347,54 @@ def test_changing_websites_lands_focus_at_the_new_panel_heading():
   assert.equal(state.index, 1);
   assert.equal(document.activeElement, els.title);
 })().catch(err => {console.error(err); process.exitCode = 1;});
+""")
+
+
+
+def test_finish_confirmation_blocks_reentry_cancels_then_submits_only_once():
+    run_sidebar("""
+(async () => {
+  setup('followup', {cues:['charts']});
+  state.sites = [state.sites[0]];
+  sessionData = {sites:state.sites};
+  let saves=0; saver.flush=async()=>saves++;
+  const first=onNext();
+  assert.equal(els.next.disabled,true);
+  assert.equal(confirmations.length,1);
+  assert.equal(confirmations[0].confirmLabel,'Finish study');
+  assert.match(confirmations[0].message,/change/);
+  await onNext();
+  assert.equal(confirmations.length,1);
+  assert.equal(saves,0);
+  assert.equal(calls.length,0);
+  resolveConfirmation(false); await first;
+  assert.equal(els.next.disabled,false);
+  assert.equal(document.activeElement,els.next);
+  assert.equal(calls.length,0);
+  const second=onNext();
+  resolveConfirmation(true); await second;
+  assert.equal(saves,1);
+  assert.equal(calls.filter(([path])=>path.endsWith('/complete')).length,1);
+  assert.equal(calls.filter(([path])=>path.endsWith('/finish')).length,1);
+  assert.equal(elements.get('done').hidden,false);
+})().catch(err => {console.error(err);process.exitCode=1;});
+""")
+
+
+def test_confirmed_submission_failure_leaves_answers_and_controls_available():
+    run_sidebar("""
+(async () => {
+  setup('followup', {cues:['charts']});
+  state.sites = [state.sites[0]];
+  saver.flush=async()=>{};
+  apiError=new Error('Could not finish. Try again.');
+  const pending=onNext();
+  resolveConfirmation(true); await pending;
+  assert.equal(els.next.disabled,false);
+  assert.equal(state.index,0);
+  assert.deepEqual(state.answers.alpha.cues,['charts']);
+  assert.equal(els.status.textContent,'Could not finish. Try again.');
+  assert.equal(document.activeElement,els.next);
+  assert.equal(calls.some(([path])=>path.endsWith('/finish')),false);
+})().catch(err => {console.error(err);process.exitCode=1;});
 """)

@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from aiornot.app import create_app
+from aiornot.config import ROOT
 
 
 @pytest.fixture
@@ -104,6 +105,37 @@ def test_saved_survey_and_project_definitions_survive_config_changes(study, path
         assert data["session"]["site_order"] == original["session"]["site_order"]
         assert data["questions"][0]["prompt"] == "Appearance"
         review_all(restarted, sid)
+
+
+def test_cue_help_changes_only_new_session_snapshots(paths):
+    current = json.loads((ROOT / "config" / "questions.json").read_text())
+    previous = json.loads(json.dumps(current))
+    old_help = "Select up to three. Your earlier rating is already saved."
+    next(q for q in previous["questions"] if q["id"] == "cues")["help"] = old_help
+    config = paths.config_dir / "questions.json"
+    config.write_text(json.dumps(previous))
+    with TestClient(create_app(paths, start_sync=False)) as original:
+        sid = start(original)
+        review_all(original, sid)
+        assert original.post(f"/api/sessions/{sid}/followup").status_code == 200
+        original_data = original.get(f"/api/sessions/{sid}").json()
+        original_version = original_data["session"]["questions_version"]
+
+    config.write_text(json.dumps(current))
+    with TestClient(create_app(paths, start_sync=False)) as restarted:
+        resumed = restarted.get(f"/api/sessions/{sid}").json()
+        assert next(q for q in resumed["followup_questions"] if q["id"] == "cues")["help"] == old_help
+        assert resumed["session"]["questions_version"] == original_version
+        new_sid = start(restarted, participant_id="P02")
+        review_all(restarted, new_sid)
+        assert restarted.post(f"/api/sessions/{new_sid}/followup").status_code == 200
+        created = restarted.get(f"/api/sessions/{new_sid}").json()
+        assert next(q for q in created["followup_questions"] if q["id"] == "cues")["help"] == (
+            "Select 1–3 cues. Your earlier rating is already saved."
+        )
+        assert created["session"]["questions_version"] != original_version
+        assert resumed["config_changed"] is True
+        assert created["config_changed"] is False
 
 
 def test_late_review_time_stays_separate_from_followup_time(study):

@@ -1,4 +1,5 @@
 import { api } from "./api.js";
+import { confirmAction } from "./confirm.js";
 
 const form = document.getElementById("start-form");
 const input = document.getElementById("participant");
@@ -38,6 +39,7 @@ async function start(allowDuplicate = false) {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (button.disabled) return;
   showError("");
   if (!input.value.trim()) {
     showError("Enter a participant ID first.");
@@ -45,16 +47,28 @@ form.addEventListener("submit", async (event) => {
     return;
   }
   button.disabled = true;
+  let restoreStartFocus = false;
   try {
     await start();
   } catch (err) {
-    if (err.status === 409 && confirm(`${err.message}. Start another session for them anyway?`)) {
-      await start(true).catch((e) => showError(e.message));
-    } else if (err.status !== 409) {
+    if (err.status === 409) {
+      const confirmed = await confirmAction({
+        title: "Start another session?", message: err.message, confirmLabel: "Start another session",
+      });
+      if (confirmed) {
+        await start(true).catch((e) => {
+          showError(e.message);
+          restoreStartFocus = true;
+        });
+      } else {
+        restoreStartFocus = true;
+      }
+    } else {
       showError(err.message);
     }
   } finally {
     button.disabled = false;
+    if (restoreStartFocus) button.focus();
   }
 });
 
