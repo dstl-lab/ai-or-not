@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Website Review Study</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="centered">
+    <form class="card" id="start-form" novalidate>
+      <h1>Website Review Study</h1>
+      <p class="lede">Researcher setup. Enter the participant's ID, then hand over the laptop.</p>
+
+      <div class="field">
+        <label for="participant">Participant ID</label>
+        <input type="text" id="participant" name="participant" placeholder="e.g. P01"
+               autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="practice">
+        <span>Practice run <span class="muted">(flagged and left out of exports, so you can try things freely)</span></span>
+      </label>
+
+      <p class="error-text" id="error" hidden></p>
+      <button type="submit" class="primary" id="start">Start session</button>
+
+      <div class="card-foot"><a href="/admin">Researcher dashboard</a></div>
+    </form>
+  </main>
+  <script type="module" src="/static/start.js"></script>
+</body>
+</html>
