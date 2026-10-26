@@ -187,7 +187,7 @@ def is_blank(value):
 
 
 def valid_annotation(item):
-    if not isinstance(item, dict) or set(item) - {"region"} != {
+    if not isinstance(item, dict) or set(item) - {"region", "styles"} != {
         "id", "page_path", "selector", "quote", "rect", "viewport", "note"
     }:
         return False
@@ -198,6 +198,14 @@ def valid_annotation(item):
         return False
     if not item["page_path"].startswith("/sites/") or "\\" in item["page_path"] or "\x00" in item["page_path"]:
         return False
+    if "styles" in item:
+        styles = item["styles"]
+        if not isinstance(styles, dict) or len(styles) > 12 or any(
+            not isinstance(key, str) or len(key) > 80 or
+            not isinstance(value, str) or len(value) > 300
+            for key, value in styles.items()
+        ):
+            return False
     geometry_fields = [("rect", {"x", "y", "width", "height"}),
                        ("viewport", {"width", "height"})]
     if "region" in item:

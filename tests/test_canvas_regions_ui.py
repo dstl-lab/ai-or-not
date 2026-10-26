@@ -153,6 +153,7 @@ def test_valid_text_selection_clears_a_previous_tiny_area_warning():
 drag(120,110,122,113);
 assert.match(warning,/larger area/);
 const text=element('P', {}, 'A chart explanation');
+hit=text;
 listeners.click(event(50,50,{target:text,detail:1}));
 assert.equal(tool.draft.quote,'A chart explanation');
 assert.equal(warning,'');

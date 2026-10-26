@@ -304,6 +304,7 @@ button.annotation-target:hover { text-decoration: underline; text-underline-offs
 .annotation-editor label, .annotation-editor legend { font-size: 13px; font-weight: 500; }
 .annotation-editor label { display: block; margin-top: 12px; }
 .annotation-editor textarea { margin-top: 8px; min-height: 112px; }
+.annotation-layer select { margin-top: 8px; font-size: 13px; }
 .annotation-region-help { margin: 12px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
 .annotation-direction { margin-top: 12px; }
 .annotation-direction select { margin-top: 7px; font-size: 13px; }

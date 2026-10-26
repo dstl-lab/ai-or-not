@@ -5,8 +5,8 @@
     {
       "id": "ai_appearance",
       "type": "scale",
-      "prompt": "Based on your overall impression, how strongly does this webpage appear AI-generated?",
-      "help": "Rate the impression the webpage gives you.",
+      "prompt": "Based on your overall impression, how strongly does this website appear AI-generated?",
+      "help": "Rate the impression the website gives you.",
       "min": 1,
       "max": 5,
       "min_label": "Not at all",
@@ -41,7 +41,7 @@
     {
       "id": "seen_before",
       "type": "single",
-      "prompt": "Before today, had you seen this project or helped create it?",
+      "prompt": "Had you seen this website before today?",
       "options": [
         {
           "value": "no",
@@ -49,11 +49,11 @@
         },
         {
           "value": "yes_seen",
-          "label": "I had seen it"
+          "label": "Yes, I've seen it"
         },
         {
           "value": "yes_made",
-          "label": "I helped create it"
+          "label": "Yes, I helped make it"
         },
         {
           "value": "unsure",
@@ -94,14 +94,14 @@
       "id": "cues",
       "type": "multi",
       "phase": "followup",
-      "prompt": "Which parts or qualities influenced your AI-appearance rating most?",
+      "prompt": "Which features influenced your judgment?",
       "help": "Select 1–3 cues. Your earlier rating is already saved.",
       "min_selected": 1,
       "max_selected": 3,
       "options": [
         {
           "value": "writing",
-          "label": "Written explanations"
+          "label": "Wording and writing style"
         },
         {
           "value": "charts",
@@ -125,7 +125,7 @@
         },
         {
           "value": "gut_feeling",
-          "label": "Overall impression without a particular feature"
+          "label": "Gut feeling"
         },
         {
           "value": "other",

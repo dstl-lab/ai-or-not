@@ -42,6 +42,8 @@ unfinished draft. Wait for the saved indicator before closing the tab. The dashb
 final-question stage begins.
 
 Each final webpage accepts up to three annotations, with notes of up to 500 characters.
+When elements overlap, use **Overlapping elements** in the note editor to select the
+text, control, graphic, or surrounding area you meant. Changing the layer keeps your note.
 In annotation mode, drag across a canvas chart to draw a box around a specific area,
 then add a note. Boxes follow the canvas when the page scrolls or resizes; they do not
 track data points after zooming, rotating, or changing the chart.
@@ -49,7 +51,10 @@ Use **Edit note** or **Remove** to revise a saved annotation; click its selected
 label to show the target again. Chart labels use the chart's accessible name when available.
 Highlights follow layout changes and clear if the selected element disappears. Repeat the
 interaction that revealed a dynamic element, then click its annotation to show it again.
-Annotations save locations and text, without screenshots or full interaction replays.
+Saved highlights let clicks and drags pass through, so the website remains interactive.
+Annotations save locations, text, and computed visual styles (such as fonts, colors,
+and rounded corners), without screenshots or full interaction replays. The metadata
+is included in the existing annotation JSON in CSV exports and the optional Google Sheet.
 
 For a quick internal trial, you can temporarily lower `sites_per_session` in
 `config/sites.json` and restart the server. Its allowed range is 1–10. The current project

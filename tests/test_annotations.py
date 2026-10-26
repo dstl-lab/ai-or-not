@@ -120,7 +120,8 @@ def test_invalid_canvas_regions_are_rejected(region):
 
 
 @pytest.mark.parametrize("region", [None, {"x": 0.2, "y": 0.3, "width": 0.4, "height": 0.5}])
-def test_annotation_export_survives_csv_sheet_and_config_changes(paths, region):
+@pytest.mark.parametrize("styles", [None, {"font-family": "system-ui", "border-radius": "24px"}])
+def test_annotation_export_survives_csv_sheet_and_config_changes(paths, region, styles):
     questions = questionnaire()
     db = Database(paths.db_file)
     sites = load_sites(paths)
@@ -129,6 +130,8 @@ def test_annotation_export_survives_csv_sheet_and_config_changes(paths, region):
     values = [annotation(note='The words "click here" feel generic; <strong>labels</strong> look copied.')]
     if region is not None:
         values[0].update(selector="#chart > canvas", region=region)
+    if styles is not None:
+        values[0]["styles"] = styles
     check_answer(questions.by_id["annotations"], values, questions.by_id)
     db.mark_opened(sid, "alpha")
     db.save_answers(sid, "alpha", {"annotations": values})
@@ -148,6 +151,17 @@ def test_annotation_export_survives_csv_sheet_and_config_changes(paths, region):
     assert json.loads(historical["annotations"]) == values
     db.save_answers(sid, "alpha", {"annotations": []})
     assert "annotations" not in db.answers(sid).get("alpha", {})
+
+
+@pytest.mark.parametrize("styles", [
+    None, [], "red", {"color": 5}, {1: "red"},
+    {"x" * 81: "red"}, {"color": "x" * 301},
+    {f"property-{i}": "value" for i in range(13)},
+])
+def test_malformed_annotation_styles_are_rejected(styles):
+    questions = questionnaire()
+    with pytest.raises(AnswerError, match="annotations"):
+        check_answer(questions.by_id["annotations"], [annotation(styles=styles)], questions.by_id)
 
 
 def test_annotation_display_handles_removed_question_definitions():

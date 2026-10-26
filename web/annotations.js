@@ -4,6 +4,51 @@ const chartLabels = {
   path:"Chart shape", rect:"Chart shape", polygon:"Chart shape", g:"Chart element",
   svg:"Chart", canvas:"Chart",
 };
+const controls = 'button,a,label,input,select,textarea,[role="button"]';
+const textTargets = "h1,h2,h3,h4,h5,h6,p";
+const contentTargets = `${textTargets},img,text,${Object.keys(chartLabels).join(",")}`;
+
+function targetsAt(win, x, y) {
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return [];
+  const doc = win.document;
+  const stack = doc.elementsFromPoint(x, y);
+  // Hit testing omits visible headings and chart labels with pointer-events:none.
+  const semantic = [...doc.querySelectorAll(`${controls},${contentTargets}`)].filter(target => {
+    const rect = target.getBoundingClientRect();
+    return rect.width && rect.height && x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+  });
+  const elements = [];
+  for (const target of [...stack, ...semantic]) {
+    const element = target.closest(controls) || target.closest(textTargets) || target;
+    if (elements.includes(element)) continue;
+    const rect = element.getBoundingClientRect();
+    if (!rect.width || !rect.height) continue;
+    let visible = true;
+    for (let ancestor = element; ancestor; ancestor = ancestor.parentElement) {
+      const style = win.getComputedStyle(ancestor);
+      if (["hidden", "collapse"].includes(style.visibility) || style.display === "none" || style.opacity === "0") {
+        visible = false;
+        break;
+      }
+    }
+    if (visible) elements.push(element);
+  }
+  const content = elements.filter(element => !["html", "body"].includes(element.tagName.toLowerCase()));
+  return content.length ? content : elements.slice(0, 1);
+}
+
+function preferredTarget(elements, win) {
+  const area = element => {
+    const rect = element.getBoundingClientRect();
+    return rect.width * rect.height;
+  };
+  const compact = elements.filter(element => area(element) < win.innerWidth * win.innerHeight * .6);
+  for (const selector of [controls, contentTargets]) {
+    const useful = compact.filter(element => element.matches(selector));
+    if (useful.length) return useful.sort((a, b) => area(a) - area(b))[0];
+  }
+  return compact[0] || elements[0];
+}
 
 function targetLabel(target) {
   const tag = target.tagName.toLowerCase();
@@ -54,12 +99,18 @@ export function captureTarget(target, win, site, region = null) {
   }
   const rect = areaBounds(target.getBoundingClientRect(), region);
   if (!rect.width || !rect.height) throw new Error("Choose a visible part of the webpage.");
+  const style = win.getComputedStyle(target);
+  const styles = {};
+  for (const key of ["background-color", "background-image", "color", "font-family", "font-size", "font-weight", "border-radius", "box-shadow", "display", "gap"]) {
+    styles[key] = style.getPropertyValue(key).slice(0, 300);
+  }
   return {
     page_path: win.location.pathname + win.location.search + win.location.hash,
     selector: parts.join(" > ").slice(0, 1000),
     quote: region ? targetLabel(target).replace(/^Chart/, "Chart area").slice(0, 300) : targetLabel(target),
     rect: {x: rect.left + win.scrollX, y: rect.top + win.scrollY, width: rect.width, height: rect.height},
     viewport: {width: win.innerWidth, height: win.innerHeight},
+    styles,
     ...(region ? {region} : {}),
   };
 }
@@ -81,12 +132,14 @@ export class AnnotationTool {
     this.cleanup = null;
     this.frame = null;
     this.pending = null;
+    this.candidates = [];
     this.onKey = event => { if (event.key === "Escape" && this.armed) this.cancel(); };
     document.addEventListener("keydown", this.onKey);
   }
 
   attach(frame, site) {
     this.stopSelecting();
+    this.candidates = [];
     this.frame = frame;
     this.site = site;
     this.refresh();
@@ -100,6 +153,7 @@ export class AnnotationTool {
   cancel(refresh = true) {
     this.stopSelecting();
     this.draft = null;
+    this.candidates = [];
     this.pending = null;
     this.warn("");
     if (refresh) {
@@ -221,17 +275,21 @@ export class AnnotationTool {
       const pick = event => {
         block(event);
         if (drawing) return;
-        const target = selection?.target || event.target;
+        const candidates = selection ? [selection.target] : event.detail === 0 ? [event.target]
+          : targetsAt(win, event.clientX, event.clientY);
+        const target = preferredTarget(candidates, win) || event.target;
         if (target.tagName.toLowerCase() === "canvas" && !selection && event.detail !== 0) {
           this.warn("Drag a larger area on the chart, or press Esc to cancel.");
           return;
         }
         try {
           this.draft = {...captureTarget(target, win, this.site, selection?.region), id:crypto.randomUUID(), note:""};
+          this.candidates = candidates;
+          this.layerIndex = candidates.indexOf(target);
           this.warn("");
           this.stopSelecting();
           this.refresh();
-          if (this.draft.region) this.show(this.draft, false);
+          if (this.draft.region || candidates.length > 1) this.show(this.draft, false);
           document.querySelector(".annotation-editor textarea")?.focus();
         } catch (err) { this.warn(err.message); }
       };
@@ -359,6 +417,7 @@ export class AnnotationTool {
         const existing = entries.some(item => item.id === entry.id);
         const updated = existing ? entries.map(item => item.id === entry.id ? entry : item) : [...entries, entry];
         this.draft = null;
+        this.candidates = [];
         this.change(question, updated);
         this.refresh();
         this.show(entry);
@@ -370,7 +429,37 @@ export class AnnotationTool {
       const actions = document.createElement("div");
       actions.className = "annotation-actions";
       actions.append(button("Cancel", () => this.cancel()), save);
-      editor.append(target, label, actions);
+      editor.append(target);
+      if (this.candidates.length > 1) {
+        const layers = document.createElement("label");
+        layers.className = "annotation-layer";
+        layers.textContent = "Overlapping elements";
+        const select = document.createElement("select");
+        select.setAttribute("aria-label", "Selected element layer");
+        for (const [index, element] of this.candidates.entries()) {
+          const option = document.createElement("option");
+          option.value = String(index);
+          option.textContent = `${targetLabel(element).slice(0, 100)} (${element.tagName.toLowerCase()})`;
+          option.selected = index === this.layerIndex;
+          select.append(option);
+        }
+        select.addEventListener("change", () => {
+          try {
+            const index = Number(select.value);
+            this.draft = {...captureTarget(this.candidates[index], this.frame.contentWindow, this.site),
+              id:this.draft.id, note:this.draft.note};
+            this.layerIndex = index;
+            target.textContent = annotationLabel(this.draft, this.frame);
+            this.show(this.draft, false);
+          } catch (err) {
+            select.value = String(this.layerIndex);
+            this.warn(err.message);
+          }
+        });
+        layers.append(select);
+        editor.append(layers);
+      }
+      editor.append(label, actions);
       if (this.draft.region) {
         const hint = document.createElement("p");
         hint.className = "annotation-region-help";
@@ -425,6 +514,7 @@ export class AnnotationTool {
         const actions = document.createElement("div");
         actions.className = "annotation-actions";
         actions.append(button("Edit note", () => {
+          this.candidates = [];
           this.draft = {...entry}; this.refresh();
           if (entry.region) this.show(entry);
           document.querySelector(".annotation-editor textarea")?.focus();

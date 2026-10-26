@@ -9,6 +9,7 @@ win.requestAnimationFrame=callback=>{frames.set(++frameId,callback);return frame
 win.cancelAnimationFrame=id=>frames.delete(id);
 function tick(){const pending=[...frames.values()];frames.clear();for(const callback of pending)callback()}
 page.elementFromPoint=()=>hit;
+page.elementsFromPoint=()=>hit ? [hit] : [];
 page.documentElement=element('HTML');
 page.head=element('HEAD');
 page.addEventListener=(type,listener)=>listeners[type]=listener;

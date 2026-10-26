@@ -10,6 +10,7 @@ import { captureTarget } from MODULE;
 const target = {tagName:'H2', id:'story', innerText:'A visible chart heading',
   parentElement:null, getBoundingClientRect:()=>({left:20,top:40,width:240,height:32})};
 const win = {location:{pathname:'/sites/alpha/index.html',search:'?year=2026',hash:'#chart'},
+  getComputedStyle:()=>({getPropertyValue:()=>''}),
   scrollX:0,scrollY:150,innerWidth:900,innerHeight:700,CSS:{escape:s=>s}};
 const capture = captureTarget(target, win, {home:'/sites/alpha/'});
 assert.equal(capture.page_path,'/sites/alpha/index.html?year=2026#chart');

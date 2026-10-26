@@ -11,6 +11,9 @@ function element(tag, attributes={}, text='') {
   return {tagName:tag, id:attributes.id || '', children:[], parentElement:null,
     innerText:text, textContent:text, style:{}, attributes,
     getAttribute(name){return this.attributes[name] ?? null},
+    matches(selectors){return selectors.split(',').some(selector=>selector===this.tagName.toLowerCase()
+      || selector==='[role="button"]' && this.getAttribute('role')==='button')},
+    closest(selectors){for(let el=this;el;el=el.parentElement)if(el.matches(selectors))return el;return null},
     setAttribute(name,value){this.attributes[name]=value},
     append(...children){for(const child of children){this.children.push(child);child.parentElement=this}},
     get firstChild(){return this.children[0]},
@@ -31,6 +34,7 @@ function attach(parent, ...children) {
   return parent;
 }
 const win={location:{pathname:'/sites/alpha/',search:'',hash:''}, document:page,
+  getComputedStyle:()=>({visibility:'visible',display:'block',opacity:'1',getPropertyValue:()=>''}),
   scrollX:0,scrollY:0,innerWidth:900,innerHeight:700,CSS:{escape:value=>value}};
 const capture=target=>captureTarget(target,win,{home:'/sites/alpha/'});
 const cards=box=>box.children.find(child=>child.className==='annotation-list').children

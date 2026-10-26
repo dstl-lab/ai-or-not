@@ -84,6 +84,13 @@ The `annotations` answer is a JSON array. Every saved entry contains:
 | `viewport` | `{width, height}` of the embedded webpage viewport at capture time |
 | `note` | Reviewer explanation, nonempty and at most 500 characters |
 
+New annotations also contain `styles`, a snapshot of computed CSS for the selected
+element: `background-color`, `background-image`, `color`, `font-family`, `font-size`,
+`font-weight`, `border-radius`, `box-shadow`, `display`, and `gap`. Each value is truncated
+to 300 characters. The API accepts at most 12 string entries with property names up to
+80 characters. Older annotations without `styles` remain valid. For a canvas area,
+these styles describe the canvas element, not the individual pixels inside the area.
+
 Canvas area annotations also contain `region`: `{x, y, width, height}` normalized to
 the canvas element's size. Its origin is the canvas's top-left corner; dimensions are
 positive, and the area stays inside the canvas (up to `0.000001` rounding at the right
