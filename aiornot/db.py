@@ -5,12 +5,16 @@ round-trips exactly. Each table is documented in docs/data-dictionary.md.
 """
 
 import json
+import random
 import sqlite3
 import uuid
+from collections import Counter
 from contextlib import contextmanager
 from datetime import datetime, timezone
 
 from .questions import is_blank
+
+COHORTS = ("lower_division", "dsc106", "agentic_internship")
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS sessions (
@@ -82,6 +86,22 @@ class Database:
         with self.connect() as conn:
             conn.execute("PRAGMA journal_mode=WAL")
             conn.executescript(SCHEMA)
+            columns = {row["name"] for row in conn.execute("PRAGMA table_info(sessions)")}
+            for name, definition in {
+                "cohort": "TEXT NOT NULL DEFAULT 'unclassified'",
+                "dsc106_completed": "INTEGER",
+                "questions_snapshot": "TEXT",
+                "sites_snapshot": "TEXT",
+                "followup_order": "TEXT NOT NULL DEFAULT '[]'",
+                "followup_started_at": "TEXT",
+            }.items():
+                if name not in columns:
+                    conn.execute(f"ALTER TABLE sessions ADD COLUMN {name} {definition}")
+            visit_columns = {row["name"] for row in conn.execute("PRAGMA table_info(site_visits)")}
+            for name, definition in {"followup_opened_at": "TEXT", "followup_completed_at": "TEXT",
+                                     "followup_seconds_on_site": "REAL NOT NULL DEFAULT 0"}.items():
+                if name not in visit_columns:
+                    conn.execute(f"ALTER TABLE site_visits ADD COLUMN {name} {definition}")
 
     @contextmanager
     def connect(self):
@@ -97,15 +117,50 @@ class Database:
     # --- sessions -------------------------------------------------------
 
     def create_session(self, participant_id, practice, site_ids, questions_version,
-                       sites_version, user_agent=None, screen=None):
+                       sites_version, user_agent=None, screen=None, *, cohort="unclassified",
+                       dsc106_completed=None, questions_snapshot=None, sites_snapshot=None,
+                       sites_per_session=None, excluded_site_ids=(), followup_count=0):
+        excluded = set(excluded_site_ids)
+        site_ids = [sid for sid in site_ids if sid not in excluded]
+        if len(set(site_ids)) != len(site_ids):
+            raise ValueError("Project IDs must be unique")
+        if sites_per_session is not None:
+            if type(sites_per_session) is not int or not 1 <= sites_per_session <= 10:
+                raise ValueError("sites_per_session must be an integer from 1 to 10")
+            if len(site_ids) < sites_per_session:
+                raise ValueError("Not enough eligible projects for this session")
+        if type(followup_count) is not int or followup_count < 0:
+            raise ValueError("followup_count must be a nonnegative integer")
         session_id = uuid.uuid4().hex[:12]
         with self.connect() as conn:
+            # Reserve assignments under the same lock that reads existing coverage.
+            conn.execute("BEGIN IMMEDIATE")
+            if sites_per_session is not None:
+                visits = conn.execute(
+                    "SELECT v.site_id, v.position FROM site_visits v"
+                    " JOIN sessions s ON s.id = v.session_id"
+                    " WHERE s.practice = 0 AND s.cohort = ?", (cohort,),
+                ).fetchall()
+                assigned = Counter(row["site_id"] for row in visits)
+                positions = Counter((row["site_id"], row["position"]) for row in visits)
+                random.shuffle(site_ids)
+                remaining = sorted(site_ids, key=lambda sid: assigned[sid])[:sites_per_session]
+                site_ids = []
+                for position in range(1, sites_per_session + 1):
+                    sid = min(remaining, key=lambda sid: positions[sid, position])
+                    site_ids.append(sid)
+                    remaining.remove(sid)
+            followup_order = random.sample(site_ids, min(followup_count, len(site_ids)))
             conn.execute(
                 "INSERT INTO sessions (id, participant_id, practice, started_at, site_order,"
-                " questions_version, sites_version, user_agent, screen)"
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                " questions_version, sites_version, user_agent, screen, cohort, dsc106_completed,"
+                " questions_snapshot, sites_snapshot, followup_order)"
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (session_id, participant_id, int(practice), now(), json.dumps(site_ids),
-                 questions_version, sites_version, user_agent, screen),
+                 questions_version, sites_version, user_agent, screen, cohort, dsc106_completed,
+                 json.dumps(questions_snapshot) if questions_snapshot is not None else None,
+                 json.dumps(sites_snapshot) if sites_snapshot is not None else None,
+                 json.dumps(followup_order)),
             )
             conn.executemany(
                 "INSERT INTO site_visits (session_id, site_id, position) VALUES (?, ?, ?)",
@@ -152,6 +207,29 @@ class Database:
                 (now(), session_id),
             )
 
+    def start_followup(self, session_id):
+        with self.connect() as conn:
+            conn.execute(
+                "UPDATE sessions SET followup_started_at = COALESCE(followup_started_at, ?)"
+                " WHERE id = ?", (now(), session_id),
+            )
+
+    def coverage(self, site_ids):
+        with self.connect() as conn:
+            rows = conn.execute(
+                "SELECT v.site_id, s.cohort, COUNT(*) AS assigned,"
+                " SUM(v.completed_at IS NOT NULL) AS completed FROM site_visits v"
+                " JOIN sessions s ON s.id = v.session_id WHERE s.practice = 0"
+                " GROUP BY v.site_id, s.cohort"
+            ).fetchall()
+        counts = {(row["site_id"], row["cohort"]): row for row in rows}
+        return [
+            {"site_id": sid, "cohort": cohort,
+             "assigned": counts[sid, cohort]["assigned"] if (sid, cohort) in counts else 0,
+             "completed": counts[sid, cohort]["completed"] if (sid, cohort) in counts else 0}
+            for sid in site_ids for cohort in COHORTS
+        ]
+
     # --- site visits ----------------------------------------------------
 
     def visits(self, session_id):
@@ -161,26 +239,29 @@ class Database:
             ).fetchall()
         return [dict(r) for r in rows]
 
-    def mark_opened(self, session_id, site_id):
+    def mark_opened(self, session_id, site_id, phase="review"):
+        column = "followup_opened_at" if phase == "followup" else "first_opened_at"
         with self.connect() as conn:
             conn.execute(
-                "UPDATE site_visits SET first_opened_at = COALESCE(first_opened_at, ?)"
+                f"UPDATE site_visits SET {column} = COALESCE({column}, ?)"
                 " WHERE session_id = ? AND site_id = ?",
                 (now(), session_id, site_id),
             )
 
-    def add_time(self, session_id, site_id, seconds):
+    def add_time(self, session_id, site_id, seconds, phase="review"):
+        column = "followup_seconds_on_site" if phase == "followup" else "seconds_on_site"
         with self.connect() as conn:
             conn.execute(
-                "UPDATE site_visits SET seconds_on_site = seconds_on_site + ?"
+                f"UPDATE site_visits SET {column} = {column} + ?"
                 " WHERE session_id = ? AND site_id = ?",
                 (seconds, session_id, site_id),
             )
 
-    def complete_site(self, session_id, site_id):
+    def complete_site(self, session_id, site_id, phase="review"):
+        column = "followup_completed_at" if phase == "followup" else "completed_at"
         with self.connect() as conn:
             conn.execute(
-                "UPDATE site_visits SET completed_at = COALESCE(completed_at, ?)"
+                f"UPDATE site_visits SET {column} = COALESCE({column}, ?)"
                 " WHERE session_id = ? AND site_id = ?",
                 (now(), session_id, site_id),
             )
@@ -320,4 +401,11 @@ def session_dict(row):
     data = dict(row)
     data["practice"] = bool(data["practice"])
     data["site_order"] = json.loads(data["site_order"])
+    data["sites_assigned"] = len(data["site_order"])
+    data["dsc106_completed"] = (
+        bool(data["dsc106_completed"]) if data["dsc106_completed"] is not None else None
+    )
+    for key in ("questions_snapshot", "sites_snapshot", "followup_order"):
+        if data[key] is not None:
+            data[key] = json.loads(data[key])
     return data

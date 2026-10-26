@@ -1,99 +1,141 @@
 {
-  "version": "starter-v1",
-  "_about": "Questions asked about every website. Types: boolean, single, multi, scale. All questions are required unless \"required\": false. Keep each option's \"value\" stable once data collection starts; it is what gets stored. Labels can be reworded freely.",
+  "version": "reviewer-pilot-v1",
+  "_about": "Internal pilot questionnaire. Review questions appear on every website; followup questions appear for two randomly selected websites after all initial ratings are complete. Keep IDs and stored option values stable after collecting data.",
   "questions": [
     {
-      "id": "ai_generated",
-      "type": "boolean",
-      "prompt": "Do you think this website was AI-generated?",
-      "true_label": "Yes, AI-generated",
-      "false_label": "No, made by people"
-    },
-    {
-      "id": "confidence",
+      "id": "ai_appearance",
       "type": "scale",
-      "prompt": "How confident are you in that answer?",
+      "prompt": "Based on your overall impression, how strongly does this website appear AI-generated?",
+      "help": "Rate the impression the website gives you.",
       "min": 1,
       "max": 5,
-      "min_label": "Just guessing",
-      "max_label": "Completely sure"
-    },
-    {
-      "id": "ai_extent",
-      "type": "single",
-      "prompt": "How much of this website do you think AI helped build?",
+      "min_label": "Not at all",
+      "max_label": "Extremely",
+      "required_unless": {
+        "question_id": "technical_issue",
+        "value": "unable"
+      },
       "options": [
-        {"value": "none", "label": "None of it"},
-        {"value": "a_little", "label": "A little"},
-        {"value": "about_half", "label": "About half"},
-        {"value": "most", "label": "Most of it"},
-        {"value": "nearly_all", "label": "Nearly all of it"}
+        {
+          "value": "1",
+          "label": "Not at all"
+        },
+        {
+          "value": "2",
+          "label": "Slightly"
+        },
+        {
+          "value": "3",
+          "label": "Moderately"
+        },
+        {
+          "value": "4",
+          "label": "Very"
+        },
+        {
+          "value": "5",
+          "label": "Extremely"
+        }
       ]
-    },
-    {
-      "id": "cues",
-      "type": "multi",
-      "prompt": "Which features influenced your judgment?",
-      "help": "Select all that apply.",
-      "min_selected": 1,
-      "options": [
-        {"value": "color_scheme", "label": "Color scheme"},
-        {"value": "gradients", "label": "Gradients"},
-        {"value": "typography", "label": "Fonts and typography"},
-        {"value": "emoji_icons", "label": "Emoji or icons"},
-        {"value": "buttons", "label": "Buttons and hover effects"},
-        {"value": "layout", "label": "Layout and spacing"},
-        {"value": "animations", "label": "Animations and transitions"},
-        {"value": "charts", "label": "Chart and visualization styling"},
-        {"value": "writing", "label": "Wording and writing style"},
-        {"value": "navigation", "label": "Navigation and page structure"},
-        {"value": "too_polished", "label": "Everything looks too polished or uniform"},
-        {"value": "quirks", "label": "Quirks, bugs, or rough edges"},
-        {"value": "gut_feeling", "label": "Gut feeling"}
-      ]
-    },
-    {
-      "id": "strongest_cue",
-      "type": "single",
-      "prompt": "Which one of those features mattered most?",
-      "options_from": "cues"
-    },
-    {
-      "id": "design_generic",
-      "type": "scale",
-      "prompt": "The visual design looks generic or template-like.",
-      "min": 1,
-      "max": 5,
-      "min_label": "Strongly disagree",
-      "max_label": "Strongly agree"
-    },
-    {
-      "id": "writing_ai",
-      "type": "scale",
-      "prompt": "The text on the site reads like it was written by AI.",
-      "min": 1,
-      "max": 5,
-      "min_label": "Strongly disagree",
-      "max_label": "Strongly agree"
-    },
-    {
-      "id": "polish",
-      "type": "scale",
-      "prompt": "How polished does this website feel overall?",
-      "min": 1,
-      "max": 5,
-      "min_label": "Very rough",
-      "max_label": "Very polished"
     },
     {
       "id": "seen_before",
       "type": "single",
       "prompt": "Had you seen this website before today?",
       "options": [
-        {"value": "no", "label": "No"},
-        {"value": "yes_seen", "label": "Yes, I've seen it"},
-        {"value": "yes_made", "label": "Yes, I helped make it"}
+        {
+          "value": "no",
+          "label": "No"
+        },
+        {
+          "value": "yes_seen",
+          "label": "Yes, I've seen it"
+        },
+        {
+          "value": "yes_made",
+          "label": "Yes, I helped make it"
+        },
+        {
+          "value": "unsure",
+          "label": "Unsure"
+        }
       ]
+    },
+    {
+      "id": "technical_issue",
+      "type": "single",
+      "prompt": "Did a technical problem affect your review?",
+      "options": [
+        {
+          "value": "no",
+          "label": "No"
+        },
+        {
+          "value": "some",
+          "label": "Yes, but I could still evaluate the webpage"
+        },
+        {
+          "value": "unable",
+          "label": "I could not evaluate the webpage"
+        }
+      ],
+      "help": "If you could not evaluate it, you may leave the appearance rating blank."
+    },
+    {
+      "id": "annotations",
+      "type": "annotation",
+      "phase": "followup",
+      "prompt": "Point to a detail on this webpage.",
+      "help": "Optional. Select an element and add a short note about what influenced your rating.",
+      "required": false,
+      "max_annotations": 3
+    },
+    {
+      "id": "cues",
+      "type": "multi",
+      "phase": "followup",
+      "prompt": "Which features influenced your judgment?",
+      "help": "Select 1–3 cues. Your earlier rating is already saved.",
+      "min_selected": 1,
+      "max_selected": 3,
+      "options": [
+        {
+          "value": "writing",
+          "label": "Wording and writing style"
+        },
+        {
+          "value": "charts",
+          "label": "Charts and data presentation"
+        },
+        {
+          "value": "layout",
+          "label": "Layout, typography, or colors"
+        },
+        {
+          "value": "images",
+          "label": "Images or illustrations"
+        },
+        {
+          "value": "interactions",
+          "label": "Interactions or navigation"
+        },
+        {
+          "value": "errors",
+          "label": "Errors or inconsistencies"
+        },
+        {
+          "value": "gut_feeling",
+          "label": "Gut feeling"
+        },
+        {
+          "value": "other",
+          "label": "Other"
+        }
+      ],
+      "required_unless": {
+        "question_id": "technical_issue",
+        "value": "unable"
+      }
     }
   ]
 }

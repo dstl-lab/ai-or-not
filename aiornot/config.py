@@ -55,12 +55,13 @@ class Site:
 @dataclass(frozen=True)
 class SiteConfig:
     pool: dict[str, Site]
-    study: list[Site]  # in the order every participant sees them
+    study: list[Site]  # active projects available for assignment
+    sites_per_session: int = 10
 
     @property
     def version(self):
-        """Changes whenever the study sites, their order, or their pinned commits change."""
-        key = json.dumps([[s.id, s.commit] for s in self.study])
+        """Changes when the active projects, pinned commits, or session size change."""
+        key = json.dumps([self.sites_per_session, [[s.id, s.commit] for s in self.study]])
         return hashlib.sha256(key.encode()).hexdigest()[:12]
 
     def position(self, site_id):
@@ -82,6 +83,9 @@ def read_json(path):
 
 def load_sites(paths):
     raw = read_json(paths.config_dir / "sites.json")
+    count = raw.get("sites_per_session", 10)
+    if type(count) is not int or not 1 <= count <= 10:
+        raise ConfigError("sites.json: sites_per_session must be an integer from 1 to 10")
     pool = {}
     for entry in raw.get("pool", []):
         try:
@@ -100,4 +104,4 @@ def load_sites(paths):
     unknown = [sid for sid in study_ids if sid not in pool]
     if unknown:
         raise ConfigError(f"sites.json: study_sites has ids not in the pool: {unknown}")
-    return SiteConfig(pool=pool, study=[pool[sid] for sid in study_ids])
+    return SiteConfig(pool=pool, study=[pool[sid] for sid in study_ids], sites_per_session=count)
