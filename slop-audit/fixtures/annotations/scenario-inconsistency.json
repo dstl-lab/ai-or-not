@@ -1,0 +1,140 @@
+{
+  "schema_version": "website-slop-audit/annotation/0.1",
+  "rubric_version": "0.1.1",
+  "annotation_set_id": "dev-scenario-inconsistency",
+  "bundle_id": "fx-04",
+  "bundle_hash": "91292507d656ebdcabd58a49ccd3221da128d670ff665cf1e1736f14530423b6",
+  "condition": "rubric_guided",
+  "stage": "synthetic_development",
+  "annotators": [
+    {
+      "annotator_id": "dev-1",
+      "role": "developer",
+      "expertise": {
+        "design_years": null,
+        "visualization_years": null,
+        "web_development_years": null,
+        "relevant_training": [
+          "tool developer; wrote the fixtures"
+        ],
+        "notes": "not an independent annotator"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "scope_id": "all",
+      "region_ids": [
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ],
+      "state_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "fully_annotated": true,
+      "feature_ids": [
+        "VIS-01",
+        "VIS-02",
+        "LAY-01",
+        "LAY-02",
+        "VIS-03",
+        "MOT-01",
+        "TXT-01",
+        "TXT-02",
+        "SUB-01",
+        "SUB-02",
+        "SUB-03",
+        "INT-01",
+        "INT-02",
+        "QLT-01",
+        "SRC-01",
+        "DAT-01",
+        "DAT-02",
+        "DAT-03",
+        "DAT-04"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "annotation_id": "a1",
+      "annotator_id": "dev-1",
+      "feature_id": "INT-02",
+      "phenomenon_id": null,
+      "scope": "cross-region",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S03",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0641,
+            "y": 0.3175,
+            "width": 0.8719,
+            "height": 0.0312
+          }
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S03",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0641,
+            "y": 0.6112,
+            "width": 0.8719,
+            "height": 0.0329
+          }
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "After E01 the chart title reads 2050 while the summary still describes 2020.",
+      "confidence": "high",
+      "slop_association": "moderate",
+      "contextual_exception": null,
+      "consequence": "moderate",
+      "uncertainty": "developer reference for a synthetic fixture"
+    },
+    {
+      "annotation_id": "a2",
+      "annotator_id": "dev-1",
+      "feature_id": "LAY-01",
+      "phenomenon_id": null,
+      "scope": "repeated-group",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R04",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "contextual_exception",
+      "observed_evidence": "Three panels share one white rounded-card style.",
+      "confidence": "high",
+      "slop_association": "weak",
+      "contextual_exception": "Panels hold distinct roles with clear headings; card panels are conventional for data stories.",
+      "consequence": "none_identified",
+      "uncertainty": "developer reference for a synthetic fixture"
+    }
+  ],
+  "adjudication": null,
+  "notes": [
+    "Synthetic development reference written by the fixture author; plumbing and smoke tests only."
+  ]
+}

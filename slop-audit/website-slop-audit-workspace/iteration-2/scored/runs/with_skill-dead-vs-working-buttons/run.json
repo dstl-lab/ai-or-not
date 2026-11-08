@@ -1,0 +1,53 @@
+{
+  "schema_version": "website-slop-audit/run-record/0.1",
+  "run_id": "with_skill-dead-vs-working-buttons",
+  "condition_id": "frozen-skill",
+  "model": {
+    "provider": "anthropic",
+    "model_id": "claude-opus-5-5",
+    "snapshot_date": null,
+    "access_path": "Claude Code subagent (skill-creator dev eval)"
+  },
+  "run_index": 1,
+  "recorded_at": "2026-11-08T19:55:51Z",
+  "prompt_lock": {
+    "prompt_sha256": "ced09b1762f62a30b0db5fdc738d9d99719bddc436df8e548ec75108a4c77585",
+    "package_sha256": "f581d038850f956ac047b6e0c08154e79dc8a746ed547b05f481bf1c51f871bb",
+    "bundle_id": "fx-06",
+    "bundle_hash": "d4d2c526a4cca6e6990e856088a04fecea16ecb86faf793d2d7d299fc82e39bc",
+    "analysis_profile": "multimodal-core",
+    "rubric_version": "0.1.1",
+    "condition_template": "frozen-skill"
+  },
+  "envelope": {
+    "description": "",
+    "system_instructions_sha256": null,
+    "attachment_order": [
+      "A01",
+      "A02",
+      "A03"
+    ]
+  },
+  "settings": {
+    "temperature": null,
+    "max_output_tokens": null,
+    "reasoning": null,
+    "other": {}
+  },
+  "unavailable_parameters": [],
+  "retries": 0,
+  "parse_status": "ok",
+  "parse_errors": [],
+  "raw_output_path": "raw_output.txt",
+  "audit_path": "audit.json",
+  "latency_ms": 285575,
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "images": 3,
+    "unit_note": "as reported by the provider, if at all"
+  },
+  "notes": [
+    "skill-creator iteration-2 with_skill, rubric 0.1.1"
+  ]
+}

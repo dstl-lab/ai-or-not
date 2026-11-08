@@ -1,0 +1,6 @@
+{
+  "total_tokens": 212338,
+  "duration_ms": 53603,
+  "total_duration_seconds": 53.6,
+  "note": "covers only the resumed segment after a usage-limit stop; the first segment time was not reported"
+}

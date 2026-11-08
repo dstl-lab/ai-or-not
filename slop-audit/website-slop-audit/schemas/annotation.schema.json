@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:website-slop-audit:annotation:0.1",
+  "title": "website-slop-audit human reference annotation set",
+  "description": "Human annotations for one frozen bundle. A pre_adjudication set holds one annotator's labels; an adjudicated set is the reference used for scoring and lists the sets it was resolved from. Model findings outside fully_annotated scopes are unreviewed, never automatic false positives.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "rubric_version", "annotation_set_id", "bundle_id", "bundle_hash", "condition", "stage", "annotators", "scopes", "items", "adjudication", "notes"],
+  "properties": {
+    "schema_version": {"const": "website-slop-audit/annotation/0.1"},
+    "rubric_version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+    "annotation_set_id": {"$ref": "#/$defs/id"},
+    "bundle_id": {"$ref": "#/$defs/id"},
+    "bundle_hash": {"$ref": "#/$defs/sha256"},
+    "condition": {"enum": ["rubric_guided", "unprompted"], "description": "rubric_guided: annotators saw the codebook first. unprompted: spontaneous cue elicitation. Never mixed in one set."},
+    "stage": {"enum": ["pre_adjudication", "adjudicated", "synthetic_development"], "description": "synthetic_development: written by the tool developers for plumbing tests; not an independent reference."},
+    "annotators": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["annotator_id", "role", "expertise"],
+        "properties": {
+          "annotator_id": {"$ref": "#/$defs/id"},
+          "role": {"enum": ["annotator", "adjudicator", "developer"]},
+          "expertise": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["design_years", "visualization_years", "web_development_years", "relevant_training", "notes"],
+            "properties": {
+              "design_years": {"type": ["number", "null"], "minimum": 0},
+              "visualization_years": {"type": ["number", "null"], "minimum": 0},
+              "web_development_years": {"type": ["number", "null"], "minimum": 0},
+              "relevant_training": {"type": "array", "items": {"type": "string", "maxLength": 120}, "description": "e.g. 'took DSC 106', 'UX research practicum'. A degree title alone is not expertise."},
+              "notes": {"type": "string", "maxLength": 300}
+            }
+          }
+        }
+      }
+    },
+    "scopes": {
+      "type": "array",
+      "description": "Which region/state/feature combinations were annotated. Only fully_annotated scopes produce true and false positive counts.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["scope_id", "region_ids", "state_ids", "feature_ids", "fully_annotated"],
+        "properties": {
+          "scope_id": {"$ref": "#/$defs/id"},
+          "region_ids": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}},
+          "state_ids": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}},
+          "feature_ids": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/feature_id"}},
+          "fully_annotated": {"type": "boolean"}
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["annotation_id", "annotator_id", "feature_id", "phenomenon_id", "scope", "locations", "disposition", "observed_evidence", "confidence", "slop_association", "contextual_exception", "consequence", "uncertainty"],
+        "properties": {
+          "annotation_id": {"$ref": "#/$defs/id"},
+          "annotator_id": {"$ref": "#/$defs/id"},
+          "feature_id": {"$ref": "#/$defs/feature_id"},
+          "phenomenon_id": {"type": ["string", "null"], "maxLength": 64},
+          "scope": {"enum": ["region", "repeated-group", "cross-region", "page-pattern"]},
+          "locations": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["region_id", "state_id", "asset_id", "box"],
+              "properties": {
+                "region_id": {"$ref": "#/$defs/id"},
+                "state_id": {"$ref": "#/$defs/id"},
+                "asset_id": {"type": ["string", "null"]},
+                "box": {"anyOf": [{"$ref": "#/$defs/box"}, {"type": "null"}]}
+              }
+            }
+          },
+          "disposition": {"enum": ["accepted_slop_candidate", "contextual_exception", "quality_only", "feature_absent", "unassessed"]},
+          "observed_evidence": {"type": "string", "maxLength": 600},
+          "confidence": {"enum": ["high", "medium", "low"]},
+          "slop_association": {"enum": ["none", "weak", "moderate", "strong", "unassessed"]},
+          "contextual_exception": {"type": ["string", "null"], "maxLength": 400, "description": "Why a present feature is appropriate, when disposition is contextual_exception."},
+          "consequence": {"enum": ["none_identified", "minor", "moderate", "major", "unknown"]},
+          "uncertainty": {"type": "string", "maxLength": 400}
+        }
+      }
+    },
+    "adjudication": {
+      "anyOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["adjudicator_id", "method", "source_annotation_set_ids", "disagreements"],
+          "properties": {
+            "adjudicator_id": {"type": ["string", "null"]},
+            "method": {"type": "string", "maxLength": 500},
+            "source_annotation_set_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+            "disagreements": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["annotation_ids", "issue", "resolution"],
+                "properties": {
+                  "annotation_ids": {"type": "array", "items": {"type": "string"}},
+                  "issue": {"type": "string", "maxLength": 400},
+                  "resolution": {"type": "string", "maxLength": 400}
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "notes": {"type": "array", "items": {"type": "string", "maxLength": 500}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "feature_id": {"type": "string", "pattern": "^[A-Z]{3}-\\d{2}$"},
+    "box": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": {"type": "number", "minimum": 0, "maximum": 1},
+        "y": {"type": "number", "minimum": 0, "maximum": 1},
+        "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+      }
+    }
+  }
+}

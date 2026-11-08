@@ -1,0 +1,78 @@
+{
+  "bundle_id": "fx-13",
+  "site_id": "site-13",
+  "route": "/index.html",
+  "target_kind": "local_server",
+  "snapshot_id": null,
+  "capture_profile": "custom",
+  "max_images": 8,
+  "blinding": {
+    "profile": "blinded",
+    "withhold_terms": [],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ]
+  },
+  "context": {
+    "purpose": {
+      "value": "Document the convert subcommand of a command-line tool for climate station files.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "software documentation page",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "researchers who process NOAA station data",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    }
+  ],
+  "shots": [
+    {
+      "viewport_id": "V1",
+      "scroll_y": 0
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "documentation navigation",
+      "selector": "#doc-nav",
+      "description": ""
+    },
+    {
+      "region_id": "R02",
+      "name": "documentation body",
+      "selector": "#doc-body",
+      "description": ""
+    },
+    {
+      "region_id": "R03",
+      "name": "options table",
+      "selector": "#options",
+      "description": ""
+    }
+  ],
+  "interactions": [],
+  "untested_controls": [],
+  "selection_rules": [
+    "desktop viewport screenshots at scroll offsets [0]"
+  ],
+  "coverage_notes": []
+}

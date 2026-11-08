@@ -1,0 +1,381 @@
+{
+  "audit_format": "ad-hoc-slop-audit/0.1 (designed for this run; no audit schema was available inside the bundle)",
+  "audited_at": "2026-11-07",
+  "bundle": {
+    "bundle_id": "fx-buttons-working-broken",
+    "site_id": "site-buttons-working-broken",
+    "bundle_hash_declared": "f2a3d27c373f54e9e87a11846fa721464412a13446e02996ab3806397ff8898c",
+    "manifest_schema": "website-slop-audit/capture-bundle/0.1",
+    "blinding_profile": "blinded",
+    "route": "/index.html",
+    "viewport": "V1 desktop 1280x800 @1x",
+    "states": [
+      "S01 initial",
+      "S02 after E01 (Show PM2.5)",
+      "S03 after E02 (Compare with last year)"
+    ]
+  },
+  "profile": {
+    "name": "multimodal-core",
+    "interpretation": "Core AI-slop features that can be judged from the captured modalities together: screenshots, DOM text spans, computed styles, and recorded interactions. Source code was not captured and is not used. Every finding cites bundle IDs (assets A*, states S*, regions R*, text spans T*, DOM elements D*, events E*). A feature is reported as present, absent, inconclusive, or not_assessable. Features describe how the page looks and behaves; they are not a claim about who or what made it.",
+    "modalities_used": [
+      "screenshot",
+      "text",
+      "dom",
+      "computed_style",
+      "interaction"
+    ],
+    "modalities_unavailable": [
+      "source"
+    ]
+  },
+  "context_used": {
+    "purpose": "Show community air-sensor readings for one neighborhood and compare them with the previous year.",
+    "genre": "environmental data dashboard page",
+    "audience": "neighborhood residents",
+    "provenance_note": "Context is marked as written by the fixture author (synthetic)."
+  },
+  "integrity_checks": [
+    {
+      "check": "asset sha256 vs manifest and bundle.lock.json",
+      "result": "pass",
+      "detail": "A01, A02, A03 recomputed hashes match both manifest.assets[].sha256 and bundle.lock.json files{}."
+    },
+    {
+      "check": "A01 vs A03 comparison",
+      "result": "identical",
+      "detail": "A01 (S01) and A03 (S03) share sha256 56c2a974..., are byte-identical, and show no pixel differences. The S01 -> S03 transition produced no visible change."
+    },
+    {
+      "check": "A01 vs A02 pixel diff",
+      "result": "localized change",
+      "detail": "Differences fall only in x 72-470 px, y 223-244 px (normalized y 0.279-0.305). That is the #metric line (T007 -> T014). Nothing else on screen changed."
+    },
+    {
+      "check": "page content extent",
+      "result": "fits in viewport",
+      "detail": "Non-white pixels in A01 span rows 38-335 of 800. All rendered content is inside the captured viewport, so a visible change after E02 would have appeared in A03."
+    },
+    {
+      "check": "bundle_hash recomputation",
+      "result": "not_verified",
+      "detail": "The way bundle_hash is computed is not documented in the bundle, so it was not recomputed. The manifest.json sha256 is 7ecd35a2709ba6b7f7a2f79d932c725a4634ff4e2a2bf86625dc3ad1b700a101."
+    }
+  ],
+  "interaction_results": [
+    {
+      "event_id": "E01",
+      "control": "Show PM2.5 (button, #show-pm25, D007)",
+      "verdict": "working",
+      "confidence": "high",
+      "evidence": [
+        "E01.observed_changes: #metric text changed from 'Ozone: 41 ppb (8-hour average)' to 'PM2.5: 14.2 µg/m³ (monthly mean)'",
+        "T007 (S01) vs T014 (S02)",
+        "A02 differs from A01 only in the #metric line"
+      ],
+      "notes": "The control does what its label says. The button itself shows no selected or pressed state afterward: D015 computed style is identical to D007."
+    },
+    {
+      "event_id": "E02",
+      "control": "Compare with last year (button, #compare-last-year, D008)",
+      "verdict": "dead",
+      "confidence": "high",
+      "evidence": [
+        "E02.execution_status = completed; observed_result = 'no visible change detected within 1200 ms'",
+        "E02.observed_changes: text_unchanged and dom_unchanged (no aria-pressed/expanded/selected or input value change)",
+        "A03 (after) is byte-identical to A01 (before)",
+        "T017-T021 in S03 match T003-T008 in S01 word for word"
+      ],
+      "notes": "E02 ran on a fresh page load (before_state S01), so E01 did not affect it. The button looks the same as the working D007 (same color, background, border-radius, opacity 1) and shows no disabled, loading, 'coming soon', or error cue."
+    },
+    {
+      "event_id": null,
+      "control": "Download CSV (anchor, #download-csv, D009)",
+      "verdict": "untested",
+      "confidence": null,
+      "evidence": [
+        "coverage.interactions: status 'untested', reason 'it would leave the captured page; links are not followed'"
+      ],
+      "notes": "Its href and target were not captured, so this audit cannot say whether it works. It is not counted as dead."
+    }
+  ],
+  "features": [
+    {
+      "feature_id": "MC-01",
+      "name": "Dead control presented as functional",
+      "category": "interaction",
+      "modalities": [
+        "interaction",
+        "screenshot",
+        "dom",
+        "computed_style"
+      ],
+      "status": "present",
+      "severity": "high",
+      "confidence": "high",
+      "locations": [
+        {
+          "element_id": "D008",
+          "region_id": "R02",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1363,
+            "y": 0.145,
+            "width": 0.1514,
+            "height": 0.0437
+          }
+        }
+      ],
+      "evidence": [
+        "E02",
+        "A01",
+        "A03",
+        "D008",
+        "D024",
+        "T004",
+        "T017"
+      ],
+      "observation": "'Compare with last year' is styled like a working button and has an affordance that matches its working neighbor. Clicking it changes nothing in text, DOM state, or pixels.",
+      "counter_evidence": [
+        "The neighboring 'Show PM2.5' control (E01) works, so the page is not a static mockup with every control dead."
+      ],
+      "alternative_explanations": [
+        "The comparison may load more slowly than the 1200 ms observation window (for example, a slow fetch).",
+        "A runtime error may have stopped the handler. Console logs were not captured.",
+        "The comparison may be an unfinished feature that a human author left in. Dead controls also show up in hand-built student projects."
+      ]
+    },
+    {
+      "feature_id": "MC-02",
+      "name": "Stated purpose not delivered by the UI (promise-delivery gap)",
+      "category": "purpose_fit",
+      "modalities": [
+        "text",
+        "interaction"
+      ],
+      "status": "present",
+      "severity": "high",
+      "confidence": "high",
+      "evidence": [
+        "context.purpose",
+        "T008",
+        "T021",
+        "E02"
+      ],
+      "observation": "Half of the stated purpose is to 'compare them with the previous year'. In-page copy invites it too: 'Select a pollutant or a comparison above.' The only path to a comparison is the dead control (MC-01), so no prior-year value appears in any captured state. The page is labeled a 'dashboard' but has one numeric readout and no chart or table.",
+      "counter_evidence": [
+        "The pollutant-switching half of the purpose works (E01)."
+      ],
+      "alternative_explanations": [
+        "Same as MC-01: the comparison may exist but load after the capture window."
+      ],
+      "notes": "This shares its root cause with MC-01. Count the two as one underlying problem seen from two angles, not as independent signals."
+    },
+    {
+      "feature_id": "MC-03",
+      "name": "Internally inconsistent or implausible data and method claims",
+      "category": "content_integrity",
+      "modalities": [
+        "text",
+        "screenshot"
+      ],
+      "status": "present",
+      "severity": "medium",
+      "confidence": "medium",
+      "evidence": [
+        "T002",
+        "T006",
+        "T007",
+        "T009",
+        "T014"
+      ],
+      "observation": "(a) The method note (T009) says the sensors are PurpleAir PA-II units with the EPA 2021 correction. Those are particulate-matter sensors, and that correction is a PM2.5 correction. Yet the default reading is ozone in ppb (T007), and no ozone source is named. (b) The panel heading says 'Current reading' (T006), while the values are an '8-hour average' (T007) and a 'monthly mean' (T014). The subtitle says readings are 'averaged over September 2026' (T002), and the capture date is November 2026. (c) The two pollutants use different averaging periods, and nothing explains why.",
+      "counter_evidence": [
+        "The details are specific and mostly plausible: twelve sensors, a named neighborhood, a named sensor model, a named correction, correct units (ppb for ozone, µg/m³ for PM2.5), and a defined aggregation (hourly -> daily -> monthly)."
+      ],
+      "alternative_explanations": [
+        "Ozone could come from a co-located regulatory monitor that the note simply leaves out.",
+        "'Current' might be loose wording for 'latest available'."
+      ],
+      "notes": "Point (a) relies on outside domain knowledge (PurpleAir PA-II hardware measures particulates, not ozone). The bundle does not contain this fact."
+    },
+    {
+      "feature_id": "MC-04",
+      "name": "Missing state feedback on controls",
+      "category": "interaction",
+      "modalities": [
+        "computed_style",
+        "screenshot",
+        "interaction"
+      ],
+      "status": "present",
+      "severity": "low",
+      "confidence": "medium",
+      "evidence": [
+        "D007",
+        "D015",
+        "D008",
+        "D024",
+        "T008",
+        "T015",
+        "A02"
+      ],
+      "observation": "After 'Show PM2.5' works, the button shows no selected style: D015 matches D007 exactly, and nothing in A02 marks it active. The helper line 'Select a pollutant or a comparison above.' stays unchanged after a selection (T015). The dead comparison button gives no feedback of any kind.",
+      "counter_evidence": [
+        "The helper line could be a standing instruction rather than a placeholder that should have changed."
+      ],
+      "alternative_explanations": [
+        "This is a common shortcut in simple hand-made pages and a weak signal on its own."
+      ],
+      "notes": "Aria state for E01 was not reported. Only E02 explicitly reports no aria change."
+    },
+    {
+      "feature_id": "MC-05",
+      "name": "Generic, inflated, or filler copy",
+      "category": "text",
+      "modalities": [
+        "text"
+      ],
+      "status": "absent",
+      "severity": null,
+      "confidence": "high",
+      "evidence": [
+        "T001",
+        "T002",
+        "T006",
+        "T008",
+        "T009"
+      ],
+      "observation": "The copy is short, literal, and specific. It has no buzzwords ('unlock', 'seamless', 'empower', 'insights'), no rhetorical triplets, no emoji, and no em-dash-heavy prose. Headings are descriptive, not slogan-like."
+    },
+    {
+      "feature_id": "MC-06",
+      "name": "Template-default AI visual aesthetic",
+      "category": "visual",
+      "modalities": [
+        "screenshot",
+        "computed_style"
+      ],
+      "status": "absent",
+      "severity": null,
+      "confidence": "high",
+      "evidence": [
+        "A01",
+        "D001-D012 computed_style"
+      ],
+      "observation": "Every captured element has background-image none, box-shadow none, and no gradient text (background-clip border-box). Radii are small (0-6px). The palette is a restrained dark green on white, with no purple or indigo gradients. The font is Verdana, not Inter or a trendy display face. The page has no glassmorphism, no icon-plus-emoji feature cards, and no hero section."
+    },
+    {
+      "feature_id": "MC-07",
+      "name": "Decorative motion and animation",
+      "category": "visual",
+      "modalities": [
+        "computed_style"
+      ],
+      "status": "absent",
+      "severity": null,
+      "confidence": "medium",
+      "evidence": [
+        "D001-D028 computed_style"
+      ],
+      "observation": "animation-name is none and transition-duration is 0s on every captured element. 'transition-property: all' is the browser default and means nothing on its own.",
+      "notes": "Confidence is medium because the capture did not record animation playback, and pseudo-elements were not captured."
+    },
+    {
+      "feature_id": "MC-08",
+      "name": "Boilerplate section scaffolding (hero / feature grid / CTA / testimonial blocks)",
+      "category": "layout",
+      "modalities": [
+        "screenshot",
+        "dom"
+      ],
+      "status": "absent",
+      "severity": null,
+      "confidence": "high",
+      "evidence": [
+        "A01",
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ],
+      "observation": "The page is one route with four plain regions: header, toolbar, readout panel, and method note. It has no marketing-style sections."
+    },
+    {
+      "feature_id": "MC-09",
+      "name": "Chart or visualization quality issues",
+      "category": "data_visualization",
+      "modalities": [
+        "screenshot",
+        "dom"
+      ],
+      "status": "not_assessable",
+      "severity": null,
+      "confidence": null,
+      "evidence": [
+        "A01",
+        "A02",
+        "A03"
+      ],
+      "observation": "No chart, map, or table appears in any captured state, so there is nothing to judge. That a 'dashboard' has no visualization is noted under MC-02."
+    },
+    {
+      "feature_id": "MC-10",
+      "name": "Download control functionality",
+      "category": "interaction",
+      "modalities": [
+        "interaction"
+      ],
+      "status": "not_assessable",
+      "severity": null,
+      "confidence": null,
+      "evidence": [
+        "D009",
+        "coverage.interactions['Download CSV link']"
+      ],
+      "observation": "The link was not exercised during capture, so this audit can neither confirm nor rule out that it works."
+    }
+  ],
+  "summary": {
+    "features_present": [
+      "MC-01",
+      "MC-02",
+      "MC-03",
+      "MC-04"
+    ],
+    "features_absent": [
+      "MC-05",
+      "MC-06",
+      "MC-07",
+      "MC-08"
+    ],
+    "features_not_assessable": [
+      "MC-09",
+      "MC-10"
+    ],
+    "independent_signal_count_note": "MC-01 and MC-02 share one root cause (the dead comparison button), so the present features amount to about three independent signals: the dead or unfulfilled comparison, the data/method inconsistency, and weak state feedback.",
+    "overall_slop_signal": "moderate",
+    "overall_confidence": "medium",
+    "pattern": "The slop signal sits in function and content integrity, not in surface style. The page looks hand-plain and reads specifically. But a control that serves half the stated purpose does nothing, and the method note does not support the default ozone reading.",
+    "button_verdicts": {
+      "Show PM2.5": "working",
+      "Compare with last year": "dead (no change in text, DOM state, or pixels within 1200 ms)",
+      "Download CSV": "untested"
+    },
+    "authorship_claim": "none. These are AI-slop-associated features, not evidence of AI authorship. Fields that would reveal the generator are withheld under blinding."
+  },
+  "limitations": [
+    "One route, one desktop viewport, scroll offset 0 only. No mobile or other viewports.",
+    "The interaction window was 1200 ms. A slower async comparison would be misread as dead.",
+    "No console or network logs, so the reason the comparison button fails cannot be determined.",
+    "Hidden elements, alt text, HTML comments, and pseudo-elements were not captured.",
+    "Source code was not captured (modalities.source = false).",
+    "Context fields are synthetic (fixture-authored)."
+  ],
+  "assumptions": [
+    "No audit schema or profile definition was available in the bundle. This file's structure and the meaning of 'multimodal-core' were defined for this run.",
+    "A control counts as 'dead' only if the click completed and there was no text change, no DOM state change, and no pixel change in the after-state screenshot.",
+    "Untested controls are reported as not_assessable, not as failures.",
+    "Outside domain knowledge (that PurpleAir PA-II sensors measure particulates, not ozone) was used once, in MC-03, and is flagged there."
+  ]
+}

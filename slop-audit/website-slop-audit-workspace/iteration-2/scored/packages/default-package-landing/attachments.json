@@ -1,0 +1,50 @@
+[
+  {
+    "order": 1,
+    "asset_id": "A01",
+    "file": "attachments/01_A01.png",
+    "sha256": "35ebc43ec7486ff518092d1ac03829535d79b7bd169ec34cc3539257f77de336",
+    "pixel_width": 1280,
+    "pixel_height": 800
+  },
+  {
+    "order": 2,
+    "asset_id": "A02",
+    "file": "attachments/02_A02.png",
+    "sha256": "a597a2f281bb97e365011d87fdee7464964cd7c1141d69b0d3b6ad015f301001",
+    "pixel_width": 1280,
+    "pixel_height": 800
+  },
+  {
+    "order": 3,
+    "asset_id": "A03",
+    "file": "attachments/03_A03.png",
+    "sha256": "2a9c77bf41f380e824e96e13b0a8f09ed34042a2210353f520aeb3b875639c0b",
+    "pixel_width": 1280,
+    "pixel_height": 800
+  },
+  {
+    "order": 4,
+    "asset_id": "A04",
+    "file": "attachments/04_A04.png",
+    "sha256": "fb98436a3c9d62de49ba33f304180403f5b6b9c5b627f779040d4032a6146a85",
+    "pixel_width": 1280,
+    "pixel_height": 1775
+  },
+  {
+    "order": 5,
+    "asset_id": "A05",
+    "file": "attachments/05_A05.png",
+    "sha256": "a208369966c1a266a3e0529edfa14e1f7f44c84d30ecfb4977f245ea8e6e9459",
+    "pixel_width": 780,
+    "pixel_height": 1688
+  },
+  {
+    "order": 6,
+    "asset_id": "A06",
+    "file": "attachments/06_A06.png",
+    "sha256": "f248af5f71a286ec68a006fc6c5e92f2ceedbf04f82dc8f02bc09baaced3e548",
+    "pixel_width": 780,
+    "pixel_height": 1688
+  }
+]

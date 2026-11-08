@@ -1,0 +1,10 @@
+{
+  "eval_name": "scenario-state-inconsistency",
+  "prompt": "Audit the sea-level-rise data story in bundle/ (frozen capture, it includes one recorded click on the 2050 scenario button). Profile: multimodal-datastory. Save audit.json and report.md.",
+  "assertions": [
+    "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+    "The audit and report make no authorship verdict and no probability or percentage-AI score",
+    "A finding cites interaction E01 and locates both R02 and R03 in the after-interaction state S03",
+    "No finding claims the untested 2100 scenario button is broken"
+  ]
+}

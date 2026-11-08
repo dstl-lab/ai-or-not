@@ -1,0 +1,2107 @@
+{
+  "schema_version": "website-slop-audit/capture-bundle/0.1",
+  "bundle_id": "fx-05",
+  "site_id": "site-05",
+  "capture": {
+    "captured_at": "2026-11-08T19:41:58Z",
+    "protocol_version": "capture-protocol/0.1",
+    "adapter": {
+      "name": "gstack_capture.py",
+      "version": "0.1.0",
+      "browser": "gstack browse (Status: healthy)"
+    },
+    "target_kind": "local_server",
+    "target_locator": null,
+    "snapshot_id": null,
+    "notes": [
+      "skipped a V1 screenshot at scroll 800: page too short, duplicate of scroll 0",
+      "skipped a V1 screenshot at scroll 1600: page too short, duplicate of scroll 0",
+      "skipped the V1 full-page overview: the page fits in one viewport, so it would duplicate scroll 0",
+      "E01: reused A01 as the before image (same state and scroll)",
+      "38 browser commands issued"
+    ]
+  },
+  "evidence_profile": {
+    "capture_profile": "pilot-8",
+    "max_images": 8,
+    "selection_rules_applied": [
+      "desktop viewport 1280x800 at DPR 1: viewport screenshots at scroll offsets 0, 1 viewport height, and 2 viewport heights (3 images, fewer if the page is shorter)",
+      "mobile viewport 390x844 at DPR 2: viewport screenshots at scroll offsets 0 and 1 viewport height (2 images)",
+      "one before/after interaction pair: reuse an existing screenshot as the before image when it already shows the before state (1 or 2 images)",
+      "one full-page overview at the desktop viewport (1 image); fine text must be read from viewport screenshots or text spans, never from the shrunken overview"
+    ]
+  },
+  "modalities": {
+    "screenshot": true,
+    "text": true,
+    "dom": true,
+    "computed_style": true,
+    "interaction": true,
+    "source": false
+  },
+  "capability_limits": [
+    "animation playback is not recorded; motion can only be inferred from captured styles",
+    "HTML comments, alt text, and hidden elements are not captured as text spans"
+  ],
+  "context": {
+    "purpose": {
+      "value": "Let readers compare how many coastal parcels fall in the flood zone under each sea-level-rise scenario year.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "interactive data story (explorable explanation)",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "San Diego residents",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "blinding": {
+    "profile": "blinded",
+    "transformations": [
+      {
+        "transformation_id": "TR-locator",
+        "kind": "locator_withheld",
+        "description": "capture.target_locator withheld; the original is in the private sidecar",
+        "applies_to": [
+          "fx-05"
+        ]
+      }
+    ],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ],
+    "known_leakage": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    },
+    {
+      "viewport_id": "V2",
+      "device": "mobile",
+      "css_width": 390,
+      "css_height": 844,
+      "device_pixel_ratio": 2
+    }
+  ],
+  "states": [
+    {
+      "state_id": "S01",
+      "route": "/index.html",
+      "viewport_id": "V1",
+      "kind": "initial",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "page as loaded at viewport V1"
+    },
+    {
+      "state_id": "S02",
+      "route": "/index.html",
+      "viewport_id": "V2",
+      "kind": "initial",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "page as loaded at viewport V2"
+    },
+    {
+      "state_id": "S03",
+      "route": "/index.html",
+      "viewport_id": "V1",
+      "kind": "after_interaction",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "after E01: click on 2050 scenario button"
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "story header",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#story-header",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.205
+          }
+        },
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.4005
+          }
+        },
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.0592
+          }
+        },
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.205
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R02",
+      "name": "scenario chart panel",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#scenario-panel",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.205,
+            "width": 0.9125,
+            "height": 0.2863
+          }
+        },
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.1436,
+            "y": 0.4005,
+            "width": 0.7282,
+            "height": 0.3353
+          }
+        },
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.1436,
+            "y": 0.0592,
+            "width": 0.7282,
+            "height": 0.3353
+          }
+        },
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0437,
+            "y": 0.205,
+            "width": 0.9125,
+            "height": 0.2863
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R03",
+      "name": "summary panel",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#summary-panel",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.5162,
+            "width": 0.9125,
+            "height": 0.1365
+          }
+        },
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.1436,
+            "y": 0.7595,
+            "width": 0.7282,
+            "height": 0.2405
+          }
+        },
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.1436,
+            "y": 0.4182,
+            "width": 0.7282,
+            "height": 0.2582
+          }
+        },
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0437,
+            "y": 0.5162,
+            "width": 0.9125,
+            "height": 0.1365
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R04",
+      "name": "method panel",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#method-panel",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.6777,
+            "width": 0.9125,
+            "height": 0.1512
+          }
+        },
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.1436,
+            "y": 0.7002,
+            "width": 0.7282,
+            "height": 0.2334
+          }
+        },
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0437,
+            "y": 0.6777,
+            "width": 0.9125,
+            "height": 0.1512
+          }
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "A01",
+      "kind": "viewport_screenshot",
+      "path": "assets/A01.png",
+      "sha256": "aead441f856a54421e037a918a1da18327c5336fbb03e5c9b1bceaa0e28c6bfd",
+      "media_type": "image/png",
+      "pixel_width": 1280,
+      "pixel_height": 800,
+      "viewport_id": "V1",
+      "device_pixel_ratio": 1,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S01",
+      "crop_of": null
+    },
+    {
+      "asset_id": "A02",
+      "kind": "viewport_screenshot",
+      "path": "assets/A02.png",
+      "sha256": "d8deb2b7d580536c9157323545a784e47bc5ca581ff5ecef242340a579561985",
+      "media_type": "image/png",
+      "pixel_width": 780,
+      "pixel_height": 1688,
+      "viewport_id": "V2",
+      "device_pixel_ratio": 2,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S02",
+      "crop_of": null
+    },
+    {
+      "asset_id": "A03",
+      "kind": "viewport_screenshot",
+      "path": "assets/A03.png",
+      "sha256": "e5aba52489465f5f47199e12811a77efb96ab9d7ec98219737f3855055def9d4",
+      "media_type": "image/png",
+      "pixel_width": 780,
+      "pixel_height": 1688,
+      "viewport_id": "V2",
+      "device_pixel_ratio": 2,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 288,
+      "state_id": "S02",
+      "crop_of": null
+    },
+    {
+      "asset_id": "A04",
+      "kind": "viewport_screenshot",
+      "path": "assets/A04.png",
+      "sha256": "a780d6605d89df90083bfa07ec741e21b4bdfd6552d3eea5f0ed23f421666d9d",
+      "media_type": "image/png",
+      "pixel_width": 1280,
+      "pixel_height": 800,
+      "viewport_id": "V1",
+      "device_pixel_ratio": 1,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S03",
+      "crop_of": null
+    }
+  ],
+  "text_spans": [
+    {
+      "span_id": "T001",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "How much of San Diego's coast floods under each sea-level scenario?",
+      "source": "dom",
+      "element_id": "D005",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.05,
+            "width": 0.7031,
+            "height": 0.095
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T002",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Coastal parcels inside the projected 1-in-100-year flood zone, from the 2024 county vulnerability assessment.",
+      "source": "dom",
+      "element_id": "D006",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.155,
+            "width": 0.6406,
+            "height": 0.025
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T003",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "2020",
+      "source": "dom",
+      "element_id": "D007",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.2338,
+            "width": 0.0559,
+            "height": 0.0413
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T004",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "2050",
+      "source": "dom",
+      "element_id": "D008",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.127,
+            "y": 0.2338,
+            "width": 0.0555,
+            "height": 0.0413
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T005",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "2100",
+      "source": "dom",
+      "element_id": "D009",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1887,
+            "y": 0.2338,
+            "width": 0.0543,
+            "height": 0.0413
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T006",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Parcels in the flood zone, 2020",
+      "source": "dom",
+      "element_id": "D010",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.2925,
+            "width": 0.8703,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T007",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Mission Beach",
+      "source": "dom",
+      "element_id": "D011",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.3375,
+            "width": 0.125,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T008",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "12%",
+      "source": "dom",
+      "element_id": "D012",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.8961,
+            "y": 0.3375,
+            "width": 0.0391,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T009",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Imperial Beach",
+      "source": "dom",
+      "element_id": "D013",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.3713,
+            "width": 0.125,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T010",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "9%",
+      "source": "dom",
+      "element_id": "D014",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.8961,
+            "y": 0.3713,
+            "width": 0.0391,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T011",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "La Jolla Shores",
+      "source": "dom",
+      "element_id": "D015",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.405,
+            "width": 0.125,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T012",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "4%",
+      "source": "dom",
+      "element_id": "D016",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.8961,
+            "y": 0.405,
+            "width": 0.0391,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T013",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Source: San Diego County Coastal Vulnerability Assessment (2024), intermediate-high scenario.",
+      "source": "dom",
+      "element_id": "D017",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.4437,
+            "width": 0.8703,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T014",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "What this means",
+      "source": "dom",
+      "element_id": "D018",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.545,
+            "width": 0.8703,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T015",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "In 2020, 4% of La Jolla Shores parcels and 12% of Mission Beach parcels sit in the flood zone. Imperial Beach is in between at 9%.",
+      "source": "dom",
+      "element_id": "D019",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.59,
+            "width": 0.8703,
+            "height": 0.034
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T016",
+      "region_id": "R04",
+      "state_id": "S01",
+      "text": "Method",
+      "source": "dom",
+      "element_id": "D020",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.7065,
+            "width": 0.8703,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T017",
+      "region_id": "R04",
+      "state_id": "S01",
+      "text": "We counted parcels whose centroid falls inside each scenario's flood polygon. Parcel boundaries are from the 2023 assessor roll.",
+      "source": "dom",
+      "element_id": "D021",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0648,
+            "y": 0.7565,
+            "width": 0.8703,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T018",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "2020",
+      "source": "dom",
+      "element_id": "D024",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0648,
+            "y": 0.2338,
+            "width": 0.0559,
+            "height": 0.0413
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T019",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "2050",
+      "source": "dom",
+      "element_id": "D025",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.127,
+            "y": 0.2338,
+            "width": 0.0555,
+            "height": 0.0413
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T020",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "2100",
+      "source": "dom",
+      "element_id": "D026",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.1887,
+            "y": 0.2338,
+            "width": 0.0543,
+            "height": 0.0413
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T021",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "Parcels in the flood zone, 2050",
+      "source": "dom",
+      "element_id": "D027",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0648,
+            "y": 0.2925,
+            "width": 0.8703,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T022",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "Mission Beach",
+      "source": "dom",
+      "element_id": "D028",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0648,
+            "y": 0.3375,
+            "width": 0.125,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T023",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "31%",
+      "source": "dom",
+      "element_id": "D029",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.8961,
+            "y": 0.3375,
+            "width": 0.0391,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T024",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "Imperial Beach",
+      "source": "dom",
+      "element_id": "D030",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0648,
+            "y": 0.3713,
+            "width": 0.125,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T025",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "27%",
+      "source": "dom",
+      "element_id": "D031",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.8961,
+            "y": 0.3713,
+            "width": 0.0391,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T026",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "La Jolla Shores",
+      "source": "dom",
+      "element_id": "D032",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0648,
+            "y": 0.405,
+            "width": 0.125,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T027",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "11%",
+      "source": "dom",
+      "element_id": "D033",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.8961,
+            "y": 0.405,
+            "width": 0.0391,
+            "height": 0.0238
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T028",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "Source: San Diego County Coastal Vulnerability Assessment (2024), intermediate-high scenario.",
+      "source": "dom",
+      "element_id": "D034",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0648,
+            "y": 0.4437,
+            "width": 0.8703,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T029",
+      "region_id": "R03",
+      "state_id": "S03",
+      "text": "What this means",
+      "source": "dom",
+      "element_id": "D035",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0648,
+            "y": 0.545,
+            "width": 0.8703,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T030",
+      "region_id": "R03",
+      "state_id": "S03",
+      "text": "In 2020, 4% of La Jolla Shores parcels and 12% of Mission Beach parcels sit in the flood zone. Imperial Beach is in between at 9%.",
+      "source": "dom",
+      "element_id": "D036",
+      "appearances": [
+        {
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0648,
+            "y": 0.59,
+            "width": 0.8703,
+            "height": 0.034
+          }
+        }
+      ]
+    }
+  ],
+  "dom_elements": [
+    {
+      "element_id": "D001",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#story-header",
+      "tag": "header",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D002",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#scenario-panel",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgb(255, 253, 248)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D003",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#summary-panel",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgb(255, 253, 248)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D004",
+      "state_id": "S01",
+      "region_id": "R04",
+      "selector": "#method-panel",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgb(255, 253, 248)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D005",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#story-header > h1",
+      "tag": "h1",
+      "role": null,
+      "text_span_ids": [
+        "T001"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "34px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D006",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#story-header > p",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T002"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "17px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(107, 74, 54)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D007",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#scenario-panel > div:nth-of-type(1) > button:nth-of-type(1)",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T003"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background-color": "rgb(181, 83, 42)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D008",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#scenario-panel > div:nth-of-type(1) > button:nth-of-type(2)",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T004"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(181, 83, 42)",
+        "background-color": "rgb(255, 253, 248)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D009",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#scenario-panel > div:nth-of-type(1) > button:nth-of-type(3)",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T005"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(181, 83, 42)",
+        "background-color": "rgb(255, 253, 248)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D010",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#chart-title",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T006"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "21px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D011",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(1) > span:nth-of-type(1)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T007"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D012",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(1) > span:nth-of-type(3)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T008"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D013",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(2) > span:nth-of-type(1)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T009"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D014",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(2) > span:nth-of-type(3)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T010"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D015",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(3) > span:nth-of-type(1)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T011"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D016",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(3) > span:nth-of-type(3)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T012"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D017",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#scenario-panel > p",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T013"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(123, 91, 69)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D018",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#summary-panel > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T014"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "21px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D019",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#summary",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T015"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "17px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D020",
+      "state_id": "S01",
+      "region_id": "R04",
+      "selector": "#method-panel > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T016"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "21px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D021",
+      "state_id": "S01",
+      "region_id": "R04",
+      "selector": "#method-panel > p",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T017"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D022",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#scenario-panel",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgb(255, 253, 248)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D023",
+      "state_id": "S03",
+      "region_id": "R03",
+      "selector": "#summary-panel",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgb(255, 253, 248)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D024",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#scenario-panel > div:nth-of-type(1) > button:nth-of-type(1)",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T018"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(181, 83, 42)",
+        "background-color": "rgb(255, 253, 248)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D025",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#scenario-panel > div:nth-of-type(1) > button:nth-of-type(2)",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T019"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background-color": "rgb(181, 83, 42)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D026",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#scenario-panel > div:nth-of-type(1) > button:nth-of-type(3)",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T020"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(181, 83, 42)",
+        "background-color": "rgb(255, 253, 248)",
+        "background-image": "none",
+        "border-radius": "2px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D027",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#chart-title",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T021"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "21px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D028",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(1) > span:nth-of-type(1)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T022"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D029",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(1) > span:nth-of-type(3)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T023"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D030",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(2) > span:nth-of-type(1)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T024"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D031",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(2) > span:nth-of-type(3)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T025"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D032",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(3) > span:nth-of-type(1)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T026"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D033",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#bars > div:nth-of-type(3) > span:nth-of-type(3)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T027"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D034",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#scenario-panel > p",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T028"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(123, 91, 69)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D035",
+      "state_id": "S03",
+      "region_id": "R03",
+      "selector": "#summary-panel > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T029"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "21px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D036",
+      "state_id": "S03",
+      "region_id": "R03",
+      "selector": "#summary",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T030"
+      ],
+      "computed_style": {
+        "font-family": "Georgia, \"Times New Roman\", serif",
+        "font-size": "17px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(59, 36, 24)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "event_id": "E01",
+      "action": "click",
+      "target": {
+        "element_id": null,
+        "region_id": "R02",
+        "selector": "button[data-year=\"2050\"]",
+        "description": "2050 scenario button"
+      },
+      "input_value": null,
+      "before_state_id": "S01",
+      "after_state_id": "S03",
+      "timing_rule": "observe 800 ms after the action on a fresh page load",
+      "observed_changes": [
+        {
+          "kind": "text_changed",
+          "detail": "#bars > div:nth-of-type(1) > span:nth-of-type(3): \"12%\" -> \"31%\""
+        },
+        {
+          "kind": "text_changed",
+          "detail": "#bars > div:nth-of-type(2) > span:nth-of-type(3): \"9%\" -> \"27%\""
+        },
+        {
+          "kind": "text_changed",
+          "detail": "#bars > div:nth-of-type(3) > span:nth-of-type(3): \"4%\" -> \"11%\""
+        },
+        {
+          "kind": "text_changed",
+          "detail": "#chart-title: \"Parcels in the flood zone, 2020\" -> \"Parcels in the flood zone, 2050\""
+        },
+        {
+          "kind": "dom_changed",
+          "detail": "state attributes changed: #scenario-panel > div:nth-of-type(1) > button:nth-of-type(1)=false; #scenario-panel > div:nth-of-type(1) > button:nth-of-type(2)=true"
+        }
+      ],
+      "execution_status": "completed",
+      "observed_result": "action completed; text or state changed within 800 ms"
+    }
+  ],
+  "source_excerpts": [],
+  "coverage": {
+    "routes": [
+      {
+        "ref": "/index.html",
+        "status": "captured",
+        "reason": "single route captured; other routes not attempted"
+      }
+    ],
+    "regions": [
+      {
+        "ref": "R01",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R02",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R03",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R04",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      }
+    ],
+    "viewports": [
+      {
+        "ref": "V1",
+        "status": "captured",
+        "reason": "2 screenshot(s)"
+      },
+      {
+        "ref": "V2",
+        "status": "captured",
+        "reason": "2 screenshot(s)"
+      }
+    ],
+    "interactions": [
+      {
+        "ref": "2050 scenario button",
+        "status": "captured",
+        "reason": "recorded as E01"
+      },
+      {
+        "ref": "2100 scenario button",
+        "status": "untested",
+        "reason": "not exercised in this capture; one scenario change was recorded"
+      }
+    ],
+    "notes": []
+  }
+}

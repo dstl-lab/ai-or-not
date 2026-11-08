@@ -1,0 +1,16 @@
+/* Perturbation of scenario-inconsistency: palette and type changed, content and behavior identical. */
+body { margin: 0; font-family: Georgia, "Times New Roman", serif; background: #fbf7ef; color: #3b2418; }
+.top { padding: 40px 56px 20px; }
+.top h1 { font-size: 34px; margin: 0 0 8px; max-width: 900px; }
+.dek { font-size: 17px; margin: 0; color: #6b4a36; max-width: 820px; }
+main { padding: 0 56px 56px; display: grid; gap: 20px; }
+.panel { background: #fffdf8; border: 1px solid #e3d6c3; border-radius: 2px; padding: 22px 26px; }
+.controls { display: flex; gap: 8px; margin-bottom: 14px; }
+.controls button { font: inherit; padding: 6px 16px; border-radius: 2px; border: 1px solid #b5532a; background: #fffdf8; color: #b5532a; cursor: pointer; }
+.controls button[aria-pressed="true"] { background: #b5532a; color: #fff; }
+.panel h2 { font-size: 21px; margin: 0 0 12px; }
+.bar { display: grid; grid-template-columns: 160px 1fr 50px; align-items: center; gap: 10px; margin: 8px 0; }
+.fill { display: block; height: 18px; background: #b5532a; }
+.value { font-variant-numeric: tabular-nums; }
+.source { font-size: 13px; color: #7b5b45; margin: 12px 0 0; }
+#summary { font-size: 17px; line-height: 1.6; margin: 0; }

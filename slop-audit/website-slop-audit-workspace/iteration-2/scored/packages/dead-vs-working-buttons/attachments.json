@@ -1,0 +1,26 @@
+[
+  {
+    "order": 1,
+    "asset_id": "A01",
+    "file": "attachments/01_A01.png",
+    "sha256": "56c2a9744d6c04c28fc223d7360b6a734bf1aab37da09cd820347ec2b1661b99",
+    "pixel_width": 1280,
+    "pixel_height": 800
+  },
+  {
+    "order": 2,
+    "asset_id": "A02",
+    "file": "attachments/02_A02.png",
+    "sha256": "2e1cb358917b55523aed9c05f3e8dcf64377183f5f9dec5f65b6b58a691c2195",
+    "pixel_width": 1280,
+    "pixel_height": 800
+  },
+  {
+    "order": 3,
+    "asset_id": "A03",
+    "file": "attachments/03_A03.png",
+    "sha256": "56c2a9744d6c04c28fc223d7360b6a734bf1aab37da09cd820347ec2b1661b99",
+    "pixel_width": 1280,
+    "pixel_height": 800
+  }
+]

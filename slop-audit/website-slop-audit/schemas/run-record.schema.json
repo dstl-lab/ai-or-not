@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:website-slop-audit:run-record:0.1",
+  "title": "website-slop-audit benchmark run record",
+  "description": "Metadata for one model run on one frozen prompt package. Written by scripts/import_run.py (manual or adapter output). The raw output is always preserved, including parser failures.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "condition_id", "model", "run_index", "recorded_at", "prompt_lock", "envelope", "settings", "unavailable_parameters", "retries", "parse_status", "parse_errors", "raw_output_path", "audit_path", "latency_ms", "usage", "notes"],
+  "properties": {
+    "schema_version": {"const": "website-slop-audit/run-record/0.1"},
+    "run_id": {"$ref": "#/$defs/id"},
+    "condition_id": {"enum": ["generic-prompt", "frozen-skill", "critique-baseline", "deterministic-baseline", "native-workflow", "live-agent", "no-skill-dev"], "description": "no-skill-dev: skill-creator development baseline with no skill and no schema; not a benchmark-protocol condition."},
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "model_id", "snapshot_date", "access_path"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1, "maxLength": 80},
+        "model_id": {"type": "string", "minLength": 1, "maxLength": 120, "description": "The exact identifier reported by the endpoint. 'none' for deterministic baselines."},
+        "snapshot_date": {"type": ["string", "null"], "maxLength": 40},
+        "access_path": {"type": "string", "maxLength": 200, "description": "e.g. 'manual chat paste', 'native skill loading', 'API via adapter X'."}
+      }
+    },
+    "run_index": {"type": "integer", "minimum": 1},
+    "recorded_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"},
+    "prompt_lock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt_sha256", "package_sha256", "bundle_id", "bundle_hash", "analysis_profile", "rubric_version", "condition_template"],
+      "properties": {
+        "prompt_sha256": {"$ref": "#/$defs/sha256"},
+        "package_sha256": {"$ref": "#/$defs/sha256"},
+        "bundle_id": {"$ref": "#/$defs/id"},
+        "bundle_hash": {"$ref": "#/$defs/sha256"},
+        "analysis_profile": {"type": "string", "maxLength": 64},
+        "rubric_version": {"type": "string", "maxLength": 20},
+        "condition_template": {"type": "string", "maxLength": 80}
+      }
+    },
+    "envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "system_instructions_sha256", "attachment_order"],
+      "properties": {
+        "description": {"type": "string", "maxLength": 500, "description": "How the host wrapped the canonical prompt (system vs user message, file upload, native skill)."},
+        "system_instructions_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "attachment_order": {"type": "array", "items": {"$ref": "#/$defs/id"}}
+      }
+    },
+    "settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["temperature", "max_output_tokens", "reasoning", "other"],
+      "properties": {
+        "temperature": {"type": ["number", "null"]},
+        "max_output_tokens": {"type": ["integer", "null"]},
+        "reasoning": {"type": ["string", "null"], "maxLength": 120},
+        "other": {"type": "object", "additionalProperties": {"type": ["string", "number", "boolean", "null"]}}
+      }
+    },
+    "unavailable_parameters": {"type": "array", "items": {"type": "string", "maxLength": 80}},
+    "retries": {"type": "integer", "minimum": 0},
+    "parse_status": {"enum": ["ok", "json_extracted", "invalid_json", "schema_invalid", "integrity_invalid", "empty"]},
+    "parse_errors": {"type": "array", "items": {"type": "string", "maxLength": 500}},
+    "raw_output_path": {"type": "string", "minLength": 1, "maxLength": 300},
+    "audit_path": {"type": ["string", "null"], "maxLength": 300},
+    "latency_ms": {"type": ["number", "null"], "minimum": 0},
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_tokens", "output_tokens", "images", "unit_note"],
+      "properties": {
+        "input_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "output_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "images": {"type": ["integer", "null"], "minimum": 0},
+        "unit_note": {"type": "string", "maxLength": 200, "description": "Provider token units differ; record what the provider reported."}
+      }
+    },
+    "notes": {"type": "array", "items": {"type": "string", "maxLength": 500}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

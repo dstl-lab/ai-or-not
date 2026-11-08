@@ -1,0 +1,1601 @@
+{
+  "schema_version": "website-slop-audit/audit/0.1",
+  "rubric_version": "0.1.0",
+  "audit_id": "default-package-landing-mm-datastory-01",
+  "bundle_id": "fx-default-package-landing",
+  "bundle_hash": "aa7d7ea0cde29851d0a1ad85368c3a0067084eb5238961e8977f78369eaa7b3b",
+  "analysis_profile": "multimodal-datastory",
+  "status": "completed",
+  "inventory": {
+    "genre": {
+      "value": "interactive data story (explorable explanation)",
+      "basis": "provided"
+    },
+    "purpose": {
+      "value": "Present Seattle library visit data from a student data project.",
+      "basis": "provided"
+    },
+    "audience": {
+      "value": "course instructors and classmates",
+      "basis": "provided"
+    },
+    "main_task": {
+      "value": "read the visits-over-time chart to learn how Seattle library visits changed",
+      "basis": "inferred"
+    },
+    "structure": [
+      {
+        "region_id": "R01",
+        "role": "opening section: launch-style eyebrow with a product name, large headline, tagline paragraph, and a 'Get started' link button"
+      },
+      {
+        "region_id": "R02",
+        "role": "three statistic tiles, each a large figure with a short label"
+      },
+      {
+        "region_id": "R03",
+        "role": "section label, heading, and three icon cards (two benefit statements and a team credit)"
+      },
+      {
+        "region_id": "R04",
+        "role": "section label, heading, and two collapsed question disclosures"
+      },
+      {
+        "region_id": "R05",
+        "role": "section label, heading, a five-bar chart, and a one-line caption"
+      },
+      {
+        "region_id": "R06",
+        "role": "closing question headline and a 'Start exploring' link button"
+      }
+    ]
+  },
+  "coverage": {
+    "assessed_modalities": [
+      "screenshot",
+      "text",
+      "dom",
+      "computed_style"
+    ],
+    "unassessed_modalities": [
+      {
+        "modality": "interaction",
+        "reason": "the bundle records no interactions (modalities.interaction is false; interactions list is empty)"
+      },
+      {
+        "modality": "source",
+        "reason": "no source excerpts were supplied"
+      }
+    ],
+    "regions": [
+      {
+        "region_id": "R01",
+        "state_ids": [
+          "S01",
+          "S02"
+        ],
+        "status": "assessed",
+        "reason": "desktop A01 and A04, mobile A05; text spans and computed styles for S01"
+      },
+      {
+        "region_id": "R02",
+        "state_ids": [
+          "S01",
+          "S02"
+        ],
+        "status": "assessed",
+        "reason": "desktop A01 and A04, mobile A05 (third tile clipped at the right edge)"
+      },
+      {
+        "region_id": "R03",
+        "state_ids": [
+          "S01",
+          "S02"
+        ],
+        "status": "assessed",
+        "reason": "desktop A01, A02, A04, mobile A06 (third card clipped); card container elements not captured in the DOM"
+      },
+      {
+        "region_id": "R04",
+        "state_ids": [
+          "S01",
+          "S02"
+        ],
+        "status": "partially_assessed",
+        "reason": "heading and two question summaries captured; both disclosures were collapsed, so their answers were not captured"
+      },
+      {
+        "region_id": "R05",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "desktop A02, A03, A04 with text spans; mobile A06 shows only a sliver of the section"
+      },
+      {
+        "region_id": "R06",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "desktop A02, A03, A04; not captured at the mobile viewport"
+      }
+    ],
+    "features": [
+      {
+        "feature_id": "VIS-01",
+        "status": "assessed",
+        "reason": "screenshots of all six regions plus computed background, button, and icon-tile styles; finding F002"
+      },
+      {
+        "feature_id": "VIS-02",
+        "status": "assessed",
+        "reason": "text spans and computed styles for all section labels and the hero eyebrow, screenshots for the headline; finding F005"
+      },
+      {
+        "feature_id": "LAY-01",
+        "status": "assessed",
+        "reason": "feature cards (finding F008) and statistic tiles (contextual exception X002) checked in screenshots"
+      },
+      {
+        "feature_id": "LAY-02",
+        "status": "assessed",
+        "reason": "six regions in captured DOM order and in the full-page screenshot; finding F001"
+      },
+      {
+        "feature_id": "VIS-03",
+        "status": "assessed",
+        "reason": "icon badges and emoji checked in screenshots, text spans, and computed styles; finding F006"
+      },
+      {
+        "feature_id": "MOT-01",
+        "status": "assessed",
+        "reason": "computed styles: animation-name none on all 39 captured elements; transition-property is the CSS initial value 'all' and durations were not captured. No configured motion found; playback not recorded"
+      },
+      {
+        "feature_id": "TXT-01",
+        "status": "assessed",
+        "reason": "all captured text spans read; finding F003"
+      },
+      {
+        "feature_id": "TXT-02",
+        "status": "assessed",
+        "reason": "repetition of the 'unlock ... insights' claim recorded as a secondary tag on F003, not a separate finding"
+      },
+      {
+        "feature_id": "SUB-01",
+        "status": "assessed",
+        "reason": "no literal placeholders found; unlocatable basis of the statistic tiles recorded as a secondary tag on F004 (basis_not_located)"
+      },
+      {
+        "feature_id": "SUB-02",
+        "status": "assessed",
+        "reason": "no conflicting years, units, entities, or color meanings; a product-versus-student framing tension is recorded as contextual exception X001"
+      },
+      {
+        "feature_id": "SUB-03",
+        "status": "assessed",
+        "reason": "statistic strip checked against the purpose; finding F004"
+      },
+      {
+        "feature_id": "INT-01",
+        "status": "unassessed",
+        "reason": "needs a completed recorded interaction; none exist. The two link buttons and two FAQ disclosures are untested, not broken"
+      },
+      {
+        "feature_id": "INT-02",
+        "status": "unassessed",
+        "reason": "needs a completed recorded interaction; none exist"
+      },
+      {
+        "feature_id": "QLT-01",
+        "status": "assessed",
+        "reason": "screenshots at both viewports checked; mobile clipping recorded as quality observation Q001"
+      },
+      {
+        "feature_id": "SRC-01",
+        "status": "unassessed",
+        "reason": "needs source excerpts; none were supplied"
+      },
+      {
+        "feature_id": "DAT-01",
+        "status": "assessed",
+        "reason": "no finding: the chart shows no legible values and the adjacent text ('Visits over time', 'Visits trend.') makes no directional claim to test against it"
+      },
+      {
+        "feature_id": "DAT-02",
+        "status": "unassessed",
+        "reason": "needs a completed recorded interaction; none exist"
+      },
+      {
+        "feature_id": "DAT-03",
+        "status": "assessed",
+        "reason": "chart region and all captured text checked for unit, time range, population, and source; finding F007"
+      },
+      {
+        "feature_id": "DAT-04",
+        "status": "assessed",
+        "reason": "scaffolding-to-data imbalance recorded as a secondary tag on F001 (same page-level phenomenon), not a separate finding"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "finding_id": "F001",
+      "feature_id": "LAY-02",
+      "phenomenon_id": "P001",
+      "secondary_tags": [
+        "DAT-04"
+      ],
+      "scope": "page-pattern",
+      "observation": "The single captured route follows the stock product-landing sequence, in DOM order: #hero (launch eyebrow, headline, 'Get started' button), #stats (three figure tiles), #features (three icon cards), #faq (product questions), #chart-section (the only data display), #final-cta ('Start exploring' button). For a data story about library visits, the one chart sits fifth of six sections and takes about a fifth of the full-page height (A04), after four sections that say nothing about the data.",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A04",
+          "box": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 0.2443
+          },
+          "selector": "#hero",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A04",
+          "box": {
+            "x": 0,
+            "y": 0.2443,
+            "width": 1,
+            "height": 0.0817
+          },
+          "selector": "#stats",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A04",
+          "box": {
+            "x": 0,
+            "y": 0.326,
+            "width": 1,
+            "height": 0.1932
+          },
+          "selector": "#features",
+          "source_ref": null
+        },
+        {
+          "region_id": "R04",
+          "state_id": "S01",
+          "asset_id": "A04",
+          "box": {
+            "x": 0,
+            "y": 0.5192,
+            "width": 1,
+            "height": 0.147
+          },
+          "selector": "#faq",
+          "source_ref": null
+        },
+        {
+          "region_id": "R05",
+          "state_id": "S01",
+          "asset_id": "A04",
+          "box": {
+            "x": 0,
+            "y": 0.6663,
+            "width": 1,
+            "height": 0.2034
+          },
+          "selector": "#chart-section",
+          "source_ref": null
+        },
+        {
+          "region_id": "R06",
+          "state_id": "S01",
+          "asset_id": "A04",
+          "box": {
+            "x": 0,
+            "y": 0.8696,
+            "width": 1,
+            "height": 0.1304
+          },
+          "selector": "#final-cta",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "screenshot",
+          "ref_id": "A04",
+          "description": "Full-page overview: the six sections in order, with the chart near the bottom.",
+          "quote": null
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D003",
+          "description": "Captured section ids name template roles: #hero, #stats, #features (D003), #faq (D004), #chart-section, #final-cta (D006).",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T001",
+          "description": "Launch-style eyebrow naming a product.",
+          "quote": "INTRODUCING LIBRARYPULSE"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T004",
+          "description": "Hero call-to-action link.",
+          "quote": "Get started →"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T025",
+          "description": "FAQ section heading.",
+          "quote": "Frequently asked questions"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T030",
+          "description": "The only data heading, in the fifth section.",
+          "quote": "Visits over time"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T032",
+          "description": "Closing call-to-action headline.",
+          "quote": "Ready to transform your data journey?"
+        },
+        {
+          "kind": "context",
+          "ref_id": "genre",
+          "description": "Provided genre is an interactive data story (explorable explanation), not a product page.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "All six sections are captured in DOM order with selectors and are visible in the full-page screenshot."
+      },
+      "slop_association": {
+        "level": "strong",
+        "reason": "Six consecutive recorded regions match the stock hero, stats, features, FAQ, call-to-action sequence almost one to one, and the data display is placed late and small. Together these make the default-template reading especially compelling to an evaluator. The rating describes the pattern, not authorship."
+      },
+      "contextual_fit": {
+        "level": "inappropriate",
+        "reason": "The provided purpose is presenting Seattle library visit data to instructors and classmates; this structure is built to convert product visitors and pushes the data behind product framing."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "moderate",
+        "reason": "The reader reaches the only data display after four sections of product framing that never mention the data (cited spans), which makes the page's actual subject harder to find."
+      },
+      "alternative_explanations": [
+        "The team chose to pitch the project as a fictional product for class (not documented in the supplied context)",
+        "A landing-page theme or starter template was reused as a starting point",
+        "A course rubric asking for a hook and a takeaway, interpreted as a hero and a call to action",
+        "Data sections still being built when the capture was made"
+      ],
+      "codebook_evidence_status": "practitioner_heuristic",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "Only /index.html was captured; other pages of the project, if any, are unknown.",
+        "FAQ answers were collapsed and not captured, so R04 is known only from its heading and two question summaries."
+      ]
+    },
+    {
+      "finding_id": "F002",
+      "feature_id": "VIS-01",
+      "phenomenon_id": "P002",
+      "secondary_tags": [],
+      "scope": "page-pattern",
+      "observation": "One palette package recurs across sections: a near-black page; purple and blue radial glows behind the hero (computed: rgba(124,58,237,0.45) and rgba(59,130,246,0.35)); both call-to-action buttons filled with a 90deg gradient from rgb(124,58,237) to rgb(59,130,246) plus a purple glow shadow; the same gradient on the card icon tiles; and dark rounded bordered panels for the stats, cards, and chart. No part of it refers to Seattle, libraries, or the visit data.",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 0.542
+          },
+          "selector": "#hero",
+          "source_ref": null
+        },
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.4182,
+            "width": 0.1131,
+            "height": 0.0537
+          },
+          "selector": "#hero > a",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.5425,
+            "width": 0.9,
+            "height": 0.1313
+          },
+          "selector": "#stats",
+          "source_ref": null
+        },
+        {
+          "region_id": "R05",
+          "state_id": "S01",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.05,
+            "y": 0.6475,
+            "width": 0.9,
+            "height": 0.1825
+          },
+          "selector": "#chart-section",
+          "source_ref": null
+        },
+        {
+          "region_id": "R06",
+          "state_id": "S01",
+          "asset_id": "A03",
+          "box": {
+            "x": 0.4339,
+            "y": 0.8568,
+            "width": 0.1323,
+            "height": 0.0537
+          },
+          "selector": "#final-cta > a",
+          "source_ref": null
+        },
+        {
+          "region_id": "R01",
+          "state_id": "S02",
+          "asset_id": "A05",
+          "box": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 0.7893
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "dom",
+          "ref_id": "D001",
+          "description": "Hero background: two radial gradients, purple rgba(124,58,237,0.45) at 30% 20% and blue rgba(59,130,246,0.35) at 80% 0%.",
+          "quote": null
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D010",
+          "description": "'Get started' button: linear-gradient(90deg, rgb(124,58,237), rgb(59,130,246)), 12px radius, 24px purple glow shadow.",
+          "quote": null
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D039",
+          "description": "'Start exploring' button: the same gradient, radius, and glow.",
+          "quote": null
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D020",
+          "description": "Card icon tile: linear-gradient(135deg) of the same two colors.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A04",
+          "description": "Full-page overview: purple-blue glow at the top, then dark bordered panels in every later section.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A05",
+          "description": "Mobile viewport shows the same glow, gradient button, and dark tiles.",
+          "quote": null
+        },
+        {
+          "kind": "context",
+          "ref_id": "purpose",
+          "description": "Provided purpose is Seattle library visit data from a student project; the constraints list is empty, so no brand or course palette is documented.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Colors come from measured computed styles, and the package is visible in desktop and mobile screenshots."
+      },
+      "slop_association": {
+        "level": "moderate",
+        "reason": "A recognizable purple-blue-glow-on-dark package recurs in at least four regions with no subject-specific choice. It is still a style package with many benign explanations, so it is not rated higher on its own."
+      },
+      "contextual_fit": {
+        "level": "questionable",
+        "reason": "No palette decision relates to the library data or the audience; with no documented requirement its role is unclear rather than demonstrably harmful."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "none_identified",
+        "reason": "Text and chart remain legible against the dark ground in the captured screenshots."
+      },
+      "alternative_explanations": [
+        "Designer or team preference for a dark theme",
+        "A course or team template with this palette (not documented in the supplied context)",
+        "Theme default carried over from a starter kit or component library",
+        "Dark theme chosen for projecting in class"
+      ],
+      "codebook_evidence_status": "practitioner_heuristic",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "Card container and chart panel elements were not captured in the DOM; their borders and faint halo are described from screenshots only."
+      ]
+    },
+    {
+      "finding_id": "F003",
+      "feature_id": "TXT-01",
+      "phenomenon_id": "P003",
+      "secondary_tags": [
+        "TXT-02"
+      ],
+      "scope": "repeated-group",
+      "observation": "The opening, the feature cards, and the close use broad product-marketing copy that would fit any analytics product: the hero promises to 'unlock powerful insights' with 'next-generation analytics', the cards promise a 'seamless, intuitive experience' and 'meaningful outcomes', and the close asks about a 'data journey'. None of these spans names Seattle, a library, what a visit counts, the period, or a finding; 'library' in the headline is the only subject word. 'Unlock ... insights' recurs in three spans (TXT-02).",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.1588,
+            "width": 0.7031,
+            "height": 0.147
+          },
+          "selector": "#hero > h1",
+          "source_ref": null
+        },
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.3282,
+            "width": 0.5625,
+            "height": 0.0575
+          },
+          "selector": "#hero > p:nth-of-type(2)",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.8232,
+            "width": 0.9,
+            "height": 0.0462
+          },
+          "selector": "#features > h2",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.068,
+            "y": 0.022,
+            "width": 0.2547,
+            "height": 0.0563
+          },
+          "selector": "#features > div > div:nth-of-type(1) > p",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.3727,
+            "y": 0.022,
+            "width": 0.2547,
+            "height": 0.0563
+          },
+          "selector": "#features > div > div:nth-of-type(2) > p",
+          "source_ref": null
+        },
+        {
+          "region_id": "R06",
+          "state_id": "S01",
+          "asset_id": "A03",
+          "box": {
+            "x": 0.05,
+            "y": 0.7956,
+            "width": 0.9,
+            "height": 0.0362
+          },
+          "selector": "#final-cta > h2",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T003",
+          "description": "Hero tagline; names no dataset, place, period, or finding.",
+          "quote": "Our platform empowers you to unlock powerful insights and transform the way you see data"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T003",
+          "description": "Second sentence of the tagline.",
+          "quote": "Reimagine what's possible with next-generation analytics."
+        },
+        {
+          "kind": "text",
+          "ref_id": "T002",
+          "description": "Headline; 'library' is the only subject-specific word.",
+          "quote": "Unlock the future of library insights"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T019",
+          "description": "Card body repeating the hero's claim.",
+          "quote": "Unlock powerful insights that drive meaningful outcomes."
+        },
+        {
+          "kind": "text",
+          "ref_id": "T016",
+          "description": "Card body with no content-specific information.",
+          "quote": "Effortlessly explore data with a seamless, intuitive experience."
+        },
+        {
+          "kind": "text",
+          "ref_id": "T013",
+          "description": "Section heading that names no content.",
+          "quote": "Everything you need, nothing you don't"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T032",
+          "description": "Closing question with no data-specific payoff.",
+          "quote": "Ready to transform your data journey?"
+        },
+        {
+          "kind": "context",
+          "ref_id": "purpose",
+          "description": "Provided purpose names Seattle library visit data; no captured text span names Seattle.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Exact text spans captured from the DOM and legible in the desktop screenshots."
+      },
+      "slop_association": {
+        "level": "strong",
+        "reason": "Six spans across three regions use interchangeable unlock/transform/seamless claims, repeat one claim, and leave out every specific an introduction to this dataset needs. Several mutually supporting text observations make the template-copy reading especially compelling. The rating describes the copy, not authorship."
+      },
+      "contextual_fit": {
+        "level": "inappropriate",
+        "reason": "The page's job is to introduce library visit data to instructors and classmates; the copy describes a generic analytics 'platform' and works against saying what the project is about."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "moderate",
+        "reason": "From the opening and closing text a reader cannot learn the place, data, period, or finding (cited spans), and that information is not located elsewhere in the captured text."
+      },
+      "alternative_explanations": [
+        "Placeholder marketing copy written early and never revised",
+        "Deliberate pitch or parody framing for a class presentation (not documented)",
+        "Writing in a product-style voice for a general audience",
+        "Specifics may sit in the collapsed FAQ answers, which were not captured"
+      ],
+      "codebook_evidence_status": "practitioner_heuristic",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "The FAQ answers ('What is LibraryPulse?', 'Who is it for?') were collapsed and not captured; they might contain specifics."
+      ]
+    },
+    {
+      "finding_id": "F004",
+      "feature_id": "SUB-03",
+      "phenomenon_id": "P004",
+      "secondary_tags": [
+        "SUB-01"
+      ],
+      "scope": "region",
+      "observation": "The statistic strip shows three large figures, '10x' (Faster insights), '99%' (Accuracy), and '24/7' (Always-on analytics), with no unit, baseline, source, or link to the library visit data; they describe a product's performance, not anything in the dataset. SUB-01 sub-type: basis_not_located. Inspected scope: all captured text spans and screenshots of /index.html (FAQ answers, alt text, and hidden elements not captured).",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.068,
+            "y": 0.5707,
+            "width": 0.2536,
+            "height": 0.0712
+          },
+          "selector": "#stats > div:nth-of-type(1) > b",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3732,
+            "y": 0.5707,
+            "width": 0.2536,
+            "height": 0.0712
+          },
+          "selector": "#stats > div:nth-of-type(2) > b",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6784,
+            "y": 0.5707,
+            "width": 0.2536,
+            "height": 0.0712
+          },
+          "selector": "#stats > div:nth-of-type(3) > b",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S02",
+          "asset_id": "A05",
+          "box": {
+            "x": 0.1679,
+            "y": 0.7891,
+            "width": 0.8321,
+            "height": 0.1457
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T005",
+          "description": "First figure.",
+          "quote": "10x"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T006",
+          "description": "Its label; faster than what is not stated.",
+          "quote": "Faster insights"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T007",
+          "description": "Second figure.",
+          "quote": "99%"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T008",
+          "description": "Its label; accuracy of what is not stated.",
+          "quote": "Accuracy"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T009",
+          "description": "Third figure.",
+          "quote": "24/7"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T010",
+          "description": "Its label; describes service availability, not data.",
+          "quote": "Always-on analytics"
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "The three tiles directly under the hero, the most prominent numbers on the page.",
+          "quote": null
+        },
+        {
+          "kind": "context",
+          "ref_id": "purpose",
+          "description": "Provided purpose is presenting library visit data; none of the figures is a visit count, rate, or change.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "All six text spans are captured from the DOM and legible in A01."
+      },
+      "slop_association": {
+        "level": "moderate",
+        "reason": "Three unitless, unsourced performance figures in a data story fit the metric-theater pattern; a basis could still exist in uncaptured content, so the rating stays moderate."
+      },
+      "contextual_fit": {
+        "level": "inappropriate",
+        "reason": "Speed, accuracy, and availability figures for an analytics product do not summarize library visits and work against the provided purpose."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "moderate",
+        "reason": "The most prominent numbers cannot be interpreted: '10x' faster than what, '99%' accuracy of what (cited spans)."
+      },
+      "alternative_explanations": [
+        "Landing-page template figures left in as filler",
+        "Intended as a joke or pitch framing for class",
+        "A course hook requirement met with placeholder figures",
+        "A basis outside the captured page, for example in the collapsed FAQ or another route"
+      ],
+      "codebook_evidence_status": "research_hypothesis",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "'Basis not located in the inspected scope' does not mean no basis exists anywhere."
+      ]
+    },
+    {
+      "finding_id": "F005",
+      "feature_id": "VIS-02",
+      "phenomenon_id": "P005",
+      "secondary_tags": [],
+      "scope": "repeated-group",
+      "observation": "Each content section carries the same two-line chrome above its heading: a monospaced indigo number label ('01 / FEATURES', '02 / FAQ', '03 / DATA') and a tracked uppercase eyebrow ('WHY IT MATTERS', 'QUESTIONS', 'THE DATA'). The numbers mark no sequence a reader must follow (the FAQ precedes the data; hero and close are unnumbered), and the eyebrows restate the heading or the number label. The hero adds a tracked uppercase 'INTRODUCING' eyebrow and one gradient headline word, 'future'.",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.772,
+            "width": 0.9,
+            "height": 0.0362
+          },
+          "selector": "#features > span",
+          "source_ref": null
+        },
+        {
+          "region_id": "R04",
+          "state_id": "S01",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.05,
+            "y": 0.2007,
+            "width": 0.9,
+            "height": 0.0363
+          },
+          "selector": "#faq > span",
+          "source_ref": null
+        },
+        {
+          "region_id": "R05",
+          "state_id": "S01",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.05,
+            "y": 0.527,
+            "width": 0.9,
+            "height": 0.0362
+          },
+          "selector": "#chart-section > span",
+          "source_ref": null
+        },
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.09,
+            "width": 0.5625,
+            "height": 0.0362
+          },
+          "selector": "#hero > p:nth-of-type(1)",
+          "source_ref": null
+        },
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2844,
+            "y": 0.1625,
+            "width": 0.1266,
+            "height": 0.0663
+          },
+          "selector": "#hero > h1",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S02",
+          "asset_id": "A06",
+          "box": {
+            "x": 0.164,
+            "y": 0.0296,
+            "width": 0.344,
+            "height": 0.0314
+          },
+          "selector": null,
+          "source_ref": null
+        },
+        {
+          "region_id": "R04",
+          "state_id": "S02",
+          "asset_id": "A06",
+          "box": {
+            "x": 0.164,
+            "y": 0.6576,
+            "width": 0.233,
+            "height": 0.0314
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T011",
+          "description": "Number label over the features section.",
+          "quote": "01 / FEATURES"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T023",
+          "description": "Number label over the FAQ section.",
+          "quote": "02 / FAQ"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T028",
+          "description": "Number label over the data section.",
+          "quote": "03 / DATA"
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D017",
+          "description": "Number label style: 'SF Mono', Menlo, monospace, 13px, rgb(129,140,248); D029 and D034 are identical.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T024",
+          "description": "Eyebrow restating its heading 'Frequently asked questions' (T025).",
+          "quote": "QUESTIONS"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T029",
+          "description": "Eyebrow repeating its own number label '03 / DATA'.",
+          "quote": "THE DATA"
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D018",
+          "description": "Eyebrow style: 12px, uppercase, 2.64px letter-spacing, rgb(165,180,252); D030 and D035 are identical.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T001",
+          "description": "Hero eyebrow, uppercase with 4.18px letter-spacing (D007).",
+          "quote": "INTRODUCING LIBRARYPULSE"
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "The headline word 'future' is rendered in a purple-to-blue gradient; the other headline words are plain light text.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Text spans and computed styles exist for all three label pairs; the gradient word is visible in desktop (A01) and mobile (A05) screenshots."
+      },
+      "slop_association": {
+        "level": "moderate",
+        "reason": "A recurring decorative label system carrying no structural information fits the pattern; numbered, eyebrowed sections are also a common editorial style, so it is not rated strong."
+      },
+      "contextual_fit": {
+        "level": "questionable",
+        "reason": "No captured navigation uses the numbers, and the eyebrows repeat the headings, so the labels' role is unclear rather than harmful."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "minor",
+        "reason": "Redundant labels add noise above each heading but do not block reading."
+      },
+      "alternative_explanations": [
+        "Course or team template with numbered sections",
+        "Designer preference for editorial chrome",
+        "Numbers meant to match slides in a class presentation (not documented)",
+        "Skimming support for readers"
+      ],
+      "codebook_evidence_status": "practitioner_heuristic",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "The gradient on 'future' is seen only in screenshots; the inner element carrying it was not captured, and the captured h1 style (D008) shows no gradient."
+      ]
+    },
+    {
+      "finding_id": "F006",
+      "feature_id": "VIS-03",
+      "phenomenon_id": "P006",
+      "secondary_tags": [],
+      "scope": "repeated-group",
+      "observation": "All three feature cards open with the same sparkle emoji inside an identical 12px-radius tile filled with the purple-to-blue gradient, whether the card is about data exploration, insights, or team credits; the same emoji also leads the hero eyebrow. The badge does not differentiate the content it is attached to.",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.068,
+            "y": 0.9207,
+            "width": 0.0312,
+            "height": 0.05
+          },
+          "selector": "#features > div > div:nth-of-type(1) > div",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3727,
+            "y": 0.9207,
+            "width": 0.0312,
+            "height": 0.05
+          },
+          "selector": "#features > div > div:nth-of-type(2) > div",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6773,
+            "y": 0.9207,
+            "width": 0.0312,
+            "height": 0.05
+          },
+          "selector": "#features > div > div:nth-of-type(3) > div",
+          "source_ref": null
+        },
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.09,
+            "width": 0.02,
+            "height": 0.0362
+          },
+          "selector": "#hero > p:nth-of-type(1)",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S02",
+          "asset_id": "A06",
+          "box": {
+            "x": 0.2231,
+            "y": 0.2571,
+            "width": 0.1026,
+            "height": 0.0474
+          },
+          "selector": null,
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S02",
+          "asset_id": "A06",
+          "box": {
+            "x": 0.6,
+            "y": 0.2571,
+            "width": 0.1026,
+            "height": 0.0474
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T014",
+          "description": "Badge in the first card.",
+          "quote": "✨"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T017",
+          "description": "Badge in the second card.",
+          "quote": "✨"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T020",
+          "description": "Badge in the third card.",
+          "quote": "✨"
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D020",
+          "description": "Badge tile: linear-gradient(135deg, rgb(124,58,237), rgb(59,130,246)), 12px radius; D023 and D026 are identical.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T015",
+          "description": "Title of the first card.",
+          "quote": "Seamless Data"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T021",
+          "description": "Title of the third card, unrelated content with the same badge.",
+          "quote": "Team Credits"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T001",
+          "description": "The hero eyebrow starts with the same emoji.",
+          "quote": "✨"
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "Three identical gradient badge tiles at the top of the cards.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Text spans, computed styles, and both viewports show the identical badges."
+      },
+      "slop_association": {
+        "level": "moderate",
+        "reason": "The same badge on unrelated items is a recurring decorative stand-in for content-specific icons; a single icon motif can also be a playful choice, so moderate."
+      },
+      "contextual_fit": {
+        "level": "questionable",
+        "reason": "The badge neither encodes a category nor relates to libraries or visits."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "none_identified",
+        "reason": "Decorative only; no reading problem shown."
+      },
+      "alternative_explanations": [
+        "Placeholder icon awaiting real icons",
+        "Playful tone chosen for classmates",
+        "Template or icon-pack default",
+        "Emoji used because no icon set was available"
+      ],
+      "codebook_evidence_status": "practitioner_heuristic",
+      "quality_to_slop_rationale": null,
+      "limitations": []
+    },
+    {
+      "finding_id": "F007",
+      "feature_id": "DAT-03",
+      "phenomenon_id": "P007",
+      "secondary_tags": [],
+      "scope": "region",
+      "observation": "The page's only chart, under 'Visits over time', shows five bars with no axis, tick labels, values, dates, unit, or source in the captured desktop states; its whole caption is 'Visits trend.' No captured text names Seattle, a library branch, a period, or a data source. Missing framing: time range, unit and scale, population (which libraries), and source. Inspected scope: all captured text spans and screenshots of /index.html; FAQ answers, alt text, and hidden elements were not captured.",
+      "locations": [
+        {
+          "region_id": "R05",
+          "state_id": "S01",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.05,
+            "y": 0.6475,
+            "width": 0.9,
+            "height": 0.1825
+          },
+          "selector": "#chart-section",
+          "source_ref": null
+        },
+        {
+          "region_id": "R05",
+          "state_id": "S01",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.05,
+            "y": 0.847,
+            "width": 0.9,
+            "height": 0.02
+          },
+          "selector": "#chart-section > p:nth-of-type(2)",
+          "source_ref": null
+        },
+        {
+          "region_id": "R05",
+          "state_id": "S01",
+          "asset_id": "A03",
+          "box": {
+            "x": 0.05,
+            "y": 0.4288,
+            "width": 0.9,
+            "height": 0.1825
+          },
+          "selector": "#chart-section",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "screenshot",
+          "ref_id": "A02",
+          "description": "Five indigo bars in a dark panel; no axes, tick labels, values, or legend are visible.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A03",
+          "description": "The same chart in the next scroll state, unchanged and equally unlabeled.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T030",
+          "description": "Chart heading; implies a time axis that is not labeled.",
+          "quote": "Visits over time"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T031",
+          "description": "The entire caption.",
+          "quote": "Visits trend."
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D005",
+          "description": "#chart-section is captured; its only recorded text spans are the label, eyebrow, heading, and caption (T028 to T031).",
+          "quote": null
+        },
+        {
+          "kind": "context",
+          "ref_id": "purpose",
+          "description": "Provided purpose: Seattle library visit data. Neither place nor data source appears in captured text.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Visible in two desktop screenshots at legible resolution and confirmed by the text-span list for R05."
+      },
+      "slop_association": {
+        "level": "moderate",
+        "reason": "A bare, unlabeled chart with a two-word caption after extensive generic framing fits the missing-framing pattern; unfinished novice charts look the same, so moderate."
+      },
+      "contextual_fit": {
+        "level": "inappropriate",
+        "reason": "The chart is the page's only evidence for its stated purpose, and without framing it cannot serve that purpose."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "moderate",
+        "reason": "A reader cannot tell which period, which libraries, or how many visits the bars represent (cited screenshots and spans)."
+      },
+      "alternative_explanations": [
+        "Chart still a work in progress at capture time",
+        "Labels shown only on hover or in a tooltip, which no recorded interaction tested",
+        "Framing given in the collapsed FAQ or in the class presentation",
+        "Novice charting without axis setup"
+      ],
+      "codebook_evidence_status": "research_hypothesis",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "Alt text and hidden elements are not captured; an accessible chart description, if any, is unknown.",
+        "The mobile viewport shows only a sliver of this section."
+      ]
+    },
+    {
+      "finding_id": "F008",
+      "feature_id": "LAY-01",
+      "phenomenon_id": "P008",
+      "secondary_tags": [],
+      "scope": "repeated-group",
+      "observation": "Three identical cards (same size, gradient badge, bold title, one-line body) hold material with different roles: two product-benefit claims ('Seamless Data', 'Powerful Insights') and the project's attribution ('Team Credits: Built by four passionate students who love data.'). The credit is presented as a third feature under 'Everything you need, nothing you don't', flattening attribution into the benefit list.",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.05,
+            "y": 0.4023,
+            "width": 0.9,
+            "height": 0.0969
+          },
+          "selector": "#features",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.8925,
+            "width": 0.9,
+            "height": 0.1075
+          },
+          "selector": null,
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S02",
+          "asset_id": "A06",
+          "box": {
+            "x": 0.164,
+            "y": 0.2299,
+            "width": 0.836,
+            "height": 0.338
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T015",
+          "description": "First card title.",
+          "quote": "Seamless Data"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T018",
+          "description": "Second card title.",
+          "quote": "Powerful Insights"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T021",
+          "description": "Third card title.",
+          "quote": "Team Credits"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T022",
+          "description": "Third card body: attribution, not a feature.",
+          "quote": "Built by four passionate students who love data."
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D026",
+          "description": "The credit card's badge has the same computed style as the two benefit cards' badges (D020, D023).",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A04",
+          "description": "Three equal cards in one row under a benefits heading.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Card text is captured and the equal treatment is visible at both viewports."
+      },
+      "slop_association": {
+        "level": "weak",
+        "reason": "Uniform cards are common and the hierarchy lost is small, since no card holds a key claim; the cue is attribution dressed as a feature, which also has benign explanations."
+      },
+      "contextual_fit": {
+        "level": "questionable",
+        "reason": "Attribution normally sits apart from content; as a feature card its role is unclear."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "minor",
+        "reason": "The credit is easy to read but easy to take for a product benefit."
+      },
+      "alternative_explanations": [
+        "Component reuse for convenience",
+        "The grid needed a third item to balance the row",
+        "A course template with a credits card"
+      ],
+      "codebook_evidence_status": "practitioner_heuristic",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "Card container elements were not captured in the DOM; equal size is judged from screenshots."
+      ]
+    }
+  ],
+  "contextual_exceptions": [
+    {
+      "exception_id": "X001",
+      "feature_id": "SUB-02",
+      "observation": "The opening presents a commercial product ('INTRODUCING LIBRARYPULSE', 'Our platform empowers you', 'Get started'), while a card says the site was 'Built by four passionate students who love data.' The implied audience shifts from prospective customers to a class.",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.09,
+            "width": 0.5625,
+            "height": 0.0362
+          },
+          "selector": "#hero > p:nth-of-type(1)",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.6773,
+            "y": 0.022,
+            "width": 0.2547,
+            "height": 0.0281
+          },
+          "selector": "#features > div > div:nth-of-type(3) > p",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T001",
+          "description": "Product launch eyebrow.",
+          "quote": "INTRODUCING LIBRARYPULSE"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T003",
+          "description": "Product voice.",
+          "quote": "Our platform empowers you"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T022",
+          "description": "Student attribution.",
+          "quote": "Built by four passionate students who love data."
+        }
+      ],
+      "reason_not_counted": "insufficient_evidence_for_finding",
+      "rationale": "This is a framing tension, not a conflict of a fact such as a year, unit, entity, or color meaning, and a student team may deliberately pitch its project as a product. The product-voice copy is already recorded under F003 (TXT-01).",
+      "observation_confidence": {
+        "level": "high",
+        "reason": "All three spans are captured exactly."
+      }
+    },
+    {
+      "exception_id": "X002",
+      "feature_id": "LAY-01",
+      "observation": "The three statistic tiles share one rounded, bordered tile treatment.",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.5425,
+            "width": 0.9,
+            "height": 0.1313
+          },
+          "selector": "#stats",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "Three equal tiles in one row.",
+          "quote": null
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D011",
+          "description": "Tile figures share one computed style (D011, D013, D015).",
+          "quote": null
+        }
+      ],
+      "reason_not_counted": "appropriate_in_context",
+      "rationale": "Three key figures are genuinely parallel items, which the LAY-01 exclusion covers; equal tiles are the right form for them. Their problem is substance, recorded in F004 (SUB-03).",
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Clearly visible in A01, A04, and A05."
+      }
+    }
+  ],
+  "quality_observations": [
+    {
+      "observation_id": "Q001",
+      "category": "rendering",
+      "related_feature_id": "QLT-01",
+      "observation": "At the 390px mobile viewport, the statistic strip and the feature-card row run past the right edge: the third tile shows only part of '24/7' and the third card's title and body are cut off. Whether these rows scroll horizontally was not recorded (no interaction; overflow styles not captured).",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S02",
+          "asset_id": "A05",
+          "box": {
+            "x": 0.8346,
+            "y": 0.7891,
+            "width": 0.1654,
+            "height": 0.1457
+          },
+          "selector": null,
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S02",
+          "asset_id": "A06",
+          "box": {
+            "x": 0.9038,
+            "y": 0.2299,
+            "width": 0.0962,
+            "height": 0.338
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "screenshot",
+          "ref_id": "A05",
+          "description": "Third statistic tile clipped at the right edge of the mobile viewport.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A06",
+          "description": "Third feature card clipped at the right edge of the mobile viewport.",
+          "quote": null
+        }
+      ],
+      "consequence": {
+        "level": "unknown",
+        "reason": "If the rows do not scroll, the third tile and card are unreadable on phones; if they scroll, the clipping is only a cue. No scroll was recorded."
+      }
+    }
+  ],
+  "exploratory_candidates": [],
+  "untrusted_instructions_observed": [],
+  "summary": {
+    "text": "The captured page, given as a student data story about Seattle library visits, is laid out as a stock product landing page: a launch-style hero with a 'Get started' button, a strip of unitless performance figures, three icon cards, an FAQ, a single chart, and a closing call to action. Across that skeleton the evidence shows a recurring purple-to-blue glow-on-dark palette, numbered eyebrow labels on every section, one sparkle badge on unrelated cards, and broad 'unlock / transform / seamless' copy that never names Seattle, the data, the period, or a finding. The one chart has no axes, labels, values, or source, and its caption is two words. These are features that can make the page read as template scaffolding with little data story inside it; they say nothing about who or what made the site, and each has benign explanations such as pitch framing chosen for class, an unrevised starter template, or work in progress. Limits: no interactions were recorded, so the buttons and FAQ disclosures are untested rather than broken; FAQ answers, alt text, and hidden content were not captured; only one route was captured, and the mobile screenshots cover the upper part of the page.",
+    "major_limitations": [
+      "No recorded interactions: the two link buttons and both FAQ disclosures are untested, so INT-01, INT-02, and DAT-02 are unassessed.",
+      "No source excerpts were supplied, so SRC-01 is unassessed.",
+      "FAQ answers, alt text, and hidden elements were not captured; specifics or chart framing could exist there.",
+      "One route only; mobile screenshots cover R01 to R04, show a sliver of R05, and do not reach R06.",
+      "Context (purpose, genre, audience) was written by the fixture author; no course, brand, or template constraints were supplied."
+    ]
+  }
+}

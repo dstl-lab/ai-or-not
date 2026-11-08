@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neighborhood air quality, Fresno</title>
+<style>
+  body { margin: 0; font-family: Verdana, Arial, sans-serif; color: #1e2a24; background: #fff; }
+  header { padding: 32px 48px 8px; }
+  header h1 { font-size: 28px; margin: 0 0 6px; }
+  header p { margin: 0; font-size: 15px; color: #4d5c55; max-width: 760px; }
+  .tools { display: flex; gap: 10px; padding: 18px 48px; }
+  .tools button, .tools a { font: inherit; font-size: 14px; padding: 8px 14px; border: 1px solid #2e6b4f; border-radius: 4px; background: #fff; color: #2e6b4f; text-decoration: none; cursor: pointer; }
+  .readout { margin: 0 48px; padding: 18px 22px; border: 1px solid #cfd8d3; border-radius: 6px; max-width: 720px; }
+  .readout h2 { margin: 0 0 8px; font-size: 18px; }
+  #metric { font-size: 22px; margin: 0 0 6px; }
+  #comparison { font-size: 15px; color: #4d5c55; margin: 0; }
+  .note { margin: 16px 48px 40px; font-size: 13px; color: #66756e; max-width: 720px; }
+</style>
+</head>
+<body>
+<header id="page-header">
+  <h1>Air quality in Fresno's Southwest neighborhood</h1>
+  <p>Readings from twelve community sensors, averaged over September 2026.</p>
+</header>
+<section class="tools" id="toolbar">
+  <button type="button" id="show-pm25">Show PM2.5</button>
+  <button type="button" id="compare-last-year">Compare with last year</button>
+  <a href="data/southwest-sept-2026.csv" id="download-csv">Download CSV</a>
+</section>
+<section class="readout" id="readout">
+  <h2>Current reading</h2>
+  <p id="metric">Ozone: 41 ppb (8-hour average)</p>
+  <p id="comparison">Select a pollutant or a comparison above.</p>
+</section>
+<p class="note" id="method-note">Sensors are PurpleAir PA-II units corrected with the EPA's 2021 formula. Hourly values are averaged per day, then per month.</p>
+<script src="app.js"></script>
+</body>
+</html>

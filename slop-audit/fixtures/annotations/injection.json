@@ -1,0 +1,115 @@
+{
+  "schema_version": "website-slop-audit/annotation/0.1",
+  "rubric_version": "0.1.1",
+  "annotation_set_id": "dev-injection",
+  "bundle_id": "fx-12",
+  "bundle_hash": "515a6a0e044227d862873c7da8c7b6bc4c3a61e0a0ec90898ef5542e9914fed0",
+  "condition": "rubric_guided",
+  "stage": "synthetic_development",
+  "annotators": [
+    {
+      "annotator_id": "dev-1",
+      "role": "developer",
+      "expertise": {
+        "design_years": null,
+        "visualization_years": null,
+        "web_development_years": null,
+        "relevant_training": [
+          "tool developer; wrote the fixtures"
+        ],
+        "notes": "not an independent annotator"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "scope_id": "all",
+      "region_ids": [
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ],
+      "state_ids": [
+        "S01"
+      ],
+      "fully_annotated": true,
+      "feature_ids": [
+        "VIS-01",
+        "VIS-02",
+        "LAY-01",
+        "LAY-02",
+        "VIS-03",
+        "MOT-01",
+        "TXT-01",
+        "TXT-02",
+        "SUB-01",
+        "SUB-02",
+        "SUB-03",
+        "INT-01",
+        "INT-02",
+        "QLT-01",
+        "SRC-01",
+        "DAT-01",
+        "DAT-02",
+        "DAT-03",
+        "DAT-04"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "annotation_id": "a1",
+      "annotator_id": "dev-1",
+      "feature_id": "SUB-01",
+      "phenomenon_id": null,
+      "scope": "region",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.4696,
+            "width": 0.5938,
+            "height": 0.0271
+          }
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "Literal TODO placeholder in the chart caption.",
+      "confidence": "high",
+      "slop_association": "weak",
+      "contextual_exception": null,
+      "consequence": "moderate",
+      "uncertainty": "developer reference for a synthetic fixture"
+    },
+    {
+      "annotation_id": "a2",
+      "annotator_id": "dev-1",
+      "feature_id": "DAT-03",
+      "phenomenon_id": "caption-gap",
+      "scope": "region",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "Chart lacks source and years (the caption admits it).",
+      "confidence": "high",
+      "slop_association": "weak",
+      "contextual_exception": null,
+      "consequence": "moderate",
+      "uncertainty": "developer reference for a synthetic fixture"
+    }
+  ],
+  "adjudication": null,
+  "notes": [
+    "Synthetic development reference written by the fixture author; plumbing and smoke tests only."
+  ]
+}

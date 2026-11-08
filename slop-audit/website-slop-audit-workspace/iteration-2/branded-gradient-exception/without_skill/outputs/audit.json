@@ -1,0 +1,280 @@
+{
+  "schema": "ad-hoc-slop-audit/0.1",
+  "schema_note": "No audit schema was supplied with the bundle and no skill was used, so this structure was chosen for this audit. Evidence references use the bundle's own IDs (A=asset, R=region, T=text span, D=DOM element).",
+  "audit_id": "audit-fx-branded-gradient-001",
+  "created_at": "2026-11-07",
+  "subject": {
+    "bundle_id": "fx-branded-gradient",
+    "site_id": "site-branded-gradient",
+    "route": "/index.html",
+    "state_id": "S01",
+    "viewport_id": "V1",
+    "manifest_schema": "website-slop-audit/capture-bundle/0.1"
+  },
+  "integrity": {
+    "per_file": [
+      {
+        "path": "assets/A01.png",
+        "expected_sha256": "d7f1200b0b06e03e6fff527b34e81d6e0507c861730687e20f8100206cbac8fb",
+        "actual_sha256": "d7f1200b0b06e03e6fff527b34e81d6e0507c861730687e20f8100206cbac8fb",
+        "match": true
+      }
+    ],
+    "bundle_hash": {
+      "declared": "4a08e5079a1a892c4f09fffd361a9b4c729d8e88128af45c8c27e2814248237b",
+      "verified": false,
+      "note": "The recipe for the bundle-level hash is not documented in the bundle. Several plausible recipes were tried and none matched. This is recorded as unverified, not as tampering, because the only asset's hash matches."
+    }
+  },
+  "profile": {
+    "requested": "multimodal-core",
+    "definition_found_in_bundle": false,
+    "interpretation": "The page was judged on every modality the bundle captured (the viewport screenshot, DOM text spans, DOM elements and computed styles), checked against each other, using a core checklist of visual, copy and structural AI-slop signals. Interaction and source evidence were not captured, so they were not used.",
+    "modalities_used": ["screenshot", "text", "dom", "computed_style"],
+    "modalities_unavailable": ["interaction", "source"]
+  },
+  "context_used": {
+    "purpose": "Announce a three-day music festival: lineup, dates, and how to get there.",
+    "genre": "event promotion page",
+    "audience": "local festival-goers",
+    "constraints": [
+      {
+        "id": "K1",
+        "value": "The festival brand guide requires the orange-to-pink sunrise gradient on the wordmark and main headline.",
+        "status": "provided",
+        "provenance": "capture plan written by the fixture author (synthetic)",
+        "how_used": "Used as the basis for exempting the gradient headline (SIG-V01)."
+      }
+    ],
+    "blinding": {
+      "profile": "blinded",
+      "withheld_fields": ["award", "course_year", "creator_ai_report", "generator"],
+      "respected": true,
+      "note": "No attempt was made to recover the withheld fields or the target locator. Nothing in the verdict depends on who or what made the page."
+    }
+  },
+  "verdict": {
+    "slop_level": "low",
+    "slop_score": 0.1,
+    "score_scale": "0.0 = no AI-slop signals left after exemptions; 1.0 = pervasive template-style AI slop. This is an ordinal judgement, not a calibrated probability.",
+    "confidence": "medium",
+    "confidence_reason": "All three regions and all nine text spans were captured and agree with the screenshot. Confidence is held at medium because there is only one desktop viewport, there is no interaction or motion evidence, and the page is short.",
+    "summary": "The page does not read as AI slop. Its one well-known AI-slop tell, a headline filled with a gradient clipped to the text, is required by a documented brand constraint (K1), so it is exempted rather than counted. It is also used with restraint: only on the h1, with no other gradients, cards, shadows, rounded corners, emoji or filler copy anywhere. The copy is concrete and serves the page's stated purpose. The remaining issues are craft and accessibility problems, not slop: the gradient renders mostly orange because it spans the full block width, and the headline has low contrast.",
+    "counted_findings": 0,
+    "exempted_signals": 1,
+    "observations": 1,
+    "craft_notes": 2
+  },
+  "signals": [
+    {
+      "id": "SIG-V01",
+      "category": "visual",
+      "signal": "Gradient-clipped headline text (background-clip: text with a linear gradient)",
+      "status": "present_exempted",
+      "severity_if_counted": "medium",
+      "counted": false,
+      "evidence": [
+        {"ref": "D004", "detail": "computed background-image: linear-gradient(90deg, rgb(255, 138, 0), rgb(255, 45, 111)); background-clip: text; color: rgba(0, 0, 0, 0); 72px, weight 800, letter-spacing -1px"},
+        {"ref": "T001", "detail": "\"Sunrise Fest 2027\", the wordmark and main headline"},
+        {"ref": "A01", "region": "R01", "detail": "Screenshot shows an orange gradient headline. Pixel samples go from about rgb(255,138,1) at x=51 to rgb(255,94,51) at x≈600."},
+        {"ref": "K1", "detail": "Brand constraint requires this gradient on the wordmark and main headline"},
+        {"ref": "T009", "detail": "Page copy repeats the brand claim (supporting evidence only, not relied on by itself)"}
+      ],
+      "exemption": {
+        "basis": "provided_brand_constraint",
+        "constraint_ref": "K1",
+        "scope_check": "The gradient appears only on the element the constraint names (the h1 wordmark/headline). All other 11 captured elements have background-image: none, so it has not spread beyond the brand requirement.",
+        "palette_check": "The stops are the warm orange and pink named in the constraint, not the purple, indigo or blue gradient typical of generated templates.",
+        "decision": "Exempted. The page follows a stated brand rule and does not reach for a generic gradient effect."
+      }
+    },
+    {
+      "id": "SIG-V02",
+      "category": "visual",
+      "signal": "Default AI palette (purple, indigo or blue on white or near-black)",
+      "status": "absent",
+      "evidence": [
+        {"ref": "D001-D012", "detail": "Text color rgb(43, 29, 20), a warm dark brown, on every non-headline element"},
+        {"ref": "A01", "detail": "Page background sampled at rgb(255, 250, 243), a warm cream; the accents are only orange"}
+      ]
+    },
+    {
+      "id": "SIG-V03",
+      "category": "visual",
+      "signal": "Rounded cards with soft drop shadows, bento or feature grids",
+      "status": "absent",
+      "evidence": [
+        {"ref": "D001-D012", "detail": "border-radius: 0px and box-shadow: none on all captured elements"},
+        {"ref": "A01", "detail": "Single left-aligned column with no containers or grid"}
+      ]
+    },
+    {
+      "id": "SIG-V04",
+      "category": "visual",
+      "signal": "Decorative background gradients, glassmorphism, blurred blobs or mesh backgrounds",
+      "status": "absent",
+      "evidence": [
+        {"ref": "D001-D003", "detail": "Sections have a transparent background-color and background-image: none"},
+        {"ref": "A01", "detail": "Background is a flat cream with no variation at the sampled corners or center"}
+      ]
+    },
+    {
+      "id": "SIG-V05",
+      "category": "visual",
+      "signal": "Emoji or icon bullets, decorative icon rows, stock illustration",
+      "status": "absent",
+      "evidence": [
+        {"ref": "A01", "region": "R02", "detail": "Lineup uses a plain numbered list with bold day labels; there are no images or icons in the viewport"}
+      ]
+    },
+    {
+      "id": "SIG-V06",
+      "category": "visual",
+      "signal": "Template hero: centered headline, subhead and a primary/secondary CTA button pair",
+      "status": "absent",
+      "evidence": [
+        {"ref": "R01", "detail": "Hero is left-aligned with a headline and one factual subhead and has no buttons"}
+      ]
+    },
+    {
+      "id": "SIG-V07",
+      "category": "visual",
+      "signal": "Scroll-triggered fade or slide-in animations, hover-lift effects",
+      "status": "absent_limited_evidence",
+      "evidence": [
+        {"ref": "D001-D012", "detail": "animation-name: none and animation-duration: 0s everywhere. transition-property: all is the CSS initial value and does not show that a transition is declared."}
+      ],
+      "limitation": "Playback and interactions were not captured, so this rests on computed styles alone."
+    },
+    {
+      "id": "SIG-V08",
+      "category": "visual",
+      "signal": "Generic modern-startup type stack (for example Inter or another geometric sans everywhere)",
+      "status": "absent",
+      "evidence": [
+        {"ref": "D001-D012", "detail": "\"Trebuchet MS\", Arial, sans-serif throughout. This is a dated humanist choice, not the usual generated default; fonts_loaded is true for S01"}
+      ]
+    },
+    {
+      "id": "SIG-C01",
+      "category": "copy",
+      "signal": "Generic hype or filler copy (for example \"unforgettable experience\", \"where music meets magic\", \"join us for...\")",
+      "status": "absent",
+      "evidence": [
+        {"ref": "T002", "detail": "Names the genres, the venue and the dates"},
+        {"ref": "T008", "detail": "Gives the gate time, the nearest station and walking time, the price and the child policy"}
+      ]
+    },
+    {
+      "id": "SIG-C02",
+      "category": "copy",
+      "signal": "Formulaic rhetoric: stacked tricolons, em-dash asides, \"it's not just X, it's Y\"",
+      "status": "absent",
+      "evidence": [
+        {"ref": "T002", "detail": "\"folk, soul, and brass\" lists real programming, not a rhetorical triad. The only dash is an en dash in a date range (June 11–13), which is the correct use."}
+      ]
+    },
+    {
+      "id": "SIG-C03",
+      "category": "copy",
+      "signal": "Placeholder or suspiciously generic specifics (Lorem ipsum, \"Artist Name\", evenly patterned entries)",
+      "status": "absent",
+      "evidence": [
+        {"ref": "T004-T006", "detail": "The lineup entries vary in form (bands, a solo artist, a church choir, an \"X & the Y\" act) and in count per day (3/3/2)"}
+      ],
+      "note": "The context marks the fixture as synthetic, so whether these acts are real was not, and could not be, checked."
+    },
+    {
+      "id": "SIG-C04",
+      "category": "copy",
+      "signal": "Self-referential or meta copy that explains the design to the reader",
+      "status": "observation",
+      "counted": false,
+      "severity": "low",
+      "confidence": "low",
+      "evidence": [
+        {"ref": "T009", "detail": "\"The orange-to-pink sunrise gradient on our wordmark is part of the festival's identity, used on every poster since 2019.\""}
+      ],
+      "reasoning": "A visitor page rarely explains its own styling, and this sentence sits under \"Getting there\", where it has nothing to do with directions. Read one way, it is a design rationale aimed at a reviewer rather than a festival-goer. Read another, it is a short brand-heritage line. It is not one of the usual generated-copy patterns and it is specific (2019, posters), so it is recorded as an editorial oddity and not counted as slop."
+    },
+    {
+      "id": "SIG-S01",
+      "category": "structure",
+      "signal": "Boilerplate landing-page section sequence (Features, Testimonials, Pricing, FAQ, CTA) regardless of purpose",
+      "status": "absent",
+      "evidence": [
+        {"ref": "R01-R03", "detail": "Three sections (headline, lineup by day, getting there) map one-to-one onto the stated purpose: lineup, dates and travel"}
+      ]
+    },
+    {
+      "id": "SIG-S02",
+      "category": "structure",
+      "signal": "Polish without substance: the purpose-critical information is missing while the decoration is heavy",
+      "status": "absent",
+      "evidence": [
+        {"ref": "T002, T004-T008", "detail": "Dates, lineup, venue, transit, hours and price are all present; decoration is limited to the single brand gradient"}
+      ]
+    }
+  ],
+  "craft_notes": [
+    {
+      "id": "Q01",
+      "kind": "brand_fidelity",
+      "severity": "low",
+      "counted_as_slop": false,
+      "title": "The sunrise gradient renders orange to red-orange; the pink end never appears",
+      "evidence": [
+        {"ref": "D004", "detail": "The gradient runs 90deg across the h1 box. The h1 is block-level and about 1184px wide (T001 box width 0.925 × 1280)."},
+        {"ref": "A01", "detail": "Headline ink runs from x=51 to x=628, about 49% of the gradient. The rightmost sampled glyph color is about rgb(255,94,51), against the declared end stop of rgb(255,45,111)."}
+      ],
+      "recommendation": "Size the h1 to its text (display: inline-block or width: fit-content) so that the orange-to-pink gradient the brand guide asks for spans the wordmark."
+    },
+    {
+      "id": "Q02",
+      "kind": "accessibility",
+      "severity": "medium",
+      "counted_as_slop": false,
+      "title": "The headline has too little contrast against the cream background",
+      "evidence": [
+        {"ref": "A01", "detail": "Against bg rgb(255,250,243), the contrast ratio is 2.28:1 at the orange start and about 2.93:1 at the rightmost visible glyph. Even the unseen pink end stop would only reach 3.45:1."}
+      ],
+      "standard": "WCAG 2.x AA for large text needs 3:1. The rendered headline falls below that over its whole width.",
+      "recommendation": "Keep the brand hues but darken the stops, or add a darker background behind the wordmark. Body text (15.69:1) is fine."
+    }
+  ],
+  "coverage": {
+    "routes": {"captured": ["/index.html"], "not_attempted": "other routes, if any"},
+    "regions": {"R01": "captured", "R02": "captured", "R03": "captured"},
+    "viewports": {"V1 desktop 1280x800": "captured", "mobile": "not captured"},
+    "below_fold": "Not applicable for the captured content: the last ink row is y≈495 of 800, so the bottom ~38% of the viewport is empty page background and the whole captured page fits in one screenshot."
+  },
+  "assumptions": [
+    "\"multimodal-core\" is not defined anywhere in the bundle. It was interpreted as a cross-checked audit over the captured screenshot, text, DOM and computed-style evidence, using a core slop checklist.",
+    "The brand constraint K1 (status: provided) was trusted as audit context. Page copy T009 was treated as supporting evidence only; on-page text alone would not have been enough to grant the exemption.",
+    "An exemption was granted only because the gradient is limited to the element the constraint names and uses the colors it names. Gradients elsewhere, or different colors, would still have been counted.",
+    "Craft and accessibility problems are reported separately and do not raise the slop score. \"Slop\" here means generic, template-like, AI-default patterns, not general quality.",
+    "The output schema was invented for this audit because none was supplied."
+  ],
+  "limitations": [
+    "There is a single desktop viewport and no mobile capture.",
+    "No interaction or animation playback was captured. Motion was judged from computed styles only.",
+    "HTML comments, alt text, hidden elements, the page <title> and meta tags were not captured.",
+    "No source was available, so generator fingerprints in markup or class names could not be checked.",
+    "The bundle-level hash could not be reproduced because its recipe is undocumented. The per-file hash matched.",
+    "The fixture is marked synthetic, so real-world facts (acts, venue, station) were not checked."
+  ],
+  "method": {
+    "steps": [
+      "Read manifest.json and bundle.lock.json, and verified the SHA-256 of assets/A01.png.",
+      "Viewed A01.png and checked it against the region and text-span boxes.",
+      "Decoded A01.png pixels with a standard-library PNG reader to sample the background, the headline gradient's extent and colors, and where the text ends.",
+      "Computed WCAG contrast ratios for the headline stops and body text against the sampled background.",
+      "Checked computed styles for all 12 DOM elements against the visual signal checklist.",
+      "Read all 9 text spans against the copy signal checklist.",
+      "Applied the brand constraint as a scoped exemption for the gradient headline."
+    ],
+    "tools": ["shell (shasum)", "python3 standard library (zlib/struct PNG decode)", "image viewer"],
+    "skills_used": [],
+    "web_access": false
+  }
+}

@@ -1,0 +1,1 @@
+Baseline (no skill) outputs copied from iteration-1 to save usage; the baseline does not change between iterations. Its inputs used the iteration-1 bundles (descriptive ids).

@@ -1,0 +1,15 @@
+body { margin: 0; font-family: "Helvetica Neue", Arial, sans-serif; background: #f2f5f7; color: #12263a; }
+.top { padding: 40px 56px 20px; }
+.top h1 { font-size: 32px; margin: 0 0 8px; max-width: 900px; }
+.dek { font-size: 17px; margin: 0; color: #3d5266; max-width: 820px; }
+main { padding: 0 56px 56px; display: grid; gap: 20px; }
+.panel { background: #fff; border-radius: 10px; padding: 22px 26px; box-shadow: 0 1px 3px rgba(18, 38, 58, .12); }
+.controls { display: flex; gap: 8px; margin-bottom: 14px; }
+.controls button { font: inherit; padding: 6px 16px; border-radius: 999px; border: 1px solid #1f6f8b; background: #fff; color: #1f6f8b; cursor: pointer; }
+.controls button[aria-pressed="true"] { background: #1f6f8b; color: #fff; }
+.panel h2 { font-size: 20px; margin: 0 0 12px; }
+.bar { display: grid; grid-template-columns: 160px 1fr 50px; align-items: center; gap: 10px; margin: 8px 0; }
+.fill { display: block; height: 18px; background: #1f6f8b; border-radius: 3px; }
+.value { font-variant-numeric: tabular-nums; }
+.source { font-size: 13px; color: #5a6b7b; margin: 12px 0 0; }
+#summary { font-size: 17px; line-height: 1.55; margin: 0; }

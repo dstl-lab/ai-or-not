@@ -1,0 +1,57 @@
+{
+  "profiles_version": "0.1.0",
+  "analysis_profiles": {
+    "multimodal-core": {
+      "capability": "multimodal",
+      "modules": ["core"],
+      "max_images": 8,
+      "requires_any": [["screenshot", "text"]],
+      "description": "Full multimodal audit of any website genre with the core families A–C."
+    },
+    "multimodal-datastory": {
+      "capability": "multimodal",
+      "modules": ["core", "data-story"],
+      "max_images": 8,
+      "requires_any": [["screenshot", "text"]],
+      "description": "Multimodal audit plus the interactive data-story module (DAT-01 to DAT-04). Use for explorable explanations and visualization-heavy pages such as DSC 106 final projects."
+    },
+    "multimodal-datastory-media": {
+      "capability": "multimodal",
+      "modules": ["core", "data-story", "media"],
+      "max_images": 8,
+      "requires_any": [["screenshot", "text"]],
+      "description": "Multimodal data-story audit plus optional media inspection (MED-01)."
+    },
+    "text-only-core": {
+      "capability": "text_only",
+      "modules": ["core"],
+      "max_images": 0,
+      "requires_any": [["text"], ["source"]],
+      "description": "Reduced-capability audit from text, DOM, style, interaction, and source records only. Every check that needs screenshots is unassessed. Never ranked together with multimodal runs."
+    },
+    "text-only-datastory": {
+      "capability": "text_only",
+      "modules": ["core", "data-story"],
+      "max_images": 0,
+      "requires_any": [["text"], ["source"]],
+      "description": "Reduced-capability data-story audit. Chart-reading checks that need screenshots are unassessed unless a data excerpt is supplied."
+    }
+  },
+  "capture_profiles": {
+    "pilot-8": {
+      "max_images": 8,
+      "selection_rules": [
+        "desktop viewport 1280x800 at DPR 1: viewport screenshots at scroll offsets 0, 1 viewport height, and 2 viewport heights (3 images, fewer if the page is shorter)",
+        "mobile viewport 390x844 at DPR 2: viewport screenshots at scroll offsets 0 and 1 viewport height (2 images)",
+        "one before/after interaction pair: reuse an existing screenshot as the before image when it already shows the before state (1 or 2 images)",
+        "one full-page overview at the desktop viewport (1 image); fine text must be read from viewport screenshots or text spans, never from the shrunken overview"
+      ],
+      "note": "An example pilot budget. It does not guarantee full-page inspection; actual selection and coverage are recorded in each bundle."
+    },
+    "custom": {
+      "max_images": 8,
+      "selection_rules": ["Images chosen by hand or by a capture plan; the plan and coverage must be recorded in the manifest."],
+      "note": "For supplied bundles that do not follow pilot-8."
+    }
+  }
+}

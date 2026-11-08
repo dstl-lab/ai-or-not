@@ -1,0 +1,273 @@
+{
+  "primary_metric": "strict accepted-finding micro F1 on fully annotated assessable scopes",
+  "iou_threshold": 0.5,
+  "systems_by_capability": {
+    "multimodal": {
+      "frozen-skill/claude-opus-5-5": {
+        "primary": {
+          "tp": 12.0,
+          "fp": 0.0,
+          "fn": 0.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "undefined": []
+        },
+        "macro_by_code": {
+          "precision": {
+            "mean": 1.0,
+            "n_defined": 11,
+            "n_total": 11
+          },
+          "recall": {
+            "mean": 1.0,
+            "n_defined": 11,
+            "n_total": 11
+          },
+          "f1": {
+            "mean": 1.0,
+            "n_defined": 11,
+            "n_total": 11
+          }
+        },
+        "macro_by_site": {
+          "precision": {
+            "mean": 1.0,
+            "n_defined": 4,
+            "n_total": 6
+          },
+          "recall": {
+            "mean": 1.0,
+            "n_defined": 4,
+            "n_total": 6
+          },
+          "f1": {
+            "mean": 1.0,
+            "n_defined": 4,
+            "n_total": 6
+          }
+        },
+        "per_code": {
+          "DAT-03": {
+            "tp": 2.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "DAT-04": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "INT-01": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "INT-02": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "LAY-01": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "SUB-01": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "SUB-03": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "TXT-01": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "VIS-01": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "VIS-02": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "VIS-03": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          }
+        },
+        "per_site": {
+          "fx-01": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "undefined": [
+              "precision",
+              "recall"
+            ],
+            "n_runs": 1
+          },
+          "fx-02": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "undefined": [
+              "precision",
+              "recall"
+            ],
+            "n_runs": 1
+          },
+          "fx-04": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": [],
+            "n_runs": 1
+          },
+          "fx-06": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": [],
+            "n_runs": 1
+          },
+          "fx-12": {
+            "tp": 2.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": [],
+            "n_runs": 1
+          },
+          "fx-15": {
+            "tp": 8.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": [],
+            "n_runs": 1
+          }
+        },
+        "false_alarm_breakdown": {},
+        "presence_recognition": {
+          "tp": 15.0,
+          "fp": 5.0,
+          "fn": 0.0,
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.8571428571428571,
+          "undefined": []
+        },
+        "localization": {
+          "matched_findings": 12.0,
+          "mean_region_state_jaccard": 0.7722222222222223,
+          "exact_region_state_rate": 0.5,
+          "box_pairs": 4,
+          "mean_box_iou": 0.44544087727953263,
+          "box_iou_at_threshold_rate": 0.25,
+          "null_box_where_reference_has_box": 0.0
+        },
+        "ordinal_agreement": {
+          "pairs": 12,
+          "exact": 0.3333333333333333,
+          "within_one": 1.0,
+          "spearman": 0.4879500364742666
+        },
+        "abstention_rate_in_annotated_scope": 0.16666666666666666,
+        "unreviewed_findings": 0.0,
+        "exploratory_candidates_reported_separately": 1.0,
+        "n_sites": 6
+      }
+    }
+  },
+  "evidence_validity": {},
+  "stability": {
+    "frozen-skill/claude-opus-5-5": {
+      "pairs": 0,
+      "mean_finding_set_jaccard": null
+    }
+  },
+  "operational": {
+    "frozen-skill/claude-opus-5-5": {
+      "runs": 6,
+      "schema_valid_rate": 1.0,
+      "integrity_valid_rate": 1.0,
+      "parse_failures": 0,
+      "retries_total": 0,
+      "median_latency_ms": 269723,
+      "mean_input_tokens": null,
+      "mean_output_tokens": null,
+      "cost": null,
+      "note": "Token units are provider-specific and not comparable as computational effort."
+    }
+  },
+  "unscored_runs": []
+}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where Portland's street trees are</title>
+<style>
+  body { margin: 0; font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif; color: #1f2a1f; background: #f7f9f4; }
+  nav { display: flex; align-items: center; gap: 18px; padding: 14px 48px; border-bottom: 1px solid #dfe6d8; font-size: 15px; }
+  nav .spacer { flex: 1; }
+  nav .kbd-hint { font-size: 13px; color: #5b6b58; border: 1px solid #c9d4c1; border-radius: 6px; padding: 3px 8px; background: #fff; }
+  .story { max-width: 780px; margin: 32px auto; }
+  .story h1 { font-size: 34px; margin: 0 0 10px; }
+  .story p { font-size: 18px; line-height: 1.55; }
+  .map { height: 260px; background: #dfe9d4; border-radius: 6px; display: grid; place-items: center; color: #4e5f49; }
+</style>
+</head>
+<body>
+<nav id="top-nav">
+  <strong>Portland Canopy Atlas</strong>
+  <a href="#method">Method</a>
+  <a href="#data">Data</a>
+  <span class="spacer"></span>
+  <span class="kbd-hint">⌘K Search</span>
+</nav>
+<article class="story" id="story">
+  <h1>Where Portland's street trees are, and where they are missing</h1>
+  <p>The 2025 street-tree census counted 236,000 trees. Neighborhoods east of 82nd Avenue have about one street tree per 24 feet of curb, half the density of the inner west side.</p>
+  <div class="map" id="map">Map of street-tree density by neighborhood (2025 census)</div>
+  <p id="method">Method: we divided census tree counts by curb length from the city's 2024 street centerline file.</p>
+</article>
+</body>
+</html>

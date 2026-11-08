@@ -1,0 +1,3984 @@
+{
+  "schema_note": "Ad-hoc structure defined by this audit (no official schema was available). Boxes: box_norm is relative to the asset; box_image_px is [x, y, w, h] in image pixels; page_css_y_range is the vertical position on the page in CSS px, in the layout of that asset's viewport (desktop V1 and mobile V2 pages have different heights).",
+  "audit_id": "AUD-fx-default-package-landing-noskill-1",
+  "audited_at": "2026-11-07",
+  "profile": {
+    "name": "multimodal-datastory",
+    "interpretation": "The 'multimodal-datastory' profile definition was not in the bundle, and no skills or other folders could be opened. It was interpreted as: (a) every finding cites evidence from captured modalities (text spans, DOM/computed style, screenshot pixels) and records which ones; (b) features are judged against what a data story needs (question, labelled data, narrative, sourcing, audience fit), so a SaaS marker matters most where it displaces data-story content.",
+    "modalities_available": {
+      "screenshot": true,
+      "text": true,
+      "dom": true,
+      "computed_style": true,
+      "interaction": false,
+      "source": false
+    },
+    "modalities_used": [
+      "screenshot",
+      "text",
+      "dom",
+      "computed_style"
+    ]
+  },
+  "bundle": {
+    "bundle_id": "fx-default-package-landing",
+    "site_id": "site-default-package-landing",
+    "schema_version": "website-slop-audit/capture-bundle/0.1",
+    "captured_at": "2026-11-07T22:39:34Z",
+    "bundle_hash_declared": "aa7d7ea0cde29851d0a1ad85368c3a0067084eb5238961e8977f78369eaa7b3b",
+    "bundle_hash_verified": false,
+    "bundle_hash_note": "algorithm unspecified, so not recomputed; manifest.json is not listed in the lock file",
+    "manifest_sha256": "ef687c2f3fa341da41f3004f73c7c7e195bcef43b84f5b915c255b71f39b8efa",
+    "asset_hash_checks": [
+      {
+        "asset_id": "A01",
+        "path": "assets/A01.png",
+        "sha256_actual": "35ebc43ec7486ff518092d1ac03829535d79b7bd169ec34cc3539257f77de336",
+        "matches_manifest": true,
+        "matches_lock": true
+      },
+      {
+        "asset_id": "A02",
+        "path": "assets/A02.png",
+        "sha256_actual": "a597a2f281bb97e365011d87fdee7464964cd7c1141d69b0d3b6ad015f301001",
+        "matches_manifest": true,
+        "matches_lock": true
+      },
+      {
+        "asset_id": "A03",
+        "path": "assets/A03.png",
+        "sha256_actual": "2a9c77bf41f380e824e96e13b0a8f09ed34042a2210353f520aeb3b875639c0b",
+        "matches_manifest": true,
+        "matches_lock": true
+      },
+      {
+        "asset_id": "A04",
+        "path": "assets/A04.png",
+        "sha256_actual": "fb98436a3c9d62de49ba33f304180403f5b6b9c5b627f779040d4032a6146a85",
+        "matches_manifest": true,
+        "matches_lock": true
+      },
+      {
+        "asset_id": "A05",
+        "path": "assets/A05.png",
+        "sha256_actual": "a208369966c1a266a3e0529edfa14e1f7f44c84d30ecfb4977f245ea8e6e9459",
+        "matches_manifest": true,
+        "matches_lock": true
+      },
+      {
+        "asset_id": "A06",
+        "path": "assets/A06.png",
+        "sha256_actual": "f248af5f71a286ec68a006fc6c5e92f2ceedbf04f82dc8f02bc09baaced3e548",
+        "matches_manifest": true,
+        "matches_lock": true
+      }
+    ],
+    "all_assets_match": true,
+    "routes_captured": [
+      "/index.html"
+    ],
+    "viewports": [
+      {
+        "viewport_id": "V1",
+        "device": "desktop",
+        "css_width": 1280,
+        "css_height": 800,
+        "device_pixel_ratio": 1
+      },
+      {
+        "viewport_id": "V2",
+        "device": "mobile",
+        "css_width": 390,
+        "css_height": 844,
+        "device_pixel_ratio": 2
+      }
+    ]
+  },
+  "context_used": {
+    "purpose": "Present Seattle library visit data from a student data project.",
+    "genre": "interactive data story (explorable explanation)",
+    "audience": "course instructors and classmates"
+  },
+  "verdict": {
+    "saas_template_resemblance": "high",
+    "datastory_fulfilment": "low",
+    "ai_generation": "not assessed (out of scope; provenance blinded)",
+    "summary": "All six regions follow a SaaS landing-page template: launch eyebrow, gradient-word hero, buzzword subhead, glowing CTA, vanity stat strip, three-up emoji feature cards, product FAQ, closing CTA band, and a dark violet/blue theme in default framework colours. The data story itself is one unlabeled five-bar chart with a two-word caption, placed fifth of six sections, and no visible text mentions Seattle, sources or findings. The mobile layout does not reflow its card rows, which suggests a template that was only partly adapted.",
+    "counts": {
+      "saas_template_markers": 12,
+      "strong_markers": 9,
+      "datastory_gaps": 5,
+      "craft_defects": 1,
+      "regions_with_template_markers": "6 of 6"
+    }
+  },
+  "metrics": {
+    "page_height_css_px": 1775,
+    "visible_text_spans": 33,
+    "visible_words": 106,
+    "chart_section_share_of_height": 0.203,
+    "chart_section_share_of_words": 0.085,
+    "first_data_mark_page_y_css": 1343,
+    "charts": 1,
+    "chart_labels": 0,
+    "mentions_of_seattle": 0
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "category": "saas_template_marker",
+      "pattern": "product-launch hero eyebrow with sparkle emoji",
+      "title": "Hero opens by announcing a product: \"✨ INTRODUCING LIBRARYPULSE\"",
+      "description": "The first text on the page is an uppercase, widely tracked eyebrow that launches an invented product name (LibraryPulse) with a sparkle emoji. Product-launch framing is the standard opener of SaaS landing templates; a data story would normally open on its question or subject (Seattle library visits).",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "medium",
+      "modalities": [
+        "text",
+        "computed_style",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "span_id": "T001",
+          "text": "✨ INTRODUCING LIBRARYPULSE",
+          "region_id": "R01",
+          "element_id": "D007",
+          "selector": "#hero > p:nth-of-type(1)",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.09,
+                "width": 0.5625,
+                "height": 0.0362
+              },
+              "box_image_px": [
+                64,
+                72,
+                720,
+                29
+              ],
+              "page_css_y_range": [
+                72,
+                101
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.0406,
+                "width": 0.5625,
+                "height": 0.0163
+              },
+              "box_image_px": [
+                64,
+                72,
+                720,
+                29
+              ],
+              "page_css_y_range": [
+                72,
+                101
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "text_span",
+          "ref": "T001",
+          "value": "✨ INTRODUCING LIBRARYPULSE"
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D007",
+          "selector": "#hero > p:nth-of-type(1)",
+          "computed_style": {
+            "font-size": "19px",
+            "text-transform": "uppercase",
+            "letter-spacing": "4.18px",
+            "color": "rgb(196, 196, 216)"
+          }
+        },
+        {
+          "type": "note",
+          "value": "letter-spacing 4.18px on 19px text = 0.22em tracking"
+        },
+        {
+          "type": "screenshot",
+          "ref": "A05",
+          "value": "On mobile the eyebrow wraps to two lines and stays at 0.22em tracking (region R01 in A05)."
+        }
+      ]
+    },
+    {
+      "id": "F02",
+      "category": "saas_template_marker",
+      "pattern": "aspirational headline with one gradient-filled keyword",
+      "title": "H1 \"Unlock the future of library insights\" with \"future\" in violet-to-blue gradient text",
+      "description": "56px/700 headline built from the generic 'Unlock the future of X' formula. The single word \"future\" is filled with a horizontal violet-to-blue gradient. The gradient is visible in the screenshots only; the inner element carrying it is not in the DOM capture (D008 is the whole h1).",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "medium",
+      "modalities": [
+        "text",
+        "computed_style",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "span_id": "T002",
+          "text": "Unlock the future of library insights",
+          "region_id": "R01",
+          "element_id": "D008",
+          "selector": "#hero > h1",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.1588,
+                "width": 0.7031,
+                "height": 0.147
+              },
+              "box_image_px": [
+                64,
+                127,
+                900,
+                118
+              ],
+              "page_css_y_range": [
+                127,
+                245
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.0715,
+                "width": 0.7031,
+                "height": 0.0663
+              },
+              "box_image_px": [
+                64,
+                127,
+                900,
+                118
+              ],
+              "page_css_y_range": [
+                127,
+                245
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "asset_id": "A01",
+          "asset_kind": "viewport_screenshot",
+          "viewport_id": "V1",
+          "what": "gradient-filled word \"future\" (bounding box of violet/blue glyph pixels)",
+          "box_image_px": [
+            368,
+            137,
+            156,
+            40
+          ],
+          "box_css_px_in_viewport": [
+            368,
+            137,
+            156,
+            40
+          ],
+          "page_css_y_range": [
+            137,
+            177
+          ],
+          "source": "pixel measurement by this audit (PNG decoded and scanned)"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "text_span",
+          "ref": "T002",
+          "value": "Unlock the future of library insights"
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D008",
+          "selector": "#hero > h1",
+          "computed_style": {
+            "font-size": "56px",
+            "font-weight": "700",
+            "color": "rgb(231, 231, 242)"
+          }
+        },
+        {
+          "type": "pixel_sample",
+          "ref": "A01",
+          "value": "leftmost glyph pixels of \"future\" ~rgb(166,139,250); rightmost ~rgb(98,164,250); the rest of the h1 is flat rgb(231,231,242)"
+        },
+        {
+          "type": "note",
+          "value": "Sampled endpoints sit within 1-2 units of Tailwind's default violet-400 (#a78bfa) and blue-400 (#60a5fa). That match is an inference from pixels, not from captured CSS."
+        }
+      ]
+    },
+    {
+      "id": "F03",
+      "category": "saas_template_marker",
+      "pattern": "buzzword value-proposition subhead",
+      "title": "Subhead is stacked marketing vocabulary with no reference to the data",
+      "description": "The subhead piles up platform-marketing terms (\"Our platform empowers you\", \"unlock powerful insights\", \"transform the way you see data\", \"Reimagine what's possible\", \"next-generation analytics\"). It names no dataset, place, period or finding. It could be pasted unchanged onto any analytics product.",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "high",
+      "modalities": [
+        "text"
+      ],
+      "locations": [
+        {
+          "span_id": "T003",
+          "text": "Our platform empowers you to unlock powerful insights and transform the way you see data. Reimagine what's possible with next-generation analytics.",
+          "region_id": "R01",
+          "element_id": "D009",
+          "selector": "#hero > p:nth-of-type(2)",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.3282,
+                "width": 0.5625,
+                "height": 0.0575
+              },
+              "box_image_px": [
+                64,
+                263,
+                720,
+                46
+              ],
+              "page_css_y_range": [
+                263,
+                309
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.1479,
+                "width": 0.5625,
+                "height": 0.0259
+              },
+              "box_image_px": [
+                64,
+                263,
+                720,
+                46
+              ],
+              "page_css_y_range": [
+                263,
+                308
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "text_span",
+          "ref": "T003",
+          "value": "Our platform empowers you to unlock powerful insights and transform the way you see data. Reimagine what's possible with next-generation analytics."
+        }
+      ]
+    },
+    {
+      "id": "F04",
+      "category": "saas_template_marker",
+      "pattern": "glowing gradient CTA button with arrow, repeated top and bottom",
+      "title": "Two gradient pill CTAs (\"Get started →\", \"Start exploring →\") with violet glow",
+      "description": "Both buttons share one recipe: 90deg violet-600 to blue-500 gradient, 12px radius, 24px violet outer glow, white label ending in an arrow. A hero CTA and a closing CTA are the standard SaaS conversion bookends. On a class data story there is nothing to 'get started' with, and the link targets were not captured.",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "low",
+      "modalities": [
+        "text",
+        "computed_style",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "span_id": "T004",
+          "text": "Get started →",
+          "region_id": "R01",
+          "element_id": "D010",
+          "selector": "#hero > a",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.4182,
+                "width": 0.1131,
+                "height": 0.0537
+              },
+              "box_image_px": [
+                64,
+                335,
+                145,
+                43
+              ],
+              "page_css_y_range": [
+                335,
+                378
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.1885,
+                "width": 0.1131,
+                "height": 0.0242
+              },
+              "box_image_px": [
+                64,
+                335,
+                145,
+                43
+              ],
+              "page_css_y_range": [
+                335,
+                378
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T033",
+          "text": "Start exploring →",
+          "region_id": "R06",
+          "element_id": "D039",
+          "selector": "#final-cta > a",
+          "appearances": [
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.4339,
+                "y": 0.8568,
+                "width": 0.1323,
+                "height": 0.0537
+              },
+              "box_image_px": [
+                555,
+                685,
+                169,
+                43
+              ],
+              "page_css_y_range": [
+                1660,
+                1703
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.4339,
+                "y": 0.9354,
+                "width": 0.1323,
+                "height": 0.0242
+              },
+              "box_image_px": [
+                555,
+                1660,
+                169,
+                43
+              ],
+              "page_css_y_range": [
+                1660,
+                1703
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "computed_style",
+          "element_id": "D010",
+          "selector": "#hero > a",
+          "computed_style": {
+            "background-image": "linear-gradient(90deg, rgb(124, 58, 237), rgb(59, 130, 246))",
+            "border-radius": "12px",
+            "box-shadow": "rgba(124, 58, 237, 0.6) 0px 0px 24px 0px",
+            "color": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D039",
+          "selector": "#final-cta > a",
+          "computed_style": {
+            "background-image": "linear-gradient(90deg, rgb(124, 58, 237), rgb(59, 130, 246))",
+            "border-radius": "12px",
+            "box-shadow": "rgba(124, 58, 237, 0.6) 0px 0px 24px 0px",
+            "color": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "type": "pixel_sample",
+          "ref": "A01",
+          "value": "button left edge rgb(122,60,237), right edge rgb(61,129,246)"
+        }
+      ]
+    },
+    {
+      "id": "F05",
+      "category": "saas_template_marker",
+      "pattern": "vanity metric strip",
+      "title": "Stat strip \"10x / 99% / 24/7\" of marketing claims, not data",
+      "description": "Three equal bordered cards with big bold numbers: \"10x Faster insights\", \"99% Accuracy\", \"24/7 Always-on analytics\". None of them comes from the library dataset, none has a referent (10x faster than what? accuracy of what?), and '24/7' means nothing for a static page. On a data story this is the most prominent number slot on the page, and it holds the only numerals besides section numbers.",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "high",
+      "modalities": [
+        "text",
+        "computed_style",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "region_id": "R02",
+          "region_name": "statistic strip",
+          "selector": "#stats",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.542,
+                "width": 1.0,
+                "height": 0.1812
+              },
+              "box_image_px": [
+                0,
+                434,
+                1280,
+                145
+              ],
+              "page_css_y_range": [
+                434,
+                579
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.2443,
+                "width": 1.0,
+                "height": 0.0817
+              },
+              "box_image_px": [
+                0,
+                434,
+                1280,
+                145
+              ],
+              "page_css_y_range": [
+                434,
+                579
+              ]
+            },
+            {
+              "asset_id": "A05",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V2",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.7893,
+                "width": 1.0,
+                "height": 0.1931
+              },
+              "box_image_px": [
+                0,
+                1332,
+                780,
+                326
+              ],
+              "page_css_y_range": [
+                666,
+                829
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "span_id": "T005",
+          "text": "10x",
+          "region_id": "R02",
+          "element_id": "D011",
+          "selector": "#stats > div:nth-of-type(1) > b",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.068,
+                "y": 0.5707,
+                "width": 0.2536,
+                "height": 0.0512
+              },
+              "box_image_px": [
+                87,
+                457,
+                325,
+                41
+              ],
+              "page_css_y_range": [
+                457,
+                498
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.068,
+                "y": 0.2572,
+                "width": 0.2536,
+                "height": 0.0231
+              },
+              "box_image_px": [
+                87,
+                457,
+                325,
+                41
+              ],
+              "page_css_y_range": [
+                457,
+                498
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T007",
+          "text": "99%",
+          "region_id": "R02",
+          "element_id": "D013",
+          "selector": "#stats > div:nth-of-type(2) > b",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3732,
+                "y": 0.5707,
+                "width": 0.2536,
+                "height": 0.0512
+              },
+              "box_image_px": [
+                478,
+                457,
+                325,
+                41
+              ],
+              "page_css_y_range": [
+                457,
+                498
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3732,
+                "y": 0.2572,
+                "width": 0.2536,
+                "height": 0.0231
+              },
+              "box_image_px": [
+                478,
+                457,
+                325,
+                41
+              ],
+              "page_css_y_range": [
+                457,
+                498
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T009",
+          "text": "24/7",
+          "region_id": "R02",
+          "element_id": "D015",
+          "selector": "#stats > div:nth-of-type(3) > b",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6784,
+                "y": 0.5707,
+                "width": 0.2536,
+                "height": 0.0512
+              },
+              "box_image_px": [
+                868,
+                457,
+                325,
+                41
+              ],
+              "page_css_y_range": [
+                457,
+                498
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6784,
+                "y": 0.2572,
+                "width": 0.2536,
+                "height": 0.0231
+              },
+              "box_image_px": [
+                868,
+                457,
+                325,
+                41
+              ],
+              "page_css_y_range": [
+                457,
+                498
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "text_span",
+          "ref": "T005+T006",
+          "value": "10x / Faster insights"
+        },
+        {
+          "type": "text_span",
+          "ref": "T007+T008",
+          "value": "99% / Accuracy"
+        },
+        {
+          "type": "text_span",
+          "ref": "T009+T010",
+          "value": "24/7 / Always-on analytics"
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D011",
+          "selector": "#stats > div:nth-of-type(1) > b",
+          "computed_style": {
+            "font-size": "34px",
+            "font-weight": "700"
+          }
+        },
+        {
+          "type": "pixel_sample",
+          "ref": "A01",
+          "value": "card fill rgb(23,23,32), 1px border rgb(46,46,54) on page background rgb(11,11,20); card containers are not in dom_elements, so radius and border come from pixels"
+        }
+      ]
+    },
+    {
+      "id": "F06",
+      "category": "saas_template_marker",
+      "pattern": "three-up feature cards with identical emoji icon tiles",
+      "title": "\"Everything you need, nothing you don't\" over three feature cards with the same ✨ icon",
+      "description": "A stock SaaS headline sits over a three-column card grid. Each card has the same ✨ emoji in a 135deg violet-to-blue gradient tile with 12px radius, a two-word benefit title (\"Seamless Data\", \"Powerful Insights\") and a generic one-line blurb. The cards cast a violet-tinted glow. The third card, \"Team Credits\", reuses the feature-card slot for the authors' credit line. Using one icon for all three cards suggests template placeholders were left unchanged.",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "medium",
+      "modalities": [
+        "text",
+        "computed_style",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "region_id": "R03",
+          "region_name": "feature cards",
+          "selector": "#features",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.7232,
+                "width": 1.0,
+                "height": 0.2768
+              },
+              "box_image_px": [
+                0,
+                579,
+                1280,
+                221
+              ],
+              "page_css_y_range": [
+                579,
+                800
+              ]
+            },
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 1.0,
+                "height": 0.152
+              },
+              "box_image_px": [
+                0,
+                0,
+                1280,
+                122
+              ],
+              "page_css_y_range": [
+                800,
+                922
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.326,
+                "width": 1.0,
+                "height": 0.1932
+              },
+              "box_image_px": [
+                0,
+                579,
+                1280,
+                343
+              ],
+              "page_css_y_range": [
+                579,
+                922
+              ]
+            },
+            {
+              "asset_id": "A05",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V2",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.9824,
+                "width": 1.0,
+                "height": 0.0176
+              },
+              "box_image_px": [
+                0,
+                1658,
+                780,
+                30
+              ],
+              "page_css_y_range": [
+                829,
+                844
+              ]
+            },
+            {
+              "asset_id": "A06",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V2",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 1.0,
+                "height": 0.6104
+              },
+              "box_image_px": [
+                0,
+                0,
+                780,
+                1030
+              ],
+              "page_css_y_range": [
+                844,
+                1359
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "span_id": "T013",
+          "text": "Everything you need, nothing you don't",
+          "region_id": "R03",
+          "element_id": "D019",
+          "selector": "#features > h2",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.8232,
+                "width": 0.9,
+                "height": 0.0462
+              },
+              "box_image_px": [
+                64,
+                659,
+                1152,
+                37
+              ],
+              "page_css_y_range": [
+                659,
+                696
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.371,
+                "width": 0.9,
+                "height": 0.0208
+              },
+              "box_image_px": [
+                64,
+                659,
+                1152,
+                37
+              ],
+              "page_css_y_range": [
+                659,
+                695
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T014",
+          "text": "✨",
+          "region_id": "R03",
+          "element_id": "D020",
+          "selector": "#features > div > div:nth-of-type(1) > div",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.068,
+                "y": 0.9207,
+                "width": 0.0312,
+                "height": 0.05
+              },
+              "box_image_px": [
+                87,
+                737,
+                40,
+                40
+              ],
+              "page_css_y_range": [
+                737,
+                777
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.068,
+                "y": 0.415,
+                "width": 0.0312,
+                "height": 0.0225
+              },
+              "box_image_px": [
+                87,
+                737,
+                40,
+                40
+              ],
+              "page_css_y_range": [
+                737,
+                777
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T017",
+          "text": "✨",
+          "region_id": "R03",
+          "element_id": "D023",
+          "selector": "#features > div > div:nth-of-type(2) > div",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.9207,
+                "width": 0.0312,
+                "height": 0.05
+              },
+              "box_image_px": [
+                477,
+                737,
+                40,
+                40
+              ],
+              "page_css_y_range": [
+                737,
+                777
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.415,
+                "width": 0.0312,
+                "height": 0.0225
+              },
+              "box_image_px": [
+                477,
+                737,
+                40,
+                40
+              ],
+              "page_css_y_range": [
+                737,
+                777
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T020",
+          "text": "✨",
+          "region_id": "R03",
+          "element_id": "D026",
+          "selector": "#features > div > div:nth-of-type(3) > div",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.9207,
+                "width": 0.0312,
+                "height": 0.05
+              },
+              "box_image_px": [
+                867,
+                737,
+                40,
+                40
+              ],
+              "page_css_y_range": [
+                737,
+                777
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.415,
+                "width": 0.0312,
+                "height": 0.0225
+              },
+              "box_image_px": [
+                867,
+                737,
+                40,
+                40
+              ],
+              "page_css_y_range": [
+                737,
+                777
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T015",
+          "text": "Seamless Data",
+          "region_id": "R03",
+          "element_id": "D021",
+          "selector": "#features > div > div:nth-of-type(1) > h3",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.068,
+                "y": 0.9857,
+                "width": 0.2547,
+                "height": 0.0143
+              },
+              "box_image_px": [
+                87,
+                789,
+                326,
+                11
+              ],
+              "page_css_y_range": [
+                789,
+                800
+              ]
+            },
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.068,
+                "y": 0.0,
+                "width": 0.2547,
+                "height": 0.0145
+              },
+              "box_image_px": [
+                87,
+                0,
+                326,
+                12
+              ],
+              "page_css_y_range": [
+                800,
+                812
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.068,
+                "y": 0.4443,
+                "width": 0.2547,
+                "height": 0.013
+              },
+              "box_image_px": [
+                87,
+                789,
+                326,
+                23
+              ],
+              "page_css_y_range": [
+                789,
+                812
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T018",
+          "text": "Powerful Insights",
+          "region_id": "R03",
+          "element_id": "D024",
+          "selector": "#features > div > div:nth-of-type(2) > h3",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.9857,
+                "width": 0.2547,
+                "height": 0.0143
+              },
+              "box_image_px": [
+                477,
+                789,
+                326,
+                11
+              ],
+              "page_css_y_range": [
+                789,
+                800
+              ]
+            },
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.0,
+                "width": 0.2547,
+                "height": 0.0145
+              },
+              "box_image_px": [
+                477,
+                0,
+                326,
+                12
+              ],
+              "page_css_y_range": [
+                800,
+                812
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.4443,
+                "width": 0.2547,
+                "height": 0.013
+              },
+              "box_image_px": [
+                477,
+                789,
+                326,
+                23
+              ],
+              "page_css_y_range": [
+                789,
+                812
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T021",
+          "text": "Team Credits",
+          "region_id": "R03",
+          "element_id": "D027",
+          "selector": "#features > div > div:nth-of-type(3) > h3",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.9857,
+                "width": 0.2547,
+                "height": 0.0143
+              },
+              "box_image_px": [
+                867,
+                789,
+                326,
+                11
+              ],
+              "page_css_y_range": [
+                789,
+                800
+              ]
+            },
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.0,
+                "width": 0.2547,
+                "height": 0.0145
+              },
+              "box_image_px": [
+                867,
+                0,
+                326,
+                12
+              ],
+              "page_css_y_range": [
+                800,
+                812
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.4443,
+                "width": 0.2547,
+                "height": 0.013
+              },
+              "box_image_px": [
+                867,
+                789,
+                326,
+                23
+              ],
+              "page_css_y_range": [
+                789,
+                812
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "asset_id": "A02",
+          "asset_kind": "viewport_screenshot",
+          "viewport_id": "V1",
+          "what": "violet-tinted glow below the feature cards (rgb(17,17,35) fading to page rgb(11,11,20))",
+          "box_image_px": [
+            64,
+            86,
+            1152,
+            24
+          ],
+          "box_css_px_in_viewport": [
+            64,
+            86,
+            1152,
+            24
+          ],
+          "page_css_y_range": [
+            886,
+            910
+          ],
+          "source": "pixel measurement by this audit (PNG decoded and scanned)"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "text_span",
+          "ref": "T013",
+          "value": "Everything you need, nothing you don't"
+        },
+        {
+          "type": "text_span",
+          "ref": "T016",
+          "value": "Effortlessly explore data with a seamless, intuitive experience."
+        },
+        {
+          "type": "text_span",
+          "ref": "T019",
+          "value": "Unlock powerful insights that drive meaningful outcomes."
+        },
+        {
+          "type": "text_span",
+          "ref": "T022",
+          "value": "Built by four passionate students who love data."
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D020",
+          "selector": "#features > div > div:nth-of-type(1) > div",
+          "computed_style": {
+            "background-image": "linear-gradient(135deg, rgb(124, 58, 237), rgb(59, 130, 246))",
+            "border-radius": "12px"
+          }
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D023",
+          "selector": "#features > div > div:nth-of-type(2) > div",
+          "computed_style": {
+            "background-image": "linear-gradient(135deg, rgb(124, 58, 237), rgb(59, 130, 246))",
+            "border-radius": "12px"
+          }
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D026",
+          "selector": "#features > div > div:nth-of-type(3) > div",
+          "computed_style": {
+            "background-image": "linear-gradient(135deg, rgb(124, 58, 237), rgb(59, 130, 246))",
+            "border-radius": "12px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "F07",
+      "category": "saas_template_marker",
+      "pattern": "numbered monospace eyebrow plus tracked kicker on every section",
+      "title": "Every section heading repeats \"0N / LABEL\" (mono) + UPPERCASE kicker + H2",
+      "description": "Features, FAQ and Data sections all use the same three-line header: a numbered monospace label (\"01 / FEATURES\", \"02 / FAQ\", \"03 / DATA\", SF Mono 13px, indigo-400), then an uppercase 0.22em-tracked kicker (\"WHY IT MATTERS\", \"QUESTIONS\", \"THE DATA\", 12px, indigo-300), then a 30px/700 H2. The two labels say the same thing twice. This doubled eyebrow is a common decoration in dev-tool and AI-startup landing kits.",
+      "strength": "moderate",
+      "confidence": "high",
+      "datastory_impact": "low",
+      "modalities": [
+        "text",
+        "computed_style",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "span_id": "T011",
+          "text": "01 / FEATURES",
+          "region_id": "R03",
+          "element_id": "D017",
+          "selector": "#features > span",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.772,
+                "width": 0.0795,
+                "height": 0.0187
+              },
+              "box_image_px": [
+                64,
+                618,
+                102,
+                15
+              ],
+              "page_css_y_range": [
+                618,
+                633
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.3479,
+                "width": 0.0795,
+                "height": 0.0085
+              },
+              "box_image_px": [
+                64,
+                618,
+                102,
+                15
+              ],
+              "page_css_y_range": [
+                618,
+                633
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T012",
+          "text": "WHY IT MATTERS",
+          "region_id": "R03",
+          "element_id": "D018",
+          "selector": "#features > p",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.7907,
+                "width": 0.9,
+                "height": 0.0175
+              },
+              "box_image_px": [
+                64,
+                633,
+                1152,
+                14
+              ],
+              "page_css_y_range": [
+                633,
+                647
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.3564,
+                "width": 0.9,
+                "height": 0.0079
+              },
+              "box_image_px": [
+                64,
+                633,
+                1152,
+                14
+              ],
+              "page_css_y_range": [
+                633,
+                647
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T023",
+          "text": "02 / FAQ",
+          "region_id": "R04",
+          "element_id": "D029",
+          "selector": "#faq > span",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.2007,
+                "width": 0.0489,
+                "height": 0.0187
+              },
+              "box_image_px": [
+                64,
+                161,
+                63,
+                15
+              ],
+              "page_css_y_range": [
+                961,
+                976
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.5412,
+                "width": 0.0489,
+                "height": 0.0085
+              },
+              "box_image_px": [
+                64,
+                961,
+                63,
+                15
+              ],
+              "page_css_y_range": [
+                961,
+                976
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T024",
+          "text": "QUESTIONS",
+          "region_id": "R04",
+          "element_id": "D030",
+          "selector": "#faq > p",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.2195,
+                "width": 0.9,
+                "height": 0.0175
+              },
+              "box_image_px": [
+                64,
+                176,
+                1152,
+                14
+              ],
+              "page_css_y_range": [
+                976,
+                990
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.0007,
+                "width": 0.9,
+                "height": 0.0175
+              },
+              "box_image_px": [
+                64,
+                1,
+                1152,
+                14
+              ],
+              "page_css_y_range": [
+                976,
+                990
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.5496,
+                "width": 0.9,
+                "height": 0.0079
+              },
+              "box_image_px": [
+                64,
+                976,
+                1152,
+                14
+              ],
+              "page_css_y_range": [
+                976,
+                990
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T028",
+          "text": "03 / DATA",
+          "region_id": "R05",
+          "element_id": "D034",
+          "selector": "#chart-section > span",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.527,
+                "width": 0.055,
+                "height": 0.0187
+              },
+              "box_image_px": [
+                64,
+                422,
+                70,
+                15
+              ],
+              "page_css_y_range": [
+                1222,
+                1237
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.3082,
+                "width": 0.055,
+                "height": 0.0187
+              },
+              "box_image_px": [
+                64,
+                247,
+                70,
+                15
+              ],
+              "page_css_y_range": [
+                1222,
+                1237
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.6882,
+                "width": 0.055,
+                "height": 0.0085
+              },
+              "box_image_px": [
+                64,
+                1222,
+                70,
+                15
+              ],
+              "page_css_y_range": [
+                1222,
+                1237
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T029",
+          "text": "THE DATA",
+          "region_id": "R05",
+          "element_id": "D035",
+          "selector": "#chart-section > p:nth-of-type(1)",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.5457,
+                "width": 0.9,
+                "height": 0.0175
+              },
+              "box_image_px": [
+                64,
+                437,
+                1152,
+                14
+              ],
+              "page_css_y_range": [
+                1237,
+                1251
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.327,
+                "width": 0.9,
+                "height": 0.0175
+              },
+              "box_image_px": [
+                64,
+                262,
+                1152,
+                14
+              ],
+              "page_css_y_range": [
+                1237,
+                1251
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.6967,
+                "width": 0.9,
+                "height": 0.0079
+              },
+              "box_image_px": [
+                64,
+                1237,
+                1152,
+                14
+              ],
+              "page_css_y_range": [
+                1237,
+                1251
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "computed_style",
+          "element_id": "D017",
+          "selector": "#features > span",
+          "computed_style": {
+            "font-family": "\"SF Mono\", Menlo, monospace",
+            "font-size": "13px",
+            "color": "rgb(129, 140, 248)"
+          }
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D018",
+          "selector": "#features > p",
+          "computed_style": {
+            "font-size": "12px",
+            "text-transform": "uppercase",
+            "letter-spacing": "2.64px",
+            "color": "rgb(165, 180, 252)"
+          }
+        },
+        {
+          "type": "note",
+          "value": "the same styles repeat on D029/D030 (FAQ) and D034/D035 (Data)"
+        }
+      ]
+    },
+    {
+      "id": "F08",
+      "category": "saas_template_marker",
+      "pattern": "product FAQ accordion",
+      "title": "\"Frequently asked questions\" with \"What is LibraryPulse?\" / \"Who is it for?\"",
+      "description": "A details/summary accordion with product-onboarding questions. The FAQ comes before the data section. The answers are collapsed and were not captured, because hidden elements are not recorded and no interaction was captured.",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "medium",
+      "modalities": [
+        "text",
+        "dom",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "region_id": "R04",
+          "region_name": "question list",
+          "selector": "#faq",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.152,
+                "width": 1.0,
+                "height": 0.3262
+              },
+              "box_image_px": [
+                0,
+                122,
+                1280,
+                261
+              ],
+              "page_css_y_range": [
+                922,
+                1183
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 1.0,
+                "height": 0.2595
+              },
+              "box_image_px": [
+                0,
+                0,
+                1280,
+                208
+              ],
+              "page_css_y_range": [
+                975,
+                1183
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.5192,
+                "width": 1.0,
+                "height": 0.147
+              },
+              "box_image_px": [
+                0,
+                922,
+                1280,
+                261
+              ],
+              "page_css_y_range": [
+                922,
+                1183
+              ]
+            },
+            {
+              "asset_id": "A06",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V2",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.6104,
+                "width": 1.0,
+                "height": 0.3531
+              },
+              "box_image_px": [
+                0,
+                1030,
+                780,
+                596
+              ],
+              "page_css_y_range": [
+                1359,
+                1657
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "span_id": "T025",
+          "text": "Frequently asked questions",
+          "region_id": "R04",
+          "element_id": "D031",
+          "selector": "#faq > h2",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.252,
+                "width": 0.9,
+                "height": 0.0462
+              },
+              "box_image_px": [
+                64,
+                202,
+                1152,
+                37
+              ],
+              "page_css_y_range": [
+                1002,
+                1039
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.0332,
+                "width": 0.9,
+                "height": 0.0462
+              },
+              "box_image_px": [
+                64,
+                27,
+                1152,
+                37
+              ],
+              "page_css_y_range": [
+                1002,
+                1039
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.5643,
+                "width": 0.9,
+                "height": 0.0208
+              },
+              "box_image_px": [
+                64,
+                1002,
+                1152,
+                37
+              ],
+              "page_css_y_range": [
+                1002,
+                1039
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T026",
+          "text": "What is LibraryPulse?",
+          "region_id": "R04",
+          "element_id": "D032",
+          "selector": "#faq > details:nth-of-type(1) > summary",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.3357,
+                "width": 0.9,
+                "height": 0.025
+              },
+              "box_image_px": [
+                64,
+                269,
+                1152,
+                20
+              ],
+              "page_css_y_range": [
+                1069,
+                1089
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.117,
+                "width": 0.9,
+                "height": 0.025
+              },
+              "box_image_px": [
+                64,
+                94,
+                1152,
+                20
+              ],
+              "page_css_y_range": [
+                1069,
+                1089
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.602,
+                "width": 0.9,
+                "height": 0.0113
+              },
+              "box_image_px": [
+                64,
+                1069,
+                1152,
+                20
+              ],
+              "page_css_y_range": [
+                1069,
+                1089
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T027",
+          "text": "Who is it for?",
+          "region_id": "R04",
+          "element_id": "D033",
+          "selector": "#faq > details:nth-of-type(2) > summary",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.392,
+                "width": 0.9,
+                "height": 0.025
+              },
+              "box_image_px": [
+                64,
+                314,
+                1152,
+                20
+              ],
+              "page_css_y_range": [
+                1114,
+                1134
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.1732,
+                "width": 0.9,
+                "height": 0.025
+              },
+              "box_image_px": [
+                64,
+                139,
+                1152,
+                20
+              ],
+              "page_css_y_range": [
+                1114,
+                1134
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.6274,
+                "width": 0.9,
+                "height": 0.0113
+              },
+              "box_image_px": [
+                64,
+                1114,
+                1152,
+                20
+              ],
+              "page_css_y_range": [
+                1114,
+                1134
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "dom",
+          "ref": "D032",
+          "value": "#faq > details:nth-of-type(1) > summary"
+        },
+        {
+          "type": "dom",
+          "ref": "D033",
+          "value": "#faq > details:nth-of-type(2) > summary"
+        }
+      ]
+    },
+    {
+      "id": "F09",
+      "category": "saas_template_marker",
+      "pattern": "closing conversion band",
+      "title": "Closing band \"Ready to transform your data journey?\" + \"Start exploring →\"",
+      "description": "A centered rhetorical-question headline plus a gradient CTA: the stock last block of a SaaS landing page. A data story would normally end with a takeaway, the limitations, or the sources.",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "medium",
+      "modalities": [
+        "text",
+        "computed_style",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "region_id": "R06",
+          "region_name": "closing section",
+          "selector": "#final-cta",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.9295,
+                "width": 1.0,
+                "height": 0.0705
+              },
+              "box_image_px": [
+                0,
+                744,
+                1280,
+                56
+              ],
+              "page_css_y_range": [
+                1544,
+                1600
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.7107,
+                "width": 1.0,
+                "height": 0.2893
+              },
+              "box_image_px": [
+                0,
+                569,
+                1280,
+                231
+              ],
+              "page_css_y_range": [
+                1544,
+                1775
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.8696,
+                "width": 1.0,
+                "height": 0.1304
+              },
+              "box_image_px": [
+                0,
+                1544,
+                1280,
+                231
+              ],
+              "page_css_y_range": [
+                1544,
+                1775
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "span_id": "T032",
+          "text": "Ready to transform your data journey?",
+          "region_id": "R06",
+          "element_id": "D038",
+          "selector": "#final-cta > h2",
+          "appearances": [
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.7956,
+                "width": 0.9,
+                "height": 0.0362
+              },
+              "box_image_px": [
+                64,
+                636,
+                1152,
+                29
+              ],
+              "page_css_y_range": [
+                1611,
+                1640
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.9079,
+                "width": 0.9,
+                "height": 0.0163
+              },
+              "box_image_px": [
+                64,
+                1612,
+                1152,
+                29
+              ],
+              "page_css_y_range": [
+                1612,
+                1640
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T033",
+          "text": "Start exploring →",
+          "region_id": "R06",
+          "element_id": "D039",
+          "selector": "#final-cta > a",
+          "appearances": [
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.4339,
+                "y": 0.8568,
+                "width": 0.1323,
+                "height": 0.0537
+              },
+              "box_image_px": [
+                555,
+                685,
+                169,
+                43
+              ],
+              "page_css_y_range": [
+                1660,
+                1703
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.4339,
+                "y": 0.9354,
+                "width": 0.1323,
+                "height": 0.0242
+              },
+              "box_image_px": [
+                555,
+                1660,
+                169,
+                43
+              ],
+              "page_css_y_range": [
+                1660,
+                1703
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "text_span",
+          "ref": "T032",
+          "value": "Ready to transform your data journey?"
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D038",
+          "selector": "#final-cta > h2",
+          "computed_style": {
+            "font-size": "24px",
+            "font-weight": "700"
+          }
+        }
+      ]
+    },
+    {
+      "id": "F10",
+      "category": "saas_template_marker",
+      "pattern": "dark 'AI startup' theme built from framework-default colors",
+      "title": "Near-black page with violet/blue radial glows; every accent is a Tailwind default swatch",
+      "description": "Page background is rgb(11,11,20). The hero carries two radial glows: violet at 30% 20% and blue at 80% 0%. Every accent value captured matches a stock Tailwind CSS palette swatch exactly: violet-600 #7c3aed and blue-500 #3b82f6 (glows, CTAs, icon tiles), indigo-400 #818cf8 (section numbers), indigo-300 #a5b4fc (kickers), indigo-500 #6366f1 (chart bars, from pixels). The font stack is Inter first. Unmodified framework defaults are what a starter template ships with. The match shows default tokens were used; it does not prove which tool or library produced them.",
+      "strength": "moderate",
+      "confidence": "high",
+      "datastory_impact": "low",
+      "modalities": [
+        "computed_style",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "region_id": "R01",
+          "region_name": "opening section",
+          "selector": "#hero",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 1.0,
+                "height": 0.542
+              },
+              "box_image_px": [
+                0,
+                0,
+                1280,
+                434
+              ],
+              "page_css_y_range": [
+                0,
+                434
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 1.0,
+                "height": 0.2443
+              },
+              "box_image_px": [
+                0,
+                0,
+                1280,
+                434
+              ],
+              "page_css_y_range": [
+                0,
+                434
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "asset_id": "A02",
+          "asset_kind": "viewport_screenshot",
+          "viewport_id": "V1",
+          "what": "chart bars filled rgb(99,102,241) = #6366f1",
+          "box_image_px": [
+            77,
+            543,
+            180,
+            108
+          ],
+          "box_css_px_in_viewport": [
+            77,
+            543,
+            180,
+            108
+          ],
+          "page_css_y_range": [
+            1343,
+            1451
+          ],
+          "source": "pixel measurement by this audit (PNG decoded and scanned)"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "computed_style",
+          "element_id": "D001",
+          "selector": "#hero",
+          "computed_style": {
+            "background-image": "radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.45), rgba(0, 0, 0, 0) 55%), radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.35), rgba(0, 0, 0, 0) 50%)",
+            "font-family": "Inter, \"Helvetica Neue\", Arial, sans-serif"
+          }
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D017",
+          "selector": "#features > span",
+          "computed_style": {
+            "color": "rgb(129, 140, 248)"
+          }
+        },
+        {
+          "type": "computed_style",
+          "element_id": "D018",
+          "selector": "#features > p",
+          "computed_style": {
+            "color": "rgb(165, 180, 252)"
+          }
+        },
+        {
+          "type": "pixel_sample",
+          "ref": "A02",
+          "value": "page background rgb(11,11,20); bar fill rgb(99,102,241)"
+        },
+        {
+          "type": "mapping",
+          "value": {
+            "rgb(124,58,237)": "Tailwind violet-600 #7c3aed",
+            "rgb(59,130,246)": "Tailwind blue-500 #3b82f6",
+            "rgb(129,140,248)": "Tailwind indigo-400 #818cf8",
+            "rgb(165,180,252)": "Tailwind indigo-300 #a5b4fc",
+            "rgb(99,102,241)": "Tailwind indigo-500 #6366f1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "F11",
+      "category": "saas_template_marker",
+      "pattern": "SaaS landing section order with the data pushed down",
+      "title": "Page follows hero, stats, features, FAQ, data, CTA; the data is block 5 of 6",
+      "description": "The six regions follow the standard SaaS landing order. The chart section, the project's actual content, starts about 1183px down a 1775px page (two-thirds of the way), after the FAQ. Neither the desktop first viewport (A01) nor either mobile viewport (A05, A06) shows any data. Measured by height, about 80% of the page is template blocks and about 20% is the chart section (including its headers).",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "high",
+      "modalities": [
+        "dom",
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "region_id": "R01",
+          "region_name": "opening section",
+          "selector": "#hero",
+          "appearances": [
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 1.0,
+                "height": 0.2443
+              },
+              "box_image_px": [
+                0,
+                0,
+                1280,
+                434
+              ],
+              "page_css_y_range": [
+                0,
+                434
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "region_id": "R02",
+          "region_name": "statistic strip",
+          "selector": "#stats",
+          "appearances": [
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.2443,
+                "width": 1.0,
+                "height": 0.0817
+              },
+              "box_image_px": [
+                0,
+                434,
+                1280,
+                145
+              ],
+              "page_css_y_range": [
+                434,
+                579
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "region_id": "R03",
+          "region_name": "feature cards",
+          "selector": "#features",
+          "appearances": [
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.326,
+                "width": 1.0,
+                "height": 0.1932
+              },
+              "box_image_px": [
+                0,
+                579,
+                1280,
+                343
+              ],
+              "page_css_y_range": [
+                579,
+                922
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "region_id": "R04",
+          "region_name": "question list",
+          "selector": "#faq",
+          "appearances": [
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.5192,
+                "width": 1.0,
+                "height": 0.147
+              },
+              "box_image_px": [
+                0,
+                922,
+                1280,
+                261
+              ],
+              "page_css_y_range": [
+                922,
+                1183
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "region_id": "R05",
+          "region_name": "chart section",
+          "selector": "#chart-section",
+          "appearances": [
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.6663,
+                "width": 1.0,
+                "height": 0.2034
+              },
+              "box_image_px": [
+                0,
+                1183,
+                1280,
+                361
+              ],
+              "page_css_y_range": [
+                1183,
+                1544
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "region_id": "R06",
+          "region_name": "closing section",
+          "selector": "#final-cta",
+          "appearances": [
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.8696,
+                "width": 1.0,
+                "height": 0.1304
+              },
+              "box_image_px": [
+                0,
+                1544,
+                1280,
+                231
+              ],
+              "page_css_y_range": [
+                1544,
+                1775
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "metric",
+          "value": "R05 height in A04 = 0.2034 x 1775 = 361px of 1775px (20.3%)"
+        },
+        {
+          "type": "metric",
+          "value": "visible words: 106 in total, 9 in the chart section (8.5%)"
+        }
+      ]
+    },
+    {
+      "id": "F12",
+      "category": "saas_template_marker",
+      "pattern": "recycled marketing vocabulary",
+      "title": "\"insights\" x5, \"unlock\" x3, \"powerful\" x3 in 106 visible words",
+      "description": "Across all 33 visible text spans (106 words), 'insights' appears 5 times (T002, T003, T006, T018, T019), 'unlock' 3 times (T002, T003, T019), 'powerful' 3 times (T003, T018, T019), and 'seamless' (T015, T016) and 'transform' (T003, T032) twice each. Repeating a small set of benefit words is typical of filler template copy.",
+      "strength": "moderate",
+      "confidence": "high",
+      "datastory_impact": "medium",
+      "modalities": [
+        "text"
+      ],
+      "locations": [
+        {
+          "span_id": "T002",
+          "text": "Unlock the future of library insights",
+          "region_id": "R01",
+          "element_id": "D008",
+          "selector": "#hero > h1",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.1588,
+                "width": 0.7031,
+                "height": 0.147
+              },
+              "box_image_px": [
+                64,
+                127,
+                900,
+                118
+              ],
+              "page_css_y_range": [
+                127,
+                245
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.0715,
+                "width": 0.7031,
+                "height": 0.0663
+              },
+              "box_image_px": [
+                64,
+                127,
+                900,
+                118
+              ],
+              "page_css_y_range": [
+                127,
+                245
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T003",
+          "text": "Our platform empowers you to unlock powerful insights and transform the way you see data. Reimagine what's possible with next-generation analytics.",
+          "region_id": "R01",
+          "element_id": "D009",
+          "selector": "#hero > p:nth-of-type(2)",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.3282,
+                "width": 0.5625,
+                "height": 0.0575
+              },
+              "box_image_px": [
+                64,
+                263,
+                720,
+                46
+              ],
+              "page_css_y_range": [
+                263,
+                309
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.1479,
+                "width": 0.5625,
+                "height": 0.0259
+              },
+              "box_image_px": [
+                64,
+                263,
+                720,
+                46
+              ],
+              "page_css_y_range": [
+                263,
+                308
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T018",
+          "text": "Powerful Insights",
+          "region_id": "R03",
+          "element_id": "D024",
+          "selector": "#features > div > div:nth-of-type(2) > h3",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.9857,
+                "width": 0.2547,
+                "height": 0.0143
+              },
+              "box_image_px": [
+                477,
+                789,
+                326,
+                11
+              ],
+              "page_css_y_range": [
+                789,
+                800
+              ]
+            },
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.0,
+                "width": 0.2547,
+                "height": 0.0145
+              },
+              "box_image_px": [
+                477,
+                0,
+                326,
+                12
+              ],
+              "page_css_y_range": [
+                800,
+                812
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.4443,
+                "width": 0.2547,
+                "height": 0.013
+              },
+              "box_image_px": [
+                477,
+                789,
+                326,
+                23
+              ],
+              "page_css_y_range": [
+                789,
+                812
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T019",
+          "text": "Unlock powerful insights that drive meaningful outcomes.",
+          "region_id": "R03",
+          "element_id": "D025",
+          "selector": "#features > div > div:nth-of-type(2) > p",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.022,
+                "width": 0.2547,
+                "height": 0.0563
+              },
+              "box_image_px": [
+                477,
+                18,
+                326,
+                45
+              ],
+              "page_css_y_range": [
+                818,
+                863
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.3727,
+                "y": 0.4606,
+                "width": 0.2547,
+                "height": 0.0254
+              },
+              "box_image_px": [
+                477,
+                818,
+                326,
+                45
+              ],
+              "page_css_y_range": [
+                818,
+                863
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "metric",
+          "value": {
+            "insights": 5,
+            "unlock": 3,
+            "powerful": 3,
+            "seamless": 2,
+            "transform": 2,
+            "total_words": 106
+          }
+        }
+      ]
+    },
+    {
+      "id": "G01",
+      "category": "datastory_gap",
+      "pattern": "single unlabeled placeholder-like chart",
+      "title": "\"Visits over time\" is five bars with no axes, labels, values, units, periods or source",
+      "description": "The page's only chart is 5 indigo bars, 28px wide with 10px gaps, heights 108/102/30/72/96px. The bars sit in the left 180px of a 1152px-wide container, so about 84% of the chart box is empty. There are no axis lines, tick labels, value labels, time labels, legend or source. No text spans fall inside the chart box, and the capture has no SVG or canvas element. The caption \"Visits trend.\" states no finding.",
+      "strength": "strong",
+      "confidence": "high",
+      "datastory_impact": "high",
+      "modalities": [
+        "screenshot",
+        "text",
+        "dom"
+      ],
+      "locations": [
+        {
+          "region_id": "R05",
+          "region_name": "chart section",
+          "selector": "#chart-section",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.4782,
+                "width": 1.0,
+                "height": 0.4512
+              },
+              "box_image_px": [
+                0,
+                383,
+                1280,
+                361
+              ],
+              "page_css_y_range": [
+                1183,
+                1544
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.2595,
+                "width": 1.0,
+                "height": 0.4512
+              },
+              "box_image_px": [
+                0,
+                208,
+                1280,
+                361
+              ],
+              "page_css_y_range": [
+                1183,
+                1544
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.6663,
+                "width": 1.0,
+                "height": 0.2034
+              },
+              "box_image_px": [
+                0,
+                1183,
+                1280,
+                361
+              ],
+              "page_css_y_range": [
+                1183,
+                1544
+              ]
+            },
+            {
+              "asset_id": "A06",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V2",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.9635,
+                "width": 1.0,
+                "height": 0.0365
+              },
+              "box_image_px": [
+                0,
+                1626,
+                780,
+                62
+              ],
+              "page_css_y_range": [
+                1657,
+                1688
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "asset_id": "A02",
+          "asset_kind": "viewport_screenshot",
+          "viewport_id": "V1",
+          "what": "chart container (fill rgb(21,21,29), border rgb(44,44,51))",
+          "box_image_px": [
+            64,
+            518,
+            1152,
+            146
+          ],
+          "box_css_px_in_viewport": [
+            64,
+            518,
+            1152,
+            146
+          ],
+          "page_css_y_range": [
+            1318,
+            1464
+          ],
+          "source": "pixel measurement by this audit (PNG decoded and scanned)"
+        },
+        {
+          "asset_id": "A02",
+          "asset_kind": "viewport_screenshot",
+          "viewport_id": "V1",
+          "what": "five bars (x 77-104, 115-142, 153-180, 191-218, 229-256; bottom y 650)",
+          "box_image_px": [
+            77,
+            543,
+            180,
+            108
+          ],
+          "box_css_px_in_viewport": [
+            77,
+            543,
+            180,
+            108
+          ],
+          "page_css_y_range": [
+            1343,
+            1451
+          ],
+          "source": "pixel measurement by this audit (PNG decoded and scanned)"
+        },
+        {
+          "span_id": "T030",
+          "text": "Visits over time",
+          "region_id": "R05",
+          "element_id": "D036",
+          "selector": "#chart-section > h2",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.5782,
+                "width": 0.9,
+                "height": 0.0462
+              },
+              "box_image_px": [
+                64,
+                463,
+                1152,
+                37
+              ],
+              "page_css_y_range": [
+                1263,
+                1300
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.3595,
+                "width": 0.9,
+                "height": 0.0462
+              },
+              "box_image_px": [
+                64,
+                288,
+                1152,
+                37
+              ],
+              "page_css_y_range": [
+                1263,
+                1300
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.7113,
+                "width": 0.9,
+                "height": 0.0208
+              },
+              "box_image_px": [
+                64,
+                1263,
+                1152,
+                37
+              ],
+              "page_css_y_range": [
+                1263,
+                1299
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T031",
+          "text": "Visits trend.",
+          "region_id": "R05",
+          "element_id": "D037",
+          "selector": "#chart-section > p:nth-of-type(2)",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.847,
+                "width": 0.9,
+                "height": 0.02
+              },
+              "box_image_px": [
+                64,
+                678,
+                1152,
+                16
+              ],
+              "page_css_y_range": [
+                1478,
+                1494
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.6282,
+                "width": 0.9,
+                "height": 0.02
+              },
+              "box_image_px": [
+                64,
+                503,
+                1152,
+                16
+              ],
+              "page_css_y_range": [
+                1478,
+                1494
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.8324,
+                "width": 0.9,
+                "height": 0.009
+              },
+              "box_image_px": [
+                64,
+                1478,
+                1152,
+                16
+              ],
+              "page_css_y_range": [
+                1478,
+                1493
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "pixel_measurement",
+          "ref": "A02",
+          "value": {
+            "bar_heights_px": [
+              108,
+              102,
+              30,
+              72,
+              96
+            ],
+            "bar_width_px": 28,
+            "gap_px": 10,
+            "bars_span_px": 180,
+            "container_width_px": 1152,
+            "share_of_width": 0.156
+          }
+        },
+        {
+          "type": "absence_check",
+          "value": "no text_spans fall inside A02 y 518-663 (T030 ends at y 0.6244 = 500px; T031 starts at y 0.847 = 678px)"
+        },
+        {
+          "type": "absence_check",
+          "value": "dom_elements contains no svg, canvas, axis or bar element"
+        }
+      ]
+    },
+    {
+      "id": "G02",
+      "category": "datastory_gap",
+      "pattern": "no narrative and no data claims",
+      "title": "No visible text names Seattle, a branch, a year, a count or a finding",
+      "description": "The stated purpose is Seattle library visit data. 'Seattle' appears 0 times in the 33 visible text spans, 'library' once as a standalone word (the H1), and 'visits' twice (the chart heading and caption). No sentence interprets the data. No numbers from the dataset appear anywhere; the only numerals are the marketing stats and section numbers.",
+      "strength": "strong",
+      "confidence": "medium",
+      "datastory_impact": "high",
+      "modalities": [
+        "text"
+      ],
+      "locations": [
+        {
+          "region_id": "R05",
+          "region_name": "chart section",
+          "selector": "#chart-section",
+          "appearances": [
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.6663,
+                "width": 1.0,
+                "height": 0.2034
+              },
+              "box_image_px": [
+                0,
+                1183,
+                1280,
+                361
+              ],
+              "page_css_y_range": [
+                1183,
+                1544
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "absence_check",
+          "value": "spans containing digits: T005, T007, T009 (stats), T011, T023, T028 (section numbers)"
+        },
+        {
+          "type": "scope_limit",
+          "value": "FAQ answers, alt text, HTML comments and hidden elements were not captured, so those may mention the data"
+        }
+      ]
+    },
+    {
+      "id": "G03",
+      "category": "datastory_gap",
+      "pattern": "no sourcing, method or named authors",
+      "title": "No data source, method note or author names; the credit is a feature card",
+      "description": "No visible element cites a dataset, links a source, or describes how the visits were counted. The authors appear only as \"four passionate students who love data\", with no names, course or roles, inside the feature-card slot (T021/T022).",
+      "strength": "moderate",
+      "confidence": "medium",
+      "datastory_impact": "high",
+      "modalities": [
+        "text"
+      ],
+      "locations": [
+        {
+          "span_id": "T021",
+          "text": "Team Credits",
+          "region_id": "R03",
+          "element_id": "D027",
+          "selector": "#features > div > div:nth-of-type(3) > h3",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.9857,
+                "width": 0.2547,
+                "height": 0.0143
+              },
+              "box_image_px": [
+                867,
+                789,
+                326,
+                11
+              ],
+              "page_css_y_range": [
+                789,
+                800
+              ]
+            },
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.0,
+                "width": 0.2547,
+                "height": 0.0145
+              },
+              "box_image_px": [
+                867,
+                0,
+                326,
+                12
+              ],
+              "page_css_y_range": [
+                800,
+                812
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.4443,
+                "width": 0.2547,
+                "height": 0.013
+              },
+              "box_image_px": [
+                867,
+                789,
+                326,
+                23
+              ],
+              "page_css_y_range": [
+                789,
+                812
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T022",
+          "text": "Built by four passionate students who love data.",
+          "region_id": "R03",
+          "element_id": "D028",
+          "selector": "#features > div > div:nth-of-type(3) > p",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.022,
+                "width": 0.2547,
+                "height": 0.0281
+              },
+              "box_image_px": [
+                867,
+                18,
+                326,
+                22
+              ],
+              "page_css_y_range": [
+                818,
+                840
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.6773,
+                "y": 0.4606,
+                "width": 0.2547,
+                "height": 0.0127
+              },
+              "box_image_px": [
+                867,
+                818,
+                326,
+                23
+              ],
+              "page_css_y_range": [
+                818,
+                840
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "scope_limit",
+          "value": "single route captured; no footer region was captured, and none is visible in A04"
+        }
+      ]
+    },
+    {
+      "id": "G04",
+      "category": "datastory_gap",
+      "pattern": "interactivity claimed by genre but not observable",
+      "title": "Genre says 'interactive data story' but nothing interactive is visible besides 2 CTAs and 2 disclosures",
+      "description": "The capture has interaction modality false and an empty interactions list, so the claim can be neither confirmed nor refuted. In the screenshots the chart shows no controls (no filters, toggles, sliders or scrubbers) and no hover affordance. This is recorded as 'not observable', not as 'absent'.",
+      "strength": "weak",
+      "confidence": "low",
+      "datastory_impact": "medium",
+      "modalities": [
+        "screenshot",
+        "dom"
+      ],
+      "locations": [
+        {
+          "region_id": "R05",
+          "region_name": "chart section",
+          "selector": "#chart-section",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.4782,
+                "width": 1.0,
+                "height": 0.4512
+              },
+              "box_image_px": [
+                0,
+                383,
+                1280,
+                361
+              ],
+              "page_css_y_range": [
+                1183,
+                1544
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "manifest",
+          "value": {
+            "modalities.interaction": false,
+            "interactions": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "G05",
+      "category": "datastory_gap",
+      "pattern": "copy addresses a customer, not the stated audience",
+      "title": "Copy speaks to a buyer (\"Our platform empowers you\", \"Who is it for?\") rather than instructors and classmates",
+      "description": "The stated audience is course instructors and classmates. The copy uses second-person product address and conversion verbs throughout (T003, T004, T027, T032, T033).",
+      "strength": "moderate",
+      "confidence": "high",
+      "datastory_impact": "medium",
+      "modalities": [
+        "text"
+      ],
+      "locations": [
+        {
+          "span_id": "T003",
+          "text": "Our platform empowers you to unlock powerful insights and transform the way you see data. Reimagine what's possible with next-generation analytics.",
+          "region_id": "R01",
+          "element_id": "D009",
+          "selector": "#hero > p:nth-of-type(2)",
+          "appearances": [
+            {
+              "asset_id": "A01",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.3282,
+                "width": 0.5625,
+                "height": 0.0575
+              },
+              "box_image_px": [
+                64,
+                263,
+                720,
+                46
+              ],
+              "page_css_y_range": [
+                263,
+                309
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.1479,
+                "width": 0.5625,
+                "height": 0.0259
+              },
+              "box_image_px": [
+                64,
+                263,
+                720,
+                46
+              ],
+              "page_css_y_range": [
+                263,
+                308
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T027",
+          "text": "Who is it for?",
+          "region_id": "R04",
+          "element_id": "D033",
+          "selector": "#faq > details:nth-of-type(2) > summary",
+          "appearances": [
+            {
+              "asset_id": "A02",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.392,
+                "width": 0.9,
+                "height": 0.025
+              },
+              "box_image_px": [
+                64,
+                314,
+                1152,
+                20
+              ],
+              "page_css_y_range": [
+                1114,
+                1134
+              ]
+            },
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.1732,
+                "width": 0.9,
+                "height": 0.025
+              },
+              "box_image_px": [
+                64,
+                139,
+                1152,
+                20
+              ],
+              "page_css_y_range": [
+                1114,
+                1134
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.6274,
+                "width": 0.9,
+                "height": 0.0113
+              },
+              "box_image_px": [
+                64,
+                1114,
+                1152,
+                20
+              ],
+              "page_css_y_range": [
+                1114,
+                1134
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        },
+        {
+          "span_id": "T032",
+          "text": "Ready to transform your data journey?",
+          "region_id": "R06",
+          "element_id": "D038",
+          "selector": "#final-cta > h2",
+          "appearances": [
+            {
+              "asset_id": "A03",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.7956,
+                "width": 0.9,
+                "height": 0.0362
+              },
+              "box_image_px": [
+                64,
+                636,
+                1152,
+                29
+              ],
+              "page_css_y_range": [
+                1611,
+                1640
+              ]
+            },
+            {
+              "asset_id": "A04",
+              "asset_kind": "full_page_screenshot",
+              "viewport_id": "V1",
+              "box_norm": {
+                "x": 0.05,
+                "y": 0.9079,
+                "width": 0.9,
+                "height": 0.0163
+              },
+              "box_image_px": [
+                64,
+                1612,
+                1152,
+                29
+              ],
+              "page_css_y_range": [
+                1612,
+                1640
+              ]
+            }
+          ],
+          "source": "manifest text_spans + dom_elements"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "id": "Q01",
+      "category": "craft_defect",
+      "pattern": "card rows do not reflow on mobile",
+      "title": "At 390px the stat strip and feature grid stay three-across; the third card is clipped at the right edge",
+      "description": "In A05 the stat cards sit at CSS x 64-165, 186-303 and 324-390+, so card 3 ('24/7') is cut off. In A06 the feature cards sit at CSS x 64-192, 211-332 and 351-390+, so card 3 ('Team Credits') is cut off. Meanwhile the text column (FAQ divider) ends at CSS x 326. Feature-card body text wraps to 1-3 words per line. A single viewport capture cannot show whether this is overflow or an unsignposted horizontal scroller. Polished commercial templates usually stack these rows on mobile, so this points to a desktop-only or partly adapted build. That cuts slightly against 'unmodified template'.",
+      "strength": "weak",
+      "confidence": "high",
+      "datastory_impact": "medium",
+      "modalities": [
+        "screenshot"
+      ],
+      "locations": [
+        {
+          "asset_id": "A05",
+          "asset_kind": "viewport_screenshot",
+          "viewport_id": "V2",
+          "what": "third stat card, clipped at viewport right edge",
+          "box_image_px": [
+            648,
+            1332,
+            132,
+            245
+          ],
+          "box_css_px_in_viewport": [
+            324,
+            666,
+            66,
+            122
+          ],
+          "page_css_y_range": [
+            666,
+            788
+          ],
+          "source": "pixel measurement by this audit (PNG decoded and scanned)"
+        },
+        {
+          "asset_id": "A06",
+          "asset_kind": "viewport_screenshot",
+          "viewport_id": "V2",
+          "what": "third feature card, clipped at viewport right edge",
+          "box_image_px": [
+            702,
+            388,
+            78,
+            570
+          ],
+          "box_css_px_in_viewport": [
+            351,
+            194,
+            39,
+            285
+          ],
+          "page_css_y_range": [
+            1038,
+            1323
+          ],
+          "source": "pixel measurement by this audit (PNG decoded and scanned)"
+        },
+        {
+          "region_id": "R02",
+          "region_name": "statistic strip",
+          "selector": "#stats",
+          "appearances": [
+            {
+              "asset_id": "A05",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V2",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.7893,
+                "width": 1.0,
+                "height": 0.1931
+              },
+              "box_image_px": [
+                0,
+                1332,
+                780,
+                326
+              ],
+              "page_css_y_range": [
+                666,
+                829
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        },
+        {
+          "region_id": "R03",
+          "region_name": "feature cards",
+          "selector": "#features",
+          "appearances": [
+            {
+              "asset_id": "A06",
+              "asset_kind": "viewport_screenshot",
+              "viewport_id": "V2",
+              "box_norm": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 1.0,
+                "height": 0.6104
+              },
+              "box_image_px": [
+                0,
+                0,
+                780,
+                1030
+              ],
+              "page_css_y_range": [
+                844,
+                1359
+              ]
+            }
+          ],
+          "source": "manifest regions"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "pixel_measurement",
+          "ref": "A05",
+          "value": "card edges on row y=1450 at device x 128/330, 372/606, 648/(beyond 780)"
+        },
+        {
+          "type": "pixel_measurement",
+          "ref": "A06",
+          "value": "card edges on row y=700 at device x 128/384, 422/664, 702/(beyond 780); FAQ divider spans device x 128-651"
+        }
+      ]
+    }
+  ],
+  "counter_evidence": [
+    {
+      "id": "C01",
+      "title": "A human course trace exists",
+      "detail": "\"Built by four passionate students who love data.\" (T022) is the only nod to the student context and matches the provided purpose. It says nothing about whether AI was used.",
+      "refs": [
+        "T022"
+      ]
+    },
+    {
+      "id": "C02",
+      "title": "The chart looks data-driven, not decorative",
+      "detail": "The bar heights are uneven, with a sharp dip at bar 3 (30px against roughly 100px neighbours), so real values may sit behind it. Without labels a reader cannot tell what the dip means.",
+      "refs": [
+        "A02 bars"
+      ]
+    },
+    {
+      "id": "C03",
+      "title": "Template resemblance is not AI attribution",
+      "detail": "Every marker here is just as typical of landing kits that students pick by hand (Tailwind UI, shadcn-style starters, site builders) as of generated pages. The generator and creator_ai_report fields are withheld by blinding, and this audit makes no provenance claim.",
+      "refs": [
+        "blinding.withheld_fields"
+      ]
+    },
+    {
+      "id": "C04",
+      "title": "Two captured style values are not signals",
+      "detail": "transition-property 'all' on every element is the CSS initial value, and animation-name is 'none' everywhere. Neither was scored, and motion was not assessed.",
+      "refs": [
+        "dom_elements[*].computed_style"
+      ]
+    }
+  ],
+  "limitations": [
+    "No before/after interaction pair was captured (6 of a possible 8 images; interactions empty), so FAQ answers and any chart interactivity are unseen.",
+    "Text spans and DOM elements exist only for desktop state S01. Mobile findings rest on region boxes plus pixel measurement.",
+    "Card containers, the chart container and the bars are absent from dom_elements; their radius, border, glow and fill were read from pixels.",
+    "The gradient on \"future\" appears in pixels only; its element is not in the DOM capture.",
+    "The declared font stack is Inter first. Computed style cannot show whether Inter or a fallback actually rendered.",
+    "Absence claims (no source, no Seattle, no labels) cover visible captured text only: alt text, HTML comments, hidden elements and other routes are outside the capture.",
+    "A03 was taken at scroll_y 975 rather than 1600 because the page is only 1775px tall; it overlaps A02 by 625px.",
+    "Possible label leakage: bundle_id and site_id contain 'default-package-landing', which hints at the expected verdict, yet blinding.known_leakage is empty. This audit did not use the identifier as evidence.",
+    "context.*.provenance says the capture plan was written by the fixture author (synthetic). The page may be a constructed fixture rather than a submitted student project."
+  ],
+  "choices": [
+    "The 'multimodal-datastory' profile definition was not in the bundle, and no skills or other folders could be opened. It was interpreted as: (a) every finding cites evidence from captured modalities (text spans, DOM/computed style, screenshot pixels) and records which ones; (b) features are judged against what a data story needs (question, labelled data, narrative, sourcing, audience fit), so a SaaS marker matters most where it displaces data-story content.",
+    "No official audit.json schema was available, so this file uses its own documented structure (see schema_note).",
+    "Each finding is rated on three separate axes: strength as a template signal, confidence that the observation is correct, and impact on the data story. No single 'slop score' is computed, because there is no calibrated rubric.",
+    "Template resemblance was assessed; AI generation was not, because the user asked about the SaaS-template look and the provenance fields are blinded.",
+    "Colour-to-Tailwind matches are reported as exact only for captured CSS values. Pixel-derived matches are flagged as approximate."
+  ]
+}

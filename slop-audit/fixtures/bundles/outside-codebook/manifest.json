@@ -1,0 +1,660 @@
+{
+  "schema_version": "website-slop-audit/capture-bundle/0.1",
+  "bundle_id": "fx-11",
+  "site_id": "site-11",
+  "capture": {
+    "captured_at": "2026-11-08T19:41:35Z",
+    "protocol_version": "capture-protocol/0.1",
+    "adapter": {
+      "name": "gstack_capture.py",
+      "version": "0.1.0",
+      "browser": "gstack browse (Status: healthy)"
+    },
+    "target_kind": "local_server",
+    "target_locator": null,
+    "snapshot_id": null,
+    "notes": [
+      "10 browser commands issued"
+    ]
+  },
+  "evidence_profile": {
+    "capture_profile": "custom",
+    "max_images": 8,
+    "selection_rules_applied": [
+      "desktop viewport screenshots at scroll offsets [0]"
+    ]
+  },
+  "modalities": {
+    "screenshot": true,
+    "text": true,
+    "dom": true,
+    "computed_style": true,
+    "interaction": false,
+    "source": false
+  },
+  "capability_limits": [
+    "animation playback is not recorded; motion can only be inferred from captured styles",
+    "HTML comments, alt text, and hidden elements are not captured as text spans"
+  ],
+  "context": {
+    "purpose": {
+      "value": "Show where Portland's street trees are concentrated and where they are missing.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "interactive data story (explorable explanation)",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "general readers",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "blinding": {
+    "profile": "blinded",
+    "transformations": [
+      {
+        "transformation_id": "TR-locator",
+        "kind": "locator_withheld",
+        "description": "capture.target_locator withheld; the original is in the private sidecar",
+        "applies_to": [
+          "fx-11"
+        ]
+      }
+    ],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ],
+    "known_leakage": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    }
+  ],
+  "states": [
+    {
+      "state_id": "S01",
+      "route": "/index.html",
+      "viewport_id": "V1",
+      "kind": "initial",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "page as loaded at viewport V1"
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "top navigation",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#top-nav",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.0663
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R02",
+      "name": "story",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#story",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1953,
+            "y": 0.1062,
+            "width": 0.6094,
+            "height": 0.5946
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R03",
+      "name": "map placeholder",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#map",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1953,
+            "y": 0.3185,
+            "width": 0.6094,
+            "height": 0.325
+          }
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "A01",
+      "kind": "viewport_screenshot",
+      "path": "assets/A01.png",
+      "sha256": "5fd3c8a1f13fa4c16a512a06cf476d1a99aad26d4a589657ca48a8e9c68f5d7e",
+      "media_type": "image/png",
+      "pixel_width": 1280,
+      "pixel_height": 800,
+      "viewport_id": "V1",
+      "device_pixel_ratio": 1,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S01",
+      "crop_of": null
+    }
+  ],
+  "text_spans": [
+    {
+      "span_id": "T001",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Portland Canopy Atlas",
+      "source": "dom",
+      "element_id": "D004",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.0213,
+            "width": 0.1345,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T002",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Method",
+      "source": "dom",
+      "element_id": "D005",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1861,
+            "y": 0.0219,
+            "width": 0.037,
+            "height": 0.0213
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T003",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Data",
+      "source": "dom",
+      "element_id": "D006",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2371,
+            "y": 0.0219,
+            "width": 0.0227,
+            "height": 0.0213
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T004",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "⌘K Search",
+      "source": "dom",
+      "element_id": "D007",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.9016,
+            "y": 0.0175,
+            "width": 0.0609,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T005",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Where Portland's street trees are, and where they are missing",
+      "source": "dom",
+      "element_id": "D008",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1953,
+            "y": 0.1062,
+            "width": 0.6094,
+            "height": 0.0975
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T006",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "The 2025 street-tree census counted 236,000 trees. Neighborhoods east of 82nd Avenue have about one street tree per 24 feet of curb, half the density of the inner west side.",
+      "source": "dom",
+      "element_id": "D009",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1953,
+            "y": 0.2263,
+            "width": 0.6094,
+            "height": 0.0697
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T007",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Map of street-tree density by neighborhood (2025 census)",
+      "source": "dom",
+      "element_id": "D003",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1953,
+            "y": 0.3185,
+            "width": 0.6094,
+            "height": 0.325
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T008",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Method: we divided census tree counts by curb length from the city's 2024 street centerline file.",
+      "source": "dom",
+      "element_id": "D010",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1953,
+            "y": 0.666,
+            "width": 0.6094,
+            "height": 0.0349
+          }
+        }
+      ]
+    }
+  ],
+  "dom_elements": [
+    {
+      "element_id": "D001",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#top-nav",
+      "tag": "nav",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(31, 42, 31)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D002",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#story",
+      "tag": "article",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(31, 42, 31)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D003",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#map",
+      "tag": "div",
+      "role": null,
+      "text_span_ids": [
+        "T007"
+      ],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(78, 95, 73)",
+        "background-color": "rgb(223, 233, 212)",
+        "background-image": "none",
+        "border-radius": "6px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D004",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#top-nav > strong",
+      "tag": "strong",
+      "role": null,
+      "text_span_ids": [
+        "T001"
+      ],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "15px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(31, 42, 31)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D005",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#top-nav > a:nth-of-type(1)",
+      "tag": "a",
+      "role": null,
+      "text_span_ids": [
+        "T002"
+      ],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(0, 0, 238)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D006",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#top-nav > a:nth-of-type(2)",
+      "tag": "a",
+      "role": null,
+      "text_span_ids": [
+        "T003"
+      ],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(0, 0, 238)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D007",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#top-nav > span:nth-of-type(2)",
+      "tag": "span",
+      "role": null,
+      "text_span_ids": [
+        "T004"
+      ],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(91, 107, 88)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "6px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D008",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#story > h1",
+      "tag": "h1",
+      "role": null,
+      "text_span_ids": [
+        "T005"
+      ],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "34px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(31, 42, 31)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D009",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#story > p:nth-of-type(1)",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T006"
+      ],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "18px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(31, 42, 31)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D010",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#method",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T008"
+      ],
+      "computed_style": {
+        "font-family": "\"Gill Sans\", \"Gill Sans MT\", Calibri, sans-serif",
+        "font-size": "18px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(31, 42, 31)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    }
+  ],
+  "interactions": [],
+  "source_excerpts": [],
+  "coverage": {
+    "routes": [
+      {
+        "ref": "/index.html",
+        "status": "captured",
+        "reason": "single route captured; other routes not attempted"
+      }
+    ],
+    "regions": [
+      {
+        "ref": "R01",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R02",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R03",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      }
+    ],
+    "viewports": [
+      {
+        "ref": "V1",
+        "status": "captured",
+        "reason": "1 screenshot(s)"
+      }
+    ],
+    "interactions": [],
+    "notes": []
+  }
+}

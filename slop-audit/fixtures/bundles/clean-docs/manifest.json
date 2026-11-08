@@ -1,0 +1,1472 @@
+{
+  "schema_version": "website-slop-audit/capture-bundle/0.1",
+  "bundle_id": "fx-13",
+  "site_id": "site-13",
+  "capture": {
+    "captured_at": "2026-11-08T19:41:21Z",
+    "protocol_version": "capture-protocol/0.1",
+    "adapter": {
+      "name": "gstack_capture.py",
+      "version": "0.1.0",
+      "browser": "gstack browse (Status: healthy)"
+    },
+    "target_kind": "local_server",
+    "target_locator": null,
+    "snapshot_id": null,
+    "notes": [
+      "10 browser commands issued"
+    ]
+  },
+  "evidence_profile": {
+    "capture_profile": "custom",
+    "max_images": 8,
+    "selection_rules_applied": [
+      "desktop viewport screenshots at scroll offsets [0]"
+    ]
+  },
+  "modalities": {
+    "screenshot": true,
+    "text": true,
+    "dom": true,
+    "computed_style": true,
+    "interaction": false,
+    "source": false
+  },
+  "capability_limits": [
+    "animation playback is not recorded; motion can only be inferred from captured styles",
+    "HTML comments, alt text, and hidden elements are not captured as text spans"
+  ],
+  "context": {
+    "purpose": {
+      "value": "Document the convert subcommand of a command-line tool for climate station files.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "software documentation page",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "researchers who process NOAA station data",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "blinding": {
+    "profile": "blinded",
+    "transformations": [
+      {
+        "transformation_id": "TR-locator",
+        "kind": "locator_withheld",
+        "description": "capture.target_locator withheld; the original is in the private sidecar",
+        "applies_to": [
+          "fx-13"
+        ]
+      }
+    ],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ],
+    "known_leakage": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    }
+  ],
+  "states": [
+    {
+      "state_id": "S01",
+      "route": "/index.html",
+      "viewport_id": "V1",
+      "kind": "initial",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "page as loaded at viewport V1"
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "documentation navigation",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#doc-nav",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.1719,
+            "height": 0.6362
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R02",
+      "name": "documentation body",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#doc-body",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1719,
+            "y": 0.0,
+            "width": 0.7031,
+            "height": 0.6362
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R03",
+      "name": "options table",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#options",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.325,
+            "width": 0.4698,
+            "height": 0.1462
+          }
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "A01",
+      "kind": "viewport_screenshot",
+      "path": "assets/A01.png",
+      "sha256": "5df288d06ca0464c73f8c390c9c9aa26317288a063dd9adf45e52cd52fb5f775",
+      "media_type": "image/png",
+      "pixel_width": 1280,
+      "pixel_height": 800,
+      "viewport_id": "V1",
+      "device_pixel_ratio": 1,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S01",
+      "crop_of": null
+    }
+  ],
+  "text_spans": [
+    {
+      "span_id": "T001",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Install",
+      "source": "dom",
+      "element_id": "D004",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0125,
+            "y": 0.03,
+            "width": 0.1461,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T002",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "convert",
+      "source": "dom",
+      "element_id": "D005",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0125,
+            "y": 0.06,
+            "width": 0.1461,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T003",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "validate",
+      "source": "dom",
+      "element_id": "D006",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0125,
+            "y": 0.09,
+            "width": 0.1461,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T004",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "merge",
+      "source": "dom",
+      "element_id": "D007",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0125,
+            "y": 0.12,
+            "width": 0.1461,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T005",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Changelog",
+      "source": "dom",
+      "element_id": "D008",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0125,
+            "y": 0.15,
+            "width": 0.1461,
+            "height": 0.03
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T006",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "tidyclim convert",
+      "source": "dom",
+      "element_id": "D009",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.035,
+            "width": 0.6406,
+            "height": 0.04
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T007",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Convert NOAA GHCN-Daily station files (.dly) into tidy CSV with one row per station, date, and element.",
+      "source": "dom",
+      "element_id": "D010",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.0938,
+            "width": 0.6406,
+            "height": 0.0312
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T008",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Usage",
+      "source": "dom",
+      "element_id": "D011",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.1575,
+            "width": 0.6406,
+            "height": 0.0288
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T009",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "tidyclim convert USW00023174.dly --elements TMAX,TMIN,PRCP --out la.csv",
+      "source": "dom",
+      "element_id": "D012",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.2025,
+            "width": 0.6406,
+            "height": 0.0512
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T010",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Options",
+      "source": "dom",
+      "element_id": "D013",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.2863,
+            "width": 0.6406,
+            "height": 0.0288
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T011",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Flag",
+      "source": "dom",
+      "element_id": "D014",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2035,
+            "y": 0.3256,
+            "width": 0.1083,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T012",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Default",
+      "source": "dom",
+      "element_id": "D015",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3118,
+            "y": 0.3256,
+            "width": 0.0535,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T013",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Meaning",
+      "source": "dom",
+      "element_id": "D016",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3653,
+            "y": 0.3256,
+            "width": 0.3072,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T014",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "--elements",
+      "source": "dom",
+      "element_id": "D017",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2035,
+            "y": 0.3619,
+            "width": 0.1083,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T015",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "all",
+      "source": "dom",
+      "element_id": "D018",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3118,
+            "y": 0.3619,
+            "width": 0.0535,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T016",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Comma-separated GHCN element codes to keep.",
+      "source": "dom",
+      "element_id": "D019",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3653,
+            "y": 0.3619,
+            "width": 0.3072,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T017",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "--units",
+      "source": "dom",
+      "element_id": "D020",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2035,
+            "y": 0.3981,
+            "width": 0.1083,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T018",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "metric",
+      "source": "dom",
+      "element_id": "D021",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3118,
+            "y": 0.3981,
+            "width": 0.0535,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T019",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "metric converts tenths of °C and mm; raw keeps file units.",
+      "source": "dom",
+      "element_id": "D022",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3653,
+            "y": 0.3981,
+            "width": 0.3072,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T020",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "--drop-flagged",
+      "source": "dom",
+      "element_id": "D023",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2035,
+            "y": 0.4344,
+            "width": 0.1083,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T021",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "off",
+      "source": "dom",
+      "element_id": "D024",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3118,
+            "y": 0.4344,
+            "width": 0.0535,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T022",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Drop values with a quality flag other than blank.",
+      "source": "dom",
+      "element_id": "D025",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3653,
+            "y": 0.4344,
+            "width": 0.3072,
+            "height": 0.0362
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T023",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Exit codes",
+      "source": "dom",
+      "element_id": "D026",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.5038,
+            "width": 0.6406,
+            "height": 0.0288
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T024",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "0 success, 1 unreadable input, 3 unknown element code.",
+      "source": "dom",
+      "element_id": "D027",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.5513,
+            "width": 0.6406,
+            "height": 0.0312
+          }
+        }
+      ]
+    }
+  ],
+  "dom_elements": [
+    {
+      "element_id": "D001",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#doc-nav",
+      "tag": "aside",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D002",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#doc-body",
+      "tag": "main",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D003",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options",
+      "tag": "table",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D004",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#doc-nav > ul > li:nth-of-type(1)",
+      "tag": "li",
+      "role": null,
+      "text_span_ids": [
+        "T001"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D005",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#doc-nav > ul > li:nth-of-type(2)",
+      "tag": "li",
+      "role": null,
+      "text_span_ids": [
+        "T002"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D006",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#doc-nav > ul > li:nth-of-type(3)",
+      "tag": "li",
+      "role": null,
+      "text_span_ids": [
+        "T003"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D007",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#doc-nav > ul > li:nth-of-type(4)",
+      "tag": "li",
+      "role": null,
+      "text_span_ids": [
+        "T004"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D008",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#doc-nav > ul > li:nth-of-type(5)",
+      "tag": "li",
+      "role": null,
+      "text_span_ids": [
+        "T005"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D009",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#doc-body > h1",
+      "tag": "h1",
+      "role": null,
+      "text_span_ids": [
+        "T006"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "28px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D010",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#doc-body > p:nth-of-type(1)",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T007"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D011",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#doc-body > h2:nth-of-type(1)",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T008"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "20px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D012",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#doc-body > pre",
+      "tag": "pre",
+      "role": null,
+      "text_span_ids": [
+        "T009"
+      ],
+      "computed_style": {
+        "font-family": "monospace",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgb(246, 248, 250)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D013",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#doc-body > h2:nth-of-type(2)",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T010"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "20px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D014",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(1) > th:nth-of-type(1)",
+      "tag": "th",
+      "role": null,
+      "text_span_ids": [
+        "T011"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D015",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(1) > th:nth-of-type(2)",
+      "tag": "th",
+      "role": null,
+      "text_span_ids": [
+        "T012"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D016",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(1) > th:nth-of-type(3)",
+      "tag": "th",
+      "role": null,
+      "text_span_ids": [
+        "T013"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D017",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(2) > td:nth-of-type(1)",
+      "tag": "td",
+      "role": null,
+      "text_span_ids": [
+        "T014"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D018",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(2) > td:nth-of-type(2)",
+      "tag": "td",
+      "role": null,
+      "text_span_ids": [
+        "T015"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D019",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(2) > td:nth-of-type(3)",
+      "tag": "td",
+      "role": null,
+      "text_span_ids": [
+        "T016"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D020",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(3) > td:nth-of-type(1)",
+      "tag": "td",
+      "role": null,
+      "text_span_ids": [
+        "T017"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D021",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(3) > td:nth-of-type(2)",
+      "tag": "td",
+      "role": null,
+      "text_span_ids": [
+        "T018"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D022",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(3) > td:nth-of-type(3)",
+      "tag": "td",
+      "role": null,
+      "text_span_ids": [
+        "T019"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D023",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(4) > td:nth-of-type(1)",
+      "tag": "td",
+      "role": null,
+      "text_span_ids": [
+        "T020"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D024",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(4) > td:nth-of-type(2)",
+      "tag": "td",
+      "role": null,
+      "text_span_ids": [
+        "T021"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D025",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#options > tbody > tr:nth-of-type(4) > td:nth-of-type(3)",
+      "tag": "td",
+      "role": null,
+      "text_span_ids": [
+        "T022"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D026",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#doc-body > h2:nth-of-type(3)",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T023"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "20px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D027",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#doc-body > p:nth-of-type(2)",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T024"
+      ],
+      "computed_style": {
+        "font-family": "-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(36, 41, 47)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    }
+  ],
+  "interactions": [],
+  "source_excerpts": [],
+  "coverage": {
+    "routes": [
+      {
+        "ref": "/index.html",
+        "status": "captured",
+        "reason": "single route captured; other routes not attempted"
+      }
+    ],
+    "regions": [
+      {
+        "ref": "R01",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R02",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R03",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      }
+    ],
+    "viewports": [
+      {
+        "ref": "V1",
+        "status": "captured",
+        "reason": "1 screenshot(s)"
+      }
+    ],
+    "interactions": [],
+    "notes": []
+  }
+}

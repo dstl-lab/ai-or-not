@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: catalog-no-slop-finding
+expected_outcome: |
+  A valid audit with no accepted findings for the conventional catalog cards or typography; the uniform card grid may be recorded as a contextual exception because the items are parallel and the style guide requires the card component.
+context:
+  scaffold_script: place-files.sh

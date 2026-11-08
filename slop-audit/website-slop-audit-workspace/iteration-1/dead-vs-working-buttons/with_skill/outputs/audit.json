@@ -1,0 +1,468 @@
+{
+  "schema_version": "website-slop-audit/audit/0.1",
+  "rubric_version": "0.1.0",
+  "audit_id": "audit-fx-buttons-working-broken-mmcore-01",
+  "bundle_id": "fx-buttons-working-broken",
+  "bundle_hash": "f2a3d27c373f54e9e87a11846fa721464412a13446e02996ab3806397ff8898c",
+  "analysis_profile": "multimodal-core",
+  "status": "completed",
+  "inventory": {
+    "genre": {
+      "value": "environmental data dashboard page",
+      "basis": "provided"
+    },
+    "purpose": {
+      "value": "Show community air-sensor readings for one neighborhood and compare them with the previous year.",
+      "basis": "provided"
+    },
+    "audience": {
+      "value": "neighborhood residents",
+      "basis": "provided"
+    },
+    "main_task": {
+      "value": "read the displayed pollutant reading, switch between pollutants, and compare the reading with the previous year",
+      "basis": "inferred"
+    },
+    "structure": [
+      {
+        "region_id": "R01",
+        "role": "page title naming the neighborhood, with a one-line description of the sensors and the averaging month"
+      },
+      {
+        "region_id": "R02",
+        "role": "row of three controls: two buttons (pollutant switch, year comparison) and a download link"
+      },
+      {
+        "region_id": "R03",
+        "role": "bordered panel with a heading, one pollutant value with unit and averaging period, and a status line for the comparison"
+      },
+      {
+        "region_id": "R04",
+        "role": "methodology note on sensor model, correction formula, and averaging steps"
+      }
+    ]
+  },
+  "coverage": {
+    "assessed_modalities": [
+      "screenshot",
+      "text",
+      "dom",
+      "computed_style",
+      "interaction"
+    ],
+    "unassessed_modalities": [
+      {
+        "modality": "source",
+        "reason": "the bundle contains no source excerpts (modalities.source is false)"
+      }
+    ],
+    "regions": [
+      {
+        "region_id": "R01",
+        "state_ids": [
+          "S01",
+          "S02",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "visible in A01, A02, A03; text spans captured for S01 only, and the header looks unchanged in A02 and A03"
+      },
+      {
+        "region_id": "R02",
+        "state_ids": [
+          "S01",
+          "S02",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "visible in all three screenshots with text spans and computed styles in every state; target of E01 and E02"
+      },
+      {
+        "region_id": "R03",
+        "state_ids": [
+          "S01",
+          "S02",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "visible in all three screenshots with text spans and computed styles in every state; the panel the two buttons update"
+      },
+      {
+        "region_id": "R04",
+        "state_ids": [
+          "S01",
+          "S02",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "visible in A01, A02, A03; text span captured for S01 only"
+      }
+    ],
+    "features": [
+      {
+        "feature_id": "VIS-01",
+        "status": "assessed",
+        "reason": "screenshots and computed styles: Verdana, dark green-gray text, one muted green accent on outlined buttons, white ground, no gradients or glows; no recognizable default package"
+      },
+      {
+        "feature_id": "VIS-02",
+        "status": "assessed",
+        "reason": "no eyebrow labels, highlighted or gradient headline words, section numbering, or decorative metadata in text or styles"
+      },
+      {
+        "feature_id": "LAY-01",
+        "status": "assessed",
+        "reason": "only one bordered panel (R03, 6px radius); the method note is plain text; no repeated card group"
+      },
+      {
+        "feature_id": "LAY-02",
+        "status": "assessed",
+        "reason": "title, controls, reading panel, method note is a task-shaped dashboard sequence, not a stock landing-page skeleton"
+      },
+      {
+        "feature_id": "VIS-03",
+        "status": "assessed",
+        "reason": "no icons, badges, blobs, glass panels, glows, or emoji in any captured state"
+      },
+      {
+        "feature_id": "MOT-01",
+        "status": "assessed",
+        "reason": "computed styles show animation-name none on every captured element; transition-property is the CSS initial value and durations were not captured; recorded states show no entrance motion"
+      },
+      {
+        "feature_id": "TXT-01",
+        "status": "assessed",
+        "reason": "copy names the neighborhood, sensor count, month, sensor model, correction formula, and averaging steps; no interchangeable claims"
+      },
+      {
+        "feature_id": "TXT-02",
+        "status": "assessed",
+        "reason": "short copy with no repeated claims, rigid parallel headings, or empty summaries"
+      },
+      {
+        "feature_id": "SUB-01",
+        "status": "assessed",
+        "reason": "no literal placeholders; the readings have units and averaging labels and the method note gives a basis; the status line is an empty-state prompt, not template text"
+      },
+      {
+        "feature_id": "SUB-02",
+        "status": "assessed",
+        "reason": "compared time-aggregation labels across R01, R03, R04; a loose tension was found and recorded as a contextual exception"
+      },
+      {
+        "feature_id": "SUB-03",
+        "status": "assessed",
+        "reason": "one reading shown at a time, each with unit and averaging period; no decorative statistic strip"
+      },
+      {
+        "feature_id": "INT-01",
+        "status": "assessed",
+        "reason": "two completed clicks recorded (E01, E02); the Download CSV link is untested in the bundle coverage and was not judged"
+      },
+      {
+        "feature_id": "INT-02",
+        "status": "assessed",
+        "reason": "after states S02 and S03 compared with S01 for linked-content conflicts; one weak cue recorded as a contextual exception"
+      },
+      {
+        "feature_id": "QLT-01",
+        "status": "assessed",
+        "reason": "desktop screenshots and computed colors checked; text contrast against the white ground is at least 4.8:1; no overflow or clipping seen; mobile and keyboard focus not captured"
+      },
+      {
+        "feature_id": "SRC-01",
+        "status": "unassessed",
+        "reason": "needs source excerpts, which this bundle does not contain; the cause of the E02 result cannot be examined"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "finding_id": "F001",
+      "feature_id": "INT-01",
+      "phenomenon_id": "P001",
+      "secondary_tags": [],
+      "scope": "region",
+      "observation": "The 'Compare with last year' button advertises the year-over-year comparison that the stated purpose names. In E02 it was clicked on a fresh load (completed) and, within 1200 ms, no visible text or DOM state changed: the after screenshot A03 is byte-identical to the initial A01, and the comparison status line still reads 'Select a pollutant or a comparison above.' No comparison appears in the captured view.",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1363,
+            "y": 0.145,
+            "width": 0.1514,
+            "height": 0.0437
+          },
+          "selector": "#compare-last-year",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S03",
+          "asset_id": "A03",
+          "box": {
+            "x": 0.1363,
+            "y": 0.145,
+            "width": 0.1514,
+            "height": 0.0437
+          },
+          "selector": "#compare-last-year",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S03",
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0555,
+            "y": 0.3137,
+            "width": 0.5625,
+            "height": 0.0225
+          },
+          "selector": "#comparison",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "interaction",
+          "ref_id": "E02",
+          "description": "Click on #compare-last-year from S01 to S03, execution_status completed; observed changes: text_unchanged and dom_unchanged (no aria-pressed/expanded/selected or input value change) within 1200 ms.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T004",
+          "description": "The button label in the initial state, which advertises a comparison with the previous year.",
+          "quote": "Compare with last year"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T021",
+          "description": "The #comparison status line after the click, unchanged from the initial state (T008).",
+          "quote": "Select a pollutant or a comparison above."
+        },
+        {
+          "kind": "text",
+          "ref_id": "T020",
+          "description": "The reading after the click, unchanged from the initial state (T007).",
+          "quote": "Ozone: 41 ppb (8-hour average)"
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A03",
+          "description": "After-click screenshot; its sha256 equals that of the initial screenshot A01, so nothing visible changed in the viewport.",
+          "quote": null
+        },
+        {
+          "kind": "interaction",
+          "ref_id": "E01",
+          "description": "Control comparison: the sibling 'Show PM2.5' button, clicked the same way on a fresh load, changed #metric text within 800 ms, so the capture method does detect changes on this page.",
+          "quote": null
+        },
+        {
+          "kind": "context",
+          "ref_id": "purpose",
+          "description": "The provided purpose includes comparing the readings with the previous year, so this control carries a stated main task.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "A completed recorded click, explicit unchanged-text and unchanged-DOM records, byte-identical before and after screenshots, and a working sibling control tested the same way."
+      },
+      "slop_association": {
+        "level": "moderate",
+        "reason": "A control that advertises the page's headline comparison but does nothing fits the surface-without-integration pattern, with concrete tested evidence. Not strong: it is a single control, the sibling control works, the rest of the page is specific, and an ordinary bug explains it equally well."
+      },
+      "contextual_fit": {
+        "level": "inappropriate",
+        "reason": "The stated purpose is to compare readings with the previous year; a visible control for that comparison that produces nothing works against the purpose."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "major",
+        "reason": "Tested failure (E02): the year-over-year comparison, half of the stated purpose, does not appear, and no other route to it is visible in the captured page."
+      },
+      "alternative_explanations": [
+        "Ordinary implementation bug, such as a click handler that is not attached or a failed request for last year's data",
+        "Unfinished feature: previous-year data or the comparison view not yet built when the page was captured",
+        "The comparison takes longer than the 1200 ms observation window to appear",
+        "The comparison depends on a prerequisite the page does not state, although the status line suggests it can be chosen directly"
+      ],
+      "codebook_evidence_status": "research_hypothesis",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "Observed once, on a fresh load, within a 1200 ms window; delayed results, repeated clicks, and clicking after selecting PM2.5 were not tested.",
+        "No source excerpts, so the cause cannot be examined (SRC-01 unassessed).",
+        "Only the 1280x800 viewport at scroll offset 0 was captured; the page appears to end above the fold, but a change outside the viewport would not be visible.",
+        "A dead control is an observed failure; it does not show who or what made the page."
+      ]
+    }
+  ],
+  "contextual_exceptions": [
+    {
+      "exception_id": "X001",
+      "feature_id": "SUB-02",
+      "observation": "The time-aggregation labels do not line up cleanly across regions: the header says readings are averaged over September 2026 and the method note says hourly values are averaged per day, then per month, while the panel is headed 'Current reading' and its default value is labeled '8-hour average'. After E01 the PM2.5 value is labeled 'monthly mean', which matches the header.",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.09,
+            "width": 0.5938,
+            "height": 0.0225
+          },
+          "selector": "#page-header > p",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.2112,
+            "width": 0.5984,
+            "height": 0.1487
+          },
+          "selector": "#readout",
+          "source_ref": null
+        },
+        {
+          "region_id": "R04",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.38,
+            "width": 0.5625,
+            "height": 0.04
+          },
+          "selector": "#method-note",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T002",
+          "description": "Header description of the averaging period.",
+          "quote": "averaged over September 2026"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T006",
+          "description": "Panel heading.",
+          "quote": "Current reading"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T007",
+          "description": "Default reading with its averaging label.",
+          "quote": "8-hour average"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T009",
+          "description": "Method note on averaging steps.",
+          "quote": "Hourly values are averaged per day, then per month."
+        },
+        {
+          "kind": "text",
+          "ref_id": "T014",
+          "description": "PM2.5 reading after E01, labeled consistently with the header.",
+          "quote": "(monthly mean)"
+        }
+      ],
+      "reason_not_counted": "insufficient_evidence_for_finding",
+      "rationale": "Not a clear conflict: pollutant-specific conventions (ozone is commonly reported as an 8-hour average) allow a September mean of 8-hour values, so the labels may be terse rather than contradictory, and 'Current reading' can mean the selected reading. The tension is real but too ambiguous to count as incoherence.",
+      "observation_confidence": {
+        "level": "medium",
+        "reason": "All quoted labels are exact DOM text, but whether they conflict depends on how the averaging is interpreted."
+      }
+    },
+    {
+      "exception_id": "X002",
+      "feature_id": "INT-02",
+      "observation": "After E01 (Show PM2.5) the reading updates to PM2.5, but the status line under it still says 'Select a pollutant or a comparison above.' even though a pollutant has just been selected, and the button shows no selected styling (computed style of D015 equals D007).",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S02",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0555,
+            "y": 0.3137,
+            "width": 0.5625,
+            "height": 0.0225
+          },
+          "selector": "#comparison",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S02",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0375,
+            "y": 0.145,
+            "width": 0.091,
+            "height": 0.0437
+          },
+          "selector": "#show-pm25",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "interaction",
+          "ref_id": "E01",
+          "description": "Completed click on #show-pm25; #metric text changed from the ozone reading to the PM2.5 reading within 800 ms.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T014",
+          "description": "Updated reading after the click.",
+          "quote": "PM2.5: 14.2 µg/m³ (monthly mean)"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T015",
+          "description": "Status line after the click, unchanged.",
+          "quote": "Select a pollutant or a comparison above."
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D015",
+          "description": "The Show PM2.5 button after the click has the same computed style as before (D007).",
+          "quote": null
+        }
+      ],
+      "reason_not_counted": "insufficient_evidence_for_finding",
+      "rationale": "The working control did what it advertised. The leftover line sits in the #comparison slot, which belongs to the untriggered comparison, so it reads as that slot's empty state rather than a linked summary contradicting the result; the stale pair (#metric and #comparison) sits within one region, short of INT-02's two-region minimum, and the missing selected styling is not a content conflict.",
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Exact DOM text and computed styles in the recorded after state S02, visible in A02."
+      }
+    }
+  ],
+  "quality_observations": [],
+  "exploratory_candidates": [],
+  "untrusted_instructions_observed": [],
+  "summary": {
+    "text": "A plain, specific single-view dashboard: Verdana text, one muted green accent on outlined buttons, a single bordered reading panel, and copy that names the neighborhood, sensor model, correction formula, and month. No surface, template, or copy pattern from the codebook was observed. The slop-associated feature is behavioral: the 'Compare with last year' button, which carries the comparison named in the stated purpose, was clicked on a fresh load and produced no visible text or DOM change within 1200 ms; the after screenshot is byte-identical to the initial one. The sibling 'Show PM2.5' button worked under the same capture method, so the failure is specific to one control. A dead control is an observed failure, explained equally well by an ordinary bug or an unfinished feature, and says nothing about who or what made the page. The time-aggregation labels ('averaged over September 2026', 'Current reading', '8-hour average') are loosely matched and were recorded as a non-counted exception. The Download CSV link was not tested and is unknown, not broken.",
+    "major_limitations": [
+      "One desktop viewport (1280x800) at scroll offset 0; no mobile viewport, full-page capture, or keyboard-focus states.",
+      "Each click was observed once on a fresh load within a fixed window (800 ms, 1200 ms); delayed results and combined interactions were not tested.",
+      "No source excerpts, so the cause of the dead control (SRC-01) cannot be examined.",
+      "The Download CSV link was not exercised; its behavior is unknown.",
+      "Synthetic fixture with provided context; creation history is withheld and not judged."
+    ]
+  }
+}

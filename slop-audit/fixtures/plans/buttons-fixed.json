@@ -1,0 +1,114 @@
+{
+  "bundle_id": "fx-07",
+  "site_id": "site-07",
+  "route": "/index.html",
+  "target_kind": "local_server",
+  "snapshot_id": null,
+  "capture_profile": "custom",
+  "max_images": 8,
+  "blinding": {
+    "profile": "blinded",
+    "withhold_terms": [],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ]
+  },
+  "context": {
+    "purpose": {
+      "value": "Show community air-sensor readings for one neighborhood and compare them with the previous year.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "environmental data dashboard page",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "neighborhood residents",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    }
+  ],
+  "shots": [
+    {
+      "viewport_id": "V1",
+      "scroll_y": 0
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "page header",
+      "selector": "#page-header",
+      "description": ""
+    },
+    {
+      "region_id": "R02",
+      "name": "toolbar",
+      "selector": "#toolbar",
+      "description": ""
+    },
+    {
+      "region_id": "R03",
+      "name": "reading panel",
+      "selector": "#readout",
+      "description": ""
+    },
+    {
+      "region_id": "R04",
+      "name": "method note",
+      "selector": "#method-note",
+      "description": ""
+    }
+  ],
+  "interactions": [
+    {
+      "event_id": "E01",
+      "action": "click",
+      "selector": "#show-pm25",
+      "region_id": "R02",
+      "description": "Show PM2.5 button",
+      "observe_region_ids": [
+        "R03"
+      ],
+      "wait_ms": 800,
+      "shot_after": true
+    },
+    {
+      "event_id": "E02",
+      "action": "click",
+      "selector": "#compare-last-year",
+      "region_id": "R02",
+      "description": "Compare with last year button",
+      "observe_region_ids": [
+        "R03"
+      ],
+      "wait_ms": 1200,
+      "shot_after": true
+    }
+  ],
+  "untested_controls": [
+    {
+      "description": "Download CSV link",
+      "reason": "it would leave the captured page; links are not followed"
+    }
+  ],
+  "selection_rules": [
+    "desktop viewport screenshots at scroll offsets [0]"
+  ],
+  "coverage_notes": []
+}

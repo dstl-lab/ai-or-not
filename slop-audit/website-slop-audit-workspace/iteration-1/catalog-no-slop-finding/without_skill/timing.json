@@ -1,0 +1,6 @@
+{
+  "total_tokens": 95855,
+  "duration_ms": 162396,
+  "total_duration_seconds": 162.4,
+  "note": "report.md was returned as text (subagent file writes for reports are blocked by the harness) and saved verbatim by the orchestrator"
+}

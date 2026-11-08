@@ -1,0 +1,34 @@
+{
+  "expectations": [
+    {
+      "text": "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+      "passed": true,
+      "evidence": "valid"
+    },
+    {
+      "text": "The audit and report make no authorship verdict and no probability or percentage-AI score",
+      "passed": true,
+      "evidence": "verdict-like sentences: none"
+    },
+    {
+      "text": "Findings include at least three distinct codes among VIS-01, VIS-02, VIS-03, SUB-03, TXT-01, DAT-04, LAY-02",
+      "passed": true,
+      "evidence": "matching codes: ['LAY-02', 'SUB-03', 'TXT-01', 'VIS-01', 'VIS-02', 'VIS-03']"
+    },
+    {
+      "text": "Every finding with scope page-pattern or cross-region cites at least two regions",
+      "passed": true,
+      "evidence": "page-pattern/cross-region findings and region counts: [('F001', 6), ('F002', 4)]"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "executor_duration_seconds": 53.6,
+    "total_duration_seconds": 53.6
+  }
+}

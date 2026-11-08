@@ -1,0 +1,90 @@
+{
+  "schema_version": "website-slop-audit/run-record/0.1",
+  "run_id": "without_skill-dead-vs-working-buttons",
+  "condition_id": "no-skill-dev",
+  "model": {
+    "provider": "anthropic",
+    "model_id": "claude-opus-5-5",
+    "snapshot_date": null,
+    "access_path": "Claude Code subagent (skill-creator dev eval)"
+  },
+  "run_index": 1,
+  "recorded_at": "2026-11-08T19:42:31Z",
+  "prompt_lock": {
+    "prompt_sha256": "b2534cdd95df222c01de2949a476567e1990247a20e24c36c059ed6e99701f9e",
+    "package_sha256": "40a9d08412378b9e4c954f461d0fbe0b270f6f7a1983b80c37c0a30f6c167315",
+    "bundle_id": "fx-buttons-working-broken",
+    "bundle_hash": "f2a3d27c373f54e9e87a11846fa721464412a13446e02996ab3806397ff8898c",
+    "analysis_profile": "multimodal-core",
+    "rubric_version": "0.1.0",
+    "condition_template": "none (task prompt only; no package)"
+  },
+  "envelope": {
+    "description": "",
+    "system_instructions_sha256": null,
+    "attachment_order": [
+      "A01",
+      "A02",
+      "A03"
+    ]
+  },
+  "settings": {
+    "temperature": null,
+    "max_output_tokens": null,
+    "reasoning": null,
+    "other": {}
+  },
+  "unavailable_parameters": [],
+  "retries": 0,
+  "parse_status": "schema_invalid",
+  "parse_errors": [
+    "[schema] $: missing required field 'schema_version'",
+    "[schema] $: missing required field 'rubric_version'",
+    "[schema] $: missing required field 'audit_id'",
+    "[schema] $: missing required field 'bundle_id'",
+    "[schema] $: missing required field 'bundle_hash'",
+    "[schema] $: missing required field 'analysis_profile'",
+    "[schema] $: missing required field 'status'",
+    "[schema] $: missing required field 'inventory'",
+    "[schema] $: missing required field 'coverage'",
+    "[schema] $: missing required field 'findings'",
+    "[schema] $: missing required field 'contextual_exceptions'",
+    "[schema] $: missing required field 'quality_observations'",
+    "[schema] $: missing required field 'exploratory_candidates'",
+    "[schema] $: missing required field 'untrusted_instructions_observed'",
+    "[schema] $: unexpected field 'audit_format'",
+    "[schema] $: unexpected field 'audited_at'",
+    "[schema] $: unexpected field 'bundle'",
+    "[schema] $: unexpected field 'profile'",
+    "[schema] $: unexpected field 'context_used'",
+    "[schema] $: unexpected field 'integrity_checks'",
+    "[schema] $: unexpected field 'interaction_results'",
+    "[schema] $: unexpected field 'features'",
+    "[schema] $.summary: missing required field 'text'",
+    "[schema] $.summary: missing required field 'major_limitations'",
+    "[schema] $.summary: unexpected field 'features_present'",
+    "[schema] $.summary: unexpected field 'features_absent'",
+    "[schema] $.summary: unexpected field 'features_not_assessable'",
+    "[schema] $.summary: unexpected field 'independent_signal_count_note'",
+    "[schema] $.summary: unexpected field 'overall_slop_signal'",
+    "[schema] $.summary: unexpected field 'overall_confidence'",
+    "[schema] $.summary: unexpected field 'pattern'",
+    "[schema] $.summary: unexpected field 'button_verdicts'",
+    "[schema] $.summary: unexpected field 'authorship_claim'",
+    "[schema] $: unexpected field 'limitations'",
+    "[schema] $: unexpected field 'assumptions'"
+  ],
+  "raw_output_path": "raw_output.txt",
+  "audit_path": "audit.json",
+  "latency_ms": 193665,
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "images": 3,
+    "unit_note": "as reported by the provider, if at all"
+  },
+  "notes": [
+    "skill-creator iteration-1 without_skill",
+    "relabelled from generic-prompt: this run received no schema or skill, so it is not the protocol's generic-prompt condition"
+  ]
+}

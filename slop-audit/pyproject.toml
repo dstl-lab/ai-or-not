@@ -1,0 +1,19 @@
+[project]
+name = "slop-audit-dev"
+version = "0.1.0"
+description = "Development environment for the website-slop-audit skill: tests, capture adapter, baselines."
+requires-python = ">=3.11"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "jsonschema==4.26.0",
+    "pytest==9.2.0",
+    "pyyaml==6.0.3",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

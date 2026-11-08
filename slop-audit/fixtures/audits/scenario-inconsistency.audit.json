@@ -1,0 +1,345 @@
+{
+  "schema_version": "website-slop-audit/audit/0.1",
+  "rubric_version": "0.1.1",
+  "audit_id": "reference-scenario-inconsistency",
+  "bundle_id": "fx-04",
+  "bundle_hash": "91292507d656ebdcabd58a49ccd3221da128d670ff665cf1e1736f14530423b6",
+  "analysis_profile": "multimodal-datastory",
+  "status": "completed",
+  "inventory": {
+    "genre": {
+      "value": "interactive data story",
+      "basis": "provided"
+    },
+    "purpose": {
+      "value": "compare coastal flood exposure across sea-level-rise scenario years",
+      "basis": "provided"
+    },
+    "audience": {
+      "value": "San Diego residents",
+      "basis": "provided"
+    },
+    "main_task": {
+      "value": "switch scenario years and read the chart and summary",
+      "basis": "inferred"
+    },
+    "structure": [
+      {
+        "region_id": "R01",
+        "role": "title and dek"
+      },
+      {
+        "region_id": "R02",
+        "role": "scenario buttons and bar chart"
+      },
+      {
+        "region_id": "R03",
+        "role": "written summary of the chart"
+      },
+      {
+        "region_id": "R04",
+        "role": "method note"
+      }
+    ]
+  },
+  "coverage": {
+    "assessed_modalities": [
+      "computed_style",
+      "dom",
+      "interaction",
+      "screenshot",
+      "text"
+    ],
+    "unassessed_modalities": [
+      {
+        "modality": "source",
+        "reason": "no source excerpts supplied"
+      }
+    ],
+    "regions": [
+      {
+        "region_id": "R01",
+        "state_ids": [
+          "S01",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "visible in desktop screenshots"
+      },
+      {
+        "region_id": "R02",
+        "state_ids": [
+          "S01",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "visible in desktop screenshots"
+      },
+      {
+        "region_id": "R03",
+        "state_ids": [
+          "S01",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "visible in desktop screenshots"
+      },
+      {
+        "region_id": "R04",
+        "state_ids": [
+          "S01",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "visible in desktop screenshots"
+      }
+    ],
+    "features": [
+      {
+        "feature_id": "VIS-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "VIS-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "LAY-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "LAY-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "VIS-03",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "MOT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "TXT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "TXT-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SUB-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SUB-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SUB-03",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "INT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "INT-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "QLT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SRC-01",
+        "status": "unassessed",
+        "reason": "needs source, which this bundle does not contain"
+      },
+      {
+        "feature_id": "DAT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "DAT-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "DAT-03",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "DAT-04",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "finding_id": "F001",
+      "feature_id": "INT-02",
+      "phenomenon_id": "P001",
+      "secondary_tags": [
+        "DAT-01"
+      ],
+      "scope": "cross-region",
+      "observation": "After the recorded switch to the 2050 scenario, the chart shows 2050 values while the linked summary still describes 2020 percentages.",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S03",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0641,
+            "y": 0.3175,
+            "width": 0.8719,
+            "height": 0.0312
+          },
+          "selector": null,
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S03",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0641,
+            "y": 0.6112,
+            "width": 0.8719,
+            "height": 0.0329
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "interaction",
+          "ref_id": "E01",
+          "description": "Click on the 2050 button completed; chart title and values changed.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T021",
+          "description": "Chart title in the after state.",
+          "quote": "Parcels in the flood zone, 2050"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T030",
+          "description": "Summary in the after state.",
+          "quote": "In 2020, 4% of La Jolla Shores parcels"
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A04",
+          "description": "After-state screenshot.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Both texts and the completed event are in the bundle."
+      },
+      "slop_association": {
+        "level": "moderate",
+        "reason": "Polished panels are not integrated; the same defect is common in hand-written code."
+      },
+      "contextual_fit": {
+        "level": "inappropriate",
+        "reason": "The purpose is comparing scenario years."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "moderate",
+        "reason": "The 2050 view is explained with 2020 numbers."
+      },
+      "alternative_explanations": [
+        "Ordinary state-management bug",
+        "Unfinished prototype"
+      ],
+      "codebook_evidence_status": "research_hypothesis",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "Only the 2050 change was recorded."
+      ]
+    }
+  ],
+  "contextual_exceptions": [
+    {
+      "exception_id": "X001",
+      "feature_id": "LAY-01",
+      "observation": "Chart, summary, and method panels share one rounded-card style.",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.2325,
+            "width": 0.9125,
+            "height": 0.28
+          },
+          "selector": null,
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.5375,
+            "width": 0.9125,
+            "height": 0.1342
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "Initial desktop view.",
+          "quote": null
+        }
+      ],
+      "reason_not_counted": "conventional_for_genre",
+      "rationale": "Distinct headings and roles; panel cards are conventional for data stories.",
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Visible."
+      }
+    }
+  ],
+  "quality_observations": [],
+  "exploratory_candidates": [],
+  "untrusted_instructions_observed": [],
+  "summary": {
+    "text": "One integration problem after the recorded scenario change; the card panels are a contextual exception.",
+    "major_limitations": [
+      "Only one scenario change recorded",
+      "Synthetic fixture"
+    ]
+  }
+}

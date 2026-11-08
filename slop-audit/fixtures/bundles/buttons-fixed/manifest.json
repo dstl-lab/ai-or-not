@@ -1,0 +1,1643 @@
+{
+  "schema_version": "website-slop-audit/capture-bundle/0.1",
+  "bundle_id": "fx-07",
+  "site_id": "site-07",
+  "capture": {
+    "captured_at": "2026-11-08T19:41:07Z",
+    "protocol_version": "capture-protocol/0.1",
+    "adapter": {
+      "name": "gstack_capture.py",
+      "version": "0.1.0",
+      "browser": "gstack browse (Status: healthy)"
+    },
+    "target_kind": "local_server",
+    "target_locator": null,
+    "snapshot_id": null,
+    "notes": [
+      "32 browser commands issued"
+    ]
+  },
+  "evidence_profile": {
+    "capture_profile": "custom",
+    "max_images": 8,
+    "selection_rules_applied": [
+      "desktop viewport screenshots at scroll offsets [0]"
+    ]
+  },
+  "modalities": {
+    "screenshot": true,
+    "text": true,
+    "dom": true,
+    "computed_style": true,
+    "interaction": true,
+    "source": false
+  },
+  "capability_limits": [
+    "animation playback is not recorded; motion can only be inferred from captured styles",
+    "HTML comments, alt text, and hidden elements are not captured as text spans"
+  ],
+  "context": {
+    "purpose": {
+      "value": "Show community air-sensor readings for one neighborhood and compare them with the previous year.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "environmental data dashboard page",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "neighborhood residents",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "blinding": {
+    "profile": "blinded",
+    "transformations": [
+      {
+        "transformation_id": "TR-locator",
+        "kind": "locator_withheld",
+        "description": "capture.target_locator withheld; the original is in the private sidecar",
+        "applies_to": [
+          "fx-07"
+        ]
+      }
+    ],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ],
+    "known_leakage": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    }
+  ],
+  "states": [
+    {
+      "state_id": "S01",
+      "route": "/index.html",
+      "viewport_id": "V1",
+      "kind": "initial",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "page as loaded at viewport V1"
+    },
+    {
+      "state_id": "S02",
+      "route": "/index.html",
+      "viewport_id": "V1",
+      "kind": "after_interaction",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "after E01: click on Show PM2.5 button"
+    },
+    {
+      "state_id": "S03",
+      "route": "/index.html",
+      "viewport_id": "V1",
+      "kind": "after_interaction",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "after E02: click on Compare with last year button"
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "page header",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#page-header",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.1225
+          }
+        },
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.1225
+          }
+        },
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.1225
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R02",
+      "name": "toolbar",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#toolbar",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0,
+            "y": 0.1225,
+            "width": 1.0,
+            "height": 0.0887
+          }
+        },
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0,
+            "y": 0.1225,
+            "width": 1.0,
+            "height": 0.0887
+          }
+        },
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0,
+            "y": 0.1225,
+            "width": 1.0,
+            "height": 0.0887
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R03",
+      "name": "reading panel",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#readout",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.2112,
+            "width": 0.5984,
+            "height": 0.1487
+          }
+        },
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0375,
+            "y": 0.2112,
+            "width": 0.5984,
+            "height": 0.1487
+          }
+        },
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0375,
+            "y": 0.2112,
+            "width": 0.5984,
+            "height": 0.1487
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R04",
+      "name": "method note",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#method-note",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.38,
+            "width": 0.5625,
+            "height": 0.04
+          }
+        },
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0375,
+            "y": 0.38,
+            "width": 0.5625,
+            "height": 0.04
+          }
+        },
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0375,
+            "y": 0.38,
+            "width": 0.5625,
+            "height": 0.04
+          }
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "A01",
+      "kind": "viewport_screenshot",
+      "path": "assets/A01.png",
+      "sha256": "56c2a9744d6c04c28fc223d7360b6a734bf1aab37da09cd820347ec2b1661b99",
+      "media_type": "image/png",
+      "pixel_width": 1280,
+      "pixel_height": 800,
+      "viewport_id": "V1",
+      "device_pixel_ratio": 1,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S01",
+      "crop_of": null
+    },
+    {
+      "asset_id": "A02",
+      "kind": "viewport_screenshot",
+      "path": "assets/A02.png",
+      "sha256": "2e1cb358917b55523aed9c05f3e8dcf64377183f5f9dec5f65b6b58a691c2195",
+      "media_type": "image/png",
+      "pixel_width": 1280,
+      "pixel_height": 800,
+      "viewport_id": "V1",
+      "device_pixel_ratio": 1,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S02",
+      "crop_of": null
+    },
+    {
+      "asset_id": "A03",
+      "kind": "viewport_screenshot",
+      "path": "assets/A03.png",
+      "sha256": "87de09347a20347f1eaf09419458b02474f2cd9b5c45840ff88305a9005ec2e6",
+      "media_type": "image/png",
+      "pixel_width": 1280,
+      "pixel_height": 800,
+      "viewport_id": "V1",
+      "device_pixel_ratio": 1,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S03",
+      "crop_of": null
+    }
+  ],
+  "text_spans": [
+    {
+      "span_id": "T001",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Air quality in Fresno's Southwest neighborhood",
+      "source": "dom",
+      "element_id": "D005",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.04,
+            "width": 0.925,
+            "height": 0.0425
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T002",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Readings from twelve community sensors, averaged over September 2026.",
+      "source": "dom",
+      "element_id": "D006",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.09,
+            "width": 0.5938,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T003",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Show PM2.5",
+      "source": "dom",
+      "element_id": "D007",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.145,
+            "width": 0.091,
+            "height": 0.0437
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T004",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Compare with last year",
+      "source": "dom",
+      "element_id": "D008",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.1363,
+            "y": 0.145,
+            "width": 0.1514,
+            "height": 0.0437
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T005",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Download CSV",
+      "source": "dom",
+      "element_id": "D009",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2955,
+            "y": 0.145,
+            "width": 0.1038,
+            "height": 0.0437
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T006",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Current reading",
+      "source": "dom",
+      "element_id": "D010",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0555,
+            "y": 0.235,
+            "width": 0.5625,
+            "height": 0.0275
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T007",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Ozone: 41 ppb (8-hour average)",
+      "source": "dom",
+      "element_id": "D011",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0555,
+            "y": 0.2725,
+            "width": 0.5625,
+            "height": 0.0338
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T008",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Select a pollutant or a comparison above.",
+      "source": "dom",
+      "element_id": "D012",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0555,
+            "y": 0.3137,
+            "width": 0.5625,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T009",
+      "region_id": "R04",
+      "state_id": "S01",
+      "text": "Sensors are PurpleAir PA-II units corrected with the EPA's 2021 formula. Hourly values are averaged per day, then per month.",
+      "source": "dom",
+      "element_id": "D004",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.38,
+            "width": 0.5625,
+            "height": 0.04
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T010",
+      "region_id": "R02",
+      "state_id": "S02",
+      "text": "Show PM2.5",
+      "source": "dom",
+      "element_id": "D015",
+      "appearances": [
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0375,
+            "y": 0.145,
+            "width": 0.091,
+            "height": 0.0437
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T011",
+      "region_id": "R02",
+      "state_id": "S02",
+      "text": "Compare with last year",
+      "source": "dom",
+      "element_id": "D016",
+      "appearances": [
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.1363,
+            "y": 0.145,
+            "width": 0.1514,
+            "height": 0.0437
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T012",
+      "region_id": "R02",
+      "state_id": "S02",
+      "text": "Download CSV",
+      "source": "dom",
+      "element_id": "D017",
+      "appearances": [
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.2955,
+            "y": 0.145,
+            "width": 0.1038,
+            "height": 0.0437
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T013",
+      "region_id": "R03",
+      "state_id": "S02",
+      "text": "Current reading",
+      "source": "dom",
+      "element_id": "D018",
+      "appearances": [
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0555,
+            "y": 0.235,
+            "width": 0.5625,
+            "height": 0.0275
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T014",
+      "region_id": "R03",
+      "state_id": "S02",
+      "text": "PM2.5: 14.2 µg/m³ (monthly mean)",
+      "source": "dom",
+      "element_id": "D019",
+      "appearances": [
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0555,
+            "y": 0.2725,
+            "width": 0.5625,
+            "height": 0.0338
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T015",
+      "region_id": "R03",
+      "state_id": "S02",
+      "text": "Select a pollutant or a comparison above.",
+      "source": "dom",
+      "element_id": "D020",
+      "appearances": [
+        {
+          "asset_id": "A02",
+          "box": {
+            "x": 0.0555,
+            "y": 0.3137,
+            "width": 0.5625,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T016",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "Show PM2.5",
+      "source": "dom",
+      "element_id": "D023",
+      "appearances": [
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0375,
+            "y": 0.145,
+            "width": 0.091,
+            "height": 0.0437
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T017",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "Compare with last year",
+      "source": "dom",
+      "element_id": "D024",
+      "appearances": [
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.1363,
+            "y": 0.145,
+            "width": 0.1514,
+            "height": 0.0437
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T018",
+      "region_id": "R02",
+      "state_id": "S03",
+      "text": "Download CSV",
+      "source": "dom",
+      "element_id": "D025",
+      "appearances": [
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.2955,
+            "y": 0.145,
+            "width": 0.1038,
+            "height": 0.0437
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T019",
+      "region_id": "R03",
+      "state_id": "S03",
+      "text": "Current reading",
+      "source": "dom",
+      "element_id": "D026",
+      "appearances": [
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0555,
+            "y": 0.235,
+            "width": 0.5625,
+            "height": 0.0275
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T020",
+      "region_id": "R03",
+      "state_id": "S03",
+      "text": "Ozone: 41 ppb (8-hour average)",
+      "source": "dom",
+      "element_id": "D027",
+      "appearances": [
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0555,
+            "y": 0.2725,
+            "width": 0.5625,
+            "height": 0.0338
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T021",
+      "region_id": "R03",
+      "state_id": "S03",
+      "text": "September 2025: PM2.5 16.8 µg/m³, so this year is 15% lower.",
+      "source": "dom",
+      "element_id": "D028",
+      "appearances": [
+        {
+          "asset_id": "A03",
+          "box": {
+            "x": 0.0555,
+            "y": 0.3137,
+            "width": 0.5625,
+            "height": 0.0225
+          }
+        }
+      ]
+    }
+  ],
+  "dom_elements": [
+    {
+      "element_id": "D001",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#page-header",
+      "tag": "header",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D002",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#toolbar",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D003",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#readout",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "6px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D004",
+      "state_id": "S01",
+      "region_id": "R04",
+      "selector": "#method-note",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T009"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 117, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D005",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#page-header > h1",
+      "tag": "h1",
+      "role": null,
+      "text_span_ids": [
+        "T001"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "28px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D006",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#page-header > p",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T002"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(77, 92, 85)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D007",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#show-pm25",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T003"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(46, 107, 79)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "4px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D008",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#compare-last-year",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T004"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(46, 107, 79)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "4px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D009",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#download-csv",
+      "tag": "a",
+      "role": null,
+      "text_span_ids": [
+        "T005"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(46, 107, 79)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "4px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D010",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#readout > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T006"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "18px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D011",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#metric",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T007"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "22px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D012",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#comparison",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T008"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(77, 92, 85)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D013",
+      "state_id": "S02",
+      "region_id": "R02",
+      "selector": "#toolbar",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D014",
+      "state_id": "S02",
+      "region_id": "R03",
+      "selector": "#readout",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "6px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D015",
+      "state_id": "S02",
+      "region_id": "R02",
+      "selector": "#show-pm25",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T010"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(46, 107, 79)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "4px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D016",
+      "state_id": "S02",
+      "region_id": "R02",
+      "selector": "#compare-last-year",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T011"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(46, 107, 79)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "4px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D017",
+      "state_id": "S02",
+      "region_id": "R02",
+      "selector": "#download-csv",
+      "tag": "a",
+      "role": null,
+      "text_span_ids": [
+        "T012"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(46, 107, 79)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "4px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D018",
+      "state_id": "S02",
+      "region_id": "R03",
+      "selector": "#readout > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T013"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "18px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D019",
+      "state_id": "S02",
+      "region_id": "R03",
+      "selector": "#metric",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T014"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "22px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D020",
+      "state_id": "S02",
+      "region_id": "R03",
+      "selector": "#comparison",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T015"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(77, 92, 85)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D021",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#toolbar",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D022",
+      "state_id": "S03",
+      "region_id": "R03",
+      "selector": "#readout",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "6px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D023",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#show-pm25",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T016"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(46, 107, 79)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "4px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D024",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#compare-last-year",
+      "tag": "button",
+      "role": null,
+      "text_span_ids": [
+        "T017"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(46, 107, 79)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "4px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D025",
+      "state_id": "S03",
+      "region_id": "R02",
+      "selector": "#download-csv",
+      "tag": "a",
+      "role": null,
+      "text_span_ids": [
+        "T018"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(46, 107, 79)",
+        "background-color": "rgb(255, 255, 255)",
+        "background-image": "none",
+        "border-radius": "4px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D026",
+      "state_id": "S03",
+      "region_id": "R03",
+      "selector": "#readout > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T019"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "18px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D027",
+      "state_id": "S03",
+      "region_id": "R03",
+      "selector": "#metric",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T020"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "22px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(30, 42, 36)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D028",
+      "state_id": "S03",
+      "region_id": "R03",
+      "selector": "#comparison",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T021"
+      ],
+      "computed_style": {
+        "font-family": "Verdana, Arial, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(77, 92, 85)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "event_id": "E01",
+      "action": "click",
+      "target": {
+        "element_id": "D007",
+        "region_id": "R02",
+        "selector": "#show-pm25",
+        "description": "Show PM2.5 button"
+      },
+      "input_value": null,
+      "before_state_id": "S01",
+      "after_state_id": "S02",
+      "timing_rule": "observe 800 ms after the action on a fresh page load",
+      "observed_changes": [
+        {
+          "kind": "text_changed",
+          "detail": "#metric: \"Ozone: 41 ppb (8-hour average)\" -> \"PM2.5: 14.2 \\u00b5g/m\\u00b3 (monthly mean)\""
+        }
+      ],
+      "execution_status": "completed",
+      "observed_result": "action completed; text or state changed within 800 ms"
+    },
+    {
+      "event_id": "E02",
+      "action": "click",
+      "target": {
+        "element_id": "D008",
+        "region_id": "R02",
+        "selector": "#compare-last-year",
+        "description": "Compare with last year button"
+      },
+      "input_value": null,
+      "before_state_id": "S01",
+      "after_state_id": "S03",
+      "timing_rule": "observe 1200 ms after the action on a fresh page load",
+      "observed_changes": [
+        {
+          "kind": "text_changed",
+          "detail": "#comparison: \"Select a pollutant or a comparison above.\" -> \"September 2025: PM2.5 16.8 \\u00b5g/m\\u00b3, so this year is 15% lower.\""
+        }
+      ],
+      "execution_status": "completed",
+      "observed_result": "action completed; text or state changed within 1200 ms"
+    }
+  ],
+  "source_excerpts": [],
+  "coverage": {
+    "routes": [
+      {
+        "ref": "/index.html",
+        "status": "captured",
+        "reason": "single route captured; other routes not attempted"
+      }
+    ],
+    "regions": [
+      {
+        "ref": "R01",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R02",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R03",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R04",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      }
+    ],
+    "viewports": [
+      {
+        "ref": "V1",
+        "status": "captured",
+        "reason": "3 screenshot(s)"
+      }
+    ],
+    "interactions": [
+      {
+        "ref": "Show PM2.5 button",
+        "status": "captured",
+        "reason": "recorded as E01"
+      },
+      {
+        "ref": "Compare with last year button",
+        "status": "captured",
+        "reason": "recorded as E02"
+      },
+      {
+        "ref": "Download CSV link",
+        "status": "untested",
+        "reason": "it would leave the captured page; links are not followed"
+      }
+    ],
+    "notes": []
+  }
+}

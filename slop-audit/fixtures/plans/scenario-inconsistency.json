@@ -1,0 +1,104 @@
+{
+  "bundle_id": "fx-04",
+  "site_id": "site-04",
+  "route": "/index.html",
+  "target_kind": "local_server",
+  "snapshot_id": null,
+  "capture_profile": "pilot-8",
+  "max_images": 8,
+  "blinding": {
+    "profile": "blinded",
+    "withhold_terms": [],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ]
+  },
+  "context": {
+    "purpose": {
+      "value": "Let readers compare how many coastal parcels fall in the flood zone under each sea-level-rise scenario year.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "interactive data story (explorable explanation)",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "San Diego residents",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    }
+  ],
+  "shots": [
+    {
+      "viewport_id": "V1",
+      "scroll_y": 0
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "story header",
+      "selector": "#story-header",
+      "description": ""
+    },
+    {
+      "region_id": "R02",
+      "name": "scenario chart panel",
+      "selector": "#scenario-panel",
+      "description": ""
+    },
+    {
+      "region_id": "R03",
+      "name": "summary panel",
+      "selector": "#summary-panel",
+      "description": ""
+    },
+    {
+      "region_id": "R04",
+      "name": "method panel",
+      "selector": "#method-panel",
+      "description": ""
+    }
+  ],
+  "interactions": [
+    {
+      "event_id": "E01",
+      "action": "click",
+      "selector": "button[data-year=\"2050\"]",
+      "region_id": "R02",
+      "description": "2050 scenario button",
+      "observe_region_ids": [
+        "R02",
+        "R03"
+      ],
+      "wait_ms": 800,
+      "shot_before": true,
+      "shot_after": true
+    }
+  ],
+  "untested_controls": [
+    {
+      "description": "2100 scenario button",
+      "reason": "not exercised in this capture; one scenario change was recorded"
+    }
+  ],
+  "selection_rules": [
+    "desktop viewport screenshots at scroll offsets [0]"
+  ],
+  "coverage_notes": []
+}

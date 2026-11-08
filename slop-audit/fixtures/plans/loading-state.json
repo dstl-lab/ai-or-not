@@ -1,0 +1,69 @@
+{
+  "bundle_id": "fx-10",
+  "site_id": "site-10",
+  "route": "/index.html",
+  "target_kind": "local_server",
+  "snapshot_id": null,
+  "capture_profile": "custom",
+  "max_images": 8,
+  "blinding": {
+    "profile": "blinded",
+    "withhold_terms": [],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ]
+  },
+  "context": {
+    "purpose": {
+      "value": "Report bus ridership recovery compared with 2019.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "interactive data story (explorable explanation)",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "general readers",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    }
+  ],
+  "shots": [
+    {
+      "viewport_id": "V1",
+      "scroll_y": 0
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "story area",
+      "selector": "#story",
+      "description": ""
+    }
+  ],
+  "interactions": [],
+  "untested_controls": [],
+  "selection_rules": [
+    "desktop viewport screenshots at scroll offsets [0]"
+  ],
+  "coverage_notes": [
+    "Captured before the page finished loading its content (synthetic loading-state fixture)."
+  ],
+  "settle_ms": 300
+}

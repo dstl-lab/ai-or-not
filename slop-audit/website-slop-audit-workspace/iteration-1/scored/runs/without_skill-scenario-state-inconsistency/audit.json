@@ -1,0 +1,713 @@
+{
+  "audit_schema": "ad-hoc/multimodal-datastory-audit/0.1 (defined for this run; no skill or external schema was consulted)",
+  "audit_id": "audit-fx-scenario-inconsistency-without-skill-01",
+  "audited_at": "2026-11-07",
+  "profile": {
+    "name": "multimodal-datastory",
+    "interpretation": "Audit of an interactive data story using every captured modality (screenshots, DOM text spans, computed styles, the recorded interaction) and cross-checking them against each other. Checks: narrative-chart agreement in every captured state, encoding integrity, purpose fit, labeling and sourcing, responsive rendering, typography and polish, and the accessibility signals the bundle can support.",
+    "checks": [
+      {
+        "check_id": "C1",
+        "name": "Narrative text agrees with the chart in every captured state",
+        "status": "fail",
+        "finding_ids": [
+          "F01"
+        ]
+      },
+      {
+        "check_id": "C2",
+        "name": "Interactive controls update all dependent views",
+        "status": "fail",
+        "finding_ids": [
+          "F01"
+        ]
+      },
+      {
+        "check_id": "C3",
+        "name": "Bar lengths are proportional and the scale is stable across states",
+        "status": "pass",
+        "finding_ids": []
+      },
+      {
+        "check_id": "C4",
+        "name": "Chart renders at every captured viewport",
+        "status": "fail",
+        "finding_ids": [
+          "F02"
+        ]
+      },
+      {
+        "check_id": "C5",
+        "name": "Narrative supports the stated purpose (comparison across scenario years)",
+        "status": "fail",
+        "finding_ids": [
+          "F03"
+        ]
+      },
+      {
+        "check_id": "C6",
+        "name": "Terminology is consistent across headline, controls and source note",
+        "status": "minor_issue",
+        "finding_ids": [
+          "F04"
+        ]
+      },
+      {
+        "check_id": "C7",
+        "name": "Units and denominators are clear",
+        "status": "minor_issue",
+        "finding_ids": [
+          "F05"
+        ]
+      },
+      {
+        "check_id": "C8",
+        "name": "Value labels are easy to match to their marks",
+        "status": "minor_issue",
+        "finding_ids": [
+          "F06"
+        ]
+      },
+      {
+        "check_id": "C9",
+        "name": "Typography is consistent across panels",
+        "status": "minor_issue",
+        "finding_ids": [
+          "F07"
+        ]
+      },
+      {
+        "check_id": "C10",
+        "name": "Source and method are disclosed",
+        "status": "pass",
+        "finding_ids": []
+      },
+      {
+        "check_id": "C11",
+        "name": "Text and mark contrast meets WCAG 2.x AA",
+        "status": "pass",
+        "finding_ids": []
+      },
+      {
+        "check_id": "C12",
+        "name": "Accessibility beyond contrast (chart alternative text, screen-reader output)",
+        "status": "not_assessable",
+        "finding_ids": []
+      }
+    ]
+  },
+  "bundle": {
+    "path": "/Users/thaaraksriram/workspace/ai-or-not/slop-audit/website-slop-audit/evals/scenario-state-inconsistency/files/bundle",
+    "bundle_id": "fx-scenario-inconsistency",
+    "site_id": "site-scenario-inconsistency",
+    "schema_version": "website-slop-audit/capture-bundle/0.1",
+    "captured_at": "2026-11-07T22:45:19Z",
+    "bundle_hash_from_lock": "8134a316a2321118d293f909f0b812a1981f96d8e7a4e7aa401e806386f03bb7",
+    "manifest_sha256_observed": "5ac3586b188b71381c0c502db3888882e115055b3588d6e4728a266138e440db",
+    "integrity": {
+      "asset_hashes_verified": true,
+      "detail": "SHA-256 of A01-A04 matches both bundle.lock.json and manifest.json. The lock's bundle_hash was not recomputed because the bundle does not say how it is derived.",
+      "assets_checked": [
+        "A01",
+        "A02",
+        "A03",
+        "A04"
+      ]
+    },
+    "context_used": {
+      "purpose": "Let readers compare how many coastal parcels fall in the flood zone under each sea-level-rise scenario year.",
+      "genre": "interactive data story (explorable explanation)",
+      "audience": "San Diego residents"
+    },
+    "blinding": {
+      "profile": "blinded",
+      "respected": true,
+      "note": "No attempt was made to identify the creator, generator, course year or award. The findings describe observable defects and say nothing about authorship."
+    }
+  },
+  "evidence_inventory": {
+    "states": [
+      {
+        "state_id": "S01",
+        "viewport_id": "V1",
+        "kind": "initial",
+        "assets": [
+          "A01"
+        ]
+      },
+      {
+        "state_id": "S02",
+        "viewport_id": "V2",
+        "kind": "initial",
+        "assets": [
+          "A02",
+          "A03"
+        ]
+      },
+      {
+        "state_id": "S03",
+        "viewport_id": "V1",
+        "kind": "after_interaction (E01: click 2050)",
+        "assets": [
+          "A04"
+        ]
+      }
+    ],
+    "interactions": [
+      {
+        "event_id": "E01",
+        "action": "click",
+        "target": "button[data-year=\"2050\"]",
+        "before_state_id": "S01",
+        "after_state_id": "S03",
+        "timing_rule": "observe 800 ms after the action on a fresh page load"
+      }
+    ],
+    "derived_measurements": [
+      {
+        "measurement_id": "M01",
+        "description": "Pixel diff of A01 against A04 (both 1280x800, scroll 0).",
+        "result": "Changed pixels fall only in the button row (y 208-239), the year digits of the chart title (y 259-274) and the three bar/value rows (y 291-360). The summary panel (y 430-536) and the method panel (y 557-676) are pixel-identical before and after the click."
+      },
+      {
+        "measurement_id": "M02",
+        "description": "Bar lengths measured from A01 and A04 (fill rgb(31,111,139)); every bar starts at x=252.",
+        "result": {
+          "A01_2020": {
+            "Mission Beach": {
+              "value_pct": 12,
+              "px": 106
+            },
+            "Imperial Beach": {
+              "value_pct": 9,
+              "px": 80
+            },
+            "La Jolla Shores": {
+              "value_pct": 4,
+              "px": 35
+            }
+          },
+          "A04_2050": {
+            "Mission Beach": {
+              "value_pct": 31,
+              "px": 275
+            },
+            "Imperial Beach": {
+              "value_pct": 27,
+              "px": 239
+            },
+            "La Jolla Shores": {
+              "value_pct": 11,
+              "px": 97
+            }
+          },
+          "px_per_percentage_point_range": [
+            8.75,
+            8.89
+          ],
+          "interpretation": "The bars use one linear scale in both states (about 8.85 px per point, which implies an invisible 0-100% track about 885 px wide). Bar length is honest and comparable across years."
+        }
+      },
+      {
+        "measurement_id": "M03",
+        "description": "Bar-colored pixels (rgb(31,111,139) within +/-20 per channel) in the chart rows of the mobile screenshots.",
+        "result": "A02: 0 pixels in x 112-676, y 940-1089. A03: 0 pixels in x 112-676, y 385-534. The strip between the label column and the value column is pure white in both."
+      },
+      {
+        "measurement_id": "M04",
+        "description": "Line pitch of multi-line paragraphs on mobile (A02/A03, DPR 2), converted to CSS px.",
+        "result": {
+          "summary_paragraph_17px": {
+            "pitch_css_px": 26.25,
+            "approx_line_height": 1.54
+          },
+          "method_paragraph_16px": {
+            "pitch_css_px": 18.0,
+            "approx_line_height": 1.13
+          },
+          "header_subtitle_17px": {
+            "pitch_css_px": 20.0,
+            "approx_line_height": 1.18
+          },
+          "source_note_13px": {
+            "pitch_css_px": 15.0,
+            "approx_line_height": 1.15
+          }
+        }
+      },
+      {
+        "measurement_id": "M05",
+        "description": "WCAG 2.x contrast ratios computed from computed-style colors.",
+        "result": {
+          "body text #12263A on white": 15.4,
+          "header subtitle #3D5266 on page background #F2F5F7": 7.38,
+          "inactive button text #1F6F8B on white": 5.67,
+          "active button text white on #1F6F8B": 5.67,
+          "source note #5A6B7B on white (13px)": 5.49,
+          "bar fill #1F6F8B on white panel (non-text, 3:1 needed)": 5.67
+        }
+      }
+    ]
+  },
+  "findings": [
+    {
+      "finding_id": "F01",
+      "title": "The 'What this means' summary stays on 2020 after the reader selects 2050",
+      "category": "state_consistency / narrative-chart agreement",
+      "severity": "high",
+      "confidence": "high",
+      "status": "confirmed",
+      "description": "After E01 (a click on 2050), the chart title changes to 'Parcels in the flood zone, 2050' and the values change to 31% / 27% / 11%. The summary panel directly below still reads 'In 2020, 4% of La Jolla Shores parcels and 12% of Mission Beach parcels sit in the flood zone. Imperial Beach is in between at 9%.' The page's only interpretive text is stuck on the baseline year while the chart above it shows a different year.",
+      "evidence": [
+        {
+          "kind": "interaction",
+          "ref": "E01",
+          "detail": "observed_changes lists 4 text changes (3 values and #chart-title) and 1 button-state change, but nothing for #summary"
+        },
+        {
+          "kind": "text_span",
+          "ref": "T021",
+          "state_id": "S03",
+          "text": "Parcels in the flood zone, 2050",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0641,
+            "y": 0.3175,
+            "width": 0.8719,
+            "height": 0.0312
+          }
+        },
+        {
+          "kind": "text_span",
+          "ref": [
+            "T023",
+            "T025",
+            "T027"
+          ],
+          "state_id": "S03",
+          "text": [
+            "31%",
+            "27%",
+            "11%"
+          ],
+          "asset_id": "A04",
+          "box": {
+            "x": 0.8969,
+            "y": 0.3638,
+            "width": 0.0391,
+            "height": 0.0875
+          }
+        },
+        {
+          "kind": "text_span",
+          "ref": "T030",
+          "state_id": "S03",
+          "text": "In 2020, 4% of La Jolla Shores parcels and 12% of Mission Beach parcels sit in the flood zone. Imperial Beach is in between at 9%.",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0641,
+            "y": 0.6112,
+            "width": 0.8719,
+            "height": 0.0329
+          }
+        },
+        {
+          "kind": "text_span_comparison",
+          "ref": [
+            "T015",
+            "T030"
+          ],
+          "detail": "The #summary text is character-identical in S01 and S03"
+        },
+        {
+          "kind": "dom_element",
+          "ref": [
+            "D019",
+            "D036"
+          ],
+          "selector": "#summary"
+        },
+        {
+          "kind": "derived_measurement",
+          "ref": "M01",
+          "detail": "Summary panel pixels are identical in A01 and A04"
+        },
+        {
+          "kind": "screenshot_pair",
+          "ref": [
+            "A01",
+            "A04"
+          ],
+          "region_id": "R03",
+          "box": {
+            "x": 0.0437,
+            "y": 0.5375,
+            "width": 0.9125,
+            "height": 0.1342
+          }
+        }
+      ],
+      "impact": "A reader who picks 2050 and then reads 'What this means' gets numbers 2.5-3 times lower than the chart shows (12 vs 31, 9 vs 27, 4 vs 11). The sentence does say 'In 2020', so it is stale rather than false, but the heading presents it as the reading of the current view. The stated purpose is comparing scenario years, so the defect lands on the main task. For a flood-risk story aimed at residents, it understates the projected exposure.",
+      "suggested_fix": "Render #summary from the same selected-year state that drives #chart-title and #bars, for example a per-year sentence template updated in the same click handler. If the 2020 sentence is meant as a fixed baseline, label it 'Baseline (2020)' and add a sentence that changes with the selected year.",
+      "scope_limits": "Shown only for 2050 at the desktop viewport. The 2100 button and the mobile after-click state were not captured, so the defect is very likely but not proven to affect them too. The source is not in the bundle, so the cause is inferred from behavior. A summary update arriving later than 800 ms would be missed, but nothing suggests asynchronous loading."
+    },
+    {
+      "finding_id": "F02",
+      "title": "Bars are missing from the chart at the mobile viewport",
+      "category": "responsive_rendering / encoding",
+      "severity": "medium",
+      "confidence": "medium",
+      "status": "likely_defect",
+      "description": "At 390x844 (A02, A03), the chart shows only the neighborhood labels and the percentages. Between the label column and the value column there is no bar or track. At the desktop viewport, the same rows carry clearly visible bars.",
+      "evidence": [
+        {
+          "kind": "derived_measurement",
+          "ref": "M03"
+        },
+        {
+          "kind": "screenshot",
+          "ref": "A02",
+          "region_id": "R02",
+          "box": {
+            "x": 0.5,
+            "y": 0.5569,
+            "width": 0.1603,
+            "height": 0.0889
+          }
+        },
+        {
+          "kind": "screenshot",
+          "ref": "A03",
+          "region_id": "R02",
+          "box": {
+            "x": 0.5,
+            "y": 0.2281,
+            "width": 0.1603,
+            "height": 0.0889
+          }
+        },
+        {
+          "kind": "screenshot",
+          "ref": "A01",
+          "region_id": "R02",
+          "detail": "control: bars present at x 252-357 / 252-331 / 252-286 px"
+        }
+      ],
+      "impact": "On a phone, which is a likely device for a resident audience, the data story has no visual encoding, and the scenario comparison by bar length does not exist there.",
+      "suggested_fix": "Give the bar track a minimum width or flex-grow at narrow widths, or stack each bar under its label on small screens. Then re-capture at 390 px.",
+      "scope_limits": "The bar elements (presumably #bars > div > span:nth-of-type(2)) are not in dom_elements, and no DOM or computed style was captured for the mobile state, so the bundle cannot show whether the bars were hidden on purpose or collapsed to zero width. The pixels prove the bars are absent. Whether that is a defect is an inference, though nothing on the page signals a deliberate table-only mobile view."
+    },
+    {
+      "finding_id": "F03",
+      "title": "'What this means' restates the chart values and gives no comparison across years",
+      "category": "narrative_quality / purpose_fit",
+      "severity": "medium",
+      "confidence": "medium",
+      "status": "confirmed_observation_with_judgment",
+      "description": "The heading promises interpretation, but the paragraph repeats the three 2020 numbers already printed beside the bars. It reorders them, but adds no change over time, no ratio, no implication for residents and no takeaway. The stated purpose is comparing scenario years, but the page shows one year at a time with no delta or annotation, so the reader has to remember the earlier values while toggling.",
+      "evidence": [
+        {
+          "kind": "text_span",
+          "ref": "T014",
+          "text": "What this means",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0641,
+            "y": 0.565,
+            "width": 0.8719,
+            "height": 0.0312
+          }
+        },
+        {
+          "kind": "text_span",
+          "ref": "T015",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0641,
+            "y": 0.6112,
+            "width": 0.8719,
+            "height": 0.0329
+          }
+        },
+        {
+          "kind": "text_span",
+          "ref": [
+            "T008",
+            "T010",
+            "T012"
+          ],
+          "text": [
+            "12%",
+            "9%",
+            "4%"
+          ],
+          "detail": "the same three values the summary repeats"
+        },
+        {
+          "kind": "context",
+          "ref": "context.purpose"
+        }
+      ],
+      "impact": "The narrative layer adds no information beyond the chart. A heading that over-promises over a paragraph that only restates values is a recognizable low-effort pattern in data stories, and it makes F01 worse, because the one place that could explain the change between years does not.",
+      "suggested_fix": "Write the takeaway, for example how much each neighborhood's share grows from 2020 to 2050 and 2100, and which one crosses a meaningful threshold. Consider a small change annotation (for example +19 pts) or a multi-year view.",
+      "scope_limits": "The 2100 state was not captured. It might carry different narrative, but S03 suggests the summary does not change."
+    },
+    {
+      "finding_id": "F04",
+      "title": "The 'scenario' wording does not match the controls or the source note",
+      "category": "labeling / terminology",
+      "severity": "low",
+      "confidence": "medium",
+      "status": "confirmed_observation_with_judgment",
+      "description": "The headline asks how much of the coast floods 'under each sea-level scenario', and the buttons offer years (2020, 2050, 2100). The source note says all of the numbers come from one 'intermediate-high scenario'. Readers may take the years to be separate scenarios, or expect a scenario selector (low, intermediate, high) that does not exist. 2020 is also a baseline year presented under a 'projected' flood zone.",
+      "evidence": [
+        {
+          "kind": "text_span",
+          "ref": "T001",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.05,
+            "width": 0.7031,
+            "height": 0.0975
+          }
+        },
+        {
+          "kind": "text_span",
+          "ref": [
+            "T003",
+            "T004",
+            "T005"
+          ],
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0641,
+            "y": 0.26,
+            "width": 0.1756,
+            "height": 0.04
+          }
+        },
+        {
+          "kind": "text_span",
+          "ref": "T013",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0641,
+            "y": 0.4662,
+            "width": 0.8719,
+            "height": 0.0187
+          }
+        },
+        {
+          "kind": "text_span",
+          "ref": "T002",
+          "asset_id": "A01"
+        }
+      ],
+      "impact": "Minor confusion about what is being compared. A careful reader may doubt the framing.",
+      "suggested_fix": "Retitle along the lines of 'How much of San Diego's coast floods as seas rise through 2100?', and label the control group 'Year (intermediate-high scenario)'."
+    },
+    {
+      "finding_id": "F05",
+      "title": "Counts and shares are blurred, and the percentages have no denominator",
+      "category": "labeling / units",
+      "severity": "low",
+      "confidence": "medium",
+      "status": "confirmed_observation_with_judgment",
+      "description": "The purpose talks about how many parcels fall in the zone, the method says 'We counted parcels', and the chart title 'Parcels in the flood zone' reads like a count. The values are percentages, though, and the chart never says what they are a percentage of. Only the summary implies 'of La Jolla Shores parcels'. There are no parcel totals.",
+      "evidence": [
+        {
+          "kind": "text_span",
+          "ref": "T006",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0641,
+            "y": 0.3175,
+            "width": 0.8719,
+            "height": 0.0312
+          }
+        },
+        {
+          "kind": "text_span",
+          "ref": "T017",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0641,
+            "y": 0.7754,
+            "width": 0.8719,
+            "height": 0.0225
+          }
+        },
+        {
+          "kind": "context",
+          "ref": "context.purpose"
+        }
+      ],
+      "impact": "Without totals, readers cannot judge scale. 31% of a small neighborhood may be fewer parcels than 11% of a large one.",
+      "suggested_fix": "Retitle as 'Share of each neighborhood's parcels in the flood zone, <year>', and show counts, for example in a tooltip or a secondary label ('31% · 1,240 parcels')."
+    },
+    {
+      "finding_id": "F06",
+      "title": "On desktop, the value labels sit far from their bars, and the 0-100% scale is invisible",
+      "category": "chart_design / legibility",
+      "severity": "low",
+      "confidence": "high",
+      "status": "confirmed",
+      "description": "On desktop, the percentages are pinned to the right edge of the panel (x about 1148 px), while the bars end between 286 and 526 px. In the 2020 state, the gap between a bar end and its value is up to about 790 px of empty white, with no track, gridline or axis to show that the full width means 100%.",
+      "evidence": [
+        {
+          "kind": "derived_measurement",
+          "ref": "M02"
+        },
+        {
+          "kind": "screenshot",
+          "ref": "A01",
+          "region_id": "R02",
+          "box": {
+            "x": 0.2789,
+            "y": 0.3638,
+            "width": 0.618,
+            "height": 0.0863
+          }
+        },
+        {
+          "kind": "text_span",
+          "ref": [
+            "T008",
+            "T010",
+            "T012"
+          ],
+          "asset_id": "A01",
+          "box": {
+            "x": 0.8969,
+            "y": 0.3638,
+            "width": 0.0391,
+            "height": 0.0875
+          }
+        }
+      ],
+      "impact": "Matching values to bars takes more effort, and readers cannot tell how short the bars are relative to the maximum. The fixed scale itself is a strength (see M02).",
+      "suggested_fix": "Place each value at the end of its bar, or draw a light 0-100% track behind the bars with end ticks."
+    },
+    {
+      "finding_id": "F07",
+      "title": "Line-height is inconsistent across paragraphs on mobile",
+      "category": "typography / polish",
+      "severity": "low",
+      "confidence": "medium",
+      "status": "confirmed_by_measurement",
+      "description": "On mobile, the summary paragraph is set at about 1.54 line-height, while the method paragraph (about 1.13), the header subtitle (about 1.18) and the source note (about 1.15) are noticeably tight for multi-line body text.",
+      "evidence": [
+        {
+          "kind": "derived_measurement",
+          "ref": "M04"
+        },
+        {
+          "kind": "screenshot",
+          "ref": "A03",
+          "region_id": "R03",
+          "box": {
+            "x": 0.1436,
+            "y": 0.4313,
+            "width": 0.7231,
+            "height": 0.252
+          }
+        },
+        {
+          "kind": "screenshot",
+          "ref": "A03",
+          "region_id": "R04",
+          "box": {
+            "x": 0.1436,
+            "y": 0.707,
+            "width": 0.7231,
+            "height": 0.2263
+          }
+        }
+      ],
+      "impact": "Small polish issue. The cramped method text is harder to read on phones, and the mismatch looks unintentional.",
+      "suggested_fix": "Set one body line-height (about 1.45-1.55) on paragraphs throughout the page.",
+      "scope_limits": "Line-height is not among the captured computed-style properties, so the values are estimated from line pitch in pixels at DPR 2."
+    }
+  ],
+  "strengths": [
+    {
+      "ref": "M02",
+      "note": "The bars use one linear scale in both captured states, about 8.85 px per percentage point. Switching years does not silently rescale the axis, so bar lengths can be compared honestly across years."
+    },
+    {
+      "ref": "E01",
+      "note": "The selected-year button gets a clear filled style, the button state attribute toggles (button 1 = false, button 2 = true), and the chart title updates to the selected year."
+    },
+    {
+      "ref": [
+        "T013",
+        "T017"
+      ],
+      "note": "A named source (San Diego County Coastal Vulnerability Assessment, 2024, intermediate-high scenario) and a one-line method are given."
+    },
+    {
+      "ref": "M05",
+      "note": "All measured text and mark colors pass WCAG AA (lowest 5.49:1, the 13px source note)."
+    },
+    {
+      "ref": [
+        "T008",
+        "T023"
+      ],
+      "note": "The data is internally plausible: each neighborhood's share rises from 2020 to 2050, and the ranking (Mission Beach > Imperial Beach > La Jolla Shores) holds in both years."
+    },
+    {
+      "ref": "dom_elements.computed_style",
+      "note": "The styling is restrained: no gradients, no text effects, no animations, and a single accent color. (transition-property 'all' is the CSS default and is not treated as a signal.)"
+    }
+  ],
+  "neutral_observations": [
+    "The look is a common template: white cards with a 10px radius and a soft shadow on a light gray page, plus pill buttons with a 999px radius. It is clean but generic, and it is not counted as a defect or as evidence of authorship.",
+    "The page fits in one desktop viewport, so no desktop scroll screenshots exist (manifest capture notes)."
+  ],
+  "coverage_limits": [
+    "The 2100 button was not exercised (coverage.interactions), so F01 is shown for 2050 only.",
+    "No after-click state was captured on mobile.",
+    "No source code was captured (modalities.source = false), so the causes of F01 and F02 are inferred from behavior.",
+    "The bar elements and any track elements are not in dom_elements, and V2 has no DOM or computed-style capture, so bar geometry comes from pixels only.",
+    "Hidden elements, alt text, ARIA labels and HTML comments are not captured, so chart accessibility beyond contrast is not assessable.",
+    "Only one route (/index.html) was captured.",
+    "Motion and animation playback were not recorded."
+  ],
+  "overall": {
+    "verdict": "needs_fixes",
+    "summary": "This is a clean, honestly scaled, well-sourced single-chart data story with one high-severity defect. Its interactive state is only partly wired: selecting 2050 updates the chart title and bars, but the 'What this means' narrative stays on 2020. That directly undercuts the page's purpose of comparing scenario years. A second likely defect is that the bars do not render at the mobile viewport. The other issues are low-severity labeling and polish problems.",
+    "severity_counts": {
+      "high": 1,
+      "medium": 2,
+      "low": 4
+    },
+    "most_important_finding": "F01",
+    "slop_signals": {
+      "note": "'Slop' here means signs of unreviewed or unfinished work, not a claim about who or what made the page.",
+      "signals": [
+        {
+          "finding_id": "F01",
+          "weight": "strong",
+          "reason": "A dependent view was never wired to state. The defect is visible as soon as a reader uses the main control, which suggests the interaction was never checked end to end."
+        },
+        {
+          "finding_id": "F03",
+          "weight": "moderate",
+          "reason": "A heading that promises interpretation sits over a paragraph that only restates the chart values."
+        },
+        {
+          "finding_id": "F02",
+          "weight": "moderate",
+          "reason": "The chart's marks vanish at phone width with nothing to signal a deliberate fallback, which suggests no mobile check."
+        },
+        {
+          "finding_id": "F07",
+          "weight": "weak",
+          "reason": "Inconsistent paragraph leading."
+        }
+      ]
+    }
+  }
+}

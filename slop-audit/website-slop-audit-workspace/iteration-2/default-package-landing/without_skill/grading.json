@@ -1,0 +1,34 @@
+{
+  "expectations": [
+    {
+      "text": "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+      "passed": false,
+      "evidence": "1304 error(s): [schema] $: missing required field 'schema_version'; [schema] $: missing required field 'rubric_version'; [schema] $: missing required field 'bundle_id'; [schema] $: missing required field 'bundle_hash'"
+    },
+    {
+      "text": "The audit and report make no authorship verdict and no probability or percentage-AI score",
+      "passed": true,
+      "evidence": "verdict-like sentences: none"
+    },
+    {
+      "text": "Findings include at least three distinct codes among VIS-01, VIS-02, VIS-03, SUB-03, TXT-01, DAT-04, LAY-02",
+      "passed": false,
+      "evidence": "matching codes: []"
+    },
+    {
+      "text": "Every finding with scope page-pattern or cross-region cites at least two regions",
+      "passed": true,
+      "evidence": "page-pattern/cross-region findings and region counts: none"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 2,
+    "total": 4,
+    "pass_rate": 0.5
+  },
+  "timing": {
+    "executor_duration_seconds": 432.0,
+    "total_duration_seconds": 432.0
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "schema_version": "website-slop-audit/capture-bundle/0.1",
+  "bundle_id": "fx-09",
+  "site_id": "site-09",
+  "capture": {
+    "captured_at": "2026-11-08T19:41:58Z",
+    "protocol_version": "capture-protocol/0.1",
+    "adapter": {
+      "name": "supplied_bundle.py",
+      "version": "0.1.0",
+      "browser": null
+    },
+    "target_kind": "supplied_artifacts",
+    "target_locator": null,
+    "snapshot_id": null,
+    "notes": []
+  },
+  "evidence_profile": {
+    "capture_profile": "custom",
+    "max_images": 0,
+    "selection_rules_applied": [
+      "supplied artifacts only; no live capture"
+    ]
+  },
+  "modalities": {
+    "screenshot": false,
+    "text": false,
+    "dom": false,
+    "computed_style": false,
+    "interaction": false,
+    "source": true
+  },
+  "capability_limits": [
+    "no rendered page: no screenshots, visible text, DOM, styles, or interactions were captured"
+  ],
+  "context": {
+    "purpose": {
+      "value": "Show community air-sensor readings for one neighborhood and compare them with the previous year.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "environmental data dashboard page",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "neighborhood residents",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "blinding": {
+    "profile": "blinded",
+    "transformations": [],
+    "withheld_fields": [
+      "award",
+      "course_year"
+    ],
+    "known_leakage": []
+  },
+  "viewports": [],
+  "states": [
+    {
+      "state_id": "S01",
+      "route": "/",
+      "viewport_id": null,
+      "kind": "supplied",
+      "load_status": "unknown",
+      "fonts_loaded": null,
+      "description": "evidence supplied without a live capture"
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "toolbar markup",
+      "route": "/",
+      "description": "the toolbar section of index.html",
+      "selector": null,
+      "appearances": []
+    },
+    {
+      "region_id": "R02",
+      "name": "readout script",
+      "route": "/",
+      "description": "event handlers in app.js",
+      "selector": null,
+      "appearances": []
+    }
+  ],
+  "assets": [],
+  "text_spans": [],
+  "dom_elements": [],
+  "interactions": [],
+  "source_excerpts": [
+    {
+      "excerpt_id": "SX01",
+      "path": "index.html",
+      "line_start": 26,
+      "line_end": 30,
+      "sha256": "eadfa4f801c6b3ddfc99aa0d689d5f45574338269dfd1283326444a17b309906",
+      "language": "html",
+      "text": "<section class=\"tools\" id=\"toolbar\">\n  <button type=\"button\" id=\"show-pm25\">Show PM2.5</button>\n  <button type=\"button\" id=\"compare-last-year\">Compare with last year</button>\n  <a href=\"data/southwest-sept-2026.csv\" id=\"download-csv\">Download CSV</a>\n</section>",
+      "maps_to_region_ids": [
+        "R01"
+      ]
+    },
+    {
+      "excerpt_id": "SX02",
+      "path": "app.js",
+      "line_start": 1,
+      "line_end": 7,
+      "sha256": "75a64cd679dcfde8a3784232a4e340a646c534964c1e928c00aa23b2ee465fd0",
+      "language": "js",
+      "text": "// Readout controls for the air-quality page.\nconst metric = document.getElementById(\"metric\");\nconst comparison = document.getElementById(\"comparison\");\n\ndocument.getElementById(\"show-pm25\").addEventListener(\"click\", () => {\n  metric.textContent = \"PM2.5: 14.2 µg/m³ (monthly mean)\";\n});",
+      "maps_to_region_ids": [
+        "R02"
+      ]
+    },
+    {
+      "excerpt_id": "SX03",
+      "path": "app.js",
+      "line_start": 11,
+      "line_end": 16,
+      "sha256": "30f140cf85e84fb39177458ab61b1d326e222c363db2d518e6337d14f1222581",
+      "language": "js",
+      "text": "const compareButton = document.getElementById(\"compare-last-yr\");\nif (compareButton) {\n  compareButton.addEventListener(\"click\", () => {\n    comparison.textContent = \"September 2025: PM2.5 16.8 µg/m³, so this year is 15% lower.\";\n  });\n}",
+      "maps_to_region_ids": [
+        "R02"
+      ]
+    }
+  ],
+  "coverage": {
+    "routes": [
+      {
+        "ref": "/",
+        "status": "partial",
+        "reason": "supplied artifacts only; the page was not rendered"
+      }
+    ],
+    "regions": [
+      {
+        "ref": "R01",
+        "status": "partial",
+        "reason": "described by supplied source only"
+      },
+      {
+        "ref": "R02",
+        "status": "partial",
+        "reason": "described by supplied source only"
+      }
+    ],
+    "viewports": [],
+    "interactions": [
+      {
+        "ref": "all controls",
+        "status": "untested",
+        "reason": "no live page; behavior cannot be observed"
+      }
+    ],
+    "notes": [
+      "Source excerpts supplied by the fixture author; the page itself was not rendered."
+    ]
+  }
+}

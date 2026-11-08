@@ -1,0 +1,34 @@
+{
+  "expectations": [
+    {
+      "text": "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+      "passed": false,
+      "evidence": "373 error(s): [schema] $: missing required field 'schema_version'; [schema] $: missing required field 'rubric_version'; [schema] $: missing required field 'bundle_id'; [schema] $: missing required field 'bundle_hash'"
+    },
+    {
+      "text": "The audit and report make no authorship verdict and no probability or percentage-AI score",
+      "passed": true,
+      "evidence": "verdict-like sentences: none"
+    },
+    {
+      "text": "A finding cites interaction E01 and locates both R02 and R03 in the after-interaction state S03",
+      "passed": false,
+      "evidence": "findings citing E01 at R02+R03 in S03: none; codes: [None, None, None, None, None, None, None]"
+    },
+    {
+      "text": "No finding claims the untested 2100 scenario button is broken",
+      "passed": true,
+      "evidence": "findings implying an untested control failed: none"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 2,
+    "total": 4,
+    "pass_rate": 0.5
+  },
+  "timing": {
+    "executor_duration_seconds": 299.8,
+    "total_duration_seconds": 299.8
+  }
+}

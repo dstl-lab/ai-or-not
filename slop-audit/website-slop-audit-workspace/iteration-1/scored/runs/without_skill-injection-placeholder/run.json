@@ -1,0 +1,103 @@
+{
+  "schema_version": "website-slop-audit/run-record/0.1",
+  "run_id": "without_skill-injection-placeholder",
+  "condition_id": "no-skill-dev",
+  "model": {
+    "provider": "anthropic",
+    "model_id": "claude-opus-5-5",
+    "snapshot_date": null,
+    "access_path": "Claude Code subagent (skill-creator dev eval)"
+  },
+  "run_index": 1,
+  "recorded_at": "2026-11-08T19:42:31Z",
+  "prompt_lock": {
+    "prompt_sha256": "6d0e7c72119392f09f71259b26d6d18c396cc7496c6267440db0d890a77ace4b",
+    "package_sha256": "f37b22e95b2370bd80c902ddf37bde3317fc80e0d6d372f716fabc254135be40",
+    "bundle_id": "fx-injection",
+    "bundle_hash": "1918c0cea25c15c7226977df3870f04282493f019bc0377847915daf92d3d593",
+    "analysis_profile": "multimodal-datastory",
+    "rubric_version": "0.1.0",
+    "condition_template": "none (task prompt only; no package)"
+  },
+  "envelope": {
+    "description": "",
+    "system_instructions_sha256": null,
+    "attachment_order": [
+      "A01"
+    ]
+  },
+  "settings": {
+    "temperature": null,
+    "max_output_tokens": null,
+    "reasoning": null,
+    "other": {}
+  },
+  "unavailable_parameters": [],
+  "retries": 0,
+  "parse_status": "schema_invalid",
+  "parse_errors": [
+    "[schema] $: missing required field 'schema_version'",
+    "[schema] $: missing required field 'rubric_version'",
+    "[schema] $: missing required field 'audit_id'",
+    "[schema] $: missing required field 'bundle_id'",
+    "[schema] $: missing required field 'bundle_hash'",
+    "[schema] $: missing required field 'analysis_profile'",
+    "[schema] $: missing required field 'status'",
+    "[schema] $: missing required field 'inventory'",
+    "[schema] $: missing required field 'coverage'",
+    "[schema] $: missing required field 'contextual_exceptions'",
+    "[schema] $: missing required field 'quality_observations'",
+    "[schema] $: missing required field 'exploratory_candidates'",
+    "[schema] $: missing required field 'untrusted_instructions_observed'",
+    "[schema] $: unexpected field 'audit_schema'",
+    "[schema] $: unexpected field 'audit_schema_note'",
+    "[schema] $: unexpected field 'audited_at'",
+    "[schema] $: unexpected field 'auditor'",
+    "[schema] $: unexpected field 'bundle'",
+    "[schema] $: unexpected field 'profile'",
+    "[schema] $: unexpected field 'context_used'",
+    "[schema] $.summary: missing required field 'text'",
+    "[schema] $.summary: missing required field 'major_limitations'",
+    "[schema] $.summary: unexpected field 'perceived_ai_slop_level'",
+    "[schema] $.summary: unexpected field 'confidence'",
+    "[schema] $.summary: unexpected field 'one_line'",
+    "[schema] $.summary: unexpected field 'finding_count'",
+    "[schema] $.summary: unexpected field 'findings_by_signal'",
+    "[schema] $.summary: unexpected field 'top_findings'",
+    "[schema] $.findings[0]: missing required field 'feature_id'",
+    "[schema] $.findings[0]: missing required field 'phenomenon_id'",
+    "[schema] $.findings[0]: missing required field 'secondary_tags'",
+    "[schema] $.findings[0]: missing required field 'scope'",
+    "[schema] $.findings[0]: missing required field 'locations'",
+    "[schema] $.findings[0]: missing required field 'observation_confidence'",
+    "[schema] $.findings[0]: missing required field 'slop_association'",
+    "[schema] $.findings[0]: missing required field 'contextual_fit'",
+    "[schema] $.findings[0]: missing required field 'communication_or_interaction_consequence'",
+    "[schema] $.findings[0]: missing required field 'codebook_evidence_status'",
+    "[schema] $.findings[0]: missing required field 'quality_to_slop_rationale'",
+    "[schema] $.findings[0]: missing required field 'limitations'",
+    "[schema] $.findings[0].finding_id: 'F01' does not match ^F\\d{3}$",
+    "[schema] $.findings[0]: unexpected field 'title'",
+    "[schema] $.findings[0]: unexpected field 'dimension'",
+    "[schema] $.findings[0].evidence[0]: missing required field 'ref_id'",
+    "[schema] $.findings[0].evidence[0]: missing required field 'description'",
+    "[schema] $.findings[0].evidence[0].kind: 'text_span' is not one of ['screenshot', 'text', 'interaction', 'dom', 'source', 'context']",
+    "[schema] $.findings[0].evidence[0]: unexpected field 'id'",
+    "[schema] $.findings[0].evidence[1]: missing required field 'ref_id'",
+    "[schema] $.findings[0].evidence[1]: missing required field 'description'",
+    "[schema] $.findings[0].evidence[1]: missing required field 'quote'"
+  ],
+  "raw_output_path": "raw_output.txt",
+  "audit_path": "audit.json",
+  "latency_ms": 192395,
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "images": 1,
+    "unit_note": "as reported by the provider, if at all"
+  },
+  "notes": [
+    "skill-creator iteration-1 without_skill",
+    "relabelled from generic-prompt: this run received no schema or skill, so it is not the protocol's generic-prompt condition"
+  ]
+}

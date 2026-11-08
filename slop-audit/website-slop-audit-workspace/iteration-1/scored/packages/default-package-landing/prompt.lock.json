@@ -1,0 +1,22 @@
+{
+  "format": "website-slop-audit/prompt/0.1",
+  "condition": "frozen-skill",
+  "analysis_profile": "multimodal-datastory",
+  "capability": "multimodal",
+  "rubric_version": "0.1.0",
+  "bundle_id": "fx-default-package-landing",
+  "bundle_hash": "aa7d7ea0cde29851d0a1ad85368c3a0067084eb5238961e8977f78369eaa7b3b",
+  "prompt_sha256": "9d745cddb5f0cbee5909f478f7ea567e95abda85932ba3fafd8c3729a6f99791",
+  "package_sha256": "4b6229c1b85a8800f13ac235a129e95cc8b3adec33e1161a241ffd546d1f1dc2",
+  "prompt_chars": 110829,
+  "image_count": 6,
+  "input_file_sha256": {
+    "website-slop-audit/SKILL.md": "c56ce0831f2a414ed2e2764f867207037034d6548178248408b66f81ea9cc47c",
+    "website-slop-audit/assets/codebook.json": "28c140aeaa11565c0804acf894c9644ce61f30bfbdafec3f9d7de57abfe52bb2",
+    "website-slop-audit/assets/profiles.json": "524cfbf0fe2091df118f5a7cd564cd5d7f9b45c5daa9c47c228ea0e6819c9001",
+    "website-slop-audit/references/output-contract.md": "8567cd2399060dea0d59f5dc0195347a466e5e7978c2ef4667cc364b633add8c",
+    "website-slop-audit/schemas/audit.schema.json": "92a9cd44de0bbfa81d960072822212bf5d83aee5e7faa5ab0eba56518d83e5a1",
+    "website-slop-audit/scripts/expand_prompt.py": "ff5e4d9fcacce70907f82a9facfb81449053f03e1025268298169d0fdcb4a629",
+    "website-slop-audit/scripts/build_codebook.py": "aca1b0d5e2339972c66f8ff7f0b2438b4562f7bfa210c59e5aaf59e9a7a94c6b"
+  }
+}

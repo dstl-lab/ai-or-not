@@ -1,0 +1,89 @@
+{
+  "schema_version": "website-slop-audit/annotation/0.1",
+  "rubric_version": "0.1.1",
+  "annotation_set_id": "dev-catalog-conventional",
+  "bundle_id": "fx-01",
+  "bundle_hash": "e5d81c10b70ef4bd102412e8049bc97b4ed9ffc28cef147e1f89520fc5a835c6",
+  "condition": "rubric_guided",
+  "stage": "synthetic_development",
+  "annotators": [
+    {
+      "annotator_id": "dev-1",
+      "role": "developer",
+      "expertise": {
+        "design_years": null,
+        "visualization_years": null,
+        "web_development_years": null,
+        "relevant_training": [
+          "tool developer; wrote the fixtures"
+        ],
+        "notes": "not an independent annotator"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "scope_id": "all",
+      "region_ids": [
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ],
+      "state_ids": [
+        "S01"
+      ],
+      "fully_annotated": true,
+      "feature_ids": [
+        "VIS-01",
+        "VIS-02",
+        "LAY-01",
+        "LAY-02",
+        "VIS-03",
+        "MOT-01",
+        "TXT-01",
+        "TXT-02",
+        "SUB-01",
+        "SUB-02",
+        "SUB-03",
+        "INT-01",
+        "INT-02",
+        "QLT-01",
+        "SRC-01"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "annotation_id": "a1",
+      "annotator_id": "dev-1",
+      "feature_id": "LAY-01",
+      "phenomenon_id": null,
+      "scope": "repeated-group",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.2213,
+            "width": 0.9375,
+            "height": 0.4263
+          }
+        }
+      ],
+      "disposition": "contextual_exception",
+      "observed_evidence": "Nine identical dataset cards.",
+      "confidence": "high",
+      "slop_association": "none",
+      "contextual_exception": "Parallel catalog items; the style guide requires the card component.",
+      "consequence": "none_identified",
+      "uncertainty": "developer reference for a synthetic fixture"
+    }
+  ],
+  "adjudication": null,
+  "notes": [
+    "Synthetic development reference written by the fixture author; plumbing and smoke tests only."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "eval_name": "default-package-landing",
+  "prompt": "One of the student data-viz projects in our study looks like a SaaS template to me. The capture is in bundle/. Audit it with the multimodal-datastory profile; I need the specific features and where they are, saved as audit.json plus report.md.",
+  "assertions": [
+    "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+    "The audit and report make no authorship verdict and no probability or percentage-AI score",
+    "Findings include at least three distinct codes among VIS-01, VIS-02, VIS-03, SUB-03, TXT-01, DAT-04, LAY-02",
+    "Every finding with scope page-pattern or cross-region cites at least two regions"
+  ]
+}

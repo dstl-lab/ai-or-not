@@ -1,0 +1,340 @@
+{
+  "schema_version": "website-slop-audit/audit/0.1",
+  "rubric_version": "0.1.0",
+  "audit_id": "audit-fx-catalog-conventional-01",
+  "bundle_id": "fx-catalog-conventional",
+  "bundle_hash": "63e65e4ba0795194b1e9f8a63694d05bbd776a8cbd159b0cc374194c54f51c19",
+  "analysis_profile": "multimodal-core",
+  "status": "completed",
+  "inventory": {
+    "genre": {
+      "value": "municipal open-data catalog page",
+      "basis": "provided"
+    },
+    "purpose": {
+      "value": "Let residents and researchers find city climate datasets and see each one's format, size, and update date before downloading.",
+      "basis": "provided"
+    },
+    "audience": {
+      "value": "researchers, journalists, and residents",
+      "basis": "provided"
+    },
+    "main_task": {
+      "value": "scan the dataset listings to pick a dataset and check its format, size, and last-update date",
+      "basis": "inferred"
+    },
+    "structure": [
+      {
+        "region_id": "R01",
+        "role": "site name and page subtitle on a solid-color band"
+      },
+      {
+        "region_id": "R02",
+        "role": "one-paragraph description of the collection: count, publisher, listed fields, and license"
+      },
+      {
+        "region_id": "R03",
+        "role": "three-by-three grid of dataset listings, each with a title and a Format / Size / Updated definition list"
+      },
+      {
+        "region_id": "R04",
+        "role": "single-line footer with a contact address and a style-guide reference"
+      }
+    ]
+  },
+  "coverage": {
+    "assessed_modalities": [
+      "screenshot",
+      "text",
+      "dom",
+      "computed_style"
+    ],
+    "unassessed_modalities": [
+      {
+        "modality": "interaction",
+        "reason": "No interactions were recorded in the bundle (interactions list is empty; modality flag false)."
+      },
+      {
+        "modality": "source",
+        "reason": "No source excerpts were supplied (source_excerpts list is empty; modality flag false)."
+      }
+    ],
+    "regions": [
+      {
+        "region_id": "R01",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "Fully visible in desktop screenshot A01; text spans T001-T002 and computed styles for D001, D005, D006 captured."
+      },
+      {
+        "region_id": "R02",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "Fully visible in A01; full paragraph captured as text span T003 with computed style (D007)."
+      },
+      {
+        "region_id": "R03",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "All nine listings visible in A01 with text spans T004-T066. The article (card) containers themselves have no captured computed style; card borders and corners are read from the screenshot only."
+      },
+      {
+        "region_id": "R04",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "Fully visible in A01; footer text captured as T067 with computed style (D071)."
+      }
+    ],
+    "features": [
+      {
+        "feature_id": "VIS-01",
+        "status": "assessed",
+        "reason": "Solid dark-blue header, light neutral page, white bordered listings, blue titles, Arial throughout (computed). No gradient, glow, dark-glass, or other recognizable default package; nothing to record."
+      },
+      {
+        "feature_id": "VIS-02",
+        "status": "assessed",
+        "reason": "No eyebrows, highlighted or gradient headline words, section numbers, or decorative monospace. Repeated Format / Size / Updated labels are dt labels for real data values, excluded by rule."
+      },
+      {
+        "feature_id": "LAY-01",
+        "status": "assessed",
+        "reason": "Uniform card grid present in R03; recorded as contextual exception X001 because the items are genuinely parallel dataset listings and the card component is a documented style-guide requirement."
+      },
+      {
+        "feature_id": "LAY-02",
+        "status": "assessed",
+        "reason": "Sequence is header, description, listing, footer. No hero/CTA, statistic strip, feature cards, testimonials, or FAQ; the skeleton matches a catalog page's job."
+      },
+      {
+        "feature_id": "VIS-03",
+        "status": "assessed",
+        "reason": "No icon badges, emoji, blobs, glows, glass panels, or decorative effects in any region of A01; computed background-image is none and box-shadow none on all captured elements."
+      },
+      {
+        "feature_id": "MOT-01",
+        "status": "assessed",
+        "reason": "Computed styles of all 71 captured elements show animation-name none and 0s duration. Transition-property is the initial value 'all' with duration not captured. Card containers not captured. No motion configured on captured elements."
+      },
+      {
+        "feature_id": "TXT-01",
+        "status": "assessed",
+        "reason": "Introduction (T003) is specific: names the count, publisher, listed fields, and license. Dataset titles name concrete subjects and ranges. No interchangeable copy found."
+      },
+      {
+        "feature_id": "TXT-02",
+        "status": "assessed",
+        "reason": "Only three prose spans (T002, T003, T067); none repeats a claim or uses a rigid template. Repeated field labels are data structure, not prose."
+      },
+      {
+        "feature_id": "SUB-01",
+        "status": "assessed",
+        "reason": "No lorem ipsum or unfinished labels; no unsupported claims or statistic tiles. The contact address uses a reserved example domain; recorded as contextual exception X002, not a finding."
+      },
+      {
+        "feature_id": "SUB-02",
+        "status": "assessed",
+        "reason": "Cross-region checks agree: intro says nine datasets and R03 shows nine; intro's listed fields match each listing; footer's style-guide reference matches the provided constraint. No conflicts found."
+      },
+      {
+        "feature_id": "SUB-03",
+        "status": "assessed",
+        "reason": "No summary or statistic displays. Size values carry units (KB, MB) and dates are ISO dates; these are catalog metadata, not metric theater."
+      },
+      {
+        "feature_id": "INT-01",
+        "status": "unassessed",
+        "reason": "Requires a completed recorded interaction; the bundle records none. No control is called broken."
+      },
+      {
+        "feature_id": "INT-02",
+        "status": "unassessed",
+        "reason": "Requires a completed recorded interaction; the bundle records none."
+      },
+      {
+        "feature_id": "QLT-01",
+        "status": "assessed",
+        "reason": "Desktop only. No overflow, clipping, or unreadable text in A01; label gray rgb(102,102,102) and footer rgb(85,85,85) are legible on light backgrounds. Mobile viewport not captured."
+      },
+      {
+        "feature_id": "SRC-01",
+        "status": "unassessed",
+        "reason": "Requires supplied source excerpts; the bundle has none."
+      }
+    ]
+  },
+  "findings": [],
+  "contextual_exceptions": [
+    {
+      "exception_id": "X001",
+      "feature_id": "LAY-01",
+      "observation": "The dataset listing (R03) renders nine identical bordered cards in a three-column grid, each with a bold title and the same three-row Format / Size / Updated list. The uniform card treatment is clearly present.",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.2213,
+            "width": 0.9375,
+            "height": 0.4263
+          },
+          "selector": "#dataset-grid",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "Nine equal-sized white cards with thin gray borders and slightly rounded corners in a 3x3 grid; no card is visually promoted over another.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T003",
+          "description": "The introduction states that every listing carries the same three fields, i.e. the items are designed as parallel records.",
+          "quote": "Each listing shows the file format, size, and the date of the last update."
+        },
+        {
+          "kind": "text",
+          "ref_id": "T004",
+          "description": "First listing title; the other eight titles (T011, T018, T025, T032, T039, T046, T053, T060) are likewise dataset names of the same kind.",
+          "quote": "Daily temperature, 1950–2025"
+        },
+        {
+          "kind": "context",
+          "ref_id": "constraints",
+          "description": "Provided constraint: City Web Style Guide section 4.2 requires the standard catalog card component for dataset listings.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T067",
+          "description": "The page itself cites the same style-guide requirement for its listings.",
+          "quote": "Listings follow the City Web Style Guide, section 4.2 (catalog cards)."
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D003",
+          "description": "Captured listing container #dataset-grid holding the nine article elements.",
+          "quote": null
+        }
+      ],
+      "reason_not_counted": "appropriate_in_context",
+      "rationale": "The LAY-01 inclusion rule is not met: the nine items are genuinely parallel dataset records (same role, same fields), so uniform cards hide no hierarchy. This matches the codebook's own legitimate counterexample (an open-data portal listing datasets as equal cards). The card component is also a documented requirement in the provided constraints and the footer.",
+      "observation_confidence": {
+        "level": "high",
+        "reason": "The grid is fully visible in A01 and every card's text is captured as DOM text spans."
+      }
+    },
+    {
+      "exception_id": "X002",
+      "feature_id": "SUB-01",
+      "observation": "The footer's contact address uses the reserved '.example' top-level domain, which is set aside for documentation and does not resolve on the public internet. Read literally, it resembles placeholder contact data.",
+      "locations": [
+        {
+          "region_id": "R04",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.72,
+            "width": 0.9375,
+            "height": 0.0187
+          },
+          "selector": "#site-footer > p",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T067",
+          "description": "Footer contact line as captured from the DOM.",
+          "quote": "Contact opendata@riverton.example."
+        },
+        {
+          "kind": "context",
+          "ref_id": "purpose",
+          "description": "The context provenance labels the capture plan as written by a fixture author and synthetic, where reserved example domains are the standard way to avoid real addresses.",
+          "quote": null
+        }
+      ],
+      "reason_not_counted": "insufficient_evidence_for_finding",
+      "rationale": "The address is consistent with the site's own naming (Riverton) and is not template text such as lorem ipsum or a bracketed fill-in; the bundle is labeled synthetic, so a reserved domain is the expected de-identification choice; no mail or link test was recorded. A single address does not support a placeholder finding.",
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Exact text captured from the DOM (T067) and legible in A01."
+      }
+    }
+  ],
+  "quality_observations": [
+    {
+      "observation_id": "Q001",
+      "category": "usability",
+      "related_feature_id": null,
+      "observation": "The stated purpose ends in downloading, but no download link, button, or per-dataset link was located in the inspected scope: titles are captured as h2 elements with no anchor, and no control is visible in A01. The download path may live on detail pages or other routes that were not captured, and no click was recorded, so this is not called missing or broken.",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.2213,
+            "width": 0.9375,
+            "height": 0.4263
+          },
+          "selector": "#dataset-grid",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "context",
+          "ref_id": "purpose",
+          "description": "Provided purpose: see each dataset's format, size, and update date before downloading.",
+          "quote": null
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D008",
+          "description": "First listing title is captured as an h2 directly inside the article; the same holds for all nine titles (D015 to D064). No anchor elements appear among the 71 captured elements.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "No underlined links, buttons, or download icons are visible in any card.",
+          "quote": null
+        }
+      ],
+      "consequence": {
+        "level": "unknown",
+        "reason": "Single route, single state, and no recorded interactions; whether titles are clickable or a download path exists elsewhere cannot be determined from the bundle."
+      }
+    }
+  ],
+  "exploratory_candidates": [],
+  "untrusted_instructions_observed": [],
+  "summary": {
+    "text": "No accepted slop findings in the assessed scope. The page is a plain, specific municipal catalog: a solid header, a concrete introduction naming the collection, publisher, listed fields, and license, a grid of parallel dataset listings with real formats, sizes, and dates, and a footer. The uniform card grid is present but recorded as a contextual exception, because the listings are genuinely parallel records and the card component is a documented style-guide requirement. The reserved example-domain contact address is recorded as an exception, not a placeholder finding. A quality observation, not a slop claim, notes that no download path was located in the captured scope. Interaction and source checks were not possible, and only one desktop viewport was captured.",
+    "major_limitations": [
+      "Single desktop screenshot (1280x800, scroll 0) of one route; no mobile viewport, so responsive and small-screen checks were not possible.",
+      "No recorded interactions: INT-01 and INT-02 are unassessed; whether titles, the contact address, or any download path work is unknown.",
+      "No source excerpts: SRC-01 is unassessed.",
+      "Card containers and the page background have no captured computed styles; card borders and corners are described from the screenshot only.",
+      "Context provenance marks the capture plan as synthetic (development fixture)."
+    ]
+  }
+}

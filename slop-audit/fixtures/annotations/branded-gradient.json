@@ -1,0 +1,88 @@
+{
+  "schema_version": "website-slop-audit/annotation/0.1",
+  "rubric_version": "0.1.1",
+  "annotation_set_id": "dev-branded-gradient",
+  "bundle_id": "fx-02",
+  "bundle_hash": "9df5b0bbac786471327ce74794dffdbefad7db8cf5d670c46145821a4470c263",
+  "condition": "rubric_guided",
+  "stage": "synthetic_development",
+  "annotators": [
+    {
+      "annotator_id": "dev-1",
+      "role": "developer",
+      "expertise": {
+        "design_years": null,
+        "visualization_years": null,
+        "web_development_years": null,
+        "relevant_training": [
+          "tool developer; wrote the fixtures"
+        ],
+        "notes": "not an independent annotator"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "scope_id": "all",
+      "region_ids": [
+        "R01",
+        "R02",
+        "R03"
+      ],
+      "state_ids": [
+        "S01"
+      ],
+      "fully_annotated": true,
+      "feature_ids": [
+        "VIS-01",
+        "VIS-02",
+        "LAY-01",
+        "LAY-02",
+        "VIS-03",
+        "MOT-01",
+        "TXT-01",
+        "TXT-02",
+        "SUB-01",
+        "SUB-02",
+        "SUB-03",
+        "INT-01",
+        "INT-02",
+        "QLT-01",
+        "SRC-01"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "annotation_id": "a1",
+      "annotator_id": "dev-1",
+      "feature_id": "VIS-02",
+      "phenomenon_id": null,
+      "scope": "region",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.08,
+            "width": 0.925,
+            "height": 0.105
+          }
+        }
+      ],
+      "disposition": "contextual_exception",
+      "observed_evidence": "Gradient-filled headline.",
+      "confidence": "high",
+      "slop_association": "weak",
+      "contextual_exception": "The brand guide requires the sunrise gradient on the wordmark.",
+      "consequence": "none_identified",
+      "uncertainty": "developer reference for a synthetic fixture"
+    }
+  ],
+  "adjudication": null,
+  "notes": [
+    "Synthetic development reference written by the fixture author; plumbing and smoke tests only."
+  ]
+}

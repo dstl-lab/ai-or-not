@@ -1,0 +1,10 @@
+[
+  {
+    "order": 1,
+    "asset_id": "A01",
+    "file": "attachments/01_A01.png",
+    "sha256": "5708cf5f6d65d15d072646a4357300b6bebf805f115ec82e2f511e659c3eda08",
+    "pixel_width": 1280,
+    "pixel_height": 800
+  }
+]

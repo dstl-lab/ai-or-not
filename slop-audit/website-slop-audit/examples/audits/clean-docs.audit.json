@@ -1,0 +1,174 @@
+{
+  "schema_version": "website-slop-audit/audit/0.1",
+  "rubric_version": "0.1.1",
+  "audit_id": "example-clean-docs",
+  "bundle_id": "fx-13",
+  "bundle_hash": "8ef64022db0f50e562a7a39f34a25f6ad0b2bedf34df99b0c5083384b18be8b2",
+  "analysis_profile": "multimodal-core",
+  "status": "completed",
+  "inventory": {
+    "genre": {
+      "value": "software documentation page",
+      "basis": "provided"
+    },
+    "purpose": {
+      "value": "document the convert subcommand of a climate-data command-line tool",
+      "basis": "provided"
+    },
+    "audience": {
+      "value": "researchers who process NOAA station data",
+      "basis": "provided"
+    },
+    "main_task": {
+      "value": "look up usage, options, and exit codes",
+      "basis": "inferred"
+    },
+    "structure": [
+      {
+        "region_id": "R01",
+        "role": "section navigation"
+      },
+      {
+        "region_id": "R02",
+        "role": "command description and usage"
+      },
+      {
+        "region_id": "R03",
+        "role": "options reference table"
+      }
+    ]
+  },
+  "coverage": {
+    "assessed_modalities": [
+      "computed_style",
+      "dom",
+      "screenshot",
+      "text"
+    ],
+    "unassessed_modalities": [
+      {
+        "modality": "interaction",
+        "reason": "no interactions were recorded"
+      },
+      {
+        "modality": "source",
+        "reason": "no source excerpts supplied"
+      }
+    ],
+    "regions": [
+      {
+        "region_id": "R01",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "visible in the desktop screenshot"
+      },
+      {
+        "region_id": "R02",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "visible in the desktop screenshot"
+      },
+      {
+        "region_id": "R03",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "visible in the desktop screenshot"
+      }
+    ],
+    "features": [
+      {
+        "feature_id": "VIS-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "VIS-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "LAY-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "LAY-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "VIS-03",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "MOT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "TXT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "TXT-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SUB-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SUB-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SUB-03",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "INT-01",
+        "status": "unassessed",
+        "reason": "needs interaction, which this bundle does not contain"
+      },
+      {
+        "feature_id": "INT-02",
+        "status": "unassessed",
+        "reason": "needs interaction, which this bundle does not contain"
+      },
+      {
+        "feature_id": "QLT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SRC-01",
+        "status": "unassessed",
+        "reason": "needs source, which this bundle does not contain"
+      }
+    ]
+  },
+  "findings": [],
+  "contextual_exceptions": [],
+  "quality_observations": [],
+  "exploratory_candidates": [],
+  "untrusted_instructions_observed": [],
+  "summary": {
+    "text": "No accepted findings and no candidate cues worth recording as exceptions. The page is specific (real flags, defaults, file formats, and exit codes) and its conventional documentation layout matches its job.",
+    "major_limitations": [
+      "Interaction and source checks were not possible",
+      "Synthetic development fixture"
+    ]
+  }
+}

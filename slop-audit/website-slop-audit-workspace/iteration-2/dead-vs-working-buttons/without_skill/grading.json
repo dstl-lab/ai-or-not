@@ -1,0 +1,34 @@
+{
+  "expectations": [
+    {
+      "text": "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+      "passed": false,
+      "evidence": "35 error(s): [schema] $: missing required field 'schema_version'; [schema] $: missing required field 'rubric_version'; [schema] $: missing required field 'audit_id'; [schema] $: missing required field 'bundle_id'"
+    },
+    {
+      "text": "The audit and report make no authorship verdict and no probability or percentage-AI score",
+      "passed": true,
+      "evidence": "verdict-like sentences: none"
+    },
+    {
+      "text": "An INT-01 finding cites the no-change interaction E02",
+      "passed": false,
+      "evidence": "audit.json has no findings array in the audit schema"
+    },
+    {
+      "text": "No finding treats the working E01 click or the untested Download CSV link as a failure",
+      "passed": false,
+      "evidence": "audit.json has no findings array in the audit schema"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "failed": 3,
+    "total": 4,
+    "pass_rate": 0.25
+  },
+  "timing": {
+    "executor_duration_seconds": 193.7,
+    "total_duration_seconds": 193.7
+  }
+}

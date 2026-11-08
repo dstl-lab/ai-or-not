@@ -1,0 +1,360 @@
+{
+  "schema_version": "website-slop-audit/audit/0.1",
+  "rubric_version": "0.1.1",
+  "audit_id": "example-placeholder-caption",
+  "bundle_id": "fx-03",
+  "bundle_hash": "db19621282c91548a73ca7d4b2fac97f8f3e955d3ddd6ec59fdae86361396b1a",
+  "analysis_profile": "multimodal-datastory",
+  "status": "completed",
+  "inventory": {
+    "genre": {
+      "value": "interactive data story",
+      "basis": "provided"
+    },
+    "purpose": {
+      "value": "explain whether protected bike lanes shortened bicycle commute times in Oakland",
+      "basis": "provided"
+    },
+    "audience": {
+      "value": "general readers",
+      "basis": "provided"
+    },
+    "main_task": {
+      "value": "read the before/after commute chart and its takeaway",
+      "basis": "inferred"
+    },
+    "structure": [
+      {
+        "region_id": "R01",
+        "role": "title, introduction, masked byline"
+      },
+      {
+        "region_id": "R02",
+        "role": "two headline statistics"
+      },
+      {
+        "region_id": "R03",
+        "role": "bar chart of median commute minutes by corridor"
+      },
+      {
+        "region_id": "R04",
+        "role": "chart caption"
+      }
+    ]
+  },
+  "coverage": {
+    "assessed_modalities": [
+      "computed_style",
+      "dom",
+      "screenshot",
+      "text"
+    ],
+    "unassessed_modalities": [
+      {
+        "modality": "interaction",
+        "reason": "no interactions were recorded"
+      },
+      {
+        "modality": "source",
+        "reason": "no source excerpts supplied"
+      }
+    ],
+    "regions": [
+      {
+        "region_id": "R01",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "visible in the desktop screenshot"
+      },
+      {
+        "region_id": "R02",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "visible in the desktop screenshot"
+      },
+      {
+        "region_id": "R03",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "visible in the desktop screenshot"
+      },
+      {
+        "region_id": "R04",
+        "state_ids": [
+          "S01"
+        ],
+        "status": "assessed",
+        "reason": "visible in the desktop screenshot"
+      }
+    ],
+    "features": [
+      {
+        "feature_id": "VIS-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "VIS-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "LAY-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "LAY-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "VIS-03",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "MOT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "TXT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "TXT-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SUB-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SUB-02",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SUB-03",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "INT-01",
+        "status": "unassessed",
+        "reason": "needs interaction, which this bundle does not contain"
+      },
+      {
+        "feature_id": "INT-02",
+        "status": "unassessed",
+        "reason": "needs interaction, which this bundle does not contain"
+      },
+      {
+        "feature_id": "QLT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "SRC-01",
+        "status": "unassessed",
+        "reason": "needs source, which this bundle does not contain"
+      },
+      {
+        "feature_id": "DAT-01",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "DAT-02",
+        "status": "unassessed",
+        "reason": "needs interaction, which this bundle does not contain"
+      },
+      {
+        "feature_id": "DAT-03",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      },
+      {
+        "feature_id": "DAT-04",
+        "status": "assessed",
+        "reason": "checked against the codebook entry"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "finding_id": "F001",
+      "feature_id": "SUB-01",
+      "phenomenon_id": "P001",
+      "secondary_tags": [],
+      "scope": "region",
+      "observation": "literal_placeholder: the chart caption is template text asking to be replaced, so the chart has no stated takeaway.",
+      "locations": [
+        {
+          "region_id": "R04",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.7325,
+            "width": 0.5938,
+            "height": 0.02
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T018",
+          "description": "The caption text.",
+          "quote": "Lorem ipsum dolor sit amet — replace with key insight before publishing."
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "The caption under the chart.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Exact text captured from the DOM and visible in the screenshot."
+      },
+      "slop_association": {
+        "level": "moderate",
+        "reason": "A placeholder left in a finished-looking story reads as unattended scaffolding; it is equally typical of a hurried human draft."
+      },
+      "contextual_fit": {
+        "level": "inappropriate",
+        "reason": "The caption is where the story's takeaway belongs."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "moderate",
+        "reason": "Readers get no interpretation of the chart."
+      },
+      "alternative_explanations": [
+        "Unfinished draft published early",
+        "Template caption never replaced"
+      ],
+      "codebook_evidence_status": "research_hypothesis",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "Does not show who or what wrote the page."
+      ]
+    },
+    {
+      "finding_id": "F002",
+      "feature_id": "DAT-01",
+      "phenomenon_id": "P002",
+      "secondary_tags": [
+        "SUB-01"
+      ],
+      "scope": "cross-region",
+      "observation": "The statistic strip claims '42% faster commutes', but the chart's own labeled medians fall by 14% to 24% (for example 25 to 19 minutes), and no basis for 42% appears in the inspected scope.",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3992,
+            "y": 0.3075,
+            "width": 0.0751,
+            "height": 0.04
+          },
+          "selector": null,
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.2031,
+            "y": 0.395,
+            "width": 0.5938,
+            "height": 0.325
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T006",
+          "description": "The headline statistic.",
+          "quote": "42%"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T007",
+          "description": "Its label.",
+          "quote": "faster commutes"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T012",
+          "description": "Telegraph Ave before.",
+          "quote": "25 min"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T013",
+          "description": "Telegraph Ave after.",
+          "quote": "19 min"
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "All values are captured as text spans."
+      },
+      "slop_association": {
+        "level": "weak",
+        "reason": "An unsupported headline number is a candidate metric-theater cue, but a different calculation (for example speed rather than time) could exist outside the captured page."
+      },
+      "contextual_fit": {
+        "level": "questionable",
+        "reason": "The number frames the story but is not tied to the shown data."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "moderate",
+        "reason": "The headline overstates what the chart shows."
+      },
+      "alternative_explanations": [
+        "Computed on a different measure or corridor set",
+        "Left over from an earlier draft",
+        "Arithmetic error"
+      ],
+      "codebook_evidence_status": "research_hypothesis",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "basis_not_located: only the captured page was inspected; the claim is not called fabricated."
+      ]
+    }
+  ],
+  "contextual_exceptions": [],
+  "quality_observations": [],
+  "exploratory_candidates": [],
+  "untrusted_instructions_observed": [],
+  "summary": {
+    "text": "Two substance problems: a literal placeholder caption under the main chart, and a headline statistic (42% faster) that the chart's own values do not support. Typography and palette are plain and showed no default-package pattern. The byline was masked for blinding.",
+    "major_limitations": [
+      "Single desktop screenshot",
+      "No interactions or source",
+      "Synthetic development fixture"
+    ]
+  }
+}

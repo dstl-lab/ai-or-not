@@ -1,0 +1,92 @@
+{
+  "schema_version": "website-slop-audit/annotation/0.1",
+  "rubric_version": "0.1.1",
+  "annotation_set_id": "dev-buttons-working-broken",
+  "bundle_id": "fx-06",
+  "bundle_hash": "d4d2c526a4cca6e6990e856088a04fecea16ecb86faf793d2d7d299fc82e39bc",
+  "condition": "rubric_guided",
+  "stage": "synthetic_development",
+  "annotators": [
+    {
+      "annotator_id": "dev-1",
+      "role": "developer",
+      "expertise": {
+        "design_years": null,
+        "visualization_years": null,
+        "web_development_years": null,
+        "relevant_training": [
+          "tool developer; wrote the fixtures"
+        ],
+        "notes": "not an independent annotator"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "scope_id": "all",
+      "region_ids": [
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ],
+      "state_ids": [
+        "S01",
+        "S02",
+        "S03"
+      ],
+      "fully_annotated": true,
+      "feature_ids": [
+        "VIS-01",
+        "VIS-02",
+        "LAY-01",
+        "LAY-02",
+        "VIS-03",
+        "MOT-01",
+        "TXT-01",
+        "TXT-02",
+        "SUB-01",
+        "SUB-02",
+        "SUB-03",
+        "INT-01",
+        "INT-02",
+        "QLT-01",
+        "SRC-01"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "annotation_id": "a1",
+      "annotator_id": "dev-1",
+      "feature_id": "INT-01",
+      "phenomenon_id": null,
+      "scope": "region",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S03",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "Compare with last year: completed click, no change (E02).",
+      "confidence": "high",
+      "slop_association": "weak",
+      "contextual_exception": null,
+      "consequence": "moderate",
+      "uncertainty": "developer reference for a synthetic fixture"
+    }
+  ],
+  "adjudication": null,
+  "notes": [
+    "Synthetic development reference written by the fixture author; plumbing and smoke tests only."
+  ]
+}

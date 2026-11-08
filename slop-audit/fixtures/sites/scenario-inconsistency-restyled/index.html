@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sea-level rise and San Diego's coastal parcels</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top" id="story-header">
+  <h1>How much of San Diego's coast floods under each sea-level scenario?</h1>
+  <p class="dek">Coastal parcels inside the projected 1-in-100-year flood zone, from the 2024 county vulnerability assessment.</p>
+</header>
+<main>
+  <section class="panel" id="scenario-panel">
+    <div class="controls" role="group" aria-label="Scenario year">
+      <button type="button" data-year="2020" aria-pressed="true">2020</button>
+      <button type="button" data-year="2050" aria-pressed="false">2050</button>
+      <button type="button" data-year="2100" aria-pressed="false">2100</button>
+    </div>
+    <h2 id="chart-title">Parcels in the flood zone, 2020</h2>
+    <div class="bars" id="bars">
+      <div class="bar"><span class="label">Mission Beach</span><span class="fill" style="width:12%"></span><span class="value">12%</span></div>
+      <div class="bar"><span class="label">Imperial Beach</span><span class="fill" style="width:9%"></span><span class="value">9%</span></div>
+      <div class="bar"><span class="label">La Jolla Shores</span><span class="fill" style="width:4%"></span><span class="value">4%</span></div>
+    </div>
+    <p class="source">Source: San Diego County Coastal Vulnerability Assessment (2024), intermediate-high scenario.</p>
+  </section>
+  <section class="panel" id="summary-panel">
+    <h2>What this means</h2>
+    <p id="summary">In 2020, 4% of La Jolla Shores parcels and 12% of Mission Beach parcels sit in the flood zone. Imperial Beach is in between at 9%.</p>
+  </section>
+  <section class="panel" id="method-panel">
+    <h2>Method</h2>
+    <p>We counted parcels whose centroid falls inside each scenario's flood polygon. Parcel boundaries are from the 2023 assessor roll.</p>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

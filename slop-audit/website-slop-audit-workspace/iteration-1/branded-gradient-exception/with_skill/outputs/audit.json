@@ -1,0 +1,300 @@
+{
+  "schema_version": "website-slop-audit/audit/0.1",
+  "rubric_version": "0.1.0",
+  "audit_id": "fx-branded-gradient-multimodal-core-01",
+  "bundle_id": "fx-branded-gradient",
+  "bundle_hash": "4a08e5079a1a892c4f09fffd361a9b4c729d8e88128af45c8c27e2814248237b",
+  "analysis_profile": "multimodal-core",
+  "status": "completed",
+  "inventory": {
+    "genre": {
+      "value": "event promotion page",
+      "basis": "provided"
+    },
+    "purpose": {
+      "value": "Announce a three-day music festival: lineup, dates, and how to get there.",
+      "basis": "provided"
+    },
+    "audience": {
+      "value": "local festival-goers",
+      "basis": "provided"
+    },
+    "main_task": {
+      "value": "find which artists play on which day, the festival dates, and gate times, transit access, and ticket prices",
+      "basis": "inferred"
+    },
+    "structure": [
+      {
+        "region_id": "R01",
+        "role": "festival name with year, followed by a one-line statement of genres, venue, and dates"
+      },
+      {
+        "region_id": "R02",
+        "role": "heading and ordered list of performers for Friday, Saturday, and Sunday"
+      },
+      {
+        "region_id": "R03",
+        "role": "heading and two paragraphs: gate time, transit, and prices; then a note about the wordmark gradient"
+      }
+    ]
+  },
+  "coverage": {
+    "assessed_modalities": [
+      "computed_style",
+      "dom",
+      "screenshot",
+      "text"
+    ],
+    "unassessed_modalities": [
+      {
+        "modality": "interaction",
+        "reason": "no interactions were recorded in the bundle"
+      },
+      {
+        "modality": "source",
+        "reason": "no source excerpts were supplied"
+      }
+    ],
+    "regions": [
+      {
+        "region_id": "R01",
+        "state_ids": ["S01"],
+        "status": "assessed",
+        "reason": "visible in desktop screenshot A01 (state S01); text spans and computed styles captured"
+      },
+      {
+        "region_id": "R02",
+        "state_ids": ["S01"],
+        "status": "assessed",
+        "reason": "visible in desktop screenshot A01 (state S01); text spans and computed styles captured"
+      },
+      {
+        "region_id": "R03",
+        "state_ids": ["S01"],
+        "status": "assessed",
+        "reason": "visible in desktop screenshot A01 (state S01); text spans and computed styles captured"
+      }
+    ],
+    "features": [
+      {
+        "feature_id": "VIS-01",
+        "status": "assessed",
+        "reason": "Cream background, dark brown text, one gradient headline. A single gradient is excluded; the sunrise colours tie to the festival name and the supplied brand constraint. No recurring palette package across regions."
+      },
+      {
+        "feature_id": "VIS-02",
+        "status": "assessed",
+        "reason": "Gradient headline is a documented brand requirement used once; recorded as contextual exception X001. The 1-3 list numbering follows the real Friday-Sunday order. No eyebrows or decorative labels."
+      },
+      {
+        "feature_id": "LAY-01",
+        "status": "assessed",
+        "reason": "No cards or tiles: captured sections and items have no background, border radius, or shadow; content is headings, a list, and paragraphs."
+      },
+      {
+        "feature_id": "LAY-02",
+        "status": "assessed",
+        "reason": "Sequence is name and dates, lineup, getting there, which matches the stated purpose; no statistic strip, feature cards, testimonials, FAQ, or call-to-action block in the captured page."
+      },
+      {
+        "feature_id": "VIS-03",
+        "status": "assessed",
+        "reason": "No icons, badges, blobs, glows, glass panels, or emoji in the screenshot; computed box-shadow none and background-image none on all elements except the headline."
+      },
+      {
+        "feature_id": "MOT-01",
+        "status": "assessed",
+        "reason": "Computed styles show animation-name none on every captured element; transition-property is the initial value 'all' and durations were not captured. No configured entrance motion found; playback not recorded."
+      },
+      {
+        "feature_id": "TXT-01",
+        "status": "assessed",
+        "reason": "Copy names genres, venue, dates, nine acts, station, gate time, and prices; nothing interchangeable."
+      },
+      {
+        "feature_id": "TXT-02",
+        "status": "assessed",
+        "reason": "Short page with no repeated claims, rhetorical questions, or summary boilerplate across spans."
+      },
+      {
+        "feature_id": "SUB-01",
+        "status": "assessed",
+        "reason": "No placeholder text. Prices, times, and the 'since 2019' poster history are ordinary organizer statements, not statistics needing a cited basis; none is contradicted in the inspected scope."
+      },
+      {
+        "feature_id": "SUB-02",
+        "status": "assessed",
+        "reason": "Cross-region details agree: three days and June 11-13 (2027) match the Friday, Saturday, Sunday lineup (those dates fall on Fri-Sun); genres match the acts; venue name is consistent."
+      },
+      {
+        "feature_id": "SUB-03",
+        "status": "assessed",
+        "reason": "No statistic tiles or quantitative displays; the only numbers are dates, a gate time, an age limit, and a price, each with its unit."
+      },
+      {
+        "feature_id": "INT-01",
+        "status": "unassessed",
+        "reason": "Needs a completed recorded interaction; the bundle has none. No controls are visible in the captured screenshot either."
+      },
+      {
+        "feature_id": "INT-02",
+        "status": "unassessed",
+        "reason": "Needs a completed recorded interaction; the bundle has none."
+      },
+      {
+        "feature_id": "QLT-01",
+        "status": "assessed",
+        "reason": "Checked screenshot, DOM, and computed styles; headline contrast and gradient extent recorded as quality observations Q001 and Q002, not as findings."
+      },
+      {
+        "feature_id": "SRC-01",
+        "status": "unassessed",
+        "reason": "Needs supplied source excerpts; the bundle has none."
+      }
+    ]
+  },
+  "findings": [],
+  "contextual_exceptions": [
+    {
+      "exception_id": "X001",
+      "feature_id": "VIS-02",
+      "observation": "The main headline and wordmark 'Sunrise Fest 2027' is 72px, weight 800, with transparent text colour and a computed linear-gradient from rgb(255, 138, 0) to rgb(255, 45, 111) clipped to the text. It is the only gradient or highlighted text in the captured page; the other headings and all body text are solid dark brown.",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {"x": 0.0375, "y": 0.08, "width": 0.46, "height": 0.105},
+          "selector": "#hero > h1",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "dom",
+          "ref_id": "D004",
+          "description": "Computed style of the h1: background-image linear-gradient(90deg, rgb(255, 138, 0), rgb(255, 45, 111)), background-clip text, color rgba(0, 0, 0, 0), font-size 72px, font-weight 800.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T001",
+          "description": "The headline text that carries the gradient.",
+          "quote": "Sunrise Fest 2027"
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "Headline rendered in an orange-to-red-orange gradient at the top left; no other gradient text, eyebrow, or highlighted word anywhere in the image.",
+          "quote": null
+        },
+        {
+          "kind": "context",
+          "ref_id": "constraints",
+          "description": "Supplied constraint (status provided): the festival brand guide requires the orange-to-pink sunrise gradient on the wordmark and main headline.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T009",
+          "description": "Page text in the visitor details region describing the gradient as long-standing festival identity. Corroborating page content only; the exception rests on the supplied constraint.",
+          "quote": "The orange-to-pink sunrise gradient on our wordmark is part of the festival's identity"
+        }
+      ],
+      "reason_not_counted": "documented_requirement",
+      "rationale": "The supplied context documents this gradient as a brand-guide requirement for the wordmark and main headline, and it appears once rather than repeating across sections, so VIS-02's repetition rule is not met either. The sunrise colours also fit the festival's name. Also checked under VIS-01: one gradient is excluded there and no palette package recurs across regions.",
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Computed style on the captured h1 and the rendered screenshot both show the gradient text."
+      }
+    }
+  ],
+  "quality_observations": [
+    {
+      "observation_id": "Q001",
+      "category": "accessibility",
+      "related_feature_id": "QLT-01",
+      "observation": "The gradient headline has low contrast against the light page background. Rendered text runs from about rgb(255, 137, 0) at the left to about rgb(255, 93, 54) at the right end of the letters; against the background sampled from the screenshot, about rgb(255, 250, 243), that is roughly 2.3:1 to 2.9:1, below the WCAG 2.x AA minimum of 3:1 for large text. The headline is still legible in the screenshot.",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {"x": 0.0375, "y": 0.08, "width": 0.46, "height": 0.105},
+          "selector": "#hero > h1",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "dom",
+          "ref_id": "D004",
+          "description": "Computed gradient stops rgb(255, 138, 0) and rgb(255, 45, 111) on the h1, with the text filled by the gradient.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "Pixel samples: headline letters from about rgb(255, 137, 0) to rgb(255, 93, 54); page background rgb(255, 250, 243) at several points. The body element's style was not captured, so the background value comes from the screenshot.",
+          "quote": null
+        }
+      ],
+      "consequence": {
+        "level": "minor",
+        "reason": "Text is 72px bold and readable in the capture, but falls below the large-text contrast guideline, which may affect low-vision readers."
+      }
+    },
+    {
+      "observation_id": "Q002",
+      "category": "rendering",
+      "related_feature_id": "QLT-01",
+      "observation": "The gradient is sized to the full width of the h1 block (about 92% of the image width) while the letters cover roughly the left half, so the visible wordmark runs from orange only to a red-orange near rgb(255, 93, 54). The pink end stop, rgb(255, 45, 111), falls in empty space to the right of the text and does not appear on the letters.",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {"x": 0.0375, "y": 0.08, "width": 0.925, "height": 0.105},
+          "selector": "#hero > h1",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "dom",
+          "ref_id": "D004",
+          "description": "The gradient is the h1's background-image clipped to text; the h1 is a block element whose captured text box spans x 0.0375 to 0.9625 of the image.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "Headline ink ends near x = 0.49 of the image; the rightmost letter pixels are about rgb(255, 93, 54), which matches the gradient's colour at about 49% of the block width.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T009",
+          "description": "Page text describes the wordmark gradient as orange-to-pink.",
+          "quote": "orange-to-pink sunrise gradient"
+        }
+      ],
+      "consequence": {
+        "level": "minor",
+        "reason": "Cosmetic: the rendered wordmark shows less of the specified orange-to-pink range than the brand constraint and page text describe; legibility is unaffected."
+      }
+    }
+  ],
+  "exploratory_candidates": [],
+  "untrusted_instructions_observed": [],
+  "summary": {
+    "text": "No accepted findings. The one candidate cue, the orange-to-pink gradient on the main headline and wordmark, is recorded as a contextual exception under VIS-02: the supplied context documents it as a brand-guide requirement, it appears once rather than as a repeated device, and its sunrise colours fit the festival's name. The rest of the captured page is plain and specific: named acts for each of three days that agree with the stated June dates, a named venue and station, a gate time, and prices, with no cards, icons, eyebrow labels, statistic tiles, stock section sequence, or configured animation. Separately, quality notes concern the headline only: its gradient colours fall below the 3:1 large-text contrast guideline against the light background, and the gradient spans the full heading width so its pink end never reaches the letters. These are quality observations, not slop claims. Coverage is one desktop screenshot at scroll 0 with DOM text and computed styles; mobile layout, interactions, and source were not available.",
+    "major_limitations": [
+      "One desktop screenshot at scroll offset 0; no mobile viewport, and content below the first viewport, if any, was not captured (the screenshot shows blank space below the visitor details).",
+      "No recorded interactions or source excerpts, so INT-01, INT-02, and SRC-01 are unassessed.",
+      "Motion judged only from captured computed styles (animation-name none); transition durations and playback were not recorded.",
+      "Contrast ratios use a background colour sampled from screenshot pixels because the page body's computed style was not captured.",
+      "The brand requirement comes from the supplied capture-plan context (a synthetic fixture), not from an inspected brand guide."
+    ]
+  }
+}

@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:website-slop-audit:audit:0.1",
+  "title": "website-slop-audit audit output",
+  "description": "One audit of one frozen capture bundle. Empty findings, contextual exceptions, abstention, and partial coverage are all valid. Counts are never stored here: reports and scorers derive them from the arrays. Cross-references to the bundle are checked by scripts/validate_audit.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "rubric_version", "audit_id", "bundle_id", "bundle_hash", "analysis_profile", "status", "inventory", "coverage", "findings", "contextual_exceptions", "quality_observations", "exploratory_candidates", "untrusted_instructions_observed", "summary"],
+  "properties": {
+    "schema_version": {"const": "website-slop-audit/audit/0.1"},
+    "rubric_version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+    "audit_id": {"$ref": "#/$defs/id"},
+    "bundle_id": {"$ref": "#/$defs/id"},
+    "bundle_hash": {"$ref": "#/$defs/sha256"},
+    "analysis_profile": {"type": "string", "pattern": "^[a-z0-9-]{1,64}$"},
+    "status": {"enum": ["completed", "partial", "insufficient_evidence"], "description": "completed: every check the profile and evidence permit was run. partial: some permitted checks could not be completed (missing regions, partial loads). insufficient_evidence: the bundle cannot support the profile; findings must then be empty."},
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Stage 3: purpose and observable structure, recorded without any authorship conclusion.",
+      "required": ["genre", "purpose", "audience", "main_task", "structure"],
+      "properties": {
+        "genre": {"$ref": "#/$defs/context_judgment"},
+        "purpose": {"$ref": "#/$defs/context_judgment"},
+        "audience": {"$ref": "#/$defs/context_judgment"},
+        "main_task": {"$ref": "#/$defs/context_judgment"},
+        "structure": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["region_id", "role"],
+            "properties": {
+              "region_id": {"$ref": "#/$defs/id"},
+              "role": {"type": "string", "maxLength": 200, "description": "Neutral description of what the region does."}
+            }
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assessed_modalities", "unassessed_modalities", "regions", "features"],
+      "properties": {
+        "assessed_modalities": {"type": "array", "items": {"$ref": "#/$defs/modality"}, "uniqueItems": true},
+        "unassessed_modalities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["modality", "reason"],
+            "properties": {
+              "modality": {"$ref": "#/$defs/modality"},
+              "reason": {"type": "string", "maxLength": 300}
+            }
+          }
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["region_id", "state_ids", "status", "reason"],
+            "properties": {
+              "region_id": {"$ref": "#/$defs/id"},
+              "state_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+              "status": {"enum": ["assessed", "partially_assessed", "unassessed"]},
+              "reason": {"type": "string", "maxLength": 300}
+            }
+          }
+        },
+        "features": {
+          "type": "array",
+          "description": "One entry per codebook feature in the profile's modules.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["feature_id", "status", "reason"],
+            "properties": {
+              "feature_id": {"$ref": "#/$defs/feature_id"},
+              "status": {"enum": ["assessed", "unassessed", "not_applicable"]},
+              "reason": {"type": "string", "maxLength": 300}
+            }
+          }
+        }
+      }
+    },
+    "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+    "contextual_exceptions": {"type": "array", "items": {"$ref": "#/$defs/contextual_exception"}},
+    "quality_observations": {"type": "array", "items": {"$ref": "#/$defs/quality_observation"}},
+    "exploratory_candidates": {"type": "array", "items": {"$ref": "#/$defs/exploratory_candidate"}},
+    "untrusted_instructions_observed": {
+      "type": "array",
+      "description": "Page content that addressed the auditor or tried to change the task. Recorded as data; never followed.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ref_kind", "ref_id", "description"],
+        "properties": {
+          "ref_kind": {"enum": ["text", "screenshot", "source", "dom"]},
+          "ref_id": {"$ref": "#/$defs/id"},
+          "description": {"type": "string", "maxLength": 300}
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "major_limitations"],
+      "properties": {
+        "text": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "Bounded, nonprobabilistic description of the pattern and its limits. No authorship verdict, no score."},
+        "major_limitations": {"type": "array", "items": {"type": "string", "maxLength": 300}}
+      }
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "feature_id": {"type": "string", "pattern": "^[A-Z]{3}-\\d{2}$"},
+    "modality": {"enum": ["screenshot", "text", "dom", "computed_style", "interaction", "source"]},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 500},
+    "context_judgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "basis"],
+      "properties": {
+        "value": {"type": ["string", "null"], "maxLength": 300},
+        "basis": {"enum": ["provided", "inferred", "unknown"]}
+      }
+    },
+    "box": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": {"type": "number", "minimum": 0, "maximum": 1},
+        "y": {"type": "number", "minimum": 0, "maximum": 1},
+        "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+      }
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["region_id", "state_id", "asset_id", "box", "selector", "source_ref"],
+      "properties": {
+        "region_id": {"$ref": "#/$defs/id"},
+        "state_id": {"$ref": "#/$defs/id"},
+        "asset_id": {"type": ["string", "null"]},
+        "box": {"anyOf": [{"$ref": "#/$defs/box"}, {"type": "null"}], "description": "Normalized to asset_id's image. Null when the region cannot be localized confidently; never invent coordinates."},
+        "selector": {"type": ["string", "null"], "maxLength": 300, "description": "Only a selector present in the bundle's dom_elements."},
+        "source_ref": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["excerpt_id", "line_start", "line_end"],
+              "properties": {
+                "excerpt_id": {"$ref": "#/$defs/id"},
+                "line_start": {"type": "integer", "minimum": 1},
+                "line_end": {"type": "integer", "minimum": 1}
+              }
+            },
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "ref_id", "description", "quote"],
+      "properties": {
+        "kind": {"enum": ["screenshot", "text", "interaction", "dom", "source", "context"]},
+        "ref_id": {"type": "string", "minLength": 1, "maxLength": 64, "description": "asset_id, span_id, event_id, element_id, excerpt_id, or a context field name (purpose, genre, audience, constraints)."},
+        "description": {"type": "string", "minLength": 1, "maxLength": 400},
+        "quote": {"type": ["string", "null"], "maxLength": 300, "description": "Exact substring of the referenced text span or source excerpt. Null when exact extraction is uncertain."}
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["finding_id", "feature_id", "phenomenon_id", "secondary_tags", "scope", "observation", "locations", "evidence", "observation_confidence", "slop_association", "contextual_fit", "communication_or_interaction_consequence", "alternative_explanations", "codebook_evidence_status", "quality_to_slop_rationale", "limitations"],
+      "properties": {
+        "finding_id": {"type": "string", "pattern": "^F\\d{3}$"},
+        "feature_id": {"$ref": "#/$defs/feature_id"},
+        "phenomenon_id": {"type": ["string", "null"], "pattern": "^P\\d{3}$"},
+        "secondary_tags": {"type": "array", "items": {"$ref": "#/$defs/feature_id"}, "uniqueItems": true},
+        "scope": {"enum": ["region", "repeated-group", "cross-region", "page-pattern"]},
+        "observation": {"type": "string", "minLength": 1, "maxLength": 600},
+        "locations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/location"}},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}},
+        "observation_confidence": {
+          "type": "object", "additionalProperties": false, "required": ["level", "reason"],
+          "properties": {"level": {"enum": ["high", "medium", "low"]}, "reason": {"$ref": "#/$defs/reason"}}
+        },
+        "slop_association": {
+          "type": "object", "additionalProperties": false, "required": ["level", "reason"],
+          "properties": {"level": {"enum": ["weak", "moderate", "strong", "unassessed"]}, "reason": {"$ref": "#/$defs/reason"}},
+          "description": "'none' is not allowed for an accepted finding: record that case as a contextual exception."
+        },
+        "contextual_fit": {
+          "type": "object", "additionalProperties": false, "required": ["level", "reason"],
+          "properties": {"level": {"enum": ["appropriate", "questionable", "inappropriate", "unknown"]}, "reason": {"$ref": "#/$defs/reason"}}
+        },
+        "communication_or_interaction_consequence": {
+          "type": "object", "additionalProperties": false, "required": ["level", "reason"],
+          "properties": {"level": {"enum": ["none_identified", "minor", "moderate", "major", "unknown"]}, "reason": {"$ref": "#/$defs/reason"}}
+        },
+        "alternative_explanations": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 200}},
+        "codebook_evidence_status": {"enum": ["corpus_specific_empirical", "practitioner_heuristic", "research_hypothesis", "quality_only"], "description": "Copied from the codebook entry; the auditor may not change it."},
+        "quality_to_slop_rationale": {"type": ["string", "null"], "maxLength": 500, "description": "Required (non-null) only when feature_id is QLT-01."},
+        "limitations": {"type": "array", "items": {"type": "string", "maxLength": 300}}
+      }
+    },
+    "contextual_exception": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["exception_id", "feature_id", "observation", "locations", "evidence", "reason_not_counted", "rationale", "observation_confidence"],
+      "properties": {
+        "exception_id": {"type": "string", "pattern": "^X\\d{3}$"},
+        "feature_id": {"$ref": "#/$defs/feature_id"},
+        "observation": {"type": "string", "minLength": 1, "maxLength": 600},
+        "locations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/location"}},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}},
+        "reason_not_counted": {"enum": ["appropriate_in_context", "documented_requirement", "conventional_for_genre", "insufficient_evidence_for_finding"]},
+        "rationale": {"$ref": "#/$defs/reason"},
+        "observation_confidence": {
+          "type": "object", "additionalProperties": false, "required": ["level", "reason"],
+          "properties": {"level": {"enum": ["high", "medium", "low"]}, "reason": {"$ref": "#/$defs/reason"}}
+        }
+      }
+    },
+    "quality_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observation_id", "category", "related_feature_id", "observation", "locations", "evidence", "consequence"],
+      "properties": {
+        "observation_id": {"type": "string", "pattern": "^Q\\d{3}$"},
+        "category": {"enum": ["usability", "accessibility", "interaction_failure", "rendering", "content", "capture_artifact", "other"]},
+        "related_feature_id": {"anyOf": [{"$ref": "#/$defs/feature_id"}, {"type": "null"}]},
+        "observation": {"type": "string", "minLength": 1, "maxLength": 600},
+        "locations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/location"}},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}},
+        "consequence": {
+          "type": "object", "additionalProperties": false, "required": ["level", "reason"],
+          "properties": {"level": {"enum": ["none_identified", "minor", "moderate", "major", "unknown"]}, "reason": {"$ref": "#/$defs/reason"}}
+        }
+      }
+    },
+    "exploratory_candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_id", "label", "observation", "why_outside_codebook", "locations", "evidence", "observation_confidence"],
+      "properties": {
+        "candidate_id": {"type": "string", "pattern": "^C\\d{3}$"},
+        "label": {"type": "string", "minLength": 1, "maxLength": 120},
+        "observation": {"type": "string", "minLength": 1, "maxLength": 600},
+        "why_outside_codebook": {"type": "string", "minLength": 1, "maxLength": 400},
+        "locations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/location"}},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}},
+        "observation_confidence": {
+          "type": "object", "additionalProperties": false, "required": ["level", "reason"],
+          "properties": {"level": {"enum": ["high", "medium", "low"]}, "reason": {"$ref": "#/$defs/reason"}}
+        }
+      }
+    }
+  }
+}

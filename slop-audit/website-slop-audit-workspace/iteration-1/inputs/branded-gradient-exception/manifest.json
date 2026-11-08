@@ -1,0 +1,743 @@
+{
+  "schema_version": "website-slop-audit/capture-bundle/0.1",
+  "bundle_id": "fx-branded-gradient",
+  "site_id": "site-branded-gradient",
+  "capture": {
+    "captured_at": "2026-11-07T22:38:12Z",
+    "protocol_version": "capture-protocol/0.1",
+    "adapter": {
+      "name": "gstack_capture.py",
+      "version": "0.1.0",
+      "browser": "gstack browse (Status: healthy)"
+    },
+    "target_kind": "local_server",
+    "target_locator": null,
+    "snapshot_id": null,
+    "notes": [
+      "10 browser commands issued"
+    ]
+  },
+  "evidence_profile": {
+    "capture_profile": "custom",
+    "max_images": 8,
+    "selection_rules_applied": [
+      "desktop viewport screenshots at scroll offsets [0]"
+    ]
+  },
+  "modalities": {
+    "screenshot": true,
+    "text": true,
+    "dom": true,
+    "computed_style": true,
+    "interaction": false,
+    "source": false
+  },
+  "capability_limits": [
+    "animation playback is not recorded; motion can only be inferred from captured styles",
+    "HTML comments, alt text, and hidden elements are not captured as text spans"
+  ],
+  "context": {
+    "purpose": {
+      "value": "Announce a three-day music festival: lineup, dates, and how to get there.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "event promotion page",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "local festival-goers",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": [
+      {
+        "value": "The festival brand guide requires the orange-to-pink sunrise gradient on the wordmark and main headline.",
+        "status": "provided",
+        "provenance": "capture plan written by the fixture author (synthetic)"
+      }
+    ]
+  },
+  "blinding": {
+    "profile": "blinded",
+    "transformations": [
+      {
+        "transformation_id": "TR-locator",
+        "kind": "locator_withheld",
+        "description": "capture.target_locator withheld; the original is in the private sidecar",
+        "applies_to": [
+          "fx-branded-gradient"
+        ]
+      }
+    ],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ],
+    "known_leakage": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    }
+  ],
+  "states": [
+    {
+      "state_id": "S01",
+      "route": "/index.html",
+      "viewport_id": "V1",
+      "kind": "initial",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "page as loaded at viewport V1"
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "headline area",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#hero",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.2737
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R02",
+      "name": "lineup by day",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#lineup",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0,
+            "y": 0.2737,
+            "width": 1.0,
+            "height": 0.1933
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R03",
+      "name": "visitor details",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#details",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0,
+            "y": 0.4671,
+            "width": 1.0,
+            "height": 0.238
+          }
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "A01",
+      "kind": "viewport_screenshot",
+      "path": "assets/A01.png",
+      "sha256": "d7f1200b0b06e03e6fff527b34e81d6e0507c861730687e20f8100206cbac8fb",
+      "media_type": "image/png",
+      "pixel_width": 1280,
+      "pixel_height": 800,
+      "viewport_id": "V1",
+      "device_pixel_ratio": 1,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S01",
+      "crop_of": null
+    }
+  ],
+  "text_spans": [
+    {
+      "span_id": "T001",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Sunrise Fest 2027",
+      "source": "dom",
+      "element_id": "D004",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.08,
+            "width": 0.925,
+            "height": 0.105
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T002",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Three days of folk, soul, and brass on the Harbor Lawn, June 11–13.",
+      "source": "dom",
+      "element_id": "D005",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.195,
+            "width": 0.925,
+            "height": 0.0288
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T003",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Lineup by day",
+      "source": "dom",
+      "element_id": "D006",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.2838,
+            "width": 0.925,
+            "height": 0.0325
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T004",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Friday: The Delta Lanterns, Marisol Quintero, Harbor Brass Collective",
+      "source": "dom",
+      "element_id": "D007",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0547,
+            "y": 0.3287,
+            "width": 0.9078,
+            "height": 0.0361
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T005",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Saturday: June Okafor, The Weathervanes, Little Saint James",
+      "source": "dom",
+      "element_id": "D008",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0547,
+            "y": 0.3649,
+            "width": 0.9078,
+            "height": 0.0361
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T006",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Sunday: Gospel choir of St. Brendan's, Ada & the Night Ferry",
+      "source": "dom",
+      "element_id": "D009",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0547,
+            "y": 0.401,
+            "width": 0.9078,
+            "height": 0.0361
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T007",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Getting there",
+      "source": "dom",
+      "element_id": "D010",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.4771,
+            "width": 0.925,
+            "height": 0.044
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T008",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Gates open at 2 pm each day. The Harbor Lawn is a ten-minute walk from Pier Street station. Day passes are $45; children under 12 attend free with an adult.",
+      "source": "dom",
+      "element_id": "D011",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.5411,
+            "width": 0.925,
+            "height": 0.032
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T009",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "The orange-to-pink sunrise gradient on our wordmark is part of the festival's identity, used on every poster since 2019.",
+      "source": "dom",
+      "element_id": "D012",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0375,
+            "y": 0.5931,
+            "width": 0.925,
+            "height": 0.032
+          }
+        }
+      ]
+    }
+  ],
+  "dom_elements": [
+    {
+      "element_id": "D001",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#hero",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D002",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#lineup",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D003",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#details",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D004",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#hero > h1",
+      "tag": "h1",
+      "role": null,
+      "text_span_ids": [
+        "T001"
+      ],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "72px",
+        "font-weight": "800",
+        "font-style": "normal",
+        "color": "rgba(0, 0, 0, 0)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "linear-gradient(90deg, rgb(255, 138, 0), rgb(255, 45, 111))",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "-1px",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "text",
+        "background-clip": "text"
+      }
+    },
+    {
+      "element_id": "D005",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#hero > p",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T002"
+      ],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "20px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D006",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#lineup > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T003"
+      ],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "22px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D007",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#lineup > ol > li:nth-of-type(1)",
+      "tag": "li",
+      "role": null,
+      "text_span_ids": [
+        "T004"
+      ],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "17px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D008",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#lineup > ol > li:nth-of-type(2)",
+      "tag": "li",
+      "role": null,
+      "text_span_ids": [
+        "T005"
+      ],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "17px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D009",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#lineup > ol > li:nth-of-type(3)",
+      "tag": "li",
+      "role": null,
+      "text_span_ids": [
+        "T006"
+      ],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "17px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D010",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#details > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T007"
+      ],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "22px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D011",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#details > p:nth-of-type(1)",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T008"
+      ],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D012",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#details > p:nth-of-type(2)",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T009"
+      ],
+      "computed_style": {
+        "font-family": "\"Trebuchet MS\", Arial, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(43, 29, 20)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    }
+  ],
+  "interactions": [],
+  "source_excerpts": [],
+  "coverage": {
+    "routes": [
+      {
+        "ref": "/index.html",
+        "status": "captured",
+        "reason": "single route captured; other routes not attempted"
+      }
+    ],
+    "regions": [
+      {
+        "ref": "R01",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R02",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R03",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      }
+    ],
+    "viewports": [
+      {
+        "ref": "V1",
+        "status": "captured",
+        "reason": "1 screenshot(s)"
+      }
+    ],
+    "interactions": [],
+    "notes": []
+  }
+}

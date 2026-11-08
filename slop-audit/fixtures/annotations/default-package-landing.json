@@ -1,0 +1,312 @@
+{
+  "schema_version": "website-slop-audit/annotation/0.1",
+  "rubric_version": "0.1.1",
+  "annotation_set_id": "dev-default-package-landing",
+  "bundle_id": "fx-15",
+  "bundle_hash": "6e6c78a439b470f806e601f6cdfd175ec5a4ff86688532a2d46e73594197c778",
+  "condition": "rubric_guided",
+  "stage": "synthetic_development",
+  "annotators": [
+    {
+      "annotator_id": "dev-1",
+      "role": "developer",
+      "expertise": {
+        "design_years": null,
+        "visualization_years": null,
+        "web_development_years": null,
+        "relevant_training": [
+          "tool developer; wrote the fixtures"
+        ],
+        "notes": "not an independent annotator"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "scope_id": "all",
+      "region_ids": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06"
+      ],
+      "state_ids": [
+        "S01",
+        "S02"
+      ],
+      "fully_annotated": true,
+      "feature_ids": [
+        "VIS-01",
+        "VIS-02",
+        "LAY-01",
+        "LAY-02",
+        "VIS-03",
+        "MOT-01",
+        "TXT-01",
+        "TXT-02",
+        "SUB-01",
+        "SUB-02",
+        "SUB-03",
+        "INT-01",
+        "INT-02",
+        "QLT-01",
+        "SRC-01",
+        "DAT-01",
+        "DAT-02",
+        "DAT-03",
+        "DAT-04"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "annotation_id": "a1",
+      "annotator_id": "dev-1",
+      "feature_id": "VIS-01",
+      "phenomenon_id": null,
+      "scope": "page-pattern",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R06",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "Purple-blue glow over near-black, glassy panels, gradient buttons in every section; unrelated to library data.",
+      "confidence": "high",
+      "slop_association": "moderate",
+      "contextual_exception": null,
+      "consequence": "none_identified",
+      "uncertainty": "developer reference for a synthetic fixture"
+    },
+    {
+      "annotation_id": "a2",
+      "annotator_id": "dev-1",
+      "feature_id": "VIS-02",
+      "phenomenon_id": null,
+      "scope": "repeated-group",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R04",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R05",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "Tracked caps eyebrows on every section, gradient headline word, 01/02/03 numbering on non-sequential sections.",
+      "confidence": "high",
+      "slop_association": "moderate",
+      "contextual_exception": null,
+      "consequence": "none_identified",
+      "uncertainty": "developer reference for a synthetic fixture"
+    },
+    {
+      "annotation_id": "a3",
+      "annotator_id": "dev-1",
+      "feature_id": "VIS-03",
+      "phenomenon_id": null,
+      "scope": "repeated-group",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "Identical sparkle icon tiles on cards with unrelated content (including team credits).",
+      "confidence": "high",
+      "slop_association": "moderate",
+      "contextual_exception": null,
+      "consequence": "none_identified",
+      "uncertainty": "developer reference for a synthetic fixture"
+    },
+    {
+      "annotation_id": "a4",
+      "annotator_id": "dev-1",
+      "feature_id": "SUB-03",
+      "phenomenon_id": null,
+      "scope": "repeated-group",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "10x / 99% / 24/7 tiles without units, source, or link to the data.",
+      "confidence": "high",
+      "slop_association": "moderate",
+      "contextual_exception": null,
+      "consequence": "none_identified",
+      "uncertainty": "developer reference for a synthetic fixture"
+    },
+    {
+      "annotation_id": "a5",
+      "annotator_id": "dev-1",
+      "feature_id": "TXT-01",
+      "phenomenon_id": null,
+      "scope": "region",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.05,
+            "y": 0.3282,
+            "width": 0.5625,
+            "height": 0.0575
+          }
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "Opening copy names neither the library nor the data.",
+      "confidence": "high",
+      "slop_association": "moderate",
+      "contextual_exception": null,
+      "consequence": "none_identified",
+      "uncertainty": "developer reference for a synthetic fixture"
+    },
+    {
+      "annotation_id": "a6",
+      "annotator_id": "dev-1",
+      "feature_id": "DAT-04",
+      "phenomenon_id": null,
+      "scope": "page-pattern",
+      "locations": [
+        {
+          "region_id": "R01",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R04",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        },
+        {
+          "region_id": "R05",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "Generic scaffolding precedes one unlabeled chart with a two-word caption.",
+      "confidence": "high",
+      "slop_association": "moderate",
+      "contextual_exception": null,
+      "consequence": "moderate",
+      "uncertainty": "developer reference for a synthetic fixture"
+    },
+    {
+      "annotation_id": "a7",
+      "annotator_id": "dev-1",
+      "feature_id": "DAT-03",
+      "phenomenon_id": null,
+      "scope": "region",
+      "locations": [
+        {
+          "region_id": "R05",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "The chart has no units, years, or source in the captured scope.",
+      "confidence": "high",
+      "slop_association": "weak",
+      "contextual_exception": null,
+      "consequence": "moderate",
+      "uncertainty": "developer reference for a synthetic fixture"
+    },
+    {
+      "annotation_id": "a8",
+      "annotator_id": "dev-1",
+      "feature_id": "LAY-01",
+      "phenomenon_id": null,
+      "scope": "repeated-group",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": null,
+          "box": null
+        }
+      ],
+      "disposition": "accepted_slop_candidate",
+      "observed_evidence": "The team credit is set as a third feature card, identical to two product-benefit cards.",
+      "confidence": "high",
+      "slop_association": "weak",
+      "contextual_exception": null,
+      "consequence": "none_identified",
+      "uncertainty": "developer reference for a synthetic fixture"
+    }
+  ],
+  "adjudication": null,
+  "notes": [
+    "Synthetic development reference written by the fixture author; plumbing and smoke tests only.",
+    "LAY-02 and DAT-04 overlap here; DAT-04 is the primary code in the data-story profile (codebook 0.1.1 boundary rule).",
+    "Revised 2026-11-08 after reviewing iteration-1 development output: a8 (LAY-01 team-credit card) added because it matches the codebook's own positive example and was omitted by mistake. Development data only; a held-out reference must never be revised after seeing model output."
+  ]
+}

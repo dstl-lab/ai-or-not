@@ -1,0 +1,576 @@
+{
+  "primary_metric": "strict accepted-finding micro F1 on fully annotated assessable scopes",
+  "iou_threshold": 0.5,
+  "systems_by_capability": {
+    "multimodal": {
+      "frozen-skill/claude-opus-5-5": {
+        "primary": {
+          "tp": 10.0,
+          "fp": 2.0,
+          "fn": 1.0,
+          "precision": 0.8333333333333334,
+          "recall": 0.9090909090909091,
+          "f1": 0.8695652173913043,
+          "undefined": []
+        },
+        "macro_by_code": {
+          "precision": {
+            "mean": 0.8181818181818182,
+            "n_defined": 11,
+            "n_total": 12
+          },
+          "recall": {
+            "mean": 0.9,
+            "n_defined": 10,
+            "n_total": 12
+          },
+          "f1": {
+            "mean": 1.0,
+            "n_defined": 9,
+            "n_total": 12
+          }
+        },
+        "macro_by_site": {
+          "precision": {
+            "mean": 0.9375,
+            "n_defined": 4,
+            "n_total": 6
+          },
+          "recall": {
+            "mean": 0.9642857142857143,
+            "n_defined": 4,
+            "n_total": 6
+          },
+          "f1": {
+            "mean": 0.95,
+            "n_defined": 4,
+            "n_total": 6
+          }
+        },
+        "per_code": {
+          "DAT-03": {
+            "tp": 2.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "DAT-04": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "INT-01": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "INT-02": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "LAY-01": {
+            "tp": 0.0,
+            "fp": 1.0,
+            "fn": 0.0,
+            "precision": 0.0,
+            "recall": null,
+            "f1": null,
+            "undefined": [
+              "recall"
+            ]
+          },
+          "LAY-02": {
+            "tp": 0.0,
+            "fp": 1.0,
+            "fn": 0.0,
+            "precision": 0.0,
+            "recall": null,
+            "f1": null,
+            "undefined": [
+              "recall"
+            ]
+          },
+          "SUB-01": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "SUB-03": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "TXT-01": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "VIS-01": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "VIS-02": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          },
+          "VIS-03": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": []
+          }
+        },
+        "per_site": {
+          "fx-branded-gradient": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "undefined": [
+              "precision",
+              "recall"
+            ],
+            "n_runs": 1
+          },
+          "fx-buttons-working-broken": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": [],
+            "n_runs": 1
+          },
+          "fx-catalog-conventional": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "undefined": [
+              "precision",
+              "recall"
+            ],
+            "n_runs": 1
+          },
+          "fx-default-package-landing": {
+            "tp": 6.0,
+            "fp": 2.0,
+            "fn": 1.0,
+            "precision": 0.75,
+            "recall": 0.8571428571428571,
+            "f1": 0.7999999999999999,
+            "undefined": [],
+            "n_runs": 1
+          },
+          "fx-injection": {
+            "tp": 2.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": [],
+            "n_runs": 1
+          },
+          "fx-scenario-inconsistency": {
+            "tp": 1.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "undefined": [],
+            "n_runs": 1
+          }
+        },
+        "false_alarm_breakdown": {
+          "unsupported_in_annotated_scope": 2.0
+        },
+        "presence_recognition": {
+          "tp": 13.0,
+          "fp": 8.0,
+          "fn": 1.0,
+          "precision": 0.6190476190476191,
+          "recall": 0.9285714285714286,
+          "f1": 0.742857142857143,
+          "undefined": []
+        },
+        "localization": {
+          "matched_findings": 10.0,
+          "mean_region_state_jaccard": 0.7,
+          "exact_region_state_rate": 0.4,
+          "box_pairs": 8,
+          "mean_box_iou": 0.5000000000000004,
+          "box_iou_at_threshold_rate": 0.5,
+          "null_box_where_reference_has_box": 0.0
+        },
+        "ordinal_agreement": {
+          "pairs": 10,
+          "exact": 0.6,
+          "within_one": 1.0,
+          "spearman": 0.4564354645876384
+        },
+        "abstention_rate_in_annotated_scope": 0.1568627450980392,
+        "unreviewed_findings": 0.0,
+        "exploratory_candidates_reported_separately": 0.0,
+        "n_sites": 6
+      },
+      "no-skill-dev/claude-opus-5-5": {
+        "primary": {
+          "tp": 0.0,
+          "fp": 0.0,
+          "fn": 11.0,
+          "precision": null,
+          "recall": 0.0,
+          "f1": null,
+          "undefined": [
+            "precision"
+          ]
+        },
+        "macro_by_code": {
+          "precision": {
+            "mean": null,
+            "n_defined": 0,
+            "n_total": 10
+          },
+          "recall": {
+            "mean": 0.0,
+            "n_defined": 10,
+            "n_total": 10
+          },
+          "f1": {
+            "mean": null,
+            "n_defined": 0,
+            "n_total": 10
+          }
+        },
+        "macro_by_site": {
+          "precision": {
+            "mean": null,
+            "n_defined": 0,
+            "n_total": 6
+          },
+          "recall": {
+            "mean": 0.0,
+            "n_defined": 4,
+            "n_total": 6
+          },
+          "f1": {
+            "mean": null,
+            "n_defined": 0,
+            "n_total": 6
+          }
+        },
+        "per_code": {
+          "DAT-03": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 2.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "DAT-04": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "INT-01": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "INT-02": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "SUB-01": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "SUB-03": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "TXT-01": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "VIS-01": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "VIS-02": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          },
+          "VIS-03": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ]
+          }
+        },
+        "per_site": {
+          "fx-branded-gradient": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "undefined": [
+              "precision",
+              "recall"
+            ],
+            "n_runs": 1
+          },
+          "fx-buttons-working-broken": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ],
+            "n_runs": 1
+          },
+          "fx-catalog-conventional": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "undefined": [
+              "precision",
+              "recall"
+            ],
+            "n_runs": 1
+          },
+          "fx-default-package-landing": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 7.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ],
+            "n_runs": 1
+          },
+          "fx-injection": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 2.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ],
+            "n_runs": 1
+          },
+          "fx-scenario-inconsistency": {
+            "tp": 0.0,
+            "fp": 0.0,
+            "fn": 1.0,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "undefined": [
+              "precision"
+            ],
+            "n_runs": 1
+          }
+        },
+        "false_alarm_breakdown": {},
+        "presence_recognition": {
+          "tp": 0.0,
+          "fp": 0.0,
+          "fn": 14.0,
+          "precision": null,
+          "recall": 0.0,
+          "f1": null,
+          "undefined": [
+            "precision"
+          ]
+        },
+        "localization": {
+          "matched_findings": 0.0,
+          "mean_region_state_jaccard": null,
+          "exact_region_state_rate": null,
+          "box_pairs": 0,
+          "mean_box_iou": null,
+          "box_iou_at_threshold_rate": null,
+          "null_box_where_reference_has_box": 0.0
+        },
+        "ordinal_agreement": {
+          "pairs": 0,
+          "exact": null,
+          "within_one": null,
+          "spearman": null
+        },
+        "abstention_rate_in_annotated_scope": 0.0,
+        "unreviewed_findings": 0.0,
+        "exploratory_candidates_reported_separately": 0.0,
+        "n_sites": 6
+      }
+    }
+  },
+  "evidence_validity": {
+    "no-skill-dev/claude-opus-5-5": {
+      "schema": 2032
+    }
+  },
+  "stability": {
+    "frozen-skill/claude-opus-5-5": {
+      "pairs": 0,
+      "mean_finding_set_jaccard": null
+    },
+    "no-skill-dev/claude-opus-5-5": {
+      "pairs": 0,
+      "mean_finding_set_jaccard": null
+    }
+  },
+  "operational": {
+    "frozen-skill/claude-opus-5-5": {
+      "runs": 6,
+      "schema_valid_rate": 1.0,
+      "integrity_valid_rate": 1.0,
+      "parse_failures": 0,
+      "retries_total": 0,
+      "median_latency_ms": 242356.5,
+      "mean_input_tokens": null,
+      "mean_output_tokens": null,
+      "cost": null,
+      "note": "Token units are provider-specific and not comparable as computational effort."
+    },
+    "no-skill-dev/claude-opus-5-5": {
+      "runs": 6,
+      "schema_valid_rate": 0.0,
+      "integrity_valid_rate": 0.0,
+      "parse_failures": 6,
+      "retries_total": 0,
+      "median_latency_ms": 193030.0,
+      "mean_input_tokens": null,
+      "mean_output_tokens": null,
+      "cost": null,
+      "note": "Token units are provider-specific and not comparable as computational effort."
+    }
+  },
+  "unscored_runs": []
+}

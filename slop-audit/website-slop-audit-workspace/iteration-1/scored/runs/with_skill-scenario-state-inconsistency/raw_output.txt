@@ -1,0 +1,585 @@
+{
+  "schema_version": "website-slop-audit/audit/0.1",
+  "rubric_version": "0.1.0",
+  "audit_id": "audit-fx-scenario-inconsistency-with-skill-iter1",
+  "bundle_id": "fx-scenario-inconsistency",
+  "bundle_hash": "8134a316a2321118d293f909f0b812a1981f96d8e7a4e7aa401e806386f03bb7",
+  "analysis_profile": "multimodal-datastory",
+  "status": "completed",
+  "inventory": {
+    "genre": {
+      "value": "interactive data story (explorable explanation)",
+      "basis": "provided"
+    },
+    "purpose": {
+      "value": "Let readers compare how many coastal parcels fall in the flood zone under each sea-level-rise scenario year.",
+      "basis": "provided"
+    },
+    "audience": {
+      "value": "San Diego residents",
+      "basis": "provided"
+    },
+    "main_task": {
+      "value": "Pick a scenario year (2020, 2050, 2100) and compare the share of parcels in the flood zone across three neighborhoods, with a prose interpretation below the chart.",
+      "basis": "inferred"
+    },
+    "structure": [
+      {
+        "region_id": "R01",
+        "role": "title question and subtitle naming the flood-zone definition and the 2024 county assessment"
+      },
+      {
+        "region_id": "R02",
+        "role": "scenario year buttons, bar chart of percent of parcels in the flood zone for three neighborhoods, source note"
+      },
+      {
+        "region_id": "R03",
+        "role": "prose summary under the heading 'What this means'"
+      },
+      {
+        "region_id": "R04",
+        "role": "method note on how parcels were counted and where parcel boundaries come from"
+      }
+    ]
+  },
+  "coverage": {
+    "assessed_modalities": [
+      "screenshot",
+      "text",
+      "dom",
+      "computed_style",
+      "interaction"
+    ],
+    "unassessed_modalities": [
+      {
+        "modality": "source",
+        "reason": "No source excerpts were supplied in the bundle."
+      }
+    ],
+    "regions": [
+      {
+        "region_id": "R01",
+        "state_ids": [
+          "S01",
+          "S02",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "Text spans and DOM in S01; screenshots in S01 (A01), S02 (A02, A03), S03 (A04). No text spans for R01 in S02 or S03."
+      },
+      {
+        "region_id": "R02",
+        "state_ids": [
+          "S01",
+          "S02",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "Text spans, DOM, and screenshots before (S01) and after (S03) E01; mobile S02 from screenshots A02 and A03 only."
+      },
+      {
+        "region_id": "R03",
+        "state_ids": [
+          "S01",
+          "S02",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "Text spans and DOM in S01 and S03; mobile S02 from screenshots only (fully visible in A03)."
+      },
+      {
+        "region_id": "R04",
+        "state_ids": [
+          "S01",
+          "S02",
+          "S03"
+        ],
+        "status": "assessed",
+        "reason": "Text spans and DOM in S01; screenshots in S01 (A01), S02 (A03), S03 (A04). No text spans for R04 after E01."
+      }
+    ],
+    "features": [
+      {
+        "feature_id": "VIS-01",
+        "status": "assessed",
+        "reason": "Light blue-gray page, white panels, one teal accent and a system sans-serif across all regions. The water-toned accent plausibly relates to the coastal subject; no recognizable package applied without subject relation was found."
+      },
+      {
+        "feature_id": "VIS-02",
+        "status": "assessed",
+        "reason": "No eyebrow labels, section numbering, highlighted headline words, or decorative metadata in captured text spans or screenshots."
+      },
+      {
+        "feature_id": "LAY-01",
+        "status": "assessed",
+        "reason": "Chart, summary, and method panels share identical card styling; recorded as contextual exception X001 because headings, size, and order carry the hierarchy."
+      },
+      {
+        "feature_id": "LAY-02",
+        "status": "assessed",
+        "reason": "Sequence is question header, scenario chart, interpretation, method; this fits a short data story and is not a stock landing-page skeleton."
+      },
+      {
+        "feature_id": "VIS-03",
+        "status": "assessed",
+        "reason": "No icon badges, blobs, glows, glass panels, gradients, or emoji in any screenshot; computed background-image is none on all captured elements."
+      },
+      {
+        "feature_id": "MOT-01",
+        "status": "assessed",
+        "reason": "Assessed from computed_style and E01: animation-name is none on every captured element; transition-property 'all' is the CSS initial value and no durations were captured. Animation playback was not recorded."
+      },
+      {
+        "feature_id": "TXT-01",
+        "status": "assessed",
+        "reason": "Copy names San Diego, three neighborhoods, the 2024 county assessment, the scenario, and the counting method; no interchangeable claims found."
+      },
+      {
+        "feature_id": "TXT-02",
+        "status": "assessed",
+        "reason": "The summary restates the chart's 2020 values once; recorded as contextual exception X002. No repeated claims or rigid templates across sections."
+      },
+      {
+        "feature_id": "SUB-01",
+        "status": "assessed",
+        "reason": "No placeholders. Chart values are attributed to a named source (T013) and method (T017) in the inspected scope; claims were not externally verified, per the rules."
+      },
+      {
+        "feature_id": "SUB-02",
+        "status": "assessed",
+        "reason": "In the initial state the header, chart, summary, and method agree (2024 assessment in R01 and R02; the 2023 assessor roll is a separate input). The after-state conflict is interaction-produced and filed as INT-02."
+      },
+      {
+        "feature_id": "SUB-03",
+        "status": "assessed",
+        "reason": "One chart with percent units and a source; no statistic tiles or redundant quantitative displays."
+      },
+      {
+        "feature_id": "INT-01",
+        "status": "assessed",
+        "reason": "The 2050 button (E01) produced its advertised change (title, values, active state). The 2100 button was not tested and is unknown, not broken."
+      },
+      {
+        "feature_id": "INT-02",
+        "status": "assessed",
+        "reason": "E01 updated the chart but not the linked summary; finding F001."
+      },
+      {
+        "feature_id": "QLT-01",
+        "status": "assessed",
+        "reason": "Bars not visible at the mobile viewport; quality observation Q001, not a slop finding."
+      },
+      {
+        "feature_id": "SRC-01",
+        "status": "unassessed",
+        "reason": "No source excerpts were supplied, so no source/render comparison is possible."
+      },
+      {
+        "feature_id": "DAT-01",
+        "status": "assessed",
+        "reason": "Initial-state summary matches the chart (12%, 9%, 4%). The after-state chart/summary disconnect is a secondary tag on F001, not a separate finding."
+      },
+      {
+        "feature_id": "DAT-02",
+        "status": "assessed",
+        "reason": "E01 switches the chart to the selected scenario year, which directly serves the stated purpose of comparing years; no surface-only interaction found."
+      },
+      {
+        "feature_id": "DAT-03",
+        "status": "assessed",
+        "reason": "Unit (percent of parcels), population (coastal parcels per neighborhood), year, source, named scenario, and method are located in R01, R02, R04. Uncertainty ranges are not shown, but the single named scenario states the assumption."
+      },
+      {
+        "feature_id": "DAT-04",
+        "status": "assessed",
+        "reason": "The chart is the central region; header, summary, and method are short and data-specific. No generic scaffolding outweighs the data."
+      }
+    ]
+  },
+  "findings": [
+    {
+      "finding_id": "F001",
+      "feature_id": "INT-02",
+      "phenomenon_id": "P001",
+      "secondary_tags": [
+        "DAT-01"
+      ],
+      "scope": "cross-region",
+      "observation": "After the recorded click on the 2050 scenario button (E01, completed), the chart panel switched to 2050: the title reads 'Parcels in the flood zone, 2050', the values became 31%, 27%, and 11%, and the 2050 button became the active one. The linked 'What this means' summary directly below did not change and still describes 2020 with the old values (12%, 9%, 4%), so in the after state the interpretive text describes a year the chart no longer shows.",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S03",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.1247,
+            "y": 0.26,
+            "width": 0.0544,
+            "height": 0.04
+          },
+          "selector": "#scenario-panel > div:nth-of-type(1) > button:nth-of-type(2)",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S03",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0641,
+            "y": 0.3175,
+            "width": 0.8719,
+            "height": 0.0312
+          },
+          "selector": "#chart-title",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S03",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0641,
+            "y": 0.3638,
+            "width": 0.8719,
+            "height": 0.0875
+          },
+          "selector": null,
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S03",
+          "asset_id": "A04",
+          "box": {
+            "x": 0.0641,
+            "y": 0.6112,
+            "width": 0.8719,
+            "height": 0.0329
+          },
+          "selector": "#summary",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "interaction",
+          "ref_id": "E01",
+          "description": "Click on the 2050 scenario button, execution completed, observed 800 ms after the action. Recorded changes cover the chart title, the three bar values, and the button state; no change to #summary is recorded.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T021",
+          "description": "Chart title in the after state names 2050.",
+          "quote": "Parcels in the flood zone, 2050"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T023",
+          "description": "Mission Beach value in the after state.",
+          "quote": "31%"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T025",
+          "description": "Imperial Beach value in the after state.",
+          "quote": "27%"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T027",
+          "description": "La Jolla Shores value in the after state.",
+          "quote": "11%"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T029",
+          "description": "Heading that frames the summary as the interpretation of the chart, unchanged after E01.",
+          "quote": "What this means"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T030",
+          "description": "Summary text in the after state still names 2020 and the 2020 values.",
+          "quote": "In 2020, 4% of La Jolla Shores parcels and 12% of Mission Beach parcels sit in the flood zone. Imperial Beach is in between at 9%."
+        },
+        {
+          "kind": "text",
+          "ref_id": "T015",
+          "description": "Summary text in the initial state, identical to T030, showing it did not update.",
+          "quote": "In 2020, 4% of La Jolla Shores parcels and 12% of Mission Beach parcels sit in the flood zone."
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D025",
+          "description": "In S03 the 2050 button has the filled active style (white text on teal background), confirming the selected scenario.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A04",
+          "description": "Desktop after-state screenshot: 2050 chart with longer bars above an unchanged 2020 summary.",
+          "quote": null
+        },
+        {
+          "kind": "context",
+          "ref_id": "purpose",
+          "description": "Stated purpose is comparing flood-zone parcels across scenario years, which the summary is meant to interpret.",
+          "quote": null
+        }
+      ],
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Completed recorded interaction, exact DOM text spans in both states, and a legible after-state screenshot all show the same mismatch."
+      },
+      "slop_association": {
+        "level": "moderate",
+        "reason": "A concrete integration problem: the control updates the chart but leaves its interpretive summary on the initial year, the pattern INT-02 describes. It is a single occurrence on one tested control, so it is not rated strong."
+      },
+      "contextual_fit": {
+        "level": "questionable",
+        "reason": "The page exists to compare scenario years, but after choosing 2050 the 'What this means' panel interprets 2020. The sentence is literally accurate for 2020, yet it is not labeled as a baseline, so its role in the after state is unclear."
+      },
+      "communication_or_interaction_consequence": {
+        "level": "moderate",
+        "reason": "A reader viewing the 2050 chart gets an interpretation with different numbers (12% vs 31% for Mission Beach) and must notice the year to avoid misreading. The chart itself works, so the main task is not blocked."
+      },
+      "alternative_explanations": [
+        "The summary may be meant as a fixed 2020 baseline; it names its year but is not labeled as a baseline.",
+        "Ordinary state-management bug: the scenario handler updates the title and bars but not #summary (no source supplied to confirm).",
+        "Unfinished prototype in which per-scenario summary text was not yet written.",
+        "A summary update slower than the 800 ms observation window; unlikely since the chart updated within it, but not excluded."
+      ],
+      "codebook_evidence_status": "research_hypothesis",
+      "quality_to_slop_rationale": null,
+      "limitations": [
+        "Only the 2050 button was tested; behavior for 2100 or a return to 2020 is unknown.",
+        "The after state was captured only at the desktop viewport (V1).",
+        "No source excerpts, so the cause of the stale summary is not established."
+      ]
+    }
+  ],
+  "contextual_exceptions": [
+    {
+      "exception_id": "X001",
+      "feature_id": "LAY-01",
+      "observation": "The chart panel, the 'What this means' summary, and the method note have identical card styling: white background, 10px border radius, and the same soft shadow (computed styles of D002, D003, D004), although the three differ in role.",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.2325,
+            "width": 0.9125,
+            "height": 0.28
+          },
+          "selector": "#scenario-panel",
+          "source_ref": null
+        },
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.5375,
+            "width": 0.9125,
+            "height": 0.1342
+          },
+          "selector": "#summary-panel",
+          "source_ref": null
+        },
+        {
+          "region_id": "R04",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0437,
+            "y": 0.6967,
+            "width": 0.9125,
+            "height": 0.1487
+          },
+          "selector": "#method-panel",
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "dom",
+          "ref_id": "D002",
+          "description": "Scenario panel: white background, border-radius 10px, box-shadow rgba(18, 38, 58, 0.12) 0px 1px 3px.",
+          "quote": null
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D003",
+          "description": "Summary panel: same background, radius, and shadow as D002.",
+          "quote": null
+        },
+        {
+          "kind": "dom",
+          "ref_id": "D004",
+          "description": "Method panel: same background, radius, and shadow as D002.",
+          "quote": null
+        },
+        {
+          "kind": "text",
+          "ref_id": "T014",
+          "description": "Summary panel heading states its role.",
+          "quote": "What this means"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T016",
+          "description": "Method panel heading states its role.",
+          "quote": "Method"
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "Desktop initial state: the chart panel is visibly larger and carries the controls and bars; the two text panels are short.",
+          "quote": null
+        }
+      ],
+      "reason_not_counted": "insufficient_evidence_for_finding",
+      "rationale": "LAY-01 requires that the sameness hide a hierarchy the content needs. Here explicit headings, the chart panel's larger size and controls, and the top-to-bottom reading order carry the hierarchy, on a short single-screen page where sectioned panels are a common data-story layout.",
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Identical computed styles were captured for all three panels and the treatment is legible in A01."
+      }
+    },
+    {
+      "exception_id": "X002",
+      "feature_id": "TXT-02",
+      "observation": "In the initial state, the 'What this means' summary restates the chart's three values in a sentence, adding only the ordering (Imperial Beach in between), rather than an interpretation beyond the numbers.",
+      "locations": [
+        {
+          "region_id": "R03",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0641,
+            "y": 0.6112,
+            "width": 0.8719,
+            "height": 0.0329
+          },
+          "selector": "#summary",
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S01",
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0641,
+            "y": 0.3638,
+            "width": 0.8719,
+            "height": 0.0875
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "text",
+          "ref_id": "T015",
+          "description": "Summary sentence repeating the chart's values with units and place names.",
+          "quote": "In 2020, 4% of La Jolla Shores parcels and 12% of Mission Beach parcels sit in the flood zone. Imperial Beach is in between at 9%."
+        },
+        {
+          "kind": "text",
+          "ref_id": "T008",
+          "description": "Mission Beach chart value in the initial state.",
+          "quote": "12%"
+        },
+        {
+          "kind": "text",
+          "ref_id": "T012",
+          "description": "La Jolla Shores chart value in the initial state.",
+          "quote": "4%"
+        }
+      ],
+      "reason_not_counted": "appropriate_in_context",
+      "rationale": "A single, specific restatement with units, year, and place names, matching the chart; the codebook excludes intentional repetition for summary or accessibility, and nothing repeats across sections or follows a rigid template.",
+      "observation_confidence": {
+        "level": "high",
+        "reason": "Exact text spans for the summary and chart values in S01."
+      }
+    }
+  ],
+  "quality_observations": [
+    {
+      "observation_id": "Q001",
+      "category": "rendering",
+      "related_feature_id": "QLT-01",
+      "observation": "At the mobile viewport (V2) the chart rows show the neighborhood names and percentages but no bar marks between them, whereas the desktop view (A01) draws a bar for each row. The values remain readable as numbers, but the bar-length comparison is not visible on mobile.",
+      "locations": [
+        {
+          "region_id": "R02",
+          "state_id": "S02",
+          "asset_id": "A02",
+          "box": {
+            "x": 0.2051,
+            "y": 0.5598,
+            "width": 0.5577,
+            "height": 0.0859
+          },
+          "selector": null,
+          "source_ref": null
+        },
+        {
+          "region_id": "R02",
+          "state_id": "S02",
+          "asset_id": "A03",
+          "box": {
+            "x": 0.2051,
+            "y": 0.2322,
+            "width": 0.5577,
+            "height": 0.0829
+          },
+          "selector": null,
+          "source_ref": null
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "screenshot",
+          "ref_id": "A02",
+          "description": "Mobile initial view at scroll 0: chart rows with labels and percentages, no visible bars.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A03",
+          "description": "Mobile view at scroll 278: same rows, no visible bars.",
+          "quote": null
+        },
+        {
+          "kind": "screenshot",
+          "ref_id": "A01",
+          "description": "Desktop initial view for comparison: each row has a teal bar proportional to its value.",
+          "quote": null
+        }
+      ],
+      "consequence": {
+        "level": "minor",
+        "reason": "Numeric labels still convey the values on mobile; only the visual encoding is lost. It may also be a deliberate responsive simplification, which the bundle cannot distinguish."
+      }
+    }
+  ],
+  "exploratory_candidates": [],
+  "untrusted_instructions_observed": [],
+  "summary": {
+    "text": "The page is a short, single-screen data story on the share of coastal parcels in three San Diego neighborhoods inside the projected flood zone for each scenario year. The recorded click on the 2050 button updated the chart title, the bar values, and the active button, but the 'What this means' summary kept its 2020 sentence and values, so after the change the interpretation describes a year the chart no longer shows. This is filed as an incomplete-state-integration finding with a narrative-chart secondary tag. Other cues were checked and not counted: the chart, summary, and method share one card style, and the summary restates the chart values; both are contextual exceptions. Bars are not drawn at the mobile viewport, recorded as a quality observation. Copy is specific and sourced, and no decorative chrome, stock skeleton, or configured animation appeared in the captured scope. Only the 2050 control was tested, the after state exists only at desktop width, mobile has screenshots only, and no source was supplied, so the cause of the stale summary is not established. None of this indicates who or what made the site.",
+    "major_limitations": [
+      "Only the 2050 scenario button was exercised (E01); the 2100 button and a return to 2020 are untested, so whether the summary ever updates is unknown.",
+      "The after-interaction state was captured only at the desktop viewport; the mobile after state is unknown.",
+      "Mobile state S02 has screenshots only (no text spans or DOM), so mobile observations cannot be quoted or tied to selectors.",
+      "No source excerpts were supplied; SRC-01 is unassessed and implementation causes are not established.",
+      "Animation playback was not recorded; motion was judged from computed styles only."
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "bundle_id": "fx-14",
+  "note": "PRIVATE FIXTURE METADATA. Never copied into a capture bundle or a prompt. Used only to test that a documented generator does not force findings in the blinded audit.",
+  "provenance": {
+    "documented_process": "hypothetical: creator report states the page was drafted with an AI coding assistant and then edited by hand",
+    "generator": "hypothetical-assistant-x",
+    "evidence_of_process": "synthetic fixture; no real creator"
+  }
+}

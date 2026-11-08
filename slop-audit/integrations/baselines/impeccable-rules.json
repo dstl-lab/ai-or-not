@@ -1,0 +1,507 @@
+{
+ "source": "pbakaus/impeccable crates/foundation/src/registry.rs",
+ "commit": "687bc381bc9091bf252c0a05303640561014a425",
+ "note": "Rule ids, categories, severities, scopes, and names extracted from the pinned registry (descriptions omitted). 62 rules.",
+ "rules": [
+  {
+   "id": "side-tab",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Side-tab accent border"
+  },
+  {
+   "id": "border-accent-on-rounded",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Border accent on rounded element"
+  },
+  {
+   "id": "overused-font",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Overused font"
+  },
+  {
+   "id": "flat-type-hierarchy",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Flat type hierarchy"
+  },
+  {
+   "id": "gradient-text",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Gradient text"
+  },
+  {
+   "id": "ai-color-palette",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "AI color palette"
+  },
+  {
+   "id": "cream-palette",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Cream / beige palette"
+  },
+  {
+   "id": "nested-cards",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "layout"
+   ],
+   "name": "Nested cards"
+  },
+  {
+   "id": "monotonous-spacing",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "layout"
+   ],
+   "name": "Monotonous spacing"
+  },
+  {
+   "id": "bounce-easing",
+   "category": "slop",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Bounce or elastic easing"
+  },
+  {
+   "id": "pulsing-dot",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Pulsing status dot"
+  },
+  {
+   "id": "blinking-cursor",
+   "category": "slop",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Decorative blinking cursor"
+  },
+  {
+   "id": "shape-assembled-illustration",
+   "category": "slop",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Shape-assembled illustration"
+  },
+  {
+   "id": "organic-clip-path",
+   "category": "quality",
+   "severity": null,
+   "scopes": null,
+   "name": "Organic contour drawn as clip-path"
+  },
+  {
+   "id": "buried-raster",
+   "category": "quality",
+   "severity": null,
+   "scopes": null,
+   "name": "Raster buried under a wash or opacity"
+  },
+  {
+   "id": "hard-offset-shadow",
+   "category": "quality",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Hard offset shadow"
+  },
+  {
+   "id": "dark-glow",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Glowing shadow accents"
+  },
+  {
+   "id": "radial-halo",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Radial-gradient background halo"
+  },
+  {
+   "id": "radial-spotlight-glow",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Decorative radial spotlight glow"
+  },
+  {
+   "id": "marquee",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Auto-scrolling marquee"
+  },
+  {
+   "id": "icon-tile-stack",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "layout"
+   ],
+   "name": "Icon tile stacked above heading"
+  },
+  {
+   "id": "italic-serif-display",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Italic serif display headline"
+  },
+  {
+   "id": "hero-eyebrow-chip",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Hero eyebrow / pill chip"
+  },
+  {
+   "id": "kicker-above-heading",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Kicker / eyebrow label above heading"
+  },
+  {
+   "id": "numbered-section-labels",
+   "category": "slop",
+   "severity": "advisory",
+   "scopes": [
+    "type"
+   ],
+   "name": "Tiny numbered section labels"
+  },
+  {
+   "id": "em-dash-overuse",
+   "category": "slop",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Em-dash overuse"
+  },
+  {
+   "id": "marketing-buzzword",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Marketing buzzword"
+  },
+  {
+   "id": "aphoristic-cadence",
+   "category": "slop",
+   "severity": null,
+   "scopes": null,
+   "name": "Aphoristic-cadence copy"
+  },
+  {
+   "id": "oversized-h1",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Oversized hero headline"
+  },
+  {
+   "id": "extreme-negative-tracking",
+   "category": "slop",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Crushed letter spacing"
+  },
+  {
+   "id": "broken-image",
+   "category": "quality",
+   "severity": null,
+   "scopes": null,
+   "name": "Broken or placeholder image"
+  },
+  {
+   "id": "script-error",
+   "category": "quality",
+   "severity": "error",
+   "scopes": null,
+   "name": "Uncaught script error on load"
+  },
+  {
+   "id": "content-hidden-at-rest",
+   "category": "quality",
+   "severity": "error",
+   "scopes": [
+    "layout"
+   ],
+   "name": "Content invisible at rest"
+  },
+  {
+   "id": "edge-flush-cards",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "layout"
+   ],
+   "name": "Cards flush against the scroller edge"
+  },
+  {
+   "id": "text-occlusion",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "layout"
+   ],
+   "name": "Text occluded by an overlapping element"
+  },
+  {
+   "id": "first-viewport-column-overflow",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "layout"
+   ],
+   "name": "One column stretches the first viewport"
+  },
+  {
+   "id": "gray-on-color",
+   "category": "quality",
+   "severity": null,
+   "scopes": null,
+   "name": "Gray text on colored background"
+  },
+  {
+   "id": "low-contrast",
+   "category": "quality",
+   "severity": null,
+   "scopes": null,
+   "name": "Low contrast text"
+  },
+  {
+   "id": "line-length",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "type",
+    "layout"
+   ],
+   "name": "Line length too long"
+  },
+  {
+   "id": "cramped-padding",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "layout"
+   ],
+   "name": "Cramped padding"
+  },
+  {
+   "id": "body-text-viewport-edge",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "layout"
+   ],
+   "name": "Body text touching viewport edge"
+  },
+  {
+   "id": "tight-leading",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Tight line height"
+  },
+  {
+   "id": "skipped-heading",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Skipped heading level"
+  },
+  {
+   "id": "heading-rhythm",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "layout",
+    "type"
+   ],
+   "name": "Heading crowded against the previous block"
+  },
+  {
+   "id": "justified-text",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Justified text"
+  },
+  {
+   "id": "straggler",
+   "category": "quality",
+   "severity": "advisory",
+   "scopes": [
+    "type"
+   ],
+   "name": "Straggler"
+  },
+  {
+   "id": "unbalanced-heading",
+   "category": "quality",
+   "severity": "advisory",
+   "scopes": [
+    "type"
+   ],
+   "name": "Unbalanced heading"
+  },
+  {
+   "id": "tiny-text",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Tiny body text"
+  },
+  {
+   "id": "undersized-ui-text",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Undersized functional text"
+  },
+  {
+   "id": "all-caps-body",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "All-caps body text"
+  },
+  {
+   "id": "wide-tracking",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Wide letter spacing on body text"
+  },
+  {
+   "id": "text-overflow",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "layout"
+   ],
+   "name": "Content overflowing its container"
+  },
+  {
+   "id": "repeated-container-text",
+   "category": "quality",
+   "severity": null,
+   "scopes": null,
+   "name": "Same text repeated inside one container"
+  },
+  {
+   "id": "clipped-overflow-container",
+   "category": "quality",
+   "severity": "advisory",
+   "scopes": [
+    "layout"
+   ],
+   "name": "Positioned child clipped by overflow container"
+  },
+  {
+   "id": "design-system-font",
+   "category": "quality",
+   "severity": null,
+   "scopes": [
+    "type"
+   ],
+   "name": "Font outside DESIGN.md"
+  },
+  {
+   "id": "design-system-color",
+   "category": "quality",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Color outside DESIGN.md"
+  },
+  {
+   "id": "design-system-radius",
+   "category": "quality",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Radius outside DESIGN.md"
+  },
+  {
+   "id": "design-system-font-size",
+   "category": "quality",
+   "severity": "advisory",
+   "scopes": [
+    "type"
+   ],
+   "name": "Font size outside DESIGN.md"
+  },
+  {
+   "id": "gpt-thin-border-wide-shadow",
+   "category": "slop",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Hairline border with wide shadow"
+  },
+  {
+   "id": "repeating-stripes-gradient",
+   "category": "slop",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Repeating-gradient stripes"
+  },
+  {
+   "id": "codex-grid-background",
+   "category": "slop",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Decorative grid-line background"
+  },
+  {
+   "id": "theater-slop-phrase",
+   "category": "slop",
+   "severity": "advisory",
+   "scopes": null,
+   "name": "Theater framing copy"
+  }
+ ]
+}

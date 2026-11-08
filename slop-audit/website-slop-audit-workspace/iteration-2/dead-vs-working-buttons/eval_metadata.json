@@ -1,0 +1,10 @@
+{
+  "eval_name": "dead-vs-working-buttons",
+  "prompt": "This air-quality page capture in bundle/ includes recorded clicks on two buttons. Audit it for AI-slop features (multimodal-core profile) and save audit.json and report.md.",
+  "assertions": [
+    "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+    "The audit and report make no authorship verdict and no probability or percentage-AI score",
+    "An INT-01 finding cites the no-change interaction E02",
+    "No finding treats the working E01 click or the untested Download CSV link as a failure"
+  ]
+}

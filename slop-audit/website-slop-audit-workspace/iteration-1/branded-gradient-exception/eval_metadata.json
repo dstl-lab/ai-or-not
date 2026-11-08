@@ -1,0 +1,10 @@
+{
+  "eval_name": "branded-gradient-exception",
+  "prompt": "can you check the festival page captured in bundle/ for anything that reads as AI slop? use the multimodal-core profile and save audit.json + report.md",
+  "assertions": [
+    "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+    "The audit and report make no authorship verdict and no probability or percentage-AI score",
+    "No accepted finding codes the gradient wordmark or headline (no VIS-01 or VIS-02 finding located in R01)",
+    "The gradient is recorded as a contextual exception (VIS-01 or VIS-02 in contextual_exceptions)"
+  ]
+}

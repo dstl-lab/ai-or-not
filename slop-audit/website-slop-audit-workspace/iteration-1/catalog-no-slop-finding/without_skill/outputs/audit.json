@@ -1,0 +1,182 @@
+{
+  "schema_version": "ad-hoc/perceived-slop-audit/0.1",
+  "schema_note": "No audit schema was available inside the bundle, so this structure was defined for this audit. Field names are descriptive, not a published standard.",
+  "audit_id": "audit-fx-catalog-conventional-multimodal-core-01",
+  "audited_at": "2026-11-07",
+  "subject": {
+    "bundle_id": "fx-catalog-conventional",
+    "site_id": "site-catalog-conventional",
+    "bundle_hash_declared": "63e65e4ba0795194b1e9f8a63694d05bbd776a8cbd159b0cc374194c54f51c19",
+    "manifest_schema_version": "website-slop-audit/capture-bundle/0.1",
+    "route": "/index.html",
+    "state_ids": ["S01"],
+    "viewport_ids": ["V1"]
+  },
+  "integrity_checks": [
+    {
+      "check": "asset sha256",
+      "target": "assets/A01.png",
+      "expected": "d5426d58ca18be5fd93fd6f25bfc727e9fb52de922d214ccf74352d88e9c75a0",
+      "observed": "d5426d58ca18be5fd93fd6f25bfc727e9fb52de922d214ccf74352d88e9c75a0",
+      "result": "match"
+    },
+    {
+      "check": "bundle_hash",
+      "target": "bundle.lock.json bundle_hash",
+      "result": "not_verified",
+      "reason": "The recipe for bundle_hash is not documented in the bundle. Neither a raw sha256 of manifest.json nor a sha256 of its canonical JSON matched, so the value was recorded as declared."
+    }
+  ],
+  "profile": {
+    "name": "multimodal-core",
+    "interpretation": "The profile definition was not in the bundle, so it was read as follows: judge perceived AI-slop features from the screenshot together with the captured text, DOM, and computed styles. A finding needs a visible cue in the screenshot, backed by text, DOM, or style evidence where that exists. Interaction and source evidence are outside the profile, and they were also not captured.",
+    "modalities_used": ["screenshot", "text", "dom", "computed_style"],
+    "modalities_unavailable": ["interaction", "source"],
+    "evidence_assets": ["A01"]
+  },
+  "context_considered": {
+    "purpose": "Let residents and researchers find city climate datasets and see each one's format, size, and update date before downloading.",
+    "genre": "municipal open-data catalog page",
+    "audience": "researchers, journalists, and residents",
+    "constraints": [
+      "City Web Style Guide section 4.2 requires the standard catalog card component for dataset listings."
+    ],
+    "context_provenance": "capture plan written by the fixture author (synthetic); status 'provided'",
+    "how_context_was_used": "Context was used to decide whether a generic-looking pattern has a better explanation than template or generator defaults. It was not used to judge provenance."
+  },
+  "blinding_respected": {
+    "profile": "blinded",
+    "withheld_fields_not_used": ["award", "course_year", "creator_ai_report", "generator"],
+    "locator_recovery_attempted": false,
+    "note": "This audit makes no claim about whether the page was AI-generated. It reports only what a viewer might perceive as AI-slop features."
+  },
+  "overall": {
+    "perceived_slop_level": "none",
+    "finding_count": 0,
+    "summary": "No perceived AI-slop findings. The page is plain and conventional: one system font (Arial), a solid header color, no gradients, shadows, gradient text, animations, emoji, icons, hero imagery, or marketing copy. All text is specific and checkable. The only generic-looking pattern is the 3x3 grid of identical cards. The page's purpose (uniform metadata for each dataset) and the stated style-guide constraint explain that grid, so it is discounted rather than reported.",
+    "confidence": "moderate",
+    "confidence_rationale": "Every captured region agrees, and computed styles cover 71 elements. The evidence is still narrow: one route, one desktop viewport, one screenshot, no interaction or hover states, no mobile layout, no motion recording, and no alt or hidden text. The card containers (article elements) have no computed-style records, so their styling was read from the screenshot alone."
+  },
+  "findings": [],
+  "candidates_considered": [
+    {
+      "candidate_id": "C01",
+      "feature": "Uniform repeated card grid",
+      "category": "layout",
+      "description": "Nine cards of identical size and structure in a 3x3 grid. Each has a bold blue title and a three-row Format/Size/Updated definition list. Repeated identical card grids are a common cue that a page came from a template or generator.",
+      "evidence": [
+        {"type": "screenshot_region", "asset_id": "A01", "region_id": "R03", "box": {"x": 0.0312, "y": 0.2213, "width": 0.9375, "height": 0.4263}},
+        {"type": "dom", "element_ids": ["D003", "D008", "D015", "D022", "D029", "D036", "D043", "D050", "D057", "D064"], "note": "#dataset-grid with nine article > h2 titles, each followed by dl > dt/dd x3"},
+        {"type": "text", "span_ids": ["T004", "T011", "T018", "T025", "T032", "T039", "T046", "T053", "T060"]},
+        {"type": "context", "field": "constraints[0]", "value": "City Web Style Guide section 4.2 requires the standard catalog card component for dataset listings."},
+        {"type": "text", "span_ids": ["T067"], "note": "The visible footer also says listings follow the City Web Style Guide, section 4.2 (catalog cards)."}
+      ],
+      "decision": "not_reported",
+      "rationale": "Here the uniformity matches the content and is required. Every dataset has the same three attributes, the stated purpose is to compare format, size, and update date at a glance, and a provided constraint (repeated in the visible footer) requires the standard catalog card component. The cards also lack the extras that usually make a grid read as generated: no icons, badges, CTA buttons, taglines, or decorative imagery. The cards hold varied, specific records, not filler."
+    },
+    {
+      "candidate_id": "C02",
+      "feature": "Rounded, bordered card containers",
+      "category": "visual styling",
+      "description": "The cards have a white fill, a thin light-gray border, and a small corner radius (estimated at about 4px from an enlarged crop) on an off-white page background. No drop shadow is visible.",
+      "evidence": [
+        {"type": "screenshot_region", "asset_id": "A01", "region_id": "R03", "box": {"x": 0.0312, "y": 0.2213, "width": 0.3047, "height": 0.13}, "note": "first card. Radius and border read visually; the article elements have no computed-style records"}
+      ],
+      "decision": "not_reported",
+      "rationale": "A small radius with a hairline border and no shadow is ordinary and restrained. It lacks the cues usually tied to generated UI: large soft radii, layered or colored shadows, glassmorphism, or gradient borders. The evidence is screenshot-only, which also argues against reporting it."
+    },
+    {
+      "candidate_id": "C03",
+      "feature": "Generic or inflated copy",
+      "category": "text",
+      "description": "Checked the header, intro, card titles, and footer for hype vocabulary, vague value propositions, decorative triads, em-dash flourishes, emoji, and filler.",
+      "evidence": [
+        {"type": "text", "span_ids": ["T001", "T002", "T003", "T067"]}
+      ],
+      "decision": "not_reported",
+      "rationale": "The copy is plain and specific. The intro gives a count ('Nine') that matches the nine cards, names an issuing office and a license version, and lists the fields shown. Its one three-item list (format, size, date of last update) literally names the three fields on each card and is not ornamental. The only dash is the en dash in a year range (1950–2025). No hype or filler language appears."
+    },
+    {
+      "candidate_id": "C04",
+      "feature": "Typical generated-UI styling defaults",
+      "category": "visual styling",
+      "description": "Checked computed styles for gradients, gradient text, box shadows, large radii, letter-spaced uppercase labels, entrance animations, and translucency effects.",
+      "evidence": [
+        {"type": "computed_style", "element_count": 71, "observations": {
+          "font-family": "Arial, Helvetica, sans-serif on all 71 elements",
+          "background-image": "none on all 71",
+          "box-shadow": "none on all 71",
+          "border-radius": "0px on all 71 captured elements (card containers not captured)",
+          "background-clip": "border-box on all 71 (no gradient text)",
+          "text-transform": "none on all 71",
+          "letter-spacing": "normal on all 71",
+          "animation-name": "none on all 71",
+          "transition-property": "all on all 71 (the CSS initial value, which on its own shows no deliberate motion)",
+          "opacity": "1 except D006 header subtitle at 0.85",
+          "palette": "white, rgb(34,34,34), rgb(85,85,85), rgb(102,102,102), and one accent rgb(29,79,110) for the header and titles"
+        }},
+        {"type": "screenshot_region", "asset_id": "A01", "region_id": "R01", "box": {"x": 0.0, "y": 0.0, "width": 1.0, "height": 0.105}}
+      ],
+      "decision": "not_reported",
+      "rationale": "None of the checked styling defaults appear. The page uses one font, one muted accent color, and no decorative effects, which fits a municipal style guide."
+    },
+    {
+      "candidate_id": "C05",
+      "feature": "Placeholder-looking contact detail",
+      "category": "content",
+      "description": "The footer contact address uses the reserved '.example' top-level domain (opendata@riverton.example), and the city name appears to be fictional. A viewer could read placeholder details as unfinished template content.",
+      "evidence": [
+        {"type": "text", "span_ids": ["T067"]},
+        {"type": "screenshot_region", "asset_id": "A01", "region_id": "R04", "box": {"x": 0.0312, "y": 0.6875, "width": 0.9375, "height": 0.0512}}
+      ],
+      "decision": "not_reported",
+      "rationale": "The context labels the fixture synthetic, so the reserved domain is most likely an anonymization or fixture artifact, not a design choice by the page's author. It is a placeholder cue, not an AI-specific one. It is recorded so researchers can decide whether such fixture artifacts could bias human judges."
+    },
+    {
+      "candidate_id": "C06",
+      "feature": "Short page with empty lower viewport",
+      "category": "layout",
+      "description": "Content ends at about 74% of the viewport height, and the space below the footer is empty.",
+      "evidence": [
+        {"type": "screenshot_region", "asset_id": "A01", "box": {"x": 0.0, "y": 0.74, "width": 1.0, "height": 0.26}},
+        {"type": "capture_note", "value": "skipped a V1 screenshot at scroll 500: page too short, duplicate of scroll 0"}
+      ],
+      "decision": "not_reported",
+      "rationale": "This happens because there are only nine records. It is not a stylistic cue."
+    },
+    {
+      "candidate_id": "C07",
+      "feature": "Implausible or templated data values",
+      "category": "content",
+      "description": "Checked whether the card metadata looks like copy-pasted or patterned filler.",
+      "evidence": [
+        {"type": "text", "span_ids": ["T006", "T008", "T010", "T013", "T015", "T017", "T020", "T022", "T024", "T027", "T029", "T031", "T034", "T036", "T038", "T041", "T043", "T045", "T048", "T050", "T052", "T055", "T057", "T059", "T062", "T064", "T066"]}
+      ],
+      "decision": "not_reported",
+      "rationale": "The values vary and fit their datasets. Sizes run from 41 KB to 140 MB. Formats fit the data types: GeoJSON or Shapefile for spatial layers (trees, cooling centers, heat vulnerability), Parquet for high-volume sensor readings, and CSV or XLSX for tabular data. Update dates fall between 2026-05-11 and 2026-10-05 in ISO format. No repeated or round-number filler was found."
+    }
+  ],
+  "coverage_and_limits": {
+    "routes": "1 of an unknown number captured (/index.html). Other routes were not attempted.",
+    "viewports": "Desktop 1280x800 only. No mobile or tablet layout.",
+    "screenshots": "1 (A01). A second at scroll 500 was skipped because the page is short.",
+    "regions_covered": ["R01 page header", "R02 introduction", "R03 dataset listing", "R04 page footer"],
+    "not_observable": [
+      "hover, focus, and click states (interaction not captured)",
+      "animation or transition playback (not recorded)",
+      "HTML comments, alt text, and hidden elements (not captured as text spans)",
+      "source code and markup comments (source not captured)",
+      "computed styles of the card containers (article elements not in dom_elements)",
+      "page background color (body not in dom_elements; read from the screenshot as off-white)"
+    ],
+    "effect_on_conclusion": "A finding could exist in states or routes that were not captured. Within the captured state, the no-finding result is well supported."
+  },
+  "decisions_and_assumptions": [
+    "The 'multimodal-core' profile was interpreted as described in profile.interpretation, because no definition was available inside the bundle.",
+    "The audit judges perceived AI-slop features only, not whether AI was actually used. Withheld blinding fields were not consulted or inferred.",
+    "Context fields marked 'provided' were taken as true for the page's intended use, including the style-guide constraint. The visible footer independently repeats that constraint.",
+    "A pattern explained by content needs or an explicit constraint was discounted, not reported.",
+    "The card corner radius and border were estimated from an enlarged crop of A01, because no computed styles exist for those containers.",
+    "The audit schema was defined for this audit, because none was supplied."
+  ]
+}

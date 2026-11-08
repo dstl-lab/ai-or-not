@@ -1,0 +1,997 @@
+{
+  "codebook_id": "website-slop-audit-codebook",
+  "rubric_version": "0.1.1",
+  "status": "provisional; development version, not validated against human annotations",
+  "definition": {
+    "term": "perceived AI-slop feature",
+    "text": "A perceived AI-slop feature is a localized or cross-region pattern that can contribute to an impression of default-driven, interchangeable, superficial, or insufficiently integrated production. The impression may arise from style conventions, content–design mismatch, incomplete behavior, or surface polish unsupported by coherent substance. Neither the pattern nor the impression establishes who or what produced the website.",
+    "attribution": "Operational research definition chosen by the project team (UC San Diego data science lab, 2026). It is a working construct to pilot with human raters, not an established or externally validated definition.",
+    "sources": [
+      "SRC-PROJECT-DEF",
+      "SRC-LIBANKS2026",
+      "SRC-SHIN2026"
+    ]
+  },
+  "dimensions": [
+    {
+      "id": "observable_feature",
+      "text": "What is actually present in the supplied evidence. Recorded as the observation, its locations, and evidence references."
+    },
+    {
+      "id": "slop_association",
+      "text": "How strongly the observed feature, in this context, fits a candidate AI-slop pattern. An ordinal interpretation, not a probability of production history."
+    },
+    {
+      "id": "contextual_fit_and_consequence",
+      "text": "Whether the feature serves the website's purpose, and whether there is an observable communication or interaction problem. Recorded separately from slop association."
+    },
+    {
+      "id": "production_provenance",
+      "text": "Independently documented creation history. Withheld from the auditor; stored outside capture bundles for optional secondary research. The auditor never outputs a provenance judgment."
+    }
+  ],
+  "prohibited_inferences": [
+    "No global probability that a site is AI-generated, and no percentage-AI score.",
+    "No authorship inference from fluency, grammatical correctness, language proficiency, or punctuation (including em dashes).",
+    "No authorship inference from Inter or any other font, gradients, rounded corners, Tailwind, React, D3, shadcn, or any component library alone.",
+    "No inference of a specific generator's identity from a palette, font, or style.",
+    "No requirement to report a minimum number of findings; an empty findings list with stated coverage is a valid result.",
+    "Not every design defect is a slop finding; usability and accessibility defects are quality observations unless an explicit additional rationale is recorded."
+  ],
+  "anchors": {
+    "note": "Provisional research operationalizations to pilot with human raters. They are not an externally validated scale.",
+    "slop_association": {
+      "none": "No supported association in this context.",
+      "weak": "An isolated or conventional cue with substantial benign explanations.",
+      "moderate": "A contextually questionable recurring pattern or integration problem, with concrete evidence.",
+      "strong": "Several mutually supporting observations make the superficial or default-driven interpretation especially compelling to the evaluator. Strong does not mean AI authorship is likely. Do not promote a rating merely because several correlated style checks fired.",
+      "unassessed": "The evidence or contextual basis is insufficient to rate the association."
+    },
+    "observation_confidence": {
+      "high": "The feature is clearly present in the cited evidence (readable text span, legible screenshot region, completed recorded event).",
+      "medium": "The feature appears present but is partly visible, depends on reading small or stylized text, or rests on a single state.",
+      "low": "Presence is uncertain; the evidence is ambiguous, low resolution, or possibly a transient capture artifact."
+    },
+    "contextual_fit": {
+      "appropriate": "The feature serves the site's stated or inferable purpose, genre, or constraints.",
+      "questionable": "The feature's role is unclear or only weakly connected to the purpose.",
+      "inappropriate": "The feature works against the stated purpose or conflicts with the site's own content.",
+      "unknown": "Purpose or constraints are not available, so fit cannot be judged."
+    },
+    "consequence": {
+      "none_identified": "No communication or interaction problem identified in the evidence.",
+      "minor": "A cosmetic concern that does not impede understanding or use.",
+      "moderate": "Makes a claim harder to interpret, or makes a feature harder to use, as shown by cited evidence.",
+      "major": "A tested failure that blocks the main task, as shown by a recorded interaction.",
+      "unknown": "The evidence does not show whether there is a consequence."
+    }
+  },
+  "evidence_status_levels": {
+    "corpus_specific_empirical": "Supported by empirical analysis of the target corpus. No v0.1 entry has this status; it can only be assigned after corpus studies exist.",
+    "practitioner_heuristic": "Proposed by practitioner design guidance or rule-based tools. Not validated as a detection signal or as a predictor of perception.",
+    "research_hypothesis": "An operational hypothesis of this project, motivated by sources or conceptual reasoning, to be tested with human raters.",
+    "quality_only": "Tracks a usability, accessibility, or implementation problem. Not a slop-association claim by default."
+  },
+  "modalities": {
+    "screenshot": "Rendered images of the page (requires a multimodal profile).",
+    "text": "Visible text captured as stable text spans.",
+    "dom": "Captured DOM element records with verifiable selectors.",
+    "computed_style": "Captured computed CSS values for recorded DOM elements.",
+    "interaction": "Recorded actions with before and after states.",
+    "source": "Supplied source-code or data-file excerpts with exact paths and line ranges."
+  },
+  "modules": {
+    "core": "Families A (surface), B (substance), and C (interaction and implementation). Applies to any website genre.",
+    "data-story": "Family D. Applies to interactive data stories, explorable explanations, and visualization-heavy pages.",
+    "media": "MED-01. Optional inspection of images and other media inside the page."
+  },
+  "features": [
+    {
+      "id": "VIS-01",
+      "family": "A",
+      "family_title": "Surface and template-associated candidates",
+      "module": "core",
+      "title": "Default aesthetic package",
+      "definition": "A recurring bundle of palette, type, and layout choices that matches a commonly reproduced aesthetic package (for example purple or blue gradients over glowing dark backgrounds; cream with terracotta and high-contrast serif headlines; a generic dark dashboard with one bright accent; a broadsheet treatment) applied without visible subject-specific decisions.",
+      "unit_of_observation": "page-pattern",
+      "inclusion": "Several co-occurring choices form a recognizable package AND the evidence shows little relationship between those choices and the subject, audience, or brand context.",
+      "exclusion": "A single color, gradient, font, or theme. A package that the supplied context documents as brand, client, or course requirement. Exact color values unless they were measured (computed_style); otherwise describe colors qualitatively.",
+      "minimum_evidence": "Two or more regions showing the same bundle of choices, plus a stated reason the bundle is not tied to the subject.",
+      "min_regions": 2,
+      "modality_sets": [
+        [
+          "screenshot"
+        ]
+      ],
+      "positive_example": "A municipal water-quality data story uses a glowing purple-to-blue gradient hero, dark glassy panels, and neon accents in every section, with nothing in the palette relating to water, the city, or the data.",
+      "counterexample": "A music festival site whose supplied brand guide specifies a neon-on-dark palette; the package is a brand decision.",
+      "alternative_explanations": [
+        "Brand or client requirement",
+        "Course or organization template",
+        "Deliberate genre convention (e.g., developer tools, nightlife)",
+        "Designer preference"
+      ],
+      "evidence_status": "practitioner_heuristic",
+      "sources": [
+        "SRC-FRONTEND-DESIGN",
+        "SRC-IMPECCABLE",
+        "SRC-BOUSSIOUX2026"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Palette and background packages are VIS-01. Typographic treatment of specific text (gradient or highlighted headline words, eyebrows) is VIS-02. Non-text decorative objects are VIS-03."
+    },
+    {
+      "id": "VIS-02",
+      "family": "A",
+      "family_title": "Surface and template-associated candidates",
+      "module": "core",
+      "title": "Mechanical typographic and section chrome",
+      "definition": "Repeated typographic devices that do not clarify structure: eyebrow labels above every heading, a single highlighted or gradient headline word, gratuitous section numbering, label strings, or monospaced metadata used as decoration.",
+      "unit_of_observation": "repeated-group",
+      "inclusion": "The device repeats across sections AND carries no structural information (the numbering is not a sequence, the label repeats the heading, the metadata is not data).",
+      "exclusion": "Real sequences (steps, chapters a reader follows in order), editorial hierarchy, useful scientific or data metadata. A font family or a punctuation mark (including an em dash or middle dot) as a stand-alone cue.",
+      "minimum_evidence": "At least two occurrences of the device, with text spans or legible screenshot regions, and a statement of why it does not encode structure.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "screenshot",
+          "text"
+        ],
+        [
+          "text",
+          "computed_style"
+        ]
+      ],
+      "positive_example": "Every section heading has a tracked uppercase eyebrow ('INSIGHT', 'OVERVIEW', 'DEEP DIVE') whose words repeat the heading, plus '01 / 02 / 03' numbers on sections a reader can visit in any order.",
+      "counterexample": "A tutorial numbers its steps 1 to 5 because each step depends on the previous one.",
+      "alternative_explanations": [
+        "Editorial style guide",
+        "Course template",
+        "Screen-reader or skimming support",
+        "Designer preference"
+      ],
+      "evidence_status": "practitioner_heuristic",
+      "sources": [
+        "SRC-FRONTEND-DESIGN",
+        "SRC-IMPECCABLE"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Typographic devices on text are VIS-02; overall palette packages are VIS-01; decorative non-text objects are VIS-03."
+    },
+    {
+      "id": "LAY-01",
+      "family": "A",
+      "family_title": "Surface and template-associated candidates",
+      "module": "core",
+      "title": "Indiscriminate cardization",
+      "definition": "Conceptually different material forced into identical rounded tiles or repeated card grids, flattening meaningful hierarchy.",
+      "unit_of_observation": "repeated-group",
+      "inclusion": "Content with different roles or importance (a key claim, a caveat, a method note, a data source) receives the same card treatment, AND that sameness hides a hierarchy the content needs.",
+      "exclusion": "Uniform cards for items that are genuinely parallel: a catalog, product or dataset listings, comparable options, dashboard tiles. Repeated component presence alone is not a supported claim of poor fit.",
+      "minimum_evidence": "The repeated group, plus evidence that its items differ in role or importance.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "screenshot"
+        ],
+        [
+          "dom",
+          "computed_style"
+        ]
+      ],
+      "positive_example": "A data story puts its central finding, a methodology caveat, and a team credit into three identical cards with the same icon, size, and weight.",
+      "counterexample": "An open-data portal lists 24 datasets as equal cards with title, size, and update date.",
+      "alternative_explanations": [
+        "Component library default",
+        "Genuinely parallel content",
+        "Responsive-layout convenience",
+        "Course template"
+      ],
+      "evidence_status": "practitioner_heuristic",
+      "sources": [
+        "SRC-FRONTEND-DESIGN",
+        "SRC-IMPECCABLE"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Component-level uniformity inside a region or group is LAY-01; the page-level sequence of sections is LAY-02."
+    },
+    {
+      "id": "LAY-02",
+      "family": "A",
+      "family_title": "Surface and template-associated candidates",
+      "module": "core",
+      "title": "Interchangeable page skeleton",
+      "definition": "A stock succession of sections (hero, statistic strip, feature cards, testimonials, FAQ, final call to action) appearing without a clear relationship to the actual purpose.",
+      "unit_of_observation": "page-pattern",
+      "inclusion": "Multiple recorded regions follow the stock sequence AND the sequence does not fit what the page is for (for example a data story structured like a product landing page).",
+      "exclusion": "A marketing or product page that needs exactly this sequence. A single hero section. A sequence required by a course rubric or organization template documented in context.",
+      "minimum_evidence": "At least three recorded regions in sequence, and a statement of the purpose mismatch.",
+      "min_regions": 3,
+      "modality_sets": [
+        [
+          "screenshot"
+        ],
+        [
+          "text",
+          "dom"
+        ]
+      ],
+      "positive_example": "An explorable explanation of drought data opens with a hero and call-to-action button, then a three-statistic strip, three feature cards, and an FAQ, with the actual chart placed last.",
+      "counterexample": "A startup landing page with hero, features, testimonials, and pricing; the skeleton matches the job.",
+      "alternative_explanations": [
+        "Genre convention for marketing pages",
+        "Site builder or theme default",
+        "Course rubric (hook, body, takeaway)",
+        "Organization template"
+      ],
+      "evidence_status": "practitioner_heuristic",
+      "sources": [
+        "SRC-FRONTEND-DESIGN",
+        "SRC-BOUSSIOUX2026",
+        "SRC-DSC106-SPEC"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Page-level section order is LAY-02. Card treatment inside a section is LAY-01. Excess decorative summaries are SUB-03. Primary-code rule: when the data-story module applies and the stock sequence's problem is that generic sections displace the data explanation, DAT-04 is the primary code and LAY-02 a secondary tag. LAY-02 is primary when the data-story module is not in the profile, or the page is not a data story."
+    },
+    {
+      "id": "VIS-03",
+      "family": "A",
+      "family_title": "Surface and template-associated candidates",
+      "module": "core",
+      "title": "Decoration without semantic differentiation",
+      "definition": "Repeated icon badges, decorative blobs, glass panels, glows, gradients, emoji, or visual effects that appear to substitute for content-specific structure.",
+      "unit_of_observation": "repeated-group",
+      "inclusion": "The decorative element repeats AND does not differentiate content (the same badge or emoji on unrelated items, effects that carry no meaning).",
+      "exclusion": "Decoration that encodes meaning (status icons, category colors with a legend), brand illustration, or a single decorative moment. Effect presence alone is not an interpretation of its role.",
+      "minimum_evidence": "At least two occurrences, plus a statement of why the decoration does not differentiate the content it is attached to.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "screenshot"
+        ]
+      ],
+      "positive_example": "Every paragraph block in a climate story starts with a glowing sparkle icon in a gradient circle, regardless of topic.",
+      "counterexample": "Map layers use distinct icons that are explained in a legend.",
+      "alternative_explanations": [
+        "Brand illustration system",
+        "Accessibility support (icons aiding scanning)",
+        "Template or icon-pack default",
+        "Playful tone chosen for the audience"
+      ],
+      "evidence_status": "practitioner_heuristic",
+      "sources": [
+        "SRC-FRONTEND-DESIGN",
+        "SRC-IMPECCABLE"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Non-text decorative objects are VIS-03. Palette packages are VIS-01. Typographic devices are VIS-02."
+    },
+    {
+      "id": "MOT-01",
+      "family": "A",
+      "family_title": "Surface and template-associated candidates",
+      "module": "core",
+      "title": "Templated motion",
+      "definition": "Repeated fade-and-slide entrances, floating effects, or animated counters that are independent of meaningful change.",
+      "unit_of_observation": "repeated-group",
+      "inclusion": "Recorded states or captured animation styles show the same entrance or ambient motion applied across unrelated sections, with no explanatory role.",
+      "exclusion": "Animation that explains a transition, communicates state, responds to a user action, or serves the genre (for example scroll-driven chart updates in a data story). Anything inferred from a single static screenshot.",
+      "minimum_evidence": "Recorded before and after states (for example scroll states) or captured animation or transition properties on two or more elements. Screenshots alone cannot establish motion; qualify any statement based on style properties as 'configured', not 'observed playing'.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "interaction"
+        ],
+        [
+          "computed_style"
+        ],
+        [
+          "source"
+        ]
+      ],
+      "positive_example": "Captured styles show every section, footer, and caption with the same 'fade-up' animation and 0.6s duration, including static legal text.",
+      "counterexample": "A chart animates between two years when the reader moves a slider, showing what changed.",
+      "alternative_explanations": [
+        "Animation library or template default",
+        "Deliberate brand motion system",
+        "Scrollytelling convention"
+      ],
+      "evidence_status": "practitioner_heuristic",
+      "sources": [
+        "SRC-FRONTEND-DESIGN",
+        "SRC-IMPECCABLE"
+      ],
+      "consequence_required": false,
+      "judgment": "mixed",
+      "boundaries": "Motion is MOT-01. Interaction controls with no explanatory role are DAT-02."
+    },
+    {
+      "id": "TXT-01",
+      "family": "B",
+      "family_title": "Substance, specificity, and integration candidates",
+      "module": "core",
+      "title": "Interchangeable copy",
+      "definition": "Broad claims that give little subject-specific information, generic 'unlock / elevate / reimagine' language, or an introduction that could fit unrelated topics with noun substitutions.",
+      "unit_of_observation": "region",
+      "inclusion": "A quoted excerpt makes claims that would fit unrelated subjects AND the excerpt omits the specifics its role requires (what the data is, what was found, for whom).",
+      "exclusion": "A single suspect word. Plain or accessible language chosen for the audience. Short copy in a deliberately minimal interface.",
+      "minimum_evidence": "A short exact quotation from a text span, plus an explanation of what specific information is missing.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "text"
+        ]
+      ],
+      "positive_example": "'Our platform empowers you to unlock powerful insights and transform the way you see data' opens a story about one county's eviction filings, naming neither the county nor the data.",
+      "counterexample": "'This page shows how many people lived in each neighborhood in 2020' is plain but specific.",
+      "alternative_explanations": [
+        "Marketing-copy convention",
+        "Placeholder copy awaiting revision",
+        "Writing for a general audience",
+        "Non-native writing conventions"
+      ],
+      "evidence_status": "practitioner_heuristic",
+      "sources": [
+        "SRC-IMPECCABLE",
+        "SRC-FRONTEND-DESIGN",
+        "SRC-JAKESCH2023"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Lack of specificity is TXT-01. Structural repetition and mechanical balance are TXT-02. Literal placeholders are SUB-01."
+    },
+    {
+      "id": "TXT-02",
+      "family": "B",
+      "family_title": "Substance, specificity, and integration candidates",
+      "module": "core",
+      "title": "Repetitive or mechanically balanced prose",
+      "definition": "Multiple sections repeating the same claim, rigid parallel headings, rhetorical questions without explanatory payoff, or empty concluding summaries.",
+      "unit_of_observation": "repeated-group",
+      "inclusion": "Two or more text spans repeat a claim or a rigid template without adding information.",
+      "exclusion": "Fluent or grammatical writing as such. A single em dash or any punctuation. Intentional repetition for summary, accessibility, or emphasis that the page's purpose supports.",
+      "minimum_evidence": "At least two text spans showing the repetition or template, with short exact quotations.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "text"
+        ]
+      ],
+      "positive_example": "Three sections end with near-identical sentences: 'The data tells a powerful story.' / 'The numbers tell a powerful story.' / 'The trends tell a powerful story.'",
+      "counterexample": "A long explainer ends with a three-point recap of its own specific findings.",
+      "alternative_explanations": [
+        "Template copy",
+        "Editing by multiple people",
+        "Course rubric phrasing",
+        "Second-language writing conventions"
+      ],
+      "evidence_status": "practitioner_heuristic",
+      "sources": [
+        "SRC-IMPECCABLE",
+        "SRC-JAKESCH2023"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Classify the repetition, not a presumed origin. Specificity problems are TXT-01."
+    },
+    {
+      "id": "SUB-01",
+      "family": "B",
+      "family_title": "Substance, specificity, and integration candidates",
+      "module": "core",
+      "title": "Placeholder or unverifiable substance",
+      "definition": "Literal placeholders, template testimonials, unconnected statistic tiles, unfinished labels, or claims presented without a locatable basis in the inspected material.",
+      "unit_of_observation": "region",
+      "inclusion": "One of three distinct sub-types, which must be named in the observation: (a) literal_placeholder: template text such as lorem ipsum or '[insert caption]'; (b) basis_not_located: a claim or statistic whose basis cannot be located in the inspected scope; (c) contradicted: the supplied evidence contradicts it.",
+      "exclusion": "Calling a testimonial, statistic, person, or citation fabricated because it seems generic or was not externally verified. 'Not located in inspected scope' is not 'absent everywhere'.",
+      "minimum_evidence": "A text span or legible screenshot region with the placeholder or claim; for basis_not_located, a statement of which scope was inspected.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "text"
+        ],
+        [
+          "screenshot"
+        ]
+      ],
+      "positive_example": "A chart caption reads 'Lorem ipsum dolor sit amet — replace with insight.'",
+      "counterexample": "A statistic tile cites 'U.S. Census ACS 2022, table B01003' in a footnote within the inspected scope.",
+      "alternative_explanations": [
+        "Unfinished human draft",
+        "Template not cleaned up",
+        "Source shown outside the captured scope"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-PROJECT-DEF"
+      ],
+      "consequence_required": false,
+      "judgment": "mixed",
+      "boundaries": "Literal placeholders and unlocatable claims are SUB-01. Redundant quantitative displays are SUB-03. Missing data framing on charts is DAT-03."
+    },
+    {
+      "id": "SUB-02",
+      "family": "B",
+      "family_title": "Substance, specificity, and integration candidates",
+      "module": "core",
+      "title": "Local polish with global incoherence",
+      "definition": "Individually polished sections whose labels, entities, terminology, color meanings, implied audience, or explanatory claims conflict with each other.",
+      "unit_of_observation": "cross-region",
+      "inclusion": "At least two linked evidence items from different regions conflict (a year, a unit, an entity name, a color meaning, a claim).",
+      "exclusion": "A conflict seen only within an interaction (use INT-02). Deliberate contrast the page explains. A single region.",
+      "minimum_evidence": "At least two evidence items from at least two regions, each with a short exact quotation or legible screenshot region.",
+      "min_regions": 2,
+      "modality_sets": [
+        [
+          "text"
+        ],
+        [
+          "screenshot"
+        ]
+      ],
+      "positive_example": "The header says the story covers 2010–2020 while a summary panel says 'since 1990', and the legend colors 'high risk' red in one chart and blue in the next.",
+      "counterexample": "A page explicitly contrasts two definitions of 'drought' and labels each.",
+      "alternative_explanations": [
+        "Ordinary editing error",
+        "Sections written by different team members",
+        "Data updated in one place only"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-PROJECT-DEF",
+        "SRC-SHIN2026"
+      ],
+      "consequence_required": false,
+      "judgment": "mixed",
+      "boundaries": "Static cross-region conflicts are SUB-02. Conflicts produced by a recorded interaction are INT-02 (SUB-02 may be a secondary tag). Chart–claim conflicts in a data story are DAT-01."
+    },
+    {
+      "id": "SUB-03",
+      "family": "B",
+      "family_title": "Substance, specificity, and integration candidates",
+      "module": "core",
+      "title": "Redundancy and metric theater",
+      "definition": "Multiple decorative summaries or quantitative-looking displays that add no distinct explanatory role, or numbers presented without units or a meaningful comparison.",
+      "unit_of_observation": "repeated-group",
+      "inclusion": "Quantitative displays repeat or lack units or comparison, AND the site's purpose does not explain the redundancy.",
+      "exclusion": "Useful repetition for accessibility, summary, or navigation. A dashboard whose job is to show tiles.",
+      "minimum_evidence": "The displays with their text spans or legible screenshot regions, plus the purpose-based justification.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "text"
+        ],
+        [
+          "screenshot"
+        ]
+      ],
+      "positive_example": "A story shows '98% Accuracy', '10x Faster', and '24/7 Insights' tiles with no units, source, or connection to its dataset.",
+      "counterexample": "A data story's key-number summary repeats three figures from its charts, each with units and a link to the chart.",
+      "alternative_explanations": [
+        "Landing-page template",
+        "Course hook requirement",
+        "Summary for skimming readers"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-FRONTEND-DESIGN",
+        "SRC-PROJECT-DEF"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Quantitative-looking redundancy is SUB-03. Literal placeholders are SUB-01. Generic structure overwhelming data explanation is DAT-04."
+    },
+    {
+      "id": "INT-01",
+      "family": "C",
+      "family_title": "Interaction and implementation observations",
+      "module": "core",
+      "title": "Decorative or nonfunctional affordance",
+      "definition": "A control advertises a meaningful action, but a recorded test fails to produce the advertised change.",
+      "unit_of_observation": "region",
+      "inclusion": "A recorded interaction with execution_status 'completed' shows no advertised change between its before and after states.",
+      "exclusion": "A control with no recorded test (that is 'unassessed', never 'broken'). Loading delays, disabled prerequisites, navigation outside the captured scope, or an element that is intentionally informational.",
+      "minimum_evidence": "The interaction record (action, target, before and after states) and evidence of what was advertised and what did not change.",
+      "min_regions": 1,
+      "requires_completed_interaction": true,
+      "modality_sets": [
+        [
+          "interaction"
+        ]
+      ],
+      "positive_example": "A 'Compare scenarios' button was clicked (event completed); the before and after states are identical and no comparison appears.",
+      "counterexample": "A 'Download data' link that leaves the captured scope was not followed; it is unassessed.",
+      "alternative_explanations": [
+        "Ordinary bug",
+        "Unfinished prototype",
+        "Feature disabled intentionally",
+        "Timing too short for slow loading"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-PROJECT-DEF"
+      ],
+      "consequence_required": true,
+      "judgment": "observational",
+      "boundaries": "A failing control is INT-01. A working control with no explanatory role is DAT-02. A control whose working result conflicts with other content is INT-02."
+    },
+    {
+      "id": "INT-02",
+      "family": "C",
+      "family_title": "Interaction and implementation observations",
+      "module": "core",
+      "title": "Incomplete state integration",
+      "definition": "An interaction updates part of the page but leaves linked content inconsistent: a filter updates one view but not its linked summary, a reset fails to restore the recorded initial state, or a result conflicts with its own labels.",
+      "unit_of_observation": "cross-region",
+      "inclusion": "A completed recorded interaction produces an after state in which two linked elements conflict.",
+      "exclusion": "Untested states (do not generalize from one tested state). Conflicts present before any interaction (use SUB-02).",
+      "minimum_evidence": "The interaction record plus at least two evidence items in the after state showing the conflict.",
+      "min_regions": 2,
+      "requires_completed_interaction": true,
+      "modality_sets": [
+        [
+          "interaction"
+        ]
+      ],
+      "positive_example": "After the recorded change to the 2050 scenario, the chart title says 2050 but the linked summary still describes 2020.",
+      "counterexample": "A summary deliberately keeps a baseline year and labels it 'baseline'.",
+      "alternative_explanations": [
+        "Conventional state-management bug",
+        "Unfinished human prototype",
+        "Summary intentionally fixed to a baseline"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-PROJECT-DEF"
+      ],
+      "consequence_required": true,
+      "judgment": "observational",
+      "boundaries": "Interaction-produced conflicts are INT-02 (SUB-02 or DAT-01 may be secondary tags). State precisely what was tested."
+    },
+    {
+      "id": "QLT-01",
+      "family": "C",
+      "family_title": "Interaction and implementation observations",
+      "module": "core",
+      "title": "General usability or accessibility defect",
+      "definition": "Overflow, low contrast, focus failures, unreadable labels, reduced-motion problems, and similar defects, tracked as quality observations.",
+      "unit_of_observation": "region",
+      "inclusion": "The defect is visible in the evidence. Record it in quality_observations. It enters findings only with an explicit additional rationale connecting it to the slop construct (quality_to_slop_rationale).",
+      "exclusion": "Presenting a defect as distinctive evidence of AI production. Transient loading artifacts.",
+      "minimum_evidence": "The defect in a screenshot region, computed style, or DOM record.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "screenshot"
+        ],
+        [
+          "computed_style"
+        ],
+        [
+          "dom"
+        ]
+      ],
+      "positive_example": "Axis labels overflow their container at the mobile viewport.",
+      "counterexample": "A loading skeleton captured before fonts loaded.",
+      "alternative_explanations": [
+        "Ordinary implementation defect",
+        "Untested viewport"
+      ],
+      "evidence_status": "quality_only",
+      "sources": [
+        "SRC-IMPECCABLE"
+      ],
+      "consequence_required": false,
+      "judgment": "observational",
+      "boundaries": "Defects are quality observations by default; never the sole basis for a slop finding."
+    },
+    {
+      "id": "SRC-01",
+      "family": "C",
+      "family_title": "Interaction and implementation observations",
+      "module": "core",
+      "title": "Source/render mismatch",
+      "definition": "Supplied source contains unused scaffolding, disconnected handlers, or contradictory implementation details that explain a visible or tested phenomenon.",
+      "unit_of_observation": "region",
+      "inclusion": "An inspected source excerpt (exact path and lines) explains an observed or tested phenomenon, such as a handler attached to the wrong element explaining a dead button.",
+      "exclusion": "Generic naming, verbose comments, component reuse, or framework choice. Any source that was not supplied. Source-only observations must stay source-only and must not raise a visual finding's confidence.",
+      "minimum_evidence": "A source excerpt reference with path and line range, and the phenomenon it explains.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "source"
+        ]
+      ],
+      "positive_example": "Lines 40–52 of app.js attach the 'Compare' handler to an element id that does not exist in the captured DOM, explaining the dead button in E02.",
+      "counterexample": "A file has long explanatory comments; that is not a mismatch.",
+      "alternative_explanations": [
+        "Refactoring leftover",
+        "Merge error",
+        "Unfinished feature"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-OREL2026",
+        "SRC-PROJECT-DEF"
+      ],
+      "consequence_required": false,
+      "judgment": "observational",
+      "boundaries": "Source evidence explains other observations; it is not authorship evidence."
+    },
+    {
+      "id": "MED-01",
+      "family": "C",
+      "family_title": "Interaction and implementation observations",
+      "module": "media",
+      "title": "Media inconsistency or synthetic-looking artifact",
+      "definition": "A local image shows observable distortions, nonsensical rendered text, or visual inconsistency relevant to the site's presentation.",
+      "unit_of_observation": "region",
+      "inclusion": "The distortion or nonsensical text is visible in a legible screenshot region or crop.",
+      "exclusion": "Declaring the image synthetic or the site AI-produced. Compression or scaling artifacts of the capture itself.",
+      "minimum_evidence": "A legible screenshot region of the image, with a box when it can be localized.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "screenshot"
+        ]
+      ],
+      "positive_example": "A hero photo shows a street sign with unreadable, letter-like glyphs and a hand with six fingers.",
+      "counterexample": "A stylized illustration with intentionally simplified hands.",
+      "alternative_explanations": [
+        "Stock-image editing",
+        "Intentional illustration style",
+        "Capture compression"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-YEUNG2026"
+      ],
+      "consequence_required": false,
+      "judgment": "observational",
+      "boundaries": "Report the local observation only."
+    },
+    {
+      "id": "DAT-01",
+      "family": "D",
+      "family_title": "Interactive data-story module",
+      "module": "data-story",
+      "title": "Narrative–chart disconnect",
+      "definition": "A headline or explanation is not supported by the chart's shown state, confuses a projection with an observation, or uses an inconsistent comparison.",
+      "unit_of_observation": "cross-region",
+      "inclusion": "Readable chart evidence (legible values, labels, or supplied data) contradicts or fails to support the adjacent claim.",
+      "exclusion": "Charts too small or illegible to read; abstain instead. Claims about data outside the shown state.",
+      "minimum_evidence": "The claim's text span plus legible chart evidence or a supplied data excerpt.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "screenshot"
+        ],
+        [
+          "source"
+        ]
+      ],
+      "positive_example": "A caption says rainfall 'doubled since 2000' while the chart's own labeled values rise from 410 mm to 455 mm.",
+      "counterexample": "A caption says 'projected' and the chart marks the projected range with a dashed line.",
+      "alternative_explanations": [
+        "Caption written before final data",
+        "Misreading by the author",
+        "Different data version"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-SEGEL-HEER2010",
+        "SRC-PROJECT-DEF"
+      ],
+      "consequence_required": false,
+      "judgment": "mixed",
+      "boundaries": "Chart–claim conflicts are DAT-01; general cross-region conflicts are SUB-02."
+    },
+    {
+      "id": "DAT-02",
+      "family": "D",
+      "family_title": "Interactive data-story module",
+      "module": "data-story",
+      "title": "Interaction without explanatory role",
+      "definition": "Controls or animations offer surface activity but do not demonstrably support exploration or explanation for the stated purpose.",
+      "unit_of_observation": "region",
+      "inclusion": "A recorded working interaction changes something that does not help the reader explore or understand the stated question. State the task and the observed behavior.",
+      "exclusion": "Exploratory, playful, or engagement uses the context supports. Untested controls.",
+      "minimum_evidence": "The interaction record and the stated purpose it fails to serve.",
+      "min_regions": 1,
+      "requires_completed_interaction": true,
+      "modality_sets": [
+        [
+          "interaction"
+        ]
+      ],
+      "positive_example": "A 'shuffle colors' button recolors the chart randomly in a story about income inequality.",
+      "counterexample": "A playful 'guess the trend' interaction before the reveal, which the narrative uses.",
+      "alternative_explanations": [
+        "Course requirement to include interaction",
+        "Experimentation",
+        "Engagement goal"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-SEGEL-HEER2010",
+        "SRC-DSC106-SPEC"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Working controls without explanatory role are DAT-02; failing controls are INT-01."
+    },
+    {
+      "id": "DAT-03",
+      "family": "D",
+      "family_title": "Interactive data-story module",
+      "module": "data-story",
+      "title": "Missing or unclear data framing",
+      "definition": "In the inspected scope, units, population, time range, source, uncertainty, or assumptions needed for the claim cannot be located.",
+      "unit_of_observation": "region",
+      "inclusion": "A specific chart or claim needs a framing element that cannot be located in the inspected scope. Name which element is missing.",
+      "exclusion": "Framing that is irrelevant to the actual chart and claim. Framing shown outside the captured scope (say the scope). 'Missing in the inspected view' is not 'absent everywhere'.",
+      "minimum_evidence": "The chart or claim region, the missing framing element, and the inspected scope.",
+      "min_regions": 1,
+      "modality_sets": [
+        [
+          "text"
+        ],
+        [
+          "screenshot"
+        ]
+      ],
+      "positive_example": "A line chart of 'risk' has no unit, no source, and no time-axis label in any captured state.",
+      "counterexample": "A small sparkline in a table whose column header gives the unit and years.",
+      "alternative_explanations": [
+        "Framing provided on another page",
+        "Space constraints",
+        "Course template omitting sources"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-SEGEL-HEER2010",
+        "SRC-PROJECT-DEF"
+      ],
+      "consequence_required": false,
+      "judgment": "mixed",
+      "boundaries": "Missing chart framing is DAT-03; unlocatable claims outside charts are SUB-01."
+    },
+    {
+      "id": "DAT-04",
+      "family": "D",
+      "family_title": "Interactive data-story module",
+      "module": "data-story",
+      "title": "Generic scaffolding overwhelms the data story",
+      "definition": "The page devotes substantial repeated structure to broad claims or decorative summaries while the actual evidence receives little explanation.",
+      "unit_of_observation": "page-pattern",
+      "inclusion": "Recorded regions show more space or structure for generic framing than for explaining the data, AND the data shown gets little explanation.",
+      "exclusion": "Short copy, a minimal interface, or a familiar story arc as such.",
+      "minimum_evidence": "At least two recorded regions of generic scaffolding and the data region(s) they surround.",
+      "min_regions": 2,
+      "modality_sets": [
+        [
+          "screenshot"
+        ],
+        [
+          "text",
+          "dom"
+        ]
+      ],
+      "positive_example": "Four sections of mission statements and feature cards precede one unlabeled chart with a one-line caption.",
+      "counterexample": "A short story with a hook, one well-annotated chart, and a takeaway.",
+      "alternative_explanations": [
+        "Course structure (hook, takeaway)",
+        "Time constraints",
+        "Data still being prepared"
+      ],
+      "evidence_status": "research_hypothesis",
+      "sources": [
+        "SRC-SEGEL-HEER2010",
+        "SRC-DSC106-SPEC"
+      ],
+      "consequence_required": false,
+      "judgment": "qualitative",
+      "boundaries": "Page-level scaffolding imbalance in data stories is DAT-04. It is the primary code over LAY-02 in data-story profiles; add LAY-02 as a secondary tag when the scaffolding follows the stock landing-page sequence."
+    }
+  ],
+  "other_candidate": {
+    "id": "OTHER-CANDIDATE",
+    "title": "Exploratory candidate outside the codebook",
+    "text": "A specific observable pattern outside the codebook that may contribute to a perceived-slop impression. Record it in exploratory_candidates with a free-text label, its observation, locations, and evidence. It is reported separately from closed-codebook results and is never silently added to the scored rubric; adding it requires a new rubric version."
+  },
+  "sources": [
+    {
+      "id": "SRC-PROJECT-DEF",
+      "kind": "operational_choice",
+      "citation": "Project team, UC San Diego data science lab. Provisional research definition and operational hypotheses for perceived AI-slop features (website-slop-audit rubric 0.1.0).",
+      "url": null,
+      "access_level": "internal",
+      "section": "definition; research_hypothesis entries",
+      "version_or_date": "2026-11",
+      "supported_proposition": "Defines the construct and the hypotheses (substance, integration, interaction, data-story families) this project will test.",
+      "limitation": "An operational choice, not an empirical finding. Must be piloted with human raters."
+    },
+    {
+      "id": "SRC-AGENTSKILLS",
+      "kind": "specification",
+      "citation": "Agent Skills specification.",
+      "url": "https://agentskills.io/specification",
+      "access_level": "full_text",
+      "section": "Directory structure; Frontmatter; Progressive disclosure; File references; Validation",
+      "version_or_date": "accessed 2026-11-07",
+      "supported_proposition": "A skill is a directory with SKILL.md; only name and description are required frontmatter; references use relative paths one level deep; SKILL.md should stay under 500 lines.",
+      "limitation": "Optional fields (for example allowed-tools, marked experimental) are not supported uniformly across hosts."
+    },
+    {
+      "id": "SRC-CLAUDE-SKILLS",
+      "kind": "specification",
+      "citation": "Anthropic. Agent Skills overview (Claude Platform documentation).",
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview",
+      "access_level": "full_text",
+      "section": "Where Skills work; Limitations and constraints",
+      "version_or_date": "accessed 2026-11-07",
+      "supported_proposition": "Host loading differs: API skills run in a sandboxed container without network access or runtime package installation; custom skills do not sync across surfaces.",
+      "limitation": "Vendor-specific; describes one host family only."
+    },
+    {
+      "id": "SRC-FRONTEND-DESIGN",
+      "kind": "practitioner",
+      "citation": "Anthropic. frontend-design skill (SKILL.md), anthropics/skills repository, commit 41bbe19d1a1a7eaab5e7bb9050a417e5c6cffc8f.",
+      "url": "https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md",
+      "access_level": "full_text",
+      "section": "Design principles; Process (calibration list of five clustered traits); More on writing in design",
+      "version_or_date": "commit dated 2026-09-03; accessed 2026-11-07",
+      "supported_proposition": "Practitioner list of recurring generated-design defaults: cream/terracotta with serif display; near-black with one acid accent; broadsheet layout; the identical-rounded-card kit with gradient washes; template chrome (tracked all-caps eyebrows, middle-dot meta strings, spaced em-dash labels, monospace data labels, appended arrows); single-word headline accents; numbering only for real sequences; fade-and-slide entrances on every section; the big-number-plus-stats hero.",
+      "limitation": "Generation guidance and design opinion, written by a model vendor about generated output. It states every trait is legitimate for some briefs. It provides no sensitivity, specificity, or perception data."
+    },
+    {
+      "id": "SRC-IMPECCABLE",
+      "kind": "practitioner",
+      "citation": "Bakaus, P. Impeccable (design skills and anti-pattern detector), pbakaus/impeccable, commit 687bc381bc9091bf252c0a05303640561014a425 (package 4.8.0, engine 0.1.18); detector documentation.",
+      "url": "https://github.com/pbakaus/impeccable",
+      "access_level": "full_text",
+      "section": "crates/foundation/src/registry.rs (rule registry); https://impeccable.style/docs/detector/",
+      "version_or_date": "commit dated 2026-11-06; accessed 2026-11-07",
+      "supported_proposition": "A deterministic rule baseline: 62 registry rules (31 category 'slop', 31 category 'quality'); source scans and rendered-URL scans are distinct; intentional choices can be recorded as narrow ignores.",
+      "limitation": "Rules are practitioner heuristics. Some rule ids name specific generators (gpt-thin-border-wide-shadow, codex-grid-background), which this rubric does not adopt as generator-identity cues. No validation of the rules as authorship or perception signals was found in the inspected scope."
+    },
+    {
+      "id": "SRC-BOUSSIOUX2026",
+      "kind": "empirical_preprint",
+      "citation": "Boussioux, L., Zhao, Z., & Cho, K. (2026). One Tool, One Taste? How Vibe Coding Trades Collective Diversity for Individual Creativity. arXiv:2609.38183 (v1).",
+      "url": "https://arxiv.org/abs/2609.38183",
+      "access_level": "abstract_only",
+      "section": "Abstract",
+      "version_or_date": "v1 submitted 2026-08-05",
+      "supported_proposition": "Among 73 Lovable-built promotional sites by graduate students, embedding analysis found within-cohort visual concentration (88% of sites in six clusters under one specification; 3 to 12 clusters across sensitivity analyses), and perceived quality was not associated with atypicality. Motivates examining repeated layouts and production defaults.",
+      "limitation": "Single platform and cohort; preprint; abstract only. Does not identify feature-level signatures and cannot separate model effects from platform scaffolding."
+    },
+    {
+      "id": "SRC-SHIN2026",
+      "kind": "conceptual_preprint",
+      "citation": "Shin, D., Gao, A., Pang, R. Y., Lee, J., Reinecke, K., & Tseng, E. (2026). Interrogating Design Homogenization in Web Vibe Coding. arXiv:2603.13036 (v1).",
+      "url": "https://arxiv.org/abs/2603.13036",
+      "access_level": "abstract_only",
+      "section": "Abstract",
+      "version_or_date": "v1 submitted 2026-03-13",
+      "supported_proposition": "Conceptual framing: frictionless generation may homogenize web design; proposes productive friction as mitigation.",
+      "limitation": "Conceptual risk analysis, not a feature classifier or ground truth; abstract only."
+    },
+    {
+      "id": "SRC-JAKESCH2023",
+      "kind": "empirical",
+      "citation": "Jakesch, M., Hancock, J. T., & Naaman, M. (2023). Human heuristics for AI-generated language are flawed. PNAS 120(11). doi:10.1073/pnas.2208839120; arXiv:2206.07271 (v4).",
+      "url": "https://doi.org/10.1073/pnas.2208839120",
+      "access_level": "abstract_only",
+      "section": "Abstract (arXiv record https://arxiv.org/abs/2206.07271)",
+      "version_or_date": "arXiv v4 2023-03-14",
+      "supported_proposition": "Across six experiments (N = 4,600), people could not detect AI-generated self-presentations; their judgments relied on intuitive but flawed heuristics (first-person pronouns, contractions, family topics) that make judgments predictable and manipulable.",
+      "limitation": "Language self-presentations, not websites; does not establish website-specific effects."
+    },
+    {
+      "id": "SRC-YEUNG2026",
+      "kind": "empirical_preprint",
+      "citation": "Yeung, C., Weld, G., Mink, J., & Roesner, F. (2026). Is This AI? Longitudinal Analysis of Strategies Used for AI Detection on Two Subreddits. arXiv:2606.22689 (v2).",
+      "url": "https://arxiv.org/abs/2606.22689",
+      "access_level": "abstract_only",
+      "section": "Abstract",
+      "version_or_date": "v2 2026-06-25",
+      "supported_proposition": "Catalogs 12 community AI-detection strategies over 2 years and 8 months (13,098 posts, 222,060 comments), including fine-grained physical details, and finds strategies shift with model capabilities and social trends.",
+      "limitation": "Documented strategies, not demonstrated detection accuracy; mostly media, not websites; abstract only."
+    },
+    {
+      "id": "SRC-LIBANKS2026",
+      "kind": "empirical_preprint",
+      "citation": "Li, Z., & Banks, J. (2026). Defective, Amplified, Contested: Folk Conceptualizations of AI Slop. arXiv:2610.14231 (v1).",
+      "url": "https://arxiv.org/abs/2610.14231",
+      "access_level": "abstract_only",
+      "section": "Abstract",
+      "version_or_date": "v1 2026-10-09",
+      "supported_proposition": "Users conceptualize slop as audience-contested content with constitutional defects enabled by platform logics; supports eliciting audience judgments rather than imposing one taste standard.",
+      "limitation": "Social-media content, descriptive thematic analysis; abstract only."
+    },
+    {
+      "id": "SRC-UICRIT2024",
+      "kind": "empirical",
+      "citation": "Duan, P., Chen, C., Li, G., Hartmann, B., & Li, Y. (2024). UICrit: Enhancing Automated Design Evaluation with a UICritique Dataset. arXiv:2407.08850 (v3).",
+      "url": "https://arxiv.org/abs/2407.08850",
+      "access_level": "abstract_only",
+      "section": "Abstract",
+      "version_or_date": "v3 2024-08-13",
+      "supported_proposition": "3,059 critiques and ratings of 983 mobile UIs from seven experienced designers; informs expert annotation design and critique specificity.",
+      "limitation": "Mobile UI quality critique, not an AI-slop dataset; abstract only."
+    },
+    {
+      "id": "SRC-DUAN-CRITIQUE2024",
+      "kind": "empirical",
+      "citation": "Duan, P., Cheng, C.-Y., Hartmann, B., & Li, Y. (2024). Visual Prompting with Iterative Refinement for Design Critique Generation. arXiv:2412.16829 (v2).",
+      "url": "https://arxiv.org/abs/2412.16829",
+      "access_level": "abstract_only",
+      "section": "Abstract",
+      "version_or_date": "v2 2025-05-22",
+      "supported_proposition": "Critique comments linked to bounding boxes are a precedent for spatial grounding; an iterative pipeline outperformed a baseline for expert raters.",
+      "limitation": "Model-generated boxes require validation; an iterative pipeline has a different budget from a one-call baseline; abstract only."
+    },
+    {
+      "id": "SRC-ZHENG2023",
+      "kind": "empirical",
+      "citation": "Zheng, L., et al. (2023). Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena. arXiv:2306.05685 (v4).",
+      "url": "https://arxiv.org/abs/2306.05685",
+      "access_level": "abstract_only",
+      "section": "Abstract",
+      "version_or_date": "v4 2023-12-24",
+      "supported_proposition": "Model judges show position, verbosity, and self-enhancement biases; motivates fixed protocols and non-LLM matching.",
+      "limitation": "Agreement on conversational preferences does not validate this task; abstract only."
+    },
+    {
+      "id": "SRC-OREL2026",
+      "kind": "empirical_preprint",
+      "citation": "Orel, D., Azizov, D., Paul, I., Wang, Y., Gurevych, I., & Nakov, P. (2026). AICD Bench: A Challenging Benchmark for AI-Generated Code Detection. arXiv:2602.02079 (v1).",
+      "url": "https://arxiv.org/abs/2602.02079",
+      "access_level": "abstract_only",
+      "section": "Abstract",
+      "version_or_date": "v1 2026-02-02",
+      "supported_proposition": "AI-generated code detection remains far below practical usability under distribution shift and for hybrid or adversarial code; supports keeping source observations separate from provenance claims.",
+      "limitation": "Code detection, not rendered websites; abstract only."
+    },
+    {
+      "id": "SRC-SEGEL-HEER2010",
+      "kind": "conceptual",
+      "citation": "Segel, E., & Heer, J. (2010). Narrative Visualization: Telling Stories with Data. IEEE TVCG (Proc. InfoVis). doi:10.1109/TVCG.2010.179.",
+      "url": "https://idl.uw.edu/papers/narrative",
+      "access_level": "abstract_only",
+      "section": "Abstract (author page)",
+      "version_or_date": "2010",
+      "supported_proposition": "Vocabulary for narrative visualization genres and the balance between author-driven narrative flow and reader-driven exploration; used for the data-story module.",
+      "limitation": "A 2010 design-space review; not about AI or slop; abstract only."
+    },
+    {
+      "id": "SRC-DSC106-SPEC",
+      "kind": "corpus_context",
+      "citation": "UC San Diego DSC 106 final-project specification (Winter 2025) and Spring 2026 final-project showcase.",
+      "url": "https://dsc-courses.github.io/dsc106-2026-sp/showcase/",
+      "access_level": "full_text",
+      "section": "Final project requirements (D3, hook, and-but-therefore storytelling, annotations, takeaway); showcase listing",
+      "version_or_date": "read 2026-10-20 and 2026-10-21",
+      "supported_proposition": "A shared course rubric can explain repeated chapter structures (hook, body, takeaway), required interaction, and similar chart styles across student projects; an alternative explanation for skeleton and scaffolding cues.",
+      "limitation": "Context for one corpus; does not describe any individual project's production."
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-07",
+      "change": "Initial codebook from the seed taxonomy (families A–D, OTHER-CANDIDATE). Boundary rules added: palette packages VIS-01, typographic devices VIS-02, decorative objects VIS-03; interaction-produced conflicts INT-02 with SUB-02 as secondary tag; chart–claim conflicts DAT-01; SUB-01 split into three named sub-types. No feature has corpus_specific_empirical status."
+    },
+    {
+      "version": "0.1.1",
+      "date": "2026-11-08",
+      "change": "Primary-code rule between LAY-02 and DAT-04 made explicit (DAT-04 primary in data-story profiles). Motivated by a development eval where a stock skeleton displacing a data story was coded LAY-02 by the auditor and DAT-04 by the developer reference; both were defensible under 0.1.0. No feature added or removed."
+    }
+  ]
+}

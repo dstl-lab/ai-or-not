@@ -1,0 +1,34 @@
+{
+  "expectations": [
+    {
+      "text": "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+      "passed": true,
+      "evidence": "valid"
+    },
+    {
+      "text": "The audit and report make no authorship verdict and no probability or percentage-AI score",
+      "passed": true,
+      "evidence": "verdict-like sentences: none"
+    },
+    {
+      "text": "An INT-01 finding cites the no-change interaction E02",
+      "passed": true,
+      "evidence": "INT-01 findings citing E02: ['F001']; codes: ['INT-01']"
+    },
+    {
+      "text": "No finding treats the working E01 click or the untested Download CSV link as a failure",
+      "passed": true,
+      "evidence": "findings treating E01 or the untested link as failed: none"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "executor_duration_seconds": 274.4,
+    "total_duration_seconds": 274.4
+  }
+}

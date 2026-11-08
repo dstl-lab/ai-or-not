@@ -1,0 +1,34 @@
+{
+  "expectations": [
+    {
+      "text": "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+      "passed": true,
+      "evidence": "valid"
+    },
+    {
+      "text": "The audit and report make no authorship verdict and no probability or percentage-AI score",
+      "passed": true,
+      "evidence": "verdict-like sentences: none"
+    },
+    {
+      "text": "A finding cites interaction E01 and locates both R02 and R03 in the after-interaction state S03",
+      "passed": true,
+      "evidence": "findings citing E01 at R02+R03 in S03: ['F001']; codes: ['INT-02']"
+    },
+    {
+      "text": "No finding claims the untested 2100 scenario button is broken",
+      "passed": true,
+      "evidence": "findings implying an untested control failed: none"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "executor_duration_seconds": 307.2,
+    "total_duration_seconds": 307.2
+  }
+}

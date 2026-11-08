@@ -1,0 +1,74 @@
+{
+  "bundle_id": "fx-09",
+  "site_id": "site-09",
+  "context": {
+    "purpose": {
+      "value": "Show community air-sensor readings for one neighborhood and compare them with the previous year.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "environmental data dashboard page",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "neighborhood residents",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": []
+  },
+  "blinding": {
+    "profile": "blinded",
+    "withheld_fields": [
+      "award",
+      "course_year"
+    ]
+  },
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "toolbar markup",
+      "description": "the toolbar section of index.html"
+    },
+    {
+      "region_id": "R02",
+      "name": "readout script",
+      "description": "event handlers in app.js"
+    }
+  ],
+  "source_root": "../sites/source-only",
+  "source_files": [
+    {
+      "path": "index.html",
+      "line_start": 26,
+      "line_end": 30,
+      "maps_to_region_ids": [
+        "R01"
+      ]
+    },
+    {
+      "path": "app.js",
+      "line_start": 1,
+      "line_end": 7,
+      "maps_to_region_ids": [
+        "R02"
+      ]
+    },
+    {
+      "path": "app.js",
+      "line_start": 11,
+      "line_end": 16,
+      "maps_to_region_ids": [
+        "R02"
+      ]
+    }
+  ],
+  "capability_limits": [
+    "no rendered page: no screenshots, visible text, DOM, styles, or interactions were captured"
+  ],
+  "coverage_notes": [
+    "Source excerpts supplied by the fixture author; the page itself was not rendered."
+  ]
+}

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: default-package-landing
+expected_outcome: |
+  Several localized findings among VIS-01, VIS-02, VIS-03, SUB-03, TXT-01, and DAT-04/LAY-02, each with evidence and alternative explanations.
+context:
+  scaffold_script: place-files.sh

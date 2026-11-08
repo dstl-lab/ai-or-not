@@ -1,0 +1,10 @@
+{
+  "bundle_id": "fx-07",
+  "bundle_hash": "8538914d8d01760c88854d7b61c794a1728cd0fa7892d8719e4df2a6ce153637",
+  "frozen_at": "2026-11-08T19:41:07Z",
+  "files": {
+    "assets/A01.png": "56c2a9744d6c04c28fc223d7360b6a734bf1aab37da09cd820347ec2b1661b99",
+    "assets/A02.png": "2e1cb358917b55523aed9c05f3e8dcf64377183f5f9dec5f65b6b58a691c2195",
+    "assets/A03.png": "87de09347a20347f1eaf09419458b02474f2cd9b5c45840ff88305a9005ec2e6"
+  }
+}

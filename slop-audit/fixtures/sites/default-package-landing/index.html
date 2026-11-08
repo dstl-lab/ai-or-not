@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LibraryPulse — Seattle library visits</title>
+<style>
+  body { margin: 0; font-family: Inter, "Helvetica Neue", Arial, sans-serif; background: #0b0b14; color: #e7e7f2; }
+  .hero { padding: 72px 64px 56px; background: radial-gradient(circle at 30% 20%, rgba(124, 58, 237, .45), transparent 55%), radial-gradient(circle at 80% 0%, rgba(59, 130, 246, .35), transparent 50%); }
+  .eyebrow { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #a5b4fc; margin: 0 0 12px; }
+  .hero h1 { font-size: 56px; line-height: 1.05; margin: 0 0 18px; max-width: 900px; }
+  .hero h1 .glow { background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { font-size: 19px; color: #c4c4d8; max-width: 720px; margin: 0 0 26px; }
+  .cta { display: inline-block; padding: 12px 22px; border-radius: 12px; background: linear-gradient(90deg, #7c3aed, #3b82f6); color: #fff; text-decoration: none; box-shadow: 0 0 24px rgba(124, 58, 237, .6); }
+  .stats { display: flex; gap: 20px; padding: 0 64px 40px; }
+  .stat { flex: 1; padding: 22px; border-radius: 16px; background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .1); }
+  .stat b { display: block; font-size: 34px; } .stat span { color: #a1a1bd; font-size: 14px; }
+  section.block { padding: 36px 64px; }
+  .num { font-family: "SF Mono", Menlo, monospace; color: #818cf8; font-size: 13px; }
+  .block h2 { font-size: 30px; margin: 6px 0 18px; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card { padding: 22px; border-radius: 16px; background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .1); box-shadow: 0 0 30px rgba(99, 102, 241, .15); }
+  .card .icon { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #7c3aed, #3b82f6); display: grid; place-items: center; margin-bottom: 12px; }
+  .card h3 { margin: 0 0 6px; font-size: 18px; } .card p { margin: 0; color: #b4b4cc; font-size: 15px; line-height: 1.5; }
+  details { border-bottom: 1px solid rgba(255, 255, 255, .1); padding: 12px 0; } summary { cursor: pointer; font-size: 17px; }
+  .chart { height: 120px; border-radius: 12px; background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .1); display: flex; align-items: flex-end; gap: 10px; padding: 12px; }
+  .chart i { display: block; width: 28px; background: #6366f1; border-radius: 4px 4px 0 0; }
+  .final { text-align: center; padding: 48px 64px 72px; }
+</style>
+</head>
+<body>
+<section class="hero" id="hero">
+  <p class="eyebrow">✨ Introducing LibraryPulse</p>
+  <h1>Unlock the <span class="glow">future</span> of library insights</h1>
+  <p>Our platform empowers you to unlock powerful insights and transform the way you see data. Reimagine what's possible with next-generation analytics.</p>
+  <a class="cta" href="#faq">Get started →</a>
+</section>
+<section class="stats" id="stats">
+  <div class="stat"><b>10x</b><span>Faster insights</span></div>
+  <div class="stat"><b>99%</b><span>Accuracy</span></div>
+  <div class="stat"><b>24/7</b><span>Always-on analytics</span></div>
+</section>
+<section class="block" id="features">
+  <span class="num">01 / FEATURES</span>
+  <p class="eyebrow">Why it matters</p>
+  <h2>Everything you need, nothing you don't</h2>
+  <div class="cards">
+    <div class="card"><div class="icon">✨</div><h3>Seamless Data</h3><p>Effortlessly explore data with a seamless, intuitive experience.</p></div>
+    <div class="card"><div class="icon">✨</div><h3>Powerful Insights</h3><p>Unlock powerful insights that drive meaningful outcomes.</p></div>
+    <div class="card"><div class="icon">✨</div><h3>Team Credits</h3><p>Built by four passionate students who love data.</p></div>
+  </div>
+</section>
+<section class="block" id="faq">
+  <span class="num">02 / FAQ</span>
+  <p class="eyebrow">Questions</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is LibraryPulse?</summary><p>LibraryPulse is a next-generation way to understand library data.</p></details>
+  <details><summary>Who is it for?</summary><p>Anyone who wants to unlock insights.</p></details>
+</section>
+<section class="block" id="chart-section">
+  <span class="num">03 / DATA</span>
+  <p class="eyebrow">The data</p>
+  <h2>Visits over time</h2>
+  <div class="chart" id="chart"><i style="height:90%"></i><i style="height:85%"></i><i style="height:25%"></i><i style="height:60%"></i><i style="height:80%"></i></div>
+  <p style="color:#a1a1bd;font-size:14px">Visits trend.</p>
+</section>
+<section class="final" id="final-cta">
+  <h2>Ready to transform your data journey?</h2>
+  <a class="cta" href="#hero">Start exploring →</a>
+</section>
+</body>
+</html>

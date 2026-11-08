@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bike lanes and commute times in Oakland</title>
+<style>
+  body { margin: 0; font-family: Georgia, serif; color: #1b1b1b; background: #fff; }
+  .intro { max-width: 760px; margin: 40px auto 16px; }
+  .intro h1 { font-size: 34px; margin: 0 0 8px; }
+  .intro p { font-size: 17px; line-height: 1.55; }
+  .stats { display: flex; gap: 24px; max-width: 760px; margin: 0 auto 20px; font-family: Arial, sans-serif; }
+  .stat { border-left: 3px solid #3a7d44; padding-left: 10px; }
+  .stat b { display: block; font-size: 28px; } .stat span { font-size: 13px; color: #555; }
+  figure { max-width: 760px; margin: 0 auto 40px; }
+  figcaption { font-family: Arial, sans-serif; font-size: 14px; color: #444; margin-top: 6px; }
+  svg text { font-family: Arial, sans-serif; font-size: 12px; fill: #333; }
+</style>
+</head>
+<body>
+<section class="intro" id="intro">
+  <h1>Bike lanes and commute times in Oakland, 2015–2024</h1>
+  <p>Oakland added 61 miles of protected bike lanes between 2015 and 2024. This page compares median bicycle commute times on corridors before and after a lane opened, using the city's travel survey.</p>
+  <p class="byline">By Team Bluebird, DSC 106 Spring 2026</p>
+</section>
+<section class="stats" id="stat-strip">
+  <div class="stat"><b>61 mi</b><span>protected lanes added, 2015–2024</span></div>
+  <div class="stat"><b>42%</b><span>faster commutes</span></div>
+</section>
+<figure id="chart">
+  <svg width="760" height="260" role="img" aria-label="Bar chart of median commute minutes by corridor">
+    <text x="0" y="16">Median bicycle commute (minutes), before vs. after lane opened</text>
+    <g transform="translate(150,30)">
+      <text x="-145" y="22">Telegraph Ave</text><rect x="0" y="8" width="300" height="18" fill="#bbb"/><rect x="0" y="28" width="230" height="18" fill="#3a7d44"/>
+      <text x="-145" y="92">Broadway</text><rect x="0" y="78" width="260" height="18" fill="#bbb"/><rect x="0" y="98" width="214" height="18" fill="#3a7d44"/>
+      <text x="-145" y="162">International Blvd</text><rect x="0" y="148" width="340" height="18" fill="#bbb"/><rect x="0" y="168" width="290" height="18" fill="#3a7d44"/>
+      <text x="350" y="22">25 min</text><text x="240" y="42">19 min</text>
+      <text x="270" y="92">22 min</text><text x="224" y="112">18 min</text>
+      <text x="350" y="162">28 min</text><text x="300" y="182">24 min</text>
+    </g>
+  </svg>
+  <figcaption id="chart-caption">Lorem ipsum dolor sit amet — replace with key insight before publishing.</figcaption>
+</figure>
+</body>
+</html>

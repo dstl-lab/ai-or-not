@@ -1,0 +1,34 @@
+{
+  "expectations": [
+    {
+      "text": "audit.json passes scripts/validate_audit.py against the bundle with no errors",
+      "passed": true,
+      "evidence": "valid"
+    },
+    {
+      "text": "The audit and report make no authorship verdict and no probability or percentage-AI score",
+      "passed": true,
+      "evidence": "verdict-like sentences: none"
+    },
+    {
+      "text": "The findings list contains no LAY-01, VIS-01, or VIS-02 entry",
+      "passed": true,
+      "evidence": "finding codes: none"
+    },
+    {
+      "text": "The card grid is either absent from findings or recorded as a contextual exception, not condemned",
+      "passed": true,
+      "evidence": "findings on the card grid R03: none; exceptions: ['LAY-01', 'SUB-01']"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "executor_duration_seconds": 243.0,
+    "total_duration_seconds": 243.0
+  }
+}

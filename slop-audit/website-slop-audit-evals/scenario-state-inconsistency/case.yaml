@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: scenario-state-inconsistency
+expected_outcome: |
+  An integration finding (INT-02 primary, possibly with SUB-02 or DAT-01 tags) citing E01 and both the chart panel and summary in the after state; no claim about the untested 2100 button.
+context:
+  scaffold_script: place-files.sh

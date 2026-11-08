@@ -1,0 +1,72 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>Slop-feature audit example-placeholder-caption</title><style>
+:root { color-scheme: light; --ink:#1f2328; --muted:#5b636e; --line:#d8dde3; --bg:#f6f7f9; --card:#fff; --accent:#2f5d8a; --warn:#9a3412; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:24px 16px 64px; }
+h1 { font-size:22px; margin:0 0 4px; } h2 { font-size:18px; margin:28px 0 10px; } h3 { font-size:15px; margin:0 0 6px; }
+.meta { color:var(--muted); font-size:13px; }
+.box { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin:12px 0; }
+.scope { border-left:4px solid var(--accent); }
+.invalid { border-left:4px solid var(--warn); }
+.counts { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.pill { font-size:12px; border:1px solid var(--line); border-radius:999px; padding:2px 10px; background:var(--bg); }
+.grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px 20px; }
+.grid dt { font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); margin-top:6px; }
+.grid dd { margin:0; }
+ul.tight { margin:4px 0; padding-left:18px; }
+q { quotes:"“" "”"; background:#fff6d6; }
+table { width:100%; border-collapse:collapse; font-size:14px; }
+th, td { text-align:left; vertical-align:top; padding:6px 8px; border-bottom:1px solid var(--line); }
+.shot { position:relative; display:inline-block; max-width:100%; margin:6px 0; border:1px solid var(--line); }
+.shot img { display:block; max-width:100%; height:auto; }
+.mark { position:absolute; border:2px solid #d9480f; background:rgba(217,72,15,.08); }
+.mark span { position:absolute; top:-1px; left:-1px; transform:translateY(-100%); background:#d9480f; color:#fff; font-size:11px; padding:0 4px; white-space:nowrap; }
+.note { color:var(--muted); font-size:13px; }
+@media (max-width:720px) { .grid { grid-template-columns:1fr; } }
+</style></head><body><main>
+<h1>Slop-feature audit example-placeholder-caption</h1>
+<div class='meta'>bundle fx-03 · profile multimodal-datastory · rubric 0.1.1 · status <b>completed</b></div>
+<div class='box scope'><h3>Scope and limits</h3>
+<p>Two substance problems: a literal placeholder caption under the main chart, and a headline statistic (42% faster) that the chart&#x27;s own values do not support. Typography and palette are plain and showed no default-package pattern. The byline was masked for blinding.</p>
+<div class='grid'><div><dt>Assessed modalities</dt><dd>computed_style, dom, screenshot, text</dd>
+<dt>Not assessed</dt><dd><ul class='tight'><li>interaction: no interactions were recorded</li><li>source: no source excerpts supplied</li></ul></dd></div>
+<div><dt>Major limitations</dt><dd><ul class='tight'><li>Single desktop screenshot</li><li>No interactions or source</li><li>Synthetic development fixture</li></ul></dd></div></div>
+<div class='counts'><span class='pill'>2 findings</span><span class='pill'>0 contextual exceptions</span><span class='pill'>0 quality observations</span><span class='pill'>0 exploratory candidates</span><span class='pill'>4 unassessed features</span></div>
+<p class='note'>These findings identify features that may contribute to a perceived AI-slop impression. They do not establish who or what made the site, and the ratings are provisional research scales, not probabilities.</p></div>
+<h2>Findings</h2>
+<div class='box'><h3>F001 · SUB-01 Placeholder or unverifiable substance</h3>
+<div class='grid'>
+<div><dt>What</dt><dd>literal_placeholder: the chart caption is template text asking to be replaced, so the chart has no stated takeaway.</dd>
+<dt>Where (region)</dt><dd><ul class='tight'><li>R04 (chart caption) · state S01 · image A01 with box</li></ul></dd>
+<dt>Evidence</dt><dd><ul class='tight'><li><code>text:T018</code> The caption text. <q>Lorem ipsum dolor sit amet — replace with key insight before publishing.</q></li><li><code>screenshot:A01</code> The caption under the chart.</li></ul></dd></div>
+<div><dt>Observation confidence</dt><dd><b>high</b>: Exact text captured from the DOM and visible in the screenshot.</dd>
+<dt>Slop association (interpretation)</dt><dd><b>moderate</b>: A placeholder left in a finished-looking story reads as unattended scaffolding; it is equally typical of a hurried human draft.</dd>
+<dt>Contextual fit</dt><dd><b>inappropriate</b>: The caption is where the story&#x27;s takeaway belongs.</dd>
+<dt>Consequence</dt><dd><b>moderate</b>: Readers get no interpretation of the chart.</dd>
+<dt>Alternative explanations</dt><dd><ul class='tight'><li>Unfinished draft published early</li><li>Template caption never replaced</li></ul></dd>
+<dt>Codebook evidence status</dt><dd><code>research_hypothesis</code></dd>
+<dt>Limitations</dt><dd><ul class='tight'><li>Does not show who or what wrote the page.</li></ul></dd></div></div><div class="shot"><img src="../bundles/placeholder-caption/assets/A01.png" alt="A01" loading="lazy"><div class="mark" style="left:20.31%;top:73.25%;width:59.38%;height:2.00%"><span>F001</span></div></div></div>
+<div class='box'><h3>F002 · DAT-01 Narrative–chart disconnect · also SUB-01</h3>
+<div class='grid'>
+<div><dt>What</dt><dd>The statistic strip claims &#x27;42% faster commutes&#x27;, but the chart&#x27;s own labeled medians fall by 14% to 24% (for example 25 to 19 minutes), and no basis for 42% appears in the inspected scope.</dd>
+<dt>Where (cross-region)</dt><dd><ul class='tight'><li>R02 (statistic strip) · state S01 · image A01 with box</li><li>R03 (chart) · state S01 · image A01 with box</li></ul></dd>
+<dt>Evidence</dt><dd><ul class='tight'><li><code>text:T006</code> The headline statistic. <q>42%</q></li><li><code>text:T007</code> Its label. <q>faster commutes</q></li><li><code>text:T012</code> Telegraph Ave before. <q>25 min</q></li><li><code>text:T013</code> Telegraph Ave after. <q>19 min</q></li></ul></dd></div>
+<div><dt>Observation confidence</dt><dd><b>high</b>: All values are captured as text spans.</dd>
+<dt>Slop association (interpretation)</dt><dd><b>weak</b>: An unsupported headline number is a candidate metric-theater cue, but a different calculation (for example speed rather than time) could exist outside the captured page.</dd>
+<dt>Contextual fit</dt><dd><b>questionable</b>: The number frames the story but is not tied to the shown data.</dd>
+<dt>Consequence</dt><dd><b>moderate</b>: The headline overstates what the chart shows.</dd>
+<dt>Alternative explanations</dt><dd><ul class='tight'><li>Computed on a different measure or corridor set</li><li>Left over from an earlier draft</li><li>Arithmetic error</li></ul></dd>
+<dt>Codebook evidence status</dt><dd><code>research_hypothesis</code></dd>
+<dt>Limitations</dt><dd><ul class='tight'><li>basis_not_located: only the captured page was inspected; the claim is not called fabricated.</li></ul></dd></div></div><div class="shot"><img src="../bundles/placeholder-caption/assets/A01.png" alt="A01" loading="lazy"><div class="mark" style="left:39.92%;top:30.75%;width:7.51%;height:4.00%"><span>F002</span></div></div><div class="shot"><img src="../bundles/placeholder-caption/assets/A01.png" alt="A01" loading="lazy"><div class="mark" style="left:20.31%;top:39.50%;width:59.38%;height:32.50%"><span>F002</span></div></div></div>
+<h2>Contextual exceptions (present, not counted)</h2>
+<p class='note'>None recorded.</p>
+<h2>Quality observations (not slop claims)</h2>
+<p class='note'>None recorded.</p>
+<h2>Exploratory candidates (outside the codebook; not scored)</h2>
+<p class='note'>None recorded.</p>
+<h2>Unassessed checks</h2>
+<div class='box'><table><tr><th>feature</th><th>title</th><th>reason</th></tr><tr><td>INT-01</td><td>Decorative or nonfunctional affordance</td><td>needs interaction, which this bundle does not contain</td></tr><tr><td>INT-02</td><td>Incomplete state integration</td><td>needs interaction, which this bundle does not contain</td></tr><tr><td>SRC-01</td><td>Source/render mismatch</td><td>needs source, which this bundle does not contain</td></tr><tr><td>DAT-02</td><td>Interaction without explanatory role</td><td>needs interaction, which this bundle does not contain</td></tr></table></div>
+<h2>Annotated screenshots</h2><p class='note'>Boxes are drawn from the audit's normalized coordinates on each image.</p>
+<div class='box'><h3>A01 · state S01 · scroll y 0</h3><div class="shot"><img src="../bundles/placeholder-caption/assets/A01.png" alt="A01" loading="lazy"><div class="mark" style="left:20.31%;top:73.25%;width:59.38%;height:2.00%"><span>F001</span></div><div class="mark" style="left:39.92%;top:30.75%;width:7.51%;height:4.00%"><span>F002</span></div><div class="mark" style="left:20.31%;top:39.50%;width:59.38%;height:32.50%"><span>F002</span></div></div></div>
+</main></body></html>

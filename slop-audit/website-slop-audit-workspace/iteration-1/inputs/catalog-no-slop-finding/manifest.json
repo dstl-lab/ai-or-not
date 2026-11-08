@@ -1,0 +1,3637 @@
+{
+  "schema_version": "website-slop-audit/capture-bundle/0.1",
+  "bundle_id": "fx-catalog-conventional",
+  "site_id": "site-catalog-conventional",
+  "capture": {
+    "captured_at": "2026-11-07T22:38:29Z",
+    "protocol_version": "capture-protocol/0.1",
+    "adapter": {
+      "name": "gstack_capture.py",
+      "version": "0.1.0",
+      "browser": "gstack browse (Status: healthy)"
+    },
+    "target_kind": "local_server",
+    "target_locator": null,
+    "snapshot_id": null,
+    "notes": [
+      "skipped a V1 screenshot at scroll 500: page too short, duplicate of scroll 0",
+      "12 browser commands issued"
+    ]
+  },
+  "evidence_profile": {
+    "capture_profile": "custom",
+    "max_images": 8,
+    "selection_rules_applied": [
+      "desktop viewport screenshots at scroll offsets [0, 500]"
+    ]
+  },
+  "modalities": {
+    "screenshot": true,
+    "text": true,
+    "dom": true,
+    "computed_style": true,
+    "interaction": false,
+    "source": false
+  },
+  "capability_limits": [
+    "animation playback is not recorded; motion can only be inferred from captured styles",
+    "HTML comments, alt text, and hidden elements are not captured as text spans"
+  ],
+  "context": {
+    "purpose": {
+      "value": "Let residents and researchers find city climate datasets and see each one's format, size, and update date before downloading.",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "genre": {
+      "value": "municipal open-data catalog page",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "audience": {
+      "value": "researchers, journalists, and residents",
+      "status": "provided",
+      "provenance": "capture plan written by the fixture author (synthetic)"
+    },
+    "constraints": [
+      {
+        "value": "City Web Style Guide section 4.2 requires the standard catalog card component for dataset listings.",
+        "status": "provided",
+        "provenance": "capture plan written by the fixture author (synthetic)"
+      }
+    ]
+  },
+  "blinding": {
+    "profile": "blinded",
+    "transformations": [
+      {
+        "transformation_id": "TR-locator",
+        "kind": "locator_withheld",
+        "description": "capture.target_locator withheld; the original is in the private sidecar",
+        "applies_to": [
+          "fx-catalog-conventional"
+        ]
+      }
+    ],
+    "withheld_fields": [
+      "award",
+      "course_year",
+      "creator_ai_report",
+      "generator"
+    ],
+    "known_leakage": []
+  },
+  "viewports": [
+    {
+      "viewport_id": "V1",
+      "device": "desktop",
+      "css_width": 1280,
+      "css_height": 800,
+      "device_pixel_ratio": 1
+    }
+  ],
+  "states": [
+    {
+      "state_id": "S01",
+      "route": "/index.html",
+      "viewport_id": "V1",
+      "kind": "initial",
+      "load_status": "complete",
+      "fonts_loaded": true,
+      "description": "page as loaded at viewport V1"
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "R01",
+      "name": "page header",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#site-header",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 0.105
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R02",
+      "name": "introduction",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#intro",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.135,
+            "width": 0.7031,
+            "height": 0.0563
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R03",
+      "name": "dataset listing",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#dataset-grid",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.2213,
+            "width": 0.9375,
+            "height": 0.4263
+          }
+        }
+      ]
+    },
+    {
+      "region_id": "R04",
+      "name": "page footer",
+      "route": "/index.html",
+      "description": "",
+      "selector": "#site-footer",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.6875,
+            "width": 0.9375,
+            "height": 0.0512
+          }
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "A01",
+      "kind": "viewport_screenshot",
+      "path": "assets/A01.png",
+      "sha256": "d5426d58ca18be5fd93fd6f25bfc727e9fb52de922d214ccf74352d88e9c75a0",
+      "media_type": "image/png",
+      "pixel_width": 1280,
+      "pixel_height": 800,
+      "viewport_id": "V1",
+      "device_pixel_ratio": 1,
+      "route": "/index.html",
+      "scroll_x": 0,
+      "scroll_y": 0,
+      "state_id": "S01",
+      "crop_of": null
+    }
+  ],
+  "text_spans": [
+    {
+      "span_id": "T001",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "City of Riverton Open Data",
+      "source": "dom",
+      "element_id": "D005",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.0225,
+            "width": 0.9375,
+            "height": 0.035
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T002",
+      "region_id": "R01",
+      "state_id": "S01",
+      "text": "Climate and environment datasets",
+      "source": "dom",
+      "element_id": "D006",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.0625,
+            "width": 0.9375,
+            "height": 0.02
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T003",
+      "region_id": "R02",
+      "state_id": "S01",
+      "text": "Nine climate and environment datasets published by the Office of Sustainability. Each listing shows the file format, size, and the date of the last update. Datasets are released under the Riverton Open Data License 2.0.",
+      "source": "dom",
+      "element_id": "D007",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.135,
+            "width": 0.7031,
+            "height": 0.0563
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T004",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Daily temperature, 1950–2025",
+      "source": "dom",
+      "element_id": "D008",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.24,
+            "width": 0.2776,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T005",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Format",
+      "source": "dom",
+      "element_id": "D009",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.27,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T006",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "CSV",
+      "source": "dom",
+      "element_id": "D010",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0907,
+            "y": 0.27,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T007",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Size",
+      "source": "dom",
+      "element_id": "D011",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.2913,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T008",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "4.1 MB",
+      "source": "dom",
+      "element_id": "D012",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0907,
+            "y": 0.2913,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T009",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Updated",
+      "source": "dom",
+      "element_id": "D013",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.3125,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T010",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2026-10-02",
+      "source": "dom",
+      "element_id": "D014",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0907,
+            "y": 0.3125,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T011",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Street tree inventory",
+      "source": "dom",
+      "element_id": "D015",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.24,
+            "width": 0.2776,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T012",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Format",
+      "source": "dom",
+      "element_id": "D016",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.27,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T013",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "GeoJSON",
+      "source": "dom",
+      "element_id": "D017",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.4074,
+            "y": 0.27,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T014",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Size",
+      "source": "dom",
+      "element_id": "D018",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.2913,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T015",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "12.7 MB",
+      "source": "dom",
+      "element_id": "D019",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.4074,
+            "y": 0.2913,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T016",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Updated",
+      "source": "dom",
+      "element_id": "D020",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.3125,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T017",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2026-09-18",
+      "source": "dom",
+      "element_id": "D021",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.4074,
+            "y": 0.3125,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T018",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Flood insurance claims by ZIP",
+      "source": "dom",
+      "element_id": "D022",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.24,
+            "width": 0.2776,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T019",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Format",
+      "source": "dom",
+      "element_id": "D023",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.27,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T020",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "CSV",
+      "source": "dom",
+      "element_id": "D024",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.7241,
+            "y": 0.27,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T021",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Size",
+      "source": "dom",
+      "element_id": "D025",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.2913,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T022",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "380 KB",
+      "source": "dom",
+      "element_id": "D026",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.7241,
+            "y": 0.2913,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T023",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Updated",
+      "source": "dom",
+      "element_id": "D027",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.3125,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T024",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2026-08-30",
+      "source": "dom",
+      "element_id": "D028",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.7241,
+            "y": 0.3125,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T025",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Air quality sensor readings",
+      "source": "dom",
+      "element_id": "D029",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.3887,
+            "width": 0.2776,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T026",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Format",
+      "source": "dom",
+      "element_id": "D030",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.4188,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T027",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Parquet",
+      "source": "dom",
+      "element_id": "D031",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0907,
+            "y": 0.4188,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T028",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Size",
+      "source": "dom",
+      "element_id": "D032",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.44,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T029",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "96 MB",
+      "source": "dom",
+      "element_id": "D033",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0907,
+            "y": 0.44,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T030",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Updated",
+      "source": "dom",
+      "element_id": "D034",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.4612,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T031",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2026-10-05",
+      "source": "dom",
+      "element_id": "D035",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0907,
+            "y": 0.4612,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T032",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Cooling center locations",
+      "source": "dom",
+      "element_id": "D036",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.3887,
+            "width": 0.2776,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T033",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Format",
+      "source": "dom",
+      "element_id": "D037",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.4188,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T034",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "GeoJSON",
+      "source": "dom",
+      "element_id": "D038",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.4074,
+            "y": 0.4188,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T035",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Size",
+      "source": "dom",
+      "element_id": "D039",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.44,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T036",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "41 KB",
+      "source": "dom",
+      "element_id": "D040",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.4074,
+            "y": 0.44,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T037",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Updated",
+      "source": "dom",
+      "element_id": "D041",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.4612,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T038",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2026-07-14",
+      "source": "dom",
+      "element_id": "D042",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.4074,
+            "y": 0.4612,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T039",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Rainfall gauges, hourly",
+      "source": "dom",
+      "element_id": "D043",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.3887,
+            "width": 0.2776,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T040",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Format",
+      "source": "dom",
+      "element_id": "D044",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.4188,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T041",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "CSV",
+      "source": "dom",
+      "element_id": "D045",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.7241,
+            "y": 0.4188,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T042",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Size",
+      "source": "dom",
+      "element_id": "D046",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.44,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T043",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "22 MB",
+      "source": "dom",
+      "element_id": "D047",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.7241,
+            "y": 0.44,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T044",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Updated",
+      "source": "dom",
+      "element_id": "D048",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.4612,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T045",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2026-10-01",
+      "source": "dom",
+      "element_id": "D049",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.7241,
+            "y": 0.4612,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T046",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Building energy benchmarks",
+      "source": "dom",
+      "element_id": "D050",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.5375,
+            "width": 0.2776,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T047",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Format",
+      "source": "dom",
+      "element_id": "D051",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.5675,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T048",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "XLSX",
+      "source": "dom",
+      "element_id": "D052",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0907,
+            "y": 0.5675,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T049",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Size",
+      "source": "dom",
+      "element_id": "D053",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.5887,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T050",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2.3 MB",
+      "source": "dom",
+      "element_id": "D054",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0907,
+            "y": 0.5887,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T051",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Updated",
+      "source": "dom",
+      "element_id": "D055",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0445,
+            "y": 0.61,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T052",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2026-06-27",
+      "source": "dom",
+      "element_id": "D056",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0907,
+            "y": 0.61,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T053",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Heat vulnerability index",
+      "source": "dom",
+      "element_id": "D057",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.5375,
+            "width": 0.2776,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T054",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Format",
+      "source": "dom",
+      "element_id": "D058",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.5675,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T055",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Shapefile",
+      "source": "dom",
+      "element_id": "D059",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.4074,
+            "y": 0.5675,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T056",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Size",
+      "source": "dom",
+      "element_id": "D060",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.5887,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T057",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "8.9 MB",
+      "source": "dom",
+      "element_id": "D061",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.4074,
+            "y": 0.5887,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T058",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Updated",
+      "source": "dom",
+      "element_id": "D062",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.3612,
+            "y": 0.61,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T059",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2026-05-11",
+      "source": "dom",
+      "element_id": "D063",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.4074,
+            "y": 0.61,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T060",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Bike-share trips",
+      "source": "dom",
+      "element_id": "D064",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.5375,
+            "width": 0.2776,
+            "height": 0.0225
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T061",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Format",
+      "source": "dom",
+      "element_id": "D065",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.5675,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T062",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "CSV",
+      "source": "dom",
+      "element_id": "D066",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.7241,
+            "y": 0.5675,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T063",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Size",
+      "source": "dom",
+      "element_id": "D067",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.5887,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T064",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "140 MB",
+      "source": "dom",
+      "element_id": "D068",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.7241,
+            "y": 0.5887,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T065",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "Updated",
+      "source": "dom",
+      "element_id": "D069",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.6779,
+            "y": 0.61,
+            "width": 0.0384,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T066",
+      "region_id": "R03",
+      "state_id": "S01",
+      "text": "2026-10-04",
+      "source": "dom",
+      "element_id": "D070",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.7241,
+            "y": 0.61,
+            "width": 0.2314,
+            "height": 0.0187
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "T067",
+      "region_id": "R04",
+      "state_id": "S01",
+      "text": "Questions about a dataset? Contact opendata@riverton.example. Listings follow the City Web Style Guide, section 4.2 (catalog cards).",
+      "source": "dom",
+      "element_id": "D071",
+      "appearances": [
+        {
+          "asset_id": "A01",
+          "box": {
+            "x": 0.0312,
+            "y": 0.72,
+            "width": 0.9375,
+            "height": 0.0187
+          }
+        }
+      ]
+    }
+  ],
+  "dom_elements": [
+    {
+      "element_id": "D001",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#site-header",
+      "tag": "header",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background-color": "rgb(29, 79, 110)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D002",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#intro",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D003",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid",
+      "tag": "section",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D004",
+      "state_id": "S01",
+      "region_id": "R04",
+      "selector": "#site-footer",
+      "tag": "footer",
+      "role": null,
+      "text_span_ids": [],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(85, 85, 85)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D005",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#site-header > h1",
+      "tag": "h1",
+      "role": null,
+      "text_span_ids": [
+        "T001"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "24px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D006",
+      "state_id": "S01",
+      "region_id": "R01",
+      "selector": "#site-header > p",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T002"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "14px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "0.85",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D007",
+      "state_id": "S01",
+      "region_id": "R02",
+      "selector": "#intro > p",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T003"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "15px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D008",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(1) > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T004"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(29, 79, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D009",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(1) > dl > dt:nth-of-type(1)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T005"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D010",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(1) > dl > dd:nth-of-type(1)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T006"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D011",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(1) > dl > dt:nth-of-type(2)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T007"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D012",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(1) > dl > dd:nth-of-type(2)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T008"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D013",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(1) > dl > dt:nth-of-type(3)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T009"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D014",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(1) > dl > dd:nth-of-type(3)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T010"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D015",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(2) > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T011"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(29, 79, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D016",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(2) > dl > dt:nth-of-type(1)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T012"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D017",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(2) > dl > dd:nth-of-type(1)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T013"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D018",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(2) > dl > dt:nth-of-type(2)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T014"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D019",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(2) > dl > dd:nth-of-type(2)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T015"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D020",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(2) > dl > dt:nth-of-type(3)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T016"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D021",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(2) > dl > dd:nth-of-type(3)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T017"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D022",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(3) > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T018"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(29, 79, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D023",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(3) > dl > dt:nth-of-type(1)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T019"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D024",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(3) > dl > dd:nth-of-type(1)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T020"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D025",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(3) > dl > dt:nth-of-type(2)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T021"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D026",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(3) > dl > dd:nth-of-type(2)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T022"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D027",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(3) > dl > dt:nth-of-type(3)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T023"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D028",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(3) > dl > dd:nth-of-type(3)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T024"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D029",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(4) > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T025"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(29, 79, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D030",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(4) > dl > dt:nth-of-type(1)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T026"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D031",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(4) > dl > dd:nth-of-type(1)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T027"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D032",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(4) > dl > dt:nth-of-type(2)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T028"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D033",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(4) > dl > dd:nth-of-type(2)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T029"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D034",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(4) > dl > dt:nth-of-type(3)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T030"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D035",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(4) > dl > dd:nth-of-type(3)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T031"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D036",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(5) > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T032"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(29, 79, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D037",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(5) > dl > dt:nth-of-type(1)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T033"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D038",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(5) > dl > dd:nth-of-type(1)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T034"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D039",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(5) > dl > dt:nth-of-type(2)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T035"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D040",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(5) > dl > dd:nth-of-type(2)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T036"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D041",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(5) > dl > dt:nth-of-type(3)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T037"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D042",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(5) > dl > dd:nth-of-type(3)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T038"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D043",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(6) > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T039"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(29, 79, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D044",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(6) > dl > dt:nth-of-type(1)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T040"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D045",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(6) > dl > dd:nth-of-type(1)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T041"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D046",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(6) > dl > dt:nth-of-type(2)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T042"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D047",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(6) > dl > dd:nth-of-type(2)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T043"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D048",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(6) > dl > dt:nth-of-type(3)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T044"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D049",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(6) > dl > dd:nth-of-type(3)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T045"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D050",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(7) > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T046"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(29, 79, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D051",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(7) > dl > dt:nth-of-type(1)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T047"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D052",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(7) > dl > dd:nth-of-type(1)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T048"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D053",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(7) > dl > dt:nth-of-type(2)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T049"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D054",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(7) > dl > dd:nth-of-type(2)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T050"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D055",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(7) > dl > dt:nth-of-type(3)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T051"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D056",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(7) > dl > dd:nth-of-type(3)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T052"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D057",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(8) > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T053"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(29, 79, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D058",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(8) > dl > dt:nth-of-type(1)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T054"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D059",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(8) > dl > dd:nth-of-type(1)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T055"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D060",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(8) > dl > dt:nth-of-type(2)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T056"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D061",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(8) > dl > dd:nth-of-type(2)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T057"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D062",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(8) > dl > dt:nth-of-type(3)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T058"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D063",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(8) > dl > dd:nth-of-type(3)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T059"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D064",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(9) > h2",
+      "tag": "h2",
+      "role": null,
+      "text_span_ids": [
+        "T060"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "16px",
+        "font-weight": "700",
+        "font-style": "normal",
+        "color": "rgb(29, 79, 110)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D065",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(9) > dl > dt:nth-of-type(1)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T061"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D066",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(9) > dl > dd:nth-of-type(1)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T062"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D067",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(9) > dl > dt:nth-of-type(2)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T063"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D068",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(9) > dl > dd:nth-of-type(2)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T064"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D069",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(9) > dl > dt:nth-of-type(3)",
+      "tag": "dt",
+      "role": null,
+      "text_span_ids": [
+        "T065"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(102, 102, 102)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D070",
+      "state_id": "S01",
+      "region_id": "R03",
+      "selector": "#dataset-grid > article:nth-of-type(9) > dl > dd:nth-of-type(3)",
+      "tag": "dd",
+      "role": null,
+      "text_span_ids": [
+        "T066"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(34, 34, 34)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    },
+    {
+      "element_id": "D071",
+      "state_id": "S01",
+      "region_id": "R04",
+      "selector": "#site-footer > p",
+      "tag": "p",
+      "role": null,
+      "text_span_ids": [
+        "T067"
+      ],
+      "computed_style": {
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": "13px",
+        "font-weight": "400",
+        "font-style": "normal",
+        "color": "rgb(85, 85, 85)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "background-image": "none",
+        "border-radius": "0px",
+        "box-shadow": "none",
+        "text-transform": "none",
+        "letter-spacing": "normal",
+        "animation-name": "none",
+        "animation-duration": "0s",
+        "transition-property": "all",
+        "opacity": "1",
+        "-webkit-background-clip": "border-box",
+        "background-clip": "border-box"
+      }
+    }
+  ],
+  "interactions": [],
+  "source_excerpts": [],
+  "coverage": {
+    "routes": [
+      {
+        "ref": "/index.html",
+        "status": "captured",
+        "reason": "single route captured; other routes not attempted"
+      }
+    ],
+    "regions": [
+      {
+        "ref": "R01",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R02",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R03",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      },
+      {
+        "ref": "R04",
+        "status": "captured",
+        "reason": "shown in at least one viewport screenshot"
+      }
+    ],
+    "viewports": [
+      {
+        "ref": "V1",
+        "status": "captured",
+        "reason": "1 screenshot(s)"
+      }
+    ],
+    "interactions": [],
+    "notes": []
+  }
+}
