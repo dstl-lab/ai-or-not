@@ -486,7 +486,7 @@ def capture(plan_path, out_dir, serve=None, allow_public=False, private_out=None
     plan = _lib.load_json(plan_path)
     if plan.get("capture_profile") == "pilot-8":
         plan = expand_pilot8(plan)
-    out = Path(out_dir)
+    out = Path(out_dir).resolve()  # the browse daemon resolves paths against its own cwd
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)

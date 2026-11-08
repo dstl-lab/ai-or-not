@@ -4,3 +4,4 @@ __pycache__/
 .pytest_cache/
 # capture-time locator sidecars (local URLs with random ports); the provenance sidecar stays tracked
 fixtures/private/*.locator.json
+local-runs/
