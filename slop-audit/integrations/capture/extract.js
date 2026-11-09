@@ -87,12 +87,14 @@
   const spans = kept.map((el) => ({ key: cssPath(el), tag: el.tagName.toLowerCase(), text: textOf(el).slice(0, 4000),
     rect: rect(el), region_id: regionOf(el) }));
 
+  if (cfg.mode === "spans") return JSON.stringify({ metrics, spans });
+
   if (cfg.mode === "text_map") {
-    const map = {};
-    for (const s of spans) map[s.key] = s.text;
+    const map = {}, regions_of = {};
+    for (const s of spans) { map[s.key] = s.text; regions_of[s.key] = s.region_id; }
     const pressed = [...document.querySelectorAll("[aria-pressed],[aria-expanded],[aria-selected],input,select")]
       .map((e) => `${cssPath(e)}=${e.getAttribute("aria-pressed") || e.getAttribute("aria-expanded") || e.getAttribute("aria-selected") || e.value || ""}`);
-    return JSON.stringify({ metrics, map, state_attrs: pressed });
+    return JSON.stringify({ metrics, map, regions_of, state_attrs: pressed });
   }
 
   const props = cfg.style_props || [];

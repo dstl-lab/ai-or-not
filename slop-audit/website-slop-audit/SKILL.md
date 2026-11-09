@@ -1,6 +1,6 @@
 ---
 name: website-slop-audit
-description: Identify and localize the specific website features that may make a site feel AI-generated, generic, superficial, or incoherent ("AI slop"), as evidence-backed, scoped findings with alternative explanations, not a design critique and not an authorship verdict. Use whenever someone asks whether a website, landing page, portfolio, dashboard, or interactive data story or explorable explanation (for example student visualization projects) looks AI-made, templated, sloppy, or default-driven, wants slop cues annotated with locations, or needs a reproducible slop audit of a capture bundle for a research study or a model comparison. Works from a frozen capture bundle (screenshots, text, DOM, interactions, source excerpts) and can run text-only with visual checks marked unassessed.
+description: Identify and localize the specific website features that may make a site feel AI-generated, generic, superficial, or incoherent ("AI slop"), as evidence-backed, scoped findings with alternative explanations, not a design critique and not an authorship verdict. Use whenever someone asks whether a website, landing page, portfolio, dashboard, or interactive data story or explorable explanation (for example student visualization projects) looks AI-made, templated, sloppy, or default-driven, wants slop cues annotated with locations, or needs a reproducible slop audit for a research study or a model comparison. Give it a website URL to capture the site's pages and safe interactions and audit them in one step, or a frozen capture bundle (screenshots, text, DOM, interactions, source excerpts); it can also run text-only with visual checks marked unassessed.
 ---
 
 # Website slop audit
@@ -37,20 +37,39 @@ good result.
 
 ## Inputs
 
-Work from a **capture bundle**: a directory with `manifest.json` and
-screenshots, described in [references/capture-protocol.md](references/capture-protocol.md).
-Judge only the frozen bundle. Do not browse the live site or fetch more
-evidence during the audit; the bundle is what every compared model sees.
+You receive either a **website URL** or a **capture bundle**: a directory
+with `manifest.json` and screenshots, described in
+[references/capture-protocol.md](references/capture-protocol.md). When this
+skill is invoked as a command, the URL or bundle path is its argument.
 
-If you were given a URL instead, the bundle has to be captured first by an
-acquisition adapter (a separate, host-specific tool) following the capture
-protocol, then validated and frozen with `scripts/validate_bundle.py --freeze`.
-Capture is outside this instruction package so the reasoning stays the same on
-every host.
+**Given a URL**, capture it first, then audit the bundle it produces. From
+this skill's directory (the folder that holds this file), run:
+
+```bash
+python3 scripts/acquire_url.py URL
+```
+
+It hands the URL to the acquisition adapter installed with the skill, which
+finds the site's pages under the URL's folder, clicks each safe control once,
+and writes a validated, frozen bundle. It takes a few minutes and prints
+`RUN_DIR`, `BUNDLE`, and `SUGGESTED_PROFILE`. Pass through any options the
+user gave (for example `--single-page`, `--max-pages 3`, or `--withhold NAME`
+for names to mask). Write the audit and the reports into `RUN_DIR`. If it says
+no adapter is available, tell the user and ask for a bundle; do not browse
+the site yourself, because evidence you gather by hand cannot be reproduced.
+
+**Given a bundle**, use it as it is (write outputs next to it unless told
+otherwise).
+
+Either way, judge only the frozen bundle. Do not browse the live site or
+fetch more evidence during the audit; the bundle is what every compared
+model and person sees.
 
 ## Choose the profile
 
-Pick the profile from what you can actually see, not from what would be nice:
+Pick the profile from what you can actually see, not from what would be nice
+(after a URL capture, `SUGGESTED_PROFILE` is a starting point based on whether
+the pages contain charts):
 
 | Profile | Use when | Modules |
 |---|---|---|
@@ -70,7 +89,12 @@ in the coverage rather than guessing.
 
 1. **Validate the bundle.** Confirm the files exist and the bundle is frozen
    (`scripts/validate_bundle.py BUNDLE`). If evidence is unusable, set status
-   `insufficient_evidence` and explain.
+   `insufficient_evidence` and explain. For a bundle with several routes or
+   many screenshots, read `scripts/bundle_digest.py BUNDLE` first: it lists
+   each page's regions, screenshots, text by region, and recorded
+   interactions with real ids. Then work page by page, viewing each page's
+   screenshots in order and an after-interaction screenshot whenever its
+   recorded change matters.
 2. **Record coverage first.** Which modalities, regions, states, viewports,
    and interactions exist; which are partial, failed, or untested. Missing
    evidence stays visible in the output.
@@ -91,9 +115,12 @@ in the coverage rather than guessing.
    but appropriate or insufficient); quality-only observations; exploratory
    candidates outside the codebook; unassessed checks.
 8. **Validate and report.** Write the JSON in
-   [references/output-contract.md](references/output-contract.md), run
-   `scripts/validate_audit.py`, fix any reported error, and render the report
-   with `scripts/render_report.py`.
+   [references/output-contract.md](references/output-contract.md) to
+   `audit.json`, run `scripts/validate_audit.py`, fix any reported error, and
+   render `report.html` and `report.md` with `scripts/render_report.py`. Then
+   tell the user, briefly: what was covered and what was not, each accepted
+   finding with its location and slop-association level, the contextual
+   exceptions, and the paths of the report and the audit.
 
 Do one judgment pass. If a fixed verification pass is used in a study, its
 instructions and cost must be identical across compared models, and the
@@ -134,6 +161,8 @@ recommendations are a separate request and never change the audit.
 Run from this directory with Python 3.11+ (standard library only):
 
 ```bash
+python scripts/acquire_url.py URL                           # capture a site into RUN_DIR/bundle (needs an adapter)
+python scripts/bundle_digest.py BUNDLE                      # page-by-page outline of a large bundle
 python scripts/validate_bundle.py BUNDLE --freeze           # check and freeze evidence
 python scripts/expand_prompt.py --bundle BUNDLE --profile multimodal-datastory --out RUN_DIR
 python scripts/validate_audit.py AUDIT.json --bundle BUNDLE  # check the audit

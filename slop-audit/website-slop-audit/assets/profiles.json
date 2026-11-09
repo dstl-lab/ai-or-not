@@ -3,37 +3,80 @@
   "analysis_profiles": {
     "multimodal-core": {
       "capability": "multimodal",
-      "modules": ["core"],
+      "modules": [
+        "core"
+      ],
       "max_images": 8,
-      "requires_any": [["screenshot", "text"]],
+      "requires_any": [
+        [
+          "screenshot",
+          "text"
+        ]
+      ],
       "description": "Full multimodal audit of any website genre with the core families A–C."
     },
     "multimodal-datastory": {
       "capability": "multimodal",
-      "modules": ["core", "data-story"],
+      "modules": [
+        "core",
+        "data-story"
+      ],
       "max_images": 8,
-      "requires_any": [["screenshot", "text"]],
+      "requires_any": [
+        [
+          "screenshot",
+          "text"
+        ]
+      ],
       "description": "Multimodal audit plus the interactive data-story module (DAT-01 to DAT-04). Use for explorable explanations and visualization-heavy pages such as DSC 106 final projects."
     },
     "multimodal-datastory-media": {
       "capability": "multimodal",
-      "modules": ["core", "data-story", "media"],
+      "modules": [
+        "core",
+        "data-story",
+        "media"
+      ],
       "max_images": 8,
-      "requires_any": [["screenshot", "text"]],
+      "requires_any": [
+        [
+          "screenshot",
+          "text"
+        ]
+      ],
       "description": "Multimodal data-story audit plus optional media inspection (MED-01)."
     },
     "text-only-core": {
       "capability": "text_only",
-      "modules": ["core"],
+      "modules": [
+        "core"
+      ],
       "max_images": 0,
-      "requires_any": [["text"], ["source"]],
+      "requires_any": [
+        [
+          "text"
+        ],
+        [
+          "source"
+        ]
+      ],
       "description": "Reduced-capability audit from text, DOM, style, interaction, and source records only. Every check that needs screenshots is unassessed. Never ranked together with multimodal runs."
     },
     "text-only-datastory": {
       "capability": "text_only",
-      "modules": ["core", "data-story"],
+      "modules": [
+        "core",
+        "data-story"
+      ],
       "max_images": 0,
-      "requires_any": [["text"], ["source"]],
+      "requires_any": [
+        [
+          "text"
+        ],
+        [
+          "source"
+        ]
+      ],
       "description": "Reduced-capability data-story audit. Chart-reading checks that need screenshots are unassessed unless a data excerpt is supplied."
     }
   },
@@ -50,8 +93,23 @@
     },
     "custom": {
       "max_images": 8,
-      "selection_rules": ["Images chosen by hand or by a capture plan; the plan and coverage must be recorded in the manifest."],
+      "selection_rules": [
+        "Images chosen by hand or by a capture plan; the plan and coverage must be recorded in the manifest."
+      ],
       "note": "For supplied bundles that do not follow pilot-8."
+    },
+    "site-auto": {
+      "max_images": 64,
+      "selection_rules": [
+        "pages: the entry URL plus pages linked from it that stay on the same host and under the URL's folder; robots.txt honored; at most 12 pages by default",
+        "regions: each page's top-level sections, detected automatically and named by their own heading",
+        "desktop 1280x800 viewport tiles from one budget (64 by default): the top of every page, the entry page top to bottom, then other pages spread top to bottom as space allows",
+        "phone 390x844 at DPR 2: the top of the entry page, and of other pages if images remain",
+        "text and controls collected while scrolling through each page, so reveal-on-scroll content is included",
+        "each safe control clicked once on a fresh load (at most 10 per page); typing, dragging, form submission, downloads, and account or payment actions are never performed",
+        "no full-page overview images"
+      ],
+      "note": "Written by integrations/capture/site_capture.py for the one-line URL command. Coverage of long pages is recorded per page; text is captured for whole pages even where screenshots are spread out."
     }
   }
 }

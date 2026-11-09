@@ -1,0 +1,8 @@
+body { font-family: Georgia, serif; margin: 0; color: #222; background: #fbfaf7; }
+header, main > section, footer { padding: 32px 48px; }
+nav a { margin-right: 16px; }
+section { min-height: 220px; border-bottom: 1px solid #ddd; }
+.tall { min-height: 900px; }
+.hidden-until-seen { visibility: hidden; }
+.hidden-until-seen.seen { visibility: visible; }
+[role=tabpanel][hidden] { display: none; }

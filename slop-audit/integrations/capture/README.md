@@ -4,8 +4,49 @@ Two ways to produce a capture bundle (`website-slop-audit/references/capture-pro
 
 | Adapter | Use for | Status |
 |---|---|---|
-| `gstack_capture.py` | Live capture of a local or permitted public page through gstack browse's headless browser | Working on local fixture sites; public capture untested |
+| `site_capture.py` | The one-line URL command: a whole site from one URL, plan written automatically (profile `site-auto`) | Working on a local multi-page fixture (live test) and on one public DSC 106 site |
+| `gstack_capture.py` | Live capture of a local or permitted public page from a hand-written plan (`pilot-8`, `custom`) | Working on local fixture sites and on three mirrored DSC 106 sites |
 | `supplied_bundle.py` | Building a bundle from supplied source excerpts and optional screenshots, with no browser | Working |
+
+## site_capture.py
+
+```bash
+python3 integrations/capture/site_capture.py https://someone.github.io/project/
+python3 integrations/capture/site_capture.py https://someone.github.io/project/ --single-page --budget 8
+python3 integrations/capture/site_capture.py --serve path/to/local/copy /index.html
+```
+
+The skill reaches it through `website-slop-audit/scripts/acquire_url.py`, so
+the audit instructions never name a browser. It writes the capture plan
+itself, so the evidence does not depend on which agent or model asked:
+
+- **Pages:** the URL plus pages linked from it on the same host and under the
+  URL's folder (a GitHub Pages project stays in its repository path),
+  breadth-first, robots.txt honored, at most `--max-pages` (12). Links to
+  other hosts, files (PDF, CSV, images), `mailto:` and `javascript:` are never
+  opened. Pages it would not open are listed in route coverage.
+- **Regions:** each page's top-level sections, unwrapping single full-page
+  wrappers and expanding `<main>`, named by their own heading.
+- **Discovery while scrolling:** controls and text are collected at every
+  viewport height down the page, so reveal-on-scroll content is included.
+- **Interactions:** each safe control (buttons, tabs, toggles, dropdowns,
+  disclosure widgets, checkboxes) clicked once on a fresh load, round-robin
+  across sections, at most `--max-controls` (10) per page. Before acting it
+  scrolls the target into view and waits until it is visible. Text changes
+  outside the control's own section are labelled `[outside the observed
+  regions]`, because scroll-driven pages also change by themselves.
+- **Refused or untested:** buttons that submit forms, downloads, and anything
+  worded like sign-in, purchase, send, delete, or account changes (blocked);
+  text fields and sliders (untested); repeats and controls over the limit
+  (untested, with the reason).
+- **Images:** one budget (`--budget`, default and maximum 64, the bundle
+  format's ceiling): the top of every page, the entry page top to bottom,
+  other pages spread top to bottom, phone-width views, and an after-click
+  screenshot only when the click changed something in its section. No
+  full-page overviews.
+- **Output:** `RUN_DIR/bundle` (validated, frozen), `plan.json`, `site.json`,
+  and `private.json` when `--withhold` blinds the bundle. The default
+  `RUN_DIR` is `slop-audit/local-runs/<site>-<time>`, which git ignores.
 
 ## gstack_capture.py
 
@@ -45,7 +86,8 @@ a leakage entry is recorded. The original URL goes only to `--private-out`.
 
 **Limits.** Animation playback is not recorded (only animation and transition
 styles). HTML comments, alt text, and hidden elements are not captured as text
-spans. One route per plan.
+spans. One route per hand-written plan; `site_capture.py` writes multi-page plans
+(a `pages` list) that this adapter also runs.
 
 ## supplied_bundle.py
 

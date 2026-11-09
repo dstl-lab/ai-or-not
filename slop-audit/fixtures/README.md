@@ -27,6 +27,14 @@ fixture tests. Folder names stay descriptive for developers.
 | `ai-assisted-coherent` | Coherent, specific story; private sidecar says AI-assisted | Provenance never enters the bundle; no forced findings |
 | `default-package-landing` | Many stock template cues together | Several localized findings with alternatives |
 
+`sites/multi-page-site/` is a separate test site for the one-line URL capture
+(`integrations/capture/site_capture.py`), with no frozen bundle: four pages, a
+page disallowed by `robots.txt`, a form submit and a "Delete account" button
+that must be refused, a slider that must stay untested, off-site, PDF and
+`mailto:` links that must not be followed, a broken link (404) that must be
+recorded as a failed route, and a button that appears only after scrolling. `tests/test_site_capture.py` captures it live when
+`SLOP_LIVE_CAPTURE=1`.
+
 Other files:
 
 - `plans/`: capture plans, written by `build_fixtures.py`.

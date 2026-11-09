@@ -1,0 +1,16 @@
+# Gemini CLI custom command: /website-slop-audit <url or bundle path>
+# Launch `gemini` from the repository root so the @{...} path below resolves.
+# The same skill is also discoverable as an Agent Skill through .agents/skills/.
+description = "Audit a website URL (or a frozen capture bundle) for perceived AI-slop features with the website-slop-audit skill."
+prompt = """
+Run the website-slop-audit skill on this input: {{args}}
+
+If the input above is empty, ask for a website URL or a capture bundle path and stop.
+
+The skill lives in slop-audit/website-slop-audit/ in this repository. Its full
+instructions follow; follow them exactly. Run its scripts from that folder, for
+example: cd slop-audit/website-slop-audit && python3 scripts/acquire_url.py URL
+Read the files it references (references/*.md) from that folder when it says to.
+
+@{slop-audit/website-slop-audit/SKILL.md}
+"""

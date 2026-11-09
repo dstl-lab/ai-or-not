@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Tide Gauge Notebook</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header id="top">
+  <h1>Tide Gauge Notebook</h1>
+  <nav>
+    <a href="about.html">About</a> <a href="data.html">Data</a> <a href="private.html">Drafts</a> <a href="archive.html">Archive</a>
+    <a href="https://example.com/elsewhere">Elsewhere</a> <a href="report.pdf">Report (PDF)</a> <a href="mailto:team@example.com">Email</a>
+    <a href="#method">Method</a>
+  </nav>
+</header>
+<main>
+  <section id="story">
+    <h2>Sea level at La Jolla, 1925 to 2025</h2>
+    <p id="story-caption">The monthly mean rose 21 cm over the century.</p>
+    <svg width="600" height="160" role="img" aria-label="line chart"><polyline points="0,150 200,130 400,90 600,40" fill="none" stroke="#246"/></svg>
+    <button id="details-toggle" aria-expanded="false" onclick="const d=document.getElementById('details');d.hidden=!d.hidden;this.setAttribute('aria-expanded', String(!d.hidden));">Show details</button>
+    <p id="details" hidden>Gauge 9410230, NOAA monthly means, gaps under 3 months interpolated.</p>
+  </section>
+  <section id="compare">
+    <h2>Compare decades</h2>
+    <div role="tablist">
+      <button role="tab" id="tab-1950" aria-selected="true" onclick="pick('1950')">1950s</button>
+      <button role="tab" id="tab-2010" aria-selected="false" onclick="pick('2010')">2010s</button>
+    </div>
+    <p id="decade-readout">1950s: 6.9 m mean</p>
+    <label>Units <select id="units" onchange="document.getElementById('units-readout').textContent='Showing '+this.value"><option value="metres" selected>metres</option><option value="feet">feet</option></select></label>
+    <p id="units-readout">Showing metres</p>
+    <details><summary>Why monthly means?</summary><p>Daily tides swamp the trend.</p></details>
+  </section>
+  <section id="signup">
+    <h2>Updates</h2>
+    <form action="/subscribe" method="post"><input type="email" placeholder="you@example.com"><button>Subscribe</button></form>
+    <button id="danger" type="button">Delete account</button>
+  </section>
+  <section id="method" class="tall">
+    <h2>Method</h2>
+    <p>Scroll down to reveal the replay control.</p>
+    <div style="height: 600px"></div>
+    <button id="replay" class="hidden-until-seen" type="button" onclick="document.getElementById('replay-status').textContent='Replayed 1925 to 2025'">Replay animation</button>
+    <p id="replay-status">Not replayed</p>
+  </section>
+</main>
+<footer><p>Built for a course project. <a href="about.html">About the team</a></p></footer>
+<script>
+function pick(d) {
+  document.getElementById('decade-readout').textContent = d === '1950' ? '1950s: 6.9 m mean' : '2010s: 7.1 m mean';
+  for (const t of document.querySelectorAll('[role=tab]')) t.setAttribute('aria-selected', String(t.id === 'tab-' + d));
+}
+new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('seen'), 600); }))
+  .observe(document.getElementById('replay'));
+</script>
+</body></html>

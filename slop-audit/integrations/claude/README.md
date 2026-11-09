@@ -3,21 +3,28 @@
 Everything here is host-specific and deliberately kept out of the portable
 skill. Nothing in this folder is required to use the skill with another model.
 
-## Native loading in Claude Code (not installed)
+## Native loading in Claude Code (project-level, committed)
 
-The skill folder is in Agent Skills format, so Claude Code can load it
-natively. It was **not installed** anywhere (no global or project skill
-directory was changed). To try it in this project only:
+The repository root has `.claude/skills/website-slop-audit`, a relative
+symlink to `slop-audit/website-slop-audit/`, so anyone who opens the
+repository in Claude Code gets the command:
 
-```bash
-mkdir -p .claude/skills && ln -s ../../slop-audit/website-slop-audit .claude/skills/website-slop-audit
+```
+/website-slop-audit https://someone.github.io/project/
+/website-slop-audit slop-audit/fixtures/bundles/injection
 ```
 
-Then ask, for example, "audit the bundle at slop-audit/fixtures/bundles/injection with the
-multimodal-datastory profile". Native loading changes the message envelope
-(the skill arrives through the host's skill mechanism, not as one prompt), so
-record runs made this way as condition `native-workflow`, not as the
-controlled `frozen-skill` condition.
+Claude Code passes the text after the command to the skill (it appends
+`ARGUMENTS: …` because `SKILL.md` has no placeholder; the portable
+frontmatter stays `name` and `description` only). Nothing was installed in
+`~/.claude`. Setup, prerequisites (gstack browse, Python 3.11+), and the
+Codex and Gemini equivalents are in `integrations/agents/README.md`.
+
+Native loading changes the message envelope (the skill arrives through the
+host's skill mechanism, not as one prompt) and lets the agent run the capture,
+so record runs made this way as condition `native-workflow`, not as the
+controlled `frozen-skill` condition. The frozen bundle the command writes can
+still be reused for controlled runs.
 
 ## Claude API
 

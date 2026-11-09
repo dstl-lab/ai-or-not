@@ -123,12 +123,25 @@ def norm_box(rect, origin_y, width, height):
     return box if box["width"] > 0 and box["height"] > 0 else None
 
 
+def plan_pages(plan, base_url):
+    """The pages a plan captures. A plan without `pages` is one page built from its top-level fields."""
+    if plan.get("pages"):
+        return plan["pages"]
+    return [{"route": plan.get("route", "/"), "url": base_url, "regions": plan.get("regions", []),
+             "shots": plan.get("shots", []), "interactions": plan.get("interactions", []),
+             "untested_controls": plan.get("untested_controls", [])}]
+
+
 class Capture:
     def __init__(self, plan, out_dir, browser, base_url):
         self.plan = plan
         self.out = Path(out_dir)
         self.br = browser
-        self.url = base_url
+        self.pages = plan_pages(plan, base_url)
+        self.page = self.pages[0]
+        self.url = self.page["url"]
+        limits = plan.get("extract_limits", {})
+        self.max_spans, self.max_elements = limits.get("max_spans", 400), limits.get("max_elements", 400)
         self.tmp = Path(tempfile.mkdtemp(prefix="slopcap-"))
         self.extract_src = (HERE / "extract.js").read_text(encoding="utf-8")
         self.viewports = {v["viewport_id"]: v for v in plan["viewports"]}
@@ -143,8 +156,8 @@ class Capture:
     # --- page helpers ---------------------------------------------------------
 
     def extract(self, mode):
-        cfg = {"regions": [{"region_id": r["region_id"], "selector": r["selector"]} for r in self.plan["regions"]],
-               "mode": mode, "style_props": STYLE_PROPS, "max_spans": 400, "max_elements": 400}
+        cfg = {"regions": [{"region_id": r["region_id"], "selector": r["selector"]} for r in self.page["regions"]],
+               "mode": mode, "style_props": STYLE_PROPS, "max_spans": self.max_spans, "max_elements": self.max_elements}
         path = self.tmp / f"extract-{mode}.js"
         path.write_text(f"const CONFIG = {json.dumps(cfg)};\n" + self.extract_src, encoding="utf-8")
         raw = self.br.eval_file(path)
@@ -169,7 +182,7 @@ class Capture:
             self.limits.append(f"{sid}: web font(s) failed to load ({len(metrics['fonts_failed'])} face(s)); text renders in a fallback font")
         if metrics["busy"]:
             self.limits.append(f"{sid}: page was still marked aria-busy (loading) when captured")
-        self.states.append({"state_id": sid, "route": self.plan.get("route", "/"), "viewport_id": viewport_id, "kind": kind,
+        self.states.append({"state_id": sid, "route": self.page["route"], "viewport_id": viewport_id, "kind": kind,
                             "load_status": "complete" if complete else "partial", "fonts_loaded": fonts_ok,
                             "description": description})
         return sid
@@ -181,26 +194,43 @@ class Capture:
         rel = f"assets/{aid}.png"
         target = self.out / rel
         target.parent.mkdir(parents=True, exist_ok=True)
+        # The browse daemon only writes inside its own start folder and the system temp folders,
+        # so shoot into our temp folder and move the file into the bundle.
+        shot = self.tmp / f"{aid}.png"
         if full_page:
             self.br.run("js", "window.scrollTo(0, 0)")
-            self.br.run("screenshot", str(target))
+            self.br.run("screenshot", str(shot))
             sx, sy = 0, 0
         else:
             sx, sy = json.loads(self.br.js("JSON.stringify([window.scrollX, window.scrollY])"))
-            self.br.run("screenshot", "--viewport", str(target))
+            self.br.run("screenshot", "--viewport", str(shot))
+        shutil.move(str(shot), str(target))
         w, h = _lib.image_size(target)
         vp = self.viewports[viewport_id]
         self.assets.append({"asset_id": aid, "kind": "full_page_screenshot" if full_page else "viewport_screenshot",
                             "path": rel, "sha256": _lib.sha256_file(target), "media_type": "image/png",
                             "pixel_width": w, "pixel_height": h, "viewport_id": viewport_id,
-                            "device_pixel_ratio": vp["device_pixel_ratio"], "route": self.plan.get("route", "/"),
+                            "device_pixel_ratio": vp["device_pixel_ratio"], "route": self.page["route"],
                             "scroll_x": sx, "scroll_y": sy, "state_id": state_id, "crop_of": None})
         return self.assets[-1]
 
     def scroll_to(self, y):
         self.br.js(f"(window.scrollTo(0, {int(y)}), window.scrollY)")
-        time.sleep(0.25)
+        time.sleep(self.plan.get("scroll_settle_ms", 250) / 1000)
         return json.loads(self.br.js("JSON.stringify(window.scrollY)"))
+
+    def wait_visible(self, selector, timeout_ms):
+        sel = json.dumps(selector)
+        probe = (f"(() => {{ const el = document.querySelector({sel}); if (!el) return 'false'; const r = el.getBoundingClientRect(); "
+                 f"const cs = getComputedStyle(el); return JSON.stringify(r.width > 0 && r.height > 0 && cs.display !== 'none' "
+                 f"&& cs.visibility !== 'hidden'); }})()")
+        deadline = time.time() + timeout_ms / 1000
+        while True:
+            if json.loads(self.br.js(probe)):
+                return True
+            if time.time() >= deadline:
+                return False
+            time.sleep(0.25)
 
     # --- recording extracted data ---------------------------------------------
 
@@ -244,20 +274,37 @@ class Capture:
     # --- the capture -----------------------------------------------------------
 
     def run(self):
-        plan = self.plan
         page_h_by_state = {}
+        multi = len(self.pages) > 1
+        for page in self.pages:
+            self.page, self.url = page, page["url"]
+            if multi:
+                time.sleep(self.plan.get("page_delay_ms", 500) / 1000)
+            self.capture_page(page, page_h_by_state)
+        # Region and span appearances on every screenshot of their state.
+        for s in self.spans:
+            s["appearances"] = self.appearances_for(s["_rect"], s["state_id"], page_h_by_state.get(s["state_id"], 0))
+        self.page_h_by_state = page_h_by_state
+        return self.build_manifest()
+
+    def capture_page(self, page, page_h_by_state):
+        plan = self.plan
+        where = f" on {page['route']}" if len(self.pages) > 1 else ""
+        shot_vps = {s["viewport_id"] for s in page["shots"]}
         for vp_id in [v["viewport_id"] for v in plan["viewports"]]:
+            if vp_id != self.primary and vp_id not in shot_vps:
+                continue  # no screenshots planned at this viewport for this page
             self.load(vp_id)
             mode = "full" if vp_id == self.primary else "regions_only"
             data = self.extract(mode)
-            sid = self.new_state(vp_id, "initial", data["metrics"], f"page as loaded at viewport {vp_id}")
+            sid = self.new_state(vp_id, "initial", data["metrics"], f"{page['route']} as loaded at viewport {vp_id}")
             page_h_by_state[sid] = data["metrics"]["page_h"]
             self.region_rects[sid] = {r["region_id"]: r["rect"] for r in data["regions"] if r["found"]}
             for r in data["regions"]:
                 if not r["found"]:
-                    self.notes.append(f"region {r['region_id']} selector not found at viewport {vp_id}")
+                    self.notes.append(f"region {r['region_id']} selector not found at viewport {vp_id}{where}")
             seen_scrolls = set()
-            for shot in [s for s in plan["shots"] if s["viewport_id"] == vp_id]:
+            for shot in [s for s in page["shots"] if s["viewport_id"] == vp_id]:
                 if shot.get("full_page"):
                     if data["metrics"]["page_h"] <= self.viewports[vp_id]["css_height"]:
                         self.notes.append(f"skipped the {vp_id} full-page overview: the page fits in one viewport, so it would duplicate scroll 0")
@@ -283,15 +330,31 @@ class Capture:
                 self.add_elements(sid, data, keep=(lambda e: True))
                 self.primary_state = sid
                 self.primary_data = data
-        for ev in plan.get("interactions", []):
+                if plan.get("text_sweep") and not visible_only:
+                    self.sweep_text(sid, data["metrics"]["page_h"], vp["css_height"])
+        for ev in page.get("interactions", []):
             self.interaction(ev)
-        for item in plan.get("untested_controls", []):
-            self.coverage_interactions.append({"ref": item["description"], "status": "untested", "reason": item["reason"]})
-        # Region and span appearances on every screenshot of their state.
-        for s in self.spans:
-            s["appearances"] = self.appearances_for(s["_rect"], s["state_id"], page_h_by_state.get(s["state_id"], 0))
-        self.page_h_by_state = page_h_by_state
-        return self.build_manifest()
+        for item in page.get("untested_controls", []):
+            self.coverage_interactions.append({"ref": item["description"][:300], "status": item.get("status", "untested"),
+                                               "reason": item["reason"][:500]})
+
+    def sweep_text(self, state_id, page_h, vh):
+        """Scroll through the page and add text that only appears while scrolling (reveal-on-scroll, scrollytelling)."""
+        known = {key for (st, key) in self.span_index if st == state_id}
+        cap = self.plan.get("extract_limits", {}).get("max_sweep_spans", 1500)
+        added = 0
+        y = vh
+        while y < page_h and len(known) < cap:
+            self.scroll_to(y)
+            fresh = [s for s in self.extract("spans")["spans"] if s["key"] not in known]
+            fresh = fresh[: max(0, cap - len(known))]
+            self.add_spans(state_id, {"spans": fresh})
+            known.update(s["key"] for s in fresh)
+            added += len(fresh)
+            y += vh
+        self.scroll_to(0)
+        if added:
+            self.notes.append(f"{state_id}: {added} text span(s) appeared only while scrolling and were added from a scroll-through")
 
     def interaction(self, ev):
         if ev["action"] not in ALLOWED_ACTIONS:
@@ -317,7 +380,14 @@ class Capture:
             self.events.append(dict(base, execution_status="blocked", observed_result="refused: the target submits a form or looks like an account or payment action"))
             self.coverage_interactions.append({"ref": ev.get("description", ev["selector"]), "status": "blocked", "reason": "safety policy"})
             return
-        time.sleep(0.3)
+        # Content revealed on scroll (lazy dashboards, scrollytelling) can need a moment after scrollIntoView;
+        # wait for the target to be visible instead of letting the click time out.
+        if not self.wait_visible(ev["selector"], ev.get("visible_timeout_ms", 3000)):
+            self.events.append(dict(base, execution_status="failed",
+                                    observed_result="target stayed hidden after it was scrolled into view; it may appear only after other steps"))
+            self.coverage_interactions.append({"ref": ev.get("description", ev["selector"]), "status": "failed", "reason": "target not visible"})
+            return
+        time.sleep(ev.get("settle_ms", 300) / 1000)  # let scroll-triggered changes finish before the before snapshot
         el_key = ev["selector"]
         base["target"]["element_id"] = next((eid for (st, key), eid in self.el_index.items()
                                              if st == self.primary_state and key == el_key), None)
@@ -346,12 +416,20 @@ class Capture:
         time.sleep(ev.get("wait_ms", 800) / 1000)
         after = self.extract("full")
         after_map = {s["key"]: s["text"] for s in after["spans"]}
-        changes, changed_keys = [], set()
+        region_of = dict(before.get("regions_of", {}), **{s["key"]: s["region_id"] for s in after["spans"]})
+        observe = set(ev.get("observe_region_ids", [])) | ({ev["region_id"]} if ev.get("region_id") else set())
+        changes, changed_keys, outside = [], set(), []
         for key in sorted(set(before["map"]) | set(after_map)):
             old, new = before["map"].get(key), after_map.get(key)
             if old != new:
                 changed_keys.add(key)
-                changes.append({"kind": "text_changed", "detail": f"{key}: {json.dumps(old)} -> {json.dumps(new)}"[:500]})
+                detail = f"{key}: {json.dumps(old)} -> {json.dumps(new)}"
+                if observe and region_of.get(key) not in observe:
+                    # Scroll-driven pages also change on their own; keep these, but say they are outside the target's regions.
+                    outside.append({"kind": "text_changed", "detail": f"[outside the observed regions] {detail}"[:500]})
+                else:
+                    changes.append({"kind": "text_changed", "detail": detail[:500]})
+        changes += outside
         after_attrs = self.extract("text_map")["state_attrs"]  # same key format as the before snapshot
         attr_changes = sorted(set(after_attrs) - set(before["state_attrs"]))
         if attr_changes:
@@ -363,10 +441,19 @@ class Capture:
             changes.append({"kind": "navigation", "detail": "the page location changed; the new page was not captured further"})
         sid = self.new_state(self.primary, "after_interaction", after["metrics"], f"after {ev['event_id']}: {ev['action']} on {ev.get('description', ev['selector'])}")
         self.region_rects[sid] = {r["region_id"]: r["rect"] for r in after["regions"] if r["found"]}
-        observe = set(ev.get("observe_region_ids", [])) | ({ev["region_id"]} if ev.get("region_id") else set())
         self.add_spans(sid, after, keep=lambda s: s["region_id"] in observe or s["key"] in changed_keys)
         self.add_elements(sid, after, keep=lambda e: e["region_id"] in observe)
-        if ev.get("shot_after", True):
+        shot_after = ev.get("shot_after", True)
+        if shot_after == "if_changed":
+            # Site plans spend the shared image budget only on clicks that visibly changed something.
+            changed_here = any(c["kind"] == "text_changed" and not c["detail"].startswith("[outside") for c in changes)
+            if not (changed_here or attr_changes):
+                self.notes.append(f"{ev['event_id']}: no after screenshot (nothing changed in the observed regions)")
+            elif len(self.assets) >= self.plan["max_images"]:
+                self.notes.append(f"{ev['event_id']}: no after screenshot (the image budget of {self.plan['max_images']} was used up)")
+            else:
+                self.screenshot(sid, self.primary)
+        elif shot_after:
             self.screenshot(sid, self.primary)
         self.page_h = after["metrics"]["page_h"]
         result = "text or state changed" if any(c["kind"] in ("text_changed", "dom_changed") for c in changes) else "no visible change detected"
@@ -379,13 +466,23 @@ class Capture:
     def build_manifest(self):
         plan = self.plan
         regions = []
-        for r in plan["regions"]:
-            appearances = []
-            for sid, rects in self.region_rects.items():
-                if r["region_id"] in rects:
-                    appearances += self.appearances_for(rects[r["region_id"]], sid, self.page_h_by_state.get(sid, 0))
-            regions.append({"region_id": r["region_id"], "name": r["name"], "route": plan.get("route", "/"),
-                            "description": r.get("description", ""), "selector": r["selector"], "appearances": appearances})
+        for page in self.pages:
+            for r in page["regions"]:
+                appearances = []
+                for sid, rects in self.region_rects.items():
+                    if r["region_id"] in rects:
+                        appearances += self.appearances_for(rects[r["region_id"]], sid, self.page_h_by_state.get(sid, 0))
+                regions.append({"region_id": r["region_id"], "name": r["name"], "route": page["route"],
+                                "description": r.get("description", ""), "selector": r["selector"], "appearances": appearances})
+        routes = []
+        for page in self.pages:
+            page_states = [s for s in self.states if s["route"] == page["route"]]
+            complete = page_states and all(s["load_status"] == "complete" for s in page_states)
+            reason = "single route captured; other routes not attempted" if len(self.pages) == 1 and not plan.get("skipped_routes") \
+                else f"{sum(1 for a in self.assets if a['route'] == page['route'])} screenshot(s); text from the whole page"
+            routes.append({"ref": page["route"], "status": "captured" if complete else "partial", "reason": reason})
+        routes += [{"ref": s["route"][:300], "status": s.get("status", "not_attempted"), "reason": s["reason"][:500]}
+                   for s in plan.get("skipped_routes", [])]
         spans = [{k: v for k, v in s.items() if not k.startswith("_")} for s in self.spans]
         transformations, leakage = self.blind(spans)
         excerpts = self.source_excerpts()
@@ -426,8 +523,7 @@ class Capture:
             "interactions": self.events,
             "source_excerpts": excerpts,
             "coverage": {
-                "routes": [{"ref": plan.get("route", "/"), "status": "captured" if all(s["load_status"] == "complete" for s in self.states) else "partial",
-                            "reason": "single route captured; other routes not attempted"}],
+                "routes": routes,
                 "regions": cov_regions,
                 "viewports": [{"ref": v["viewport_id"], "status": "captured", "reason": f"{sum(1 for a in self.assets if a['viewport_id'] == v['viewport_id'])} screenshot(s)"} for v in plan["viewports"]],
                 "interactions": self.coverage_interactions,
@@ -482,32 +578,43 @@ def expand_pilot8(plan):
     return plan
 
 
-def capture(plan_path, out_dir, serve=None, allow_public=False, private_out=None, freeze=False):
-    plan = _lib.load_json(plan_path)
-    if plan.get("capture_profile") == "pilot-8":
-        plan = expand_pilot8(plan)
+def is_local(url):
+    host = urlparse(url).hostname or ""
+    return host in LOCAL_HOSTS or host.endswith((".localhost", ".test"))
+
+
+def run_plan(plan, out_dir, browser, base_url, allow_public=False, private_out=None, freeze=False):
+    """Capture an expanded plan into OUT_DIR, validate it, and optionally freeze it. Returns the validation report."""
     out = Path(out_dir).resolve()  # the browse daemon resolves paths against its own cwd
+    for page in plan_pages(plan, base_url):
+        if not is_local(page["url"]) and not allow_public:
+            raise CaptureError(f"{urlparse(page['url']).hostname} is not a local host; pass --allow-public to capture a public page "
+                               "(read-only, plan URL only)")
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
-    log = []
-    browser = Browser(browse_binary(), log)
-    with (static_server(serve) if serve else contextlib.nullcontext(None)) as base:
-        url = (base + plan.get("route", "/")) if base else plan["url"]
-        host = urlparse(url).hostname or ""
-        if host not in LOCAL_HOSTS and not host.endswith((".localhost", ".test")) and not allow_public:
-            raise CaptureError(f"{host} is not a local host; pass --allow-public to capture a public page (read-only, plan URL only)")
-        plan["url"] = url
-        manifest = Capture(plan, out, browser, url).run()
+    plan.setdefault("url", base_url)
+    manifest = Capture(plan, out, browser, base_url).run()
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     if private_out:
-        Path(private_out).write_text(json.dumps({"bundle_id": plan["bundle_id"], "target_locator": plan.get("public_url", url),
+        Path(private_out).write_text(json.dumps({"bundle_id": plan["bundle_id"], "target_locator": plan.get("public_url", plan["url"]),
                                                  "withhold_terms": plan["blinding"].get("withhold_terms", []),
                                                  "captured_at": manifest["capture"]["captured_at"]}, indent=2) + "\n", encoding="utf-8")
     report, bundle = validate_bundle.validate(out)
     if report.ok and freeze:
         validate_bundle.freeze(bundle)
     return report
+
+
+def capture(plan_path, out_dir, serve=None, allow_public=False, private_out=None, freeze=False):
+    plan = _lib.load_json(plan_path)
+    if plan.get("capture_profile") == "pilot-8":
+        plan = expand_pilot8(plan)
+    browser = Browser(browse_binary(), [])
+    with (static_server(serve) if serve else contextlib.nullcontext(None)) as base:
+        url = (base + plan.get("route", "/")) if base else plan["url"]
+        plan["url"] = url
+        return run_plan(plan, out_dir, browser, url, allow_public, private_out, freeze)
 
 
 def main(argv=None):
