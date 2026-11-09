@@ -6,6 +6,7 @@ const TABLES = [
   ["responses_long", "Answers (one row per question)"],
   ["sessions", "Sessions"],
   ["site_visits", "Time per site"],
+  ["marks", "Marked spots (one row per click)"],
 ];
 
 function renderExports() {

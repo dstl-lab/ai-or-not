@@ -13,10 +13,10 @@ DSC 106 final-project websites and answer closed-ended questions about each one.
 | Sites per session | 10, about 4–5 minutes each, **same order for everyone** |
 | Site source | DSC 106 Spring 2026 final projects ([showcase](https://dsc-courses.github.io/dsc106-2026-sp/showcase/)) |
 | How sites are shown | Frozen local copies served by the app, so they behave like the real site |
-| Questions | One shared set for every site; always visible; no timer |
+| Questions | Background (once), one shared set for every site (always visible, no timer), closing (once). The 0–10 feature grid uses the same feature list as the AI-rater prompt |
 | Answer rules | All questions for a site are required before **Next** unlocks |
 | Going back | Allowed; answers stay editable |
-| Screens | No consent, background, or closing screens. The researcher only enters a participant ID. |
+| Screens | Background questions → 10 websites → closing questions. No consent screen; the researcher only enters a participant ID. |
 | Site identity | Hidden. Students see "Website 3 of 10", not the project title or URL. |
 | Activity logging | Not yet (survey answers only). Time on each site is kept as session metadata. |
 | Storage | SQLite file (main store) + automatic sync of answers to a Google Sheet |

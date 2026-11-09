@@ -28,6 +28,10 @@
       </div>
       <div class="frame-wrap" id="frame-wrap">
         <div class="frame-loading" id="frame-loading">Loading website…</div>
+        <div class="mark-banner" id="mark-banner" hidden>
+          <span>Click anything that feels AI-generated. Scrolling still works.</span>
+          <button type="button" id="mark-done">Done marking</button>
+        </div>
       </div>
     </main>
 
@@ -57,6 +61,25 @@
         <button type="button" class="rail-label" id="expand-label">Show questions</button>
       </div>
     </aside>
+  </div>
+
+  <!-- Background (before the websites) and closing (after them) questions. -->
+  <div class="survey-screen" id="survey" hidden>
+    <div class="survey">
+      <header class="survey-head">
+        <div class="eyebrow" id="survey-eyebrow"></div>
+        <h1 id="survey-title"></h1>
+        <p class="muted" id="survey-lede"></p>
+      </header>
+      <form class="survey-questions" id="survey-questions" novalidate></form>
+      <footer class="survey-foot">
+        <div class="status" id="survey-status" role="status" aria-live="polite"></div>
+        <div class="foot-buttons">
+          <button type="button" id="survey-back" hidden>Back to websites</button>
+          <button type="button" class="primary" id="survey-next">Continue</button>
+        </div>
+      </footer>
+    </div>
   </div>
 
   <div class="done-screen" id="done" hidden>
