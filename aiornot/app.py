@@ -15,7 +15,8 @@ from .config import Paths, load_sites
 from .db import Database
 from .export import TABLES, Exporter
 from .mirror import is_mirrored
-from .questions import AnswerError, check_answer, load_questions, missing_answers
+from .questions import (SURVEY_KEYS, AnswerError, check_answer, is_blank, load_questions,
+                        missing_answers)
 from .sheets import SheetSync, run_gws
 
 # Types Python doesn't know by default but D3 sites commonly load.
@@ -79,10 +80,15 @@ def create_app(paths=None, runner=run_gws, start_sync=True):
             raise HTTPException(404, "No session with that id")
         return session
 
+    def survey_missing(session_id, part, answers=None):
+        answers = db.answers(session_id) if answers is None else answers
+        return missing_answers(questions.section(part), answers.get(SURVEY_KEYS[part], {}))
+
     def site_states(session):
         """Each site in this session's order, with whether it's done or reachable yet."""
         visits = {v["site_id"]: v for v in db.visits(session["id"])}
-        states, reachable = [], True
+        # The first website opens once the background questions are answered.
+        states, reachable = [], not survey_missing(session["id"], "background")
         total = len(session["site_order"])
         for position, site_id in enumerate(session["site_order"], start=1):
             site = sites.pool[site_id]
@@ -105,7 +111,7 @@ def create_app(paths=None, runner=run_gws, start_sync=True):
         if state is None:
             raise HTTPException(404, "That site is not part of this session")
         if not state["unlocked"]:
-            raise HTTPException(409, "Finish the earlier websites first")
+            raise HTTPException(409, "Finish the earlier steps first")
         if editable and session["finished_at"]:
             raise HTTPException(409, "This session is already finished")
         return state
@@ -151,28 +157,48 @@ def create_app(paths=None, runner=run_gws, start_sync=True):
             "session": session,
             "sites": site_states(session),
             "answers": db.answers(session_id),
-            "questions": questions.to_client(),
+            "questions": questions.to_client("questions"),
+            "background": questions.to_client("background"),
+            "closing": questions.to_client("closing"),
             "config_changed": session["questions_version"] != questions.version,
         }
+
+    def validate(section, answers):
+        allowed = {q.id for q in questions.section(section)}
+        by_id = questions.by_id
+        for qid, value in answers.items():
+            if qid not in allowed:
+                raise HTTPException(422, f"Unknown question {qid!r}")
+            if not is_blank(value):
+                try:
+                    check_answer(by_id[qid], value, by_id)
+                except AnswerError as err:
+                    raise HTTPException(422, str(err)) from None
 
     @app.put("/api/sessions/{session_id}/sites/{site_id}/answers")
     def save_answers(session_id: str, site_id: str, body: Answers):
         session = load_session(session_id)
         state = require_site(session, site_id)
-        by_id = questions.by_id
-        for qid, value in body.answers.items():
-            if qid not in by_id:
-                raise HTTPException(422, f"Unknown question {qid!r}")
-            if value not in (None, [], ""):
-                try:
-                    check_answer(by_id[qid], value, by_id)
-                except AnswerError as err:
-                    raise HTTPException(422, str(err)) from None
+        validate("questions", body.answers)
         changed = db.save_answers(session_id, site_id, body.answers)
         if changed and state["completed"]:
             sync.enqueue(session_id, site_id)  # keep the Sheet row current after edits
         current = db.answers(session_id).get(site_id, {})
-        return {"changed": changed, "missing": missing_answers(questions, current)}
+        return {"changed": changed, "missing": missing_answers(questions.questions, current)}
+
+    @app.put("/api/sessions/{session_id}/survey/{part}/answers")
+    def save_survey_answers(session_id: str, part: str, body: Answers):
+        """Answers to the once-per-session background or closing questions."""
+        if part not in SURVEY_KEYS:
+            raise HTTPException(404, "Unknown survey part")
+        session = load_session(session_id)
+        if session["finished_at"]:
+            raise HTTPException(409, "This session is already finished")
+        if part == "closing" and not all(s["completed"] for s in site_states(session)):
+            raise HTTPException(409, "Finish every website first")
+        validate(part, body.answers)
+        changed = db.save_answers(session_id, SURVEY_KEYS[part], body.answers)
+        return {"changed": changed, "missing": survey_missing(session_id, part)}
 
     @app.post("/api/sessions/{session_id}/sites/{site_id}/open")
     def open_site(session_id: str, site_id: str):
@@ -193,7 +219,7 @@ def create_app(paths=None, runner=run_gws, start_sync=True):
     def complete_site(session_id: str, site_id: str):
         session = load_session(session_id)
         require_site(session, site_id)
-        missing = missing_answers(questions, db.answers(session_id).get(site_id, {}))
+        missing = missing_answers(questions.questions, db.answers(session_id).get(site_id, {}))
         if missing:
             raise HTTPException(422, {"message": "Some questions are unanswered", "missing": missing})
         db.complete_site(session_id, site_id)
@@ -206,9 +232,14 @@ def create_app(paths=None, runner=run_gws, start_sync=True):
         if not all(s["completed"] for s in site_states(session)):
             raise HTTPException(409, "Every website must be completed first")
         answers = db.answers(session_id)
-        if any(missing_answers(questions, answers.get(site_id, {}))
+        if any(missing_answers(questions.questions, answers.get(site_id, {}))
                for site_id in session["site_order"]):
             raise HTTPException(422, "Every website must have complete answers")
+        for part in SURVEY_KEYS:
+            missing = survey_missing(session_id, part, answers)
+            if missing:
+                raise HTTPException(
+                    422, {"message": f"Some {part} questions are unanswered", "missing": missing})
         db.finish_session(session_id)
         return {"ok": True}
 

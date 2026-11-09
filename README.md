@@ -44,7 +44,8 @@ Sheet, see [Google Sheet](#google-sheet-optional).
 2. **Do a practice run first:** enter any ID, tick *Practice run*, and click through a site or two.
    Practice sessions are flagged and left out of exports.
 3. Enter the participant's ID (e.g. `P01`; no names) and click **Start session**. Hand over the laptop.
-4. The participant explores each site for about 4–5 minutes and answers the questions. **Next** unlocks
+4. The participant answers a few background questions, then explores each site for about 4–5
+   minutes and answers the questions. After the last site come a few closing questions. **Next** unlocks
    once every question for that site is answered. They can go back to earlier sites and change
    answers until they click **Finish** on the last site.
 5. Open **Researcher dashboard** (http://localhost:8000/admin) to watch progress, check the Google
@@ -105,7 +106,7 @@ Avoid renaming option `value`s after data collection starts. Labels are safe to 
 
 ## Data and analysis
 
-- **Dashboard → Download data**, or `uv run aiornot export`, writes four CSV tables
+- **Dashboard → Download data**, or `uv run aiornot export`, writes five CSV tables, including `marks.csv` (every spot clicked on a website)
   (described in [docs/data-dictionary.md](docs/data-dictionary.md)).
 - For pandas: `uv run --group analysis python -m analysis.summary` prints a first-look summary,
   and `analysis/load.py` loads every table as a DataFrame.

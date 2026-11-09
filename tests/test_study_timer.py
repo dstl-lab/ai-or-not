@@ -54,7 +54,7 @@ const api = () => new Promise(resolve => requests.push(resolve));
     checks = '''
 (async () => {
  wireEvents();
- state.questions = [{id: 'confidence'}];
+ state.sections.questions = [{id: 'confidence'}];
  state.answers.alpha = {confidence: 4};
  const warns = () => {
    let prevented = false;
