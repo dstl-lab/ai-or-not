@@ -88,7 +88,8 @@ def cmd_sheet(args, paths):
 
 def cmd_check(args, paths):
     sites, questions = load_sites(paths), load_questions(paths)
-    print(f"Questions: {len(questions.questions)} per site (version {questions.version})")
+    print(f"Questions: {len(questions.background)} background, {len(questions.questions)} per site, "
+          f"{len(questions.closing)} closing (version {questions.version})")
     print(f"Study sites (version {sites.version}):")
     ok = True
     for i, s in enumerate(sites.study, start=1):

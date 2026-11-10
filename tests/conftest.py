@@ -72,14 +72,69 @@ def client(paths, gws):
 
 
 # A complete, valid set of answers for one site.
+FEATURES = ["color_scheme", "gradients", "typography", "emoji_icons", "buttons", "layout",
+            "animations", "charts", "writing", "navigation"]
+def mark(mark_id, selector="main > h1", kind="Heading", text="Breathing Smoke", **extra):
+    """One clicked spot, shaped like what the study page sends."""
+    return {"id": mark_id, "page": "", "selector": selector, "tag": selector.split()[-1],
+            "kind": kind, "text": text, "x": 410, "y": 220,
+            "box": {"x": 120, "y": 180, "w": 640, "h": 80},
+            "scroll_y": 0, "viewport_w": 1060, "viewport_h": 800,
+            "created_at": "2026-11-08T19:30:00.000Z", **extra}
+
+
+MARKS = [mark("a1"), mark("b2", selector="#chart > svg > rect:nth-of-type(3)",
+                         kind="Chart or graphic", text="", page="story.html")]
+
 FULL = {
-    "ai_generated": True,
-    "confidence": 4,
+    "ai_appearance": 4,
+    "ai_marks": MARKS,
+    "feature_rating": {**{f: 3 for f in FEATURES}, "gradients": 9, "emoji_icons": 8, "charts": "na"},
+    "top_ai_feature": "gradients",
     "ai_extent": "most",
-    "cues": ["gradients", "emoji_icons"],
-    "strongest_cue": "gradients",
     "design_generic": 5,
     "writing_ai": 3,
     "polish": 4,
+    "quality": 4,
+    "ai_changes_view": "no_change",
     "seen_before": "no",
+    "technical_issue": "no",
 }
+
+FOLLOWUP = {
+    "cues": ["layout"],
+}
+
+# Complete answers to the once-per-session questions.
+BACKGROUND = {
+    "field": "data_science",
+    "phd_year": "y2",
+    "build_experience": "moderate",
+    "taught_course": True,
+    "ai_use_code": "daily",
+    "ai_use_design": "weekly",
+    "can_tell_pre": 4,
+    "ai_acceptable": 3,
+    "ai_less_valuable": 2,
+}
+CLOSING = {
+    "can_tell_post": 2,
+    "reliable_signs": ["gradients", "writing"],
+    "difficulty": 4,
+    "ai_vs_human": "not_sure",
+}
+
+
+def survey(client, sid, part, answers):
+    return client.put(f"/api/sessions/{sid}/survey/{part}/answers", json={"answers": answers})
+
+
+def start(client, pid="P01", background=True, **extra):
+    """Create a session; by default also answer the background questions so site 1 opens."""
+    res = client.post(
+        "/api/sessions", json={"participant_id": pid, "cohort": "dsc106", **extra})
+    assert res.status_code == 201, res.text
+    sid = res.json()["id"]
+    if background:
+        assert survey(client, sid, "background", BACKGROUND).json()["missing"] == []
+    return sid

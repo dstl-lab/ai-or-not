@@ -1,0 +1,99 @@
+{
+  "version": "starter-v1",
+  "_about": "Questions asked about every website. Types: boolean, single, multi, scale. All questions are required unless \"required\": false. Keep each option's \"value\" stable once data collection starts; it is what gets stored. Labels can be reworded freely.",
+  "questions": [
+    {
+      "id": "ai_generated",
+      "type": "boolean",
+      "prompt": "Do you think this website was AI-generated?",
+      "true_label": "Yes, AI-generated",
+      "false_label": "No, made by people"
+    },
+    {
+      "id": "confidence",
+      "type": "scale",
+      "prompt": "How confident are you in that answer?",
+      "min": 1,
+      "max": 5,
+      "min_label": "Just guessing",
+      "max_label": "Completely sure"
+    },
+    {
+      "id": "ai_extent",
+      "type": "single",
+      "prompt": "How much of this website do you think AI helped build?",
+      "options": [
+        {"value": "none", "label": "None of it"},
+        {"value": "a_little", "label": "A little"},
+        {"value": "about_half", "label": "About half"},
+        {"value": "most", "label": "Most of it"},
+        {"value": "nearly_all", "label": "Nearly all of it"}
+      ]
+    },
+    {
+      "id": "cues",
+      "type": "multi",
+      "prompt": "Which features influenced your judgment?",
+      "help": "Select all that apply.",
+      "min_selected": 1,
+      "options": [
+        {"value": "color_scheme", "label": "Color scheme"},
+        {"value": "gradients", "label": "Gradients"},
+        {"value": "typography", "label": "Fonts and typography"},
+        {"value": "emoji_icons", "label": "Emoji or icons"},
+        {"value": "buttons", "label": "Buttons and hover effects"},
+        {"value": "layout", "label": "Layout and spacing"},
+        {"value": "animations", "label": "Animations and transitions"},
+        {"value": "charts", "label": "Chart and visualization styling"},
+        {"value": "writing", "label": "Wording and writing style"},
+        {"value": "navigation", "label": "Navigation and page structure"},
+        {"value": "too_polished", "label": "Everything looks too polished or uniform"},
+        {"value": "quirks", "label": "Quirks, bugs, or rough edges"},
+        {"value": "gut_feeling", "label": "Gut feeling"}
+      ]
+    },
+    {
+      "id": "strongest_cue",
+      "type": "single",
+      "prompt": "Which one of those features mattered most?",
+      "options_from": "cues"
+    },
+    {
+      "id": "design_generic",
+      "type": "scale",
+      "prompt": "The visual design looks generic or template-like.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Strongly disagree",
+      "max_label": "Strongly agree"
+    },
+    {
+      "id": "writing_ai",
+      "type": "scale",
+      "prompt": "The text on the site reads like it was written by AI.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Strongly disagree",
+      "max_label": "Strongly agree"
+    },
+    {
+      "id": "polish",
+      "type": "scale",
+      "prompt": "How polished does this website feel overall?",
+      "min": 1,
+      "max": 5,
+      "min_label": "Very rough",
+      "max_label": "Very polished"
+    },
+    {
+      "id": "seen_before",
+      "type": "single",
+      "prompt": "Had you seen this website before today?",
+      "options": [
+        {"value": "no", "label": "No"},
+        {"value": "yes_seen", "label": "Yes, I've seen it"},
+        {"value": "yes_made", "label": "Yes, I helped make it"}
+      ]
+    }
+  ]
+}
