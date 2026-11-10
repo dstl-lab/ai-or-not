@@ -6,6 +6,7 @@ const TABLES = [
   ["responses_long", "Answers (one row per question)"],
   ["sessions", "Sessions"],
   ["site_visits", "Time per site"],
+  ["projects", "Project IDs and versions"],
 ];
 
 function renderExports() {
@@ -40,18 +41,20 @@ function renderSheet(sheet) {
 
 function renderSessions(sessions, siteCount) {
   if (!sessions.length) {
-    $("sessions").innerHTML = `<tr><td colspan="7" class="muted">No sessions yet. Start one from the <a href="/">start page</a>.</td></tr>`;
+    $("sessions").innerHTML = `<tr><td colspan="8" class="muted">No sessions yet. Start one from the <a href="/">start page</a>.</td></tr>`;
     return;
   }
   $("sessions").innerHTML = sessions.map((s) => {
-    const pct = Math.round((100 * s.sites_completed) / siteCount);
+    const assigned = s.site_order?.length ?? siteCount;
+    const pct = assigned ? Math.round((100 * s.sites_completed) / assigned) : 0;
     const status = s.finished_at
       ? `<span class="pill ok">Finished ${h(formatTime(s.finished_at))}</span>`
       : `<span class="pill">In progress</span>`;
     return `<tr>
       <td><strong>${h(s.participant_id)}</strong></td>
+      <td>${h(s.cohort_label || s.cohort || "Legacy")}${s.cohort === "agentic_internship" ? `<br><span class="muted">DSC106: ${s.dsc106_completed ? "yes" : "no"}</span>` : ""}</td>
       <td>${h(formatTime(s.started_at))}</td>
-      <td class="num"><span class="bar"><span style="width:${pct}%"></span></span>${s.sites_completed}/${siteCount}</td>
+      <td class="num"><span class="bar"><span style="width:${pct}%"></span></span>${s.sites_completed}/${assigned}</td>
       <td class="num">${formatDuration(s.total_seconds)}</td>
       <td>${status}</td>
       <td><input type="checkbox" data-practice="${h(s.id)}" ${s.practice ? "checked" : ""} aria-label="Practice session"></td>
@@ -63,12 +66,21 @@ function renderSessions(sessions, siteCount) {
 function renderSites(sites) {
   $("sites").innerHTML = sites.map((s) => `<tr>
     <td class="num">${s.position}</td>
-    <td><a href="${h(s.url)}" target="_blank" rel="noopener" title="Live site on GitHub Pages">${h(s.title)}</a></td>
+    <td><code>${h(s.id)}</code><br><a href="${h(s.url)}" target="_blank" rel="noopener" title="Live site on GitHub Pages">${h(s.title)}</a></td>
     <td>${s.award ? h(s.award) : ""}</td>
     <td><code>${h((s.commit || "not pinned").slice(0, 7))}</code></td>
     <td>${s.mirrored ? `<span class="pill ok">Yes</span>` : `<span class="pill warn">Missing</span>`}</td>
     <td><a href="${h(s.preview)}" target="_blank" rel="noopener">Preview</a></td>
   </tr>`).join("");
+}
+
+function renderCoverage(coverage) {
+  $("coverage").innerHTML = coverage.length ? coverage.map((row) => `<tr>
+    <td><code>${h(row.site_id)}</code></td>
+    <td>${h(row.cohort_label || row.cohort)}</td>
+    <td class="num">${row.assigned}</td>
+    <td class="num">${row.completed}</td>
+  </tr>`).join("") : '<tr><td colspan="4" class="muted">Coverage will appear as sessions are assigned.</td></tr>';
 }
 
 async function refresh() {
@@ -82,6 +94,7 @@ async function refresh() {
     renderSheet(data.sheet);
     renderSessions(data.sessions, data.site_count);
     renderSites(data.sites);
+    renderCoverage(data.coverage || []);
     $("versions").textContent = `· questions ${data.questions_version}`;
     $("updated").textContent = `Updated ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit", second: "2-digit" })}`;
   } catch (err) {

@@ -8,9 +8,9 @@
 </head>
 <body>
   <main class="centered">
-    <form class="card" id="start-form" novalidate>
+    <form class="card setup-card" id="start-form" novalidate>
       <h1>Website Review Study</h1>
-      <p class="lede">Researcher setup. Enter the participant's ID, then hand over the laptop.</p>
+      <p class="lede">Researcher setup. Confirm the participant's background and read the instructions together before starting.</p>
 
       <div class="field">
         <label for="participant">Participant ID</label>
@@ -18,13 +18,43 @@
                autocomplete="off" autocapitalize="characters" spellcheck="false" required>
       </div>
 
+      <div class="field">
+        <label for="cohort">Background group</label>
+        <select id="cohort" required>
+          <option value="">Choose a group</option>
+        </select>
+        <details class="muted setup-help">
+          <summary>Group definitions</summary>
+          <div id="cohort-descriptions"></div>
+        </details>
+      </div>
+
+      <fieldset class="setup-fieldset" id="course-background" hidden>
+        <legend>Has this participant completed DSC106?</legend>
+        <div class="options pair">
+          <label class="option"><input type="radio" name="dsc106" value="true"><span>Yes</span></label>
+          <label class="option"><input type="radio" name="dsc106" value="false"><span>No</span></label>
+        </div>
+      </fieldset>
+
+      <details class="exclusions">
+        <summary>Exclude the participant's own or familiar projects</summary>
+        <p class="muted">Optional. Selected projects will not be assigned to this participant.</p>
+        <div id="excluded-sites" class="excluded-sites"></div>
+      </details>
+
+      <section class="instructions" aria-label="Participant instructions">
+        <h2>Before you begin</h2>
+        <p id="instructions">Loading instructions…</p>
+      </section>
+
       <label class="check">
         <input type="checkbox" id="practice">
         <span>Practice run <span class="muted">(flagged and left out of exports, so you can try things freely)</span></span>
       </label>
 
-      <p class="error-text" id="error" hidden></p>
-      <button type="submit" class="primary" id="start">Start session</button>
+      <p class="error-text" id="error" role="alert" hidden></p>
+      <button type="submit" class="primary" id="start" disabled>Start session</button>
 
       <div class="card-foot"><a href="/admin">Researcher dashboard</a></div>
     </form>

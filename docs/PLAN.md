@@ -1,85 +1,85 @@
-# AI or Not: study platform plan
+# AI or Not: current tool plan
 
-**Goal.** A proof-of-concept platform for the DS teaching & learning lab study on how students
-decide whether a website was AI-generated. Participants (students who took DSC 106) browse real
-DSC 106 final-project websites and answer closed-ended questions about each one.
+The next step is an internal trial of the survey sidebar using the existing ten DSC106
+projects. This repository runs reviewer sessions; creator submission surveys remain external.
+The internal trial should establish whether the flow, saving, timing, and exports work
+comfortably before finalizing a research protocol.
 
-## Decisions
+## Current decisions
 
-| Topic | Decision |
+| Topic | Implemented behavior |
 |---|---|
-| Research framing | Perception only. No ground-truth "AI or not" labels are stored. |
-| Participants | ~10 students, one session each, moderated in person |
-| Sites per session | 10, about 4–5 minutes each, **same order for everyone** |
-| Site source | DSC 106 Spring 2026 final projects ([showcase](https://dsc-courses.github.io/dsc106-2026-sp/showcase/)) |
-| How sites are shown | Frozen local copies served by the app, so they behave like the real site |
-| Questions | One shared set for every site; always visible; no timer |
-| Answer rules | All questions for a site are required before **Next** unlocks |
-| Going back | Allowed; answers stay editable |
-| Screens | No consent, background, or closing screens. The researcher only enters a participant ID. |
-| Site identity | Hidden. Students see "Website 3 of 10", not the project title or URL. |
-| Activity logging | Not yet (survey answers only). Time on each site is kept as session metadata. |
-| Storage | SQLite file (main store) + automatic sync of answers to a Google Sheet |
-| Runs on | The researcher's laptop (`uv run aiornot serve`) |
-| Stack | Python (FastAPI) backend; plain HTML/CSS/JS front end with no build step |
+| Construct | Perceived AI-generated appearance, rated 1–5; no authorship ground truth |
+| Initial sidebar | Appearance, previous familiarity, and technical-problem questions |
+| Technical failure | `unable` permits a blank appearance rating and blank final cue selection |
+| Final questions | Cue checklist and optional element annotations for two randomly selected projects, after all initial reviews |
+| Annotations | Select a webpage element, write a note, then Save; up to three notes per page and 500 characters per note |
+| Editing | Initial reviews can be revisited; starting final questions locks initial ratings; finish locks the session |
+| Background | Researcher records one of three groups; internship participants can have either DSC106 background |
+| Assignment | Up to ten distinct projects, using local per-group assignment and position counts |
+| Practice | Flagged, omitted from ordinary exports and balancing; available when explicitly included |
+| Timing | Visible-tab time, stored separately for initial reviews and final questions; no forced five-minute cutoff |
+| Stimuli | Existing ten projects, served from pinned local mirrors |
+| Saving | Ratings/choices autosave; annotation drafts require Save note; SQLite answer history and optional background Sheet mirror |
+| Historical definitions | Per-session question and project snapshots, version IDs, order, and final-question subset |
+| Creator linkage | External survey joins reviewer exports using stable `site_id` + `site_commit` |
 
-## The 10 study sites (in order)
+Group labels record the researcher's classification; the tool does not screen internship
+experience, manage recruitment or consent, or determine research approval. Researcher-supplied
+exclusions block own/familiar projects when enough eligible projects remain to fill a session.
 
-1. Breathing Smoke (Best Project)
-2. Five Minute Fire (Honorable Mention)
-3. Strike or Ball? Could You Call the Zone? (Honorable Mention)
-4. Climate Change is Global, Response is Not
-5. Where Droughts Hide
-6. From Rain to Ruins
-7. The Greening Earth
-8. Finding San Diego's Future Climate Twin
-9. The World Is Getting Greener — But Momentum Is Uneven.
-10. Human Climate Choices and Their Impact on the Storms of Our Future
+## Internal trial checklist
 
-Defined in `config/sites.json` (`study_sites`). Swapping a site = edit that list, run `uv run aiornot mirror`.
+1. Run locally and start a practice session from the Codex browser/sidebar.
+2. Check that the webpage remains usable beside the questions; exercise scrolling, links,
+   keyboard navigation, reload, and dashboard resume.
+3. Try both a normal review and an `unable` technical-problem report. Check the saved state
+   and distinguish a missing rating from a low rating in exported data.
+4. Complete the initial reviews and confirm cue questions appear only at the end for the
+   selected subset. Confirm initial ratings are then locked. Select an element, check the
+   hover outline and selected target, save a note, then exercise Edit note, Remove, and
+   showing the saved target. Check that an unsaved draft requires Save or Cancel before
+   navigating and warns before closing the tab.
+5. Download exports including practice data. Check project IDs/commits, presentation order,
+   cohort/background, separate stage timing, and saved answers against the session.
 
-## Architecture
+Allow roughly five minutes per webpage including answers, then time the full flow. The
+hour-long session target and final questionnaire wording still need a practical trial.
+No additional project collection is required for this internal test.
 
-```
-Browser (researcher laptop)                    FastAPI server (localhost:8000)
-┌─────────────────────────────┬─────────┐      ┌──────────────────────────────────┐
-│ iframe: /sites/<id>/        │ question│ ───▶ │ /sites/<id>/*  frozen site copies │
-│ (frozen copy, same origin)  │ panel   │      │ /api/*         sessions, answers  │
-└─────────────────────────────┴─────────┘      │ SQLite: data/study.db             │
-                                               │ background worker ──▶ gws CLI ──▶ Google Sheet
-                                               └──────────────────────────────────┘
-```
+The pilot has five configured fields: three during initial review, then annotations and
+cues on the final two webpages. New sessions use annotations instead of the former
+`cue_example` field; historical sessions retain their saved questions and exports.
 
-- **Why copies, not live links.** Every project is a static GitHub Pages site built straight from
-  its repo. Copying the repo at a pinned commit reproduces the site exactly. It also freezes it, so
-  every participant sees the same version: 4 of 60 showcase links had already moved or died. And
-  because the copies are served from the app's own origin, a future version can see in-site
-  navigation and trigger follow-up questions.
-- **Why SQLite first, then the Sheet.** The database write is synchronous and local, so an answer is
-  never lost to a network problem. The Sheet is a convenience mirror, synced in the background with
-  retries.
+## Architecture and limits
 
-## Data model (SQLite)
+FastAPI serves the plain HTML/CSS/JS interface, the API, and mirrored project files from one
+local origin. SQLite is the primary store. CSV and pandas outputs are generated from that
+database; Google Sheets is an optional convenience copy rather than an assignment service.
 
-- `sessions`: participant ID, start/finish times, site order, config versions, test flag
-- `site_visits`: per session × site: first opened, completed, seconds on site, revision
-- `responses`: latest answer per session × site × question
-- `response_history`: append-only log of every saved answer (audit trail)
-- `sheet_rows`: which Google Sheet row holds each session × site, plus sync status
+Each computer balances against its own database. Sharing a Sheet does not create global
+counterbalancing or cross-computer duplicate checks. Keep unique participant IDs across
+computers and retain each database if using several machines.
 
-Exports (CSV): long format (one row per answer) and wide format (one row per participant × site).
-See `docs/data-dictionary.md`.
+Question JSON changes require a restart. New sessions save their definitions; older sessions
+continue using their saved questionnaire. Legacy sessions without snapshots require their
+original questionnaire configuration to resume after a version change. Export fallbacks for
+those sessions cannot reliably recover old project commits or removed question definitions.
 
-## Researcher workflow
+Do not replace mirrors during an active collection round: saved metadata does not preserve
+an additional copy of the website. A changed or missing mirror blocks resuming a session
+until the original copy is restored. Some projects depend on external fonts/scripts, so the
+local mirrors do not guarantee fully offline or permanently identical external resources.
+The wrapper obscures project titles, while project content itself can reveal identity.
 
-1. `uv run aiornot serve`, then open http://localhost:8000
-2. Enter participant ID → Start (tick "practice" for trial runs; those are flagged and kept out of exports)
-3. Hand the laptop to the student
-4. Afterwards: `/admin` shows progress, Sheet sync status, and CSV downloads
+Annotations retain an ID, project page path, selector, short element quote, geometry,
+viewport size, and note as JSON. The API restricts saved paths to the assigned project.
+This is location-based evidence, not a screenshot or replay of interactive state; some
+elements need the reviewer to recreate an interaction before showing the target again.
 
-## Out of scope for this PoC (planned next)
+The current server is intended for local, moderated testing. Recruitment/consent flows,
+remote deployment, full offline packaging, in-page click/scroll tracking, and causal analysis
+are outside this change. A live external Google Sheet synchronization still needs testing;
+column changes require linking a new compatible Sheet before writes can resume.
 
-- Logging in-site activity (pages visited, clicks, scroll depth)
-- Questions triggered by what the student does on a site
-- Remote / multi-laptop sessions (would move SQLite → hosted Postgres)
-- Vendoring CDN scripts (D3, fonts) so sites work fully offline
+See [README.md](../README.md) for setup and [data-dictionary.md](data-dictionary.md) for outputs.

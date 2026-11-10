@@ -42,7 +42,7 @@ class FakeGws:
 def paths(tmp_path):
     config = tmp_path / "config"
     config.mkdir()
-    shutil.copy(ROOT / "config" / "questions.json", config / "questions.json")
+    shutil.copy(ROOT / "tests" / "fixtures" / "questions-legacy.json", config / "questions.json")
     pool = [
         {"id": sid, "title": f"Site {sid}", "url": f"https://example.github.io/{sid}/",
          "repo": f"example/{sid}", "branch": "main", "path": "/", "entry": "",
