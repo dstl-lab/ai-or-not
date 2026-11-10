@@ -93,7 +93,9 @@ def run_sidebar(checks):
     source = (ROOT / "web" / "study.js").read_text()
     source = source.replace('import { confirmAction } from "./confirm.js";', '').replace('import { api } from "./api.js";', '').replace(
         'import { AnnotationTool } from "./annotations.js";', '').removesuffix('init();\n')
-    questions = json.loads((ROOT / "config" / "questions.json").read_text())["questions"]
+    all_questions = json.loads((ROOT / "config" / "questions.json").read_text())["questions"]
+    sidebar_ids = {"ai_appearance", "seen_before", "technical_issue", "annotations", "cues"}
+    questions = [question for question in all_questions if question["id"] in sidebar_ids]
     legacy = json.loads((ROOT / "tests" / "fixtures" / "questions-legacy.json").read_text())["questions"]
     setup = f"""
 const questions = {json.dumps(questions)};

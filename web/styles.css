@@ -264,6 +264,52 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; font-size: 14px
 .panel-foot { position: relative; z-index: 1; flex-shrink: 0; border-top: 1px solid var(--border); padding: 16px 24px 20px; background: var(--surface); }
 .status { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; line-height: 1.5; color: var(--muted); min-height: 18px; margin-bottom: 12px; }
 .status:not(:empty)::before { content: ""; flex: none; width: 6px; height: 6px; margin-top: 6px; border-radius: 50%; background: var(--accent); }
+.option.disabled { cursor: default; opacity: 0.5; }
+
+/* Rating grid: one 0-10 row per feature, with an N/A button at the end. */
+.grid { margin-top: 10px; display: grid; gap: 10px; }
+.grid .scale-ends { margin-top: 0; }
+.grid-label { font-size: 13px; margin-bottom: 4px; }
+.grid-row.missing .grid-label { color: var(--danger); font-weight: 600; }
+.grid-cells { display: grid; grid-template-columns: repeat(var(--steps), 1fr); gap: 3px; }
+.grid-cells.with-na { grid-template-columns: repeat(var(--steps), 1fr) 1.7fr; }
+.grid-cells .option {
+  justify-content: center; padding: 5px 0; font-size: 12px; font-variant-numeric: tabular-nums;
+  position: relative; border-radius: 6px;
+}
+.grid-cells .option input { position: absolute; opacity: 0; pointer-events: none; }
+.grid-cells .option.na { color: var(--muted); }
+.grid-cells .option:has(input:checked) { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Marking spots on the website. */
+.marks { margin-top: 10px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.mark-toggle { width: 100%; padding: 9px; }
+.mark-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
+.mark-list li {
+  display: flex; align-items: center; gap: 6px; padding: 4px 4px 4px 8px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.mark-num {
+  flex: none; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px;
+  background: #e8590c; color: #fff; font-size: 12px; font-weight: 600; text-align: center; line-height: 20px;
+}
+.mark-desc {
+  flex: 1; min-width: 0; border: 0; background: none; padding: 2px 0; text-align: left; font-size: 13px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mark-desc:hover { text-decoration: underline; }
+.mark-small { flex: none; padding: 2px 8px; font-size: 12px; color: var(--muted); }
+.frame-wrap.marking::after {
+  content: ""; position: absolute; inset: 0; border: 3px solid #e8590c; pointer-events: none; z-index: 4;
+}
+.mark-banner {
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 5;
+  display: flex; align-items: center; gap: 12px; white-space: nowrap;
+  padding: 6px 6px 6px 16px; border-radius: 999px; background: #1f1f1f; color: #fff; font-size: 13px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+.mark-banner button { padding: 4px 12px; border-radius: 999px; font-size: 13px; border-color: #fff; color: var(--text); }
+
 .status.bad { color: var(--danger); }
 .status.bad::before { background: var(--danger); }
 .status.pending { color: var(--accent); }
@@ -316,6 +362,17 @@ button.annotation-target:hover { text-decoration: underline; text-underline-offs
 .panel-rail .rail-label {
   writing-mode: vertical-rl; font-size: 13px; color: var(--muted); cursor: pointer;
   border: 0; background: none; padding: 8px 0;
+}
+
+/* ---------- background / closing questions ---------- */
+.survey-screen { position: fixed; inset: 0; overflow-y: auto; background: var(--bg); }
+.survey { max-width: 620px; margin: 0 auto; padding: 40px 24px 0; }
+.survey-head h1 { font-size: 22px; margin-top: 4px; }
+.survey-head p { margin: 6px 0 12px; }
+.survey-questions { border-top: 1px solid var(--border); }
+.survey-foot {
+  position: sticky; bottom: 0; background: var(--bg);
+  border-top: 1px solid var(--border); padding: 12px 0 20px;
 }
 
 /* ---------- done screen ---------- */

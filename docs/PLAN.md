@@ -9,11 +9,13 @@ comfortably before finalizing a research protocol.
 
 | Topic | Implemented behavior |
 |---|---|
-| Construct | Perceived AI-generated appearance, rated 1–5; no authorship ground truth |
-| Initial sidebar | Appearance, previous familiarity, and technical-problem questions |
+| Construct | Perceived AI-generated appearance and feature-level ratings; no authorship ground truth |
+| Study sequence | Background questions, initial website reviews, two follow-up reviews, then closing questions |
+| Initial sidebar | Appearance rating, visual marks, feature grid, quality judgments, familiarity, and technical-problem questions |
 | Technical failure | `unable` permits a blank appearance rating and blank final cue selection |
 | Final questions | Cue checklist and optional element annotations for two randomly selected projects, after all initial reviews |
 | Annotations | Select a webpage element, write a note, then Save; up to three notes per page and 500 characters per note |
+| Visual marks | Click any number of AI-looking spots during initial review; numbered selectors and geometry export to `marks.csv` |
 | Editing | Initial reviews can be revisited; starting final questions locks initial ratings; finish locks the session |
 | Background | Researcher records one of three groups; internship participants can have either DSC106 background |
 | Assignment | Up to ten distinct projects, using local per-group assignment and position counts |
@@ -23,6 +25,11 @@ comfortably before finalizing a research protocol.
 | Saving | Ratings/choices autosave; annotation drafts require Save note; SQLite answer history and optional background Sheet mirror |
 | Historical definitions | Per-session question and project snapshots, version IDs, order, and final-question subset |
 | Creator linkage | External survey joins reviewer exports using stable `site_id` + `site_commit` |
+| Participants | Moderated student sessions on the researcher's laptop |
+| Sites | Frozen local copies with hidden identities and balanced assignment within cohort |
+| Answer rules | Required questions must be complete before advancing; optional annotation notes require explicit Save |
+| Storage | SQLite is authoritative, with CSV exports and optional Google Sheet mirroring |
+| Stack | Python FastAPI backend and plain HTML/CSS/JS frontend |
 
 Group labels record the researcher's classification; the tool does not screen internship
 experience, manage recruitment or consent, or determine research approval. Researcher-supplied

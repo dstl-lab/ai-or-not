@@ -3,9 +3,11 @@
 Five tables, all documented in docs/data-dictionary.md:
 
     responses_long   one row per participant x site x question
-    responses_wide   one row per participant x site, one column per question,
-                     plus 0/1 columns for every multi-select option
-    sessions         one row per session
+    responses_wide   one row per participant x site, one column per question
+                     (a grid gets one column per row), plus 0/1 columns for
+                     every multi-select option
+    sessions         one row per session, with the background and closing answers
+    marks            one row per spot a participant clicked on a website
     site_visits      one row per participant x site (timing only)
     projects         project versions, for joining an external creator survey
 """
@@ -14,11 +16,16 @@ import csv
 import io
 import json
 
-from .questions import parse_questions
+from .questions import NA, SURVEY_KEYS, parse_questions
 
-TABLES = ("responses_long", "responses_wide", "sessions", "site_visits", "projects")
+TABLES = ("responses_long", "responses_wide", "sessions", "site_visits", "projects", "marks")
 SESSION_METADATA = ["cohort", "dsc106_completed", "questions_version", "sites_version"]
 FOLLOWUP_TIMING = ["followup_opened_at", "followup_completed_at", "followup_seconds_on_site"]
+
+MARK_COLUMNS = ["participant_id", "session_id", "practice", "site_position", "site_id",
+                "site_title", "question_id", "mark_number", "page", "kind", "tag", "text",
+                "selector", "x", "y", "box_x", "box_y", "box_w", "box_h", "scroll_y",
+                "viewport_w", "viewport_h", "created_at"]
 
 VISIT_QUERY = """
 SELECT s.participant_id, v.session_id, s.practice, v.position AS site_position, v.site_id,
@@ -48,9 +55,62 @@ def display(question, value):
         return "TRUE" if value else "FALSE"
     if question is not None and question.type == "annotation":
         return json.dumps(value)
+    if question is not None and question.type == "marks":
+        return marks_summary(value)
     if isinstance(value, list):
         return "; ".join(value) if all(isinstance(item, str) for item in value) else json.dumps(value)
+    if isinstance(value, dict):
+        return "; ".join(f"{k}={grid_cell(v)}" for k, v in value.items())
     return value
+
+
+def grid_cell(value):
+    """One grid row's answer: the number, NA for "not applicable", blank if unanswered."""
+    if value is None:
+        return ""
+    return "NA" if value == NA else value
+
+
+def marks_summary(value):
+    """'none', or a short readable list like '1. Heading: Breathing Smoke | 2. Chart or graphic'."""
+    if not isinstance(value, list):
+        return value
+    return " | ".join(
+        f"{i}. {m.get('kind') or m.get('tag', '')}" + (f": {m['text'][:40]}" if m.get("text") else "")
+        for i, m in enumerate(value, start=1)
+    )
+
+
+def marks_count(value):
+    return len(value) if isinstance(value, list) else 0 if value is not None else ""
+
+
+def answer_columns(questions):
+    """Column names for a list of questions: grids expand to one column per row."""
+    cols = []
+    for q in questions:
+        if q.type == "grid":
+            cols += [f"{q.id}__{r.value}" for r in q.rows]
+        elif q.type == "marks":
+            cols += [q.id, f"{q.id}__count"]
+        else:
+            cols.append(q.id)
+    return cols
+
+
+def answer_cells(questions, values):
+    row = {}
+    for q in questions:
+        if q.type == "grid":
+            grid = values.get(q.id) or {}
+            for r in q.rows:
+                row[f"{q.id}__{r.value}"] = grid_cell(grid.get(r.value))
+        elif q.type == "marks":
+            row[q.id] = display(q, values.get(q.id))
+            row[f"{q.id}__count"] = marks_count(values.get(q.id))
+        else:
+            row[q.id] = display(q, values.get(q.id))
+    return row
 
 
 class Exporter:
@@ -100,19 +160,21 @@ class Exporter:
     def wide_columns(self):
         cols = ["participant_id", "session_id", "practice", "site_position", "site_id",
                 "site_title", "site_award", "first_opened_at", "completed_at", "seconds_on_site"]
-        cols += [q.id for q in self.questions.questions]
-        for q in self.questions.questions:
-            if q.type == "multi":
-                cols += [f"{q.id}__{o.value}" for o in q.options]
+        cols += answer_columns(self.questions.questions)
+        cols += self.onehot_columns()
         return cols + SESSION_METADATA + ["site_commit", "followup_position"] + FOLLOWUP_TIMING
+
+    def onehot_columns(self):
+        return [f"{q.id}__{o.value}" for q in self.questions.questions
+                if q.type == "multi" for o in q.options]
 
     def wide_row(self, visit):
         row = {k: visit[k] for k in self.wide_columns() if k in visit}
         questions = visit["questions"]
         by_id = questions.by_id
         values = {qid: a["value"] for qid, a in visit["answers"].items()}
+        row.update(answer_cells(questions.questions, values))
         for q in questions.questions:
-            row[q.id] = display(q, values.get(q.id))
             if q.type == "multi":
                 picked = values.get(q.id)
                 for o in q.options:
@@ -133,10 +195,16 @@ class Exporter:
                     "sites_completed", "total_seconds", "questions_version", "sites_version",
                     "user_agent", "screen", "cohort", "dsc106_completed", "sites_assigned",
                     "followup_order", "followup_started_at"]
+            survey = self.questions.background + self.questions.closing
+            cols += answer_columns(survey)
             for r in rows:
                 r["session_id"] = r.pop("id")
                 r["total_seconds"] = round(r["total_seconds"], 1)
                 r["followup_order"] = json.dumps(r.get("followup_order") or [])
+                answers = self.db.answers(r["session_id"])
+                values = {**answers.get(SURVEY_KEYS["background"], {}),
+                          **answers.get(SURVEY_KEYS["closing"], {})}
+                r.update(answer_cells(survey, values))
             return cols, rows
 
         if name == "projects":
@@ -157,6 +225,8 @@ class Exporter:
             return cols, list(projects.values())
 
         visits = self._visits(include_practice)
+        if name == "marks":
+            return MARK_COLUMNS, self.mark_rows(visits)
         if name == "site_visits":
             cols = ["participant_id", "session_id", "practice", "site_position", "site_id",
                     "site_title", "site_award", "first_opened_at", "completed_at",
@@ -190,6 +260,26 @@ class Exporter:
             return cols, rows
         raise KeyError(name)
 
+    def mark_rows(self, visits):
+        marks_questions = [q for q in self.questions.questions if q.type == "marks"]
+        rows = []
+        for v in visits:
+            for q in marks_questions:
+                value = v["answers"].get(q.id, {}).get("value")
+                if not isinstance(value, list):
+                    continue
+                for number, m in enumerate(value, start=1):
+                    box = m.get("box") or {}
+                    rows.append({
+                        **{k: v[k] for k in MARK_COLUMNS[:6]},
+                        "question_id": q.id,
+                        "mark_number": number,
+                        **{k: m.get(k, "") for k in ("page", "kind", "tag", "text", "selector", "x", "y",
+                                                   "scroll_y", "viewport_w", "viewport_h", "created_at")},
+                        **{f"box_{k}": box.get(k, "") for k in ("x", "y", "w", "h")},
+                    })
+        return rows
+
     def csv(self, name, include_practice=False):
         cols, rows = self.table(name, include_practice)
         buf = io.StringIO()
@@ -201,7 +291,8 @@ class Exporter:
     # --- Google Sheet ----------------------------------------------------
 
     def sheet_columns(self):
-        return ["synced_at"] + [c for c in self.wide_columns() if "__" not in c] + ["revision"]
+        onehot = set(self.onehot_columns())
+        return ["synced_at"] + [c for c in self.wide_columns() if c not in onehot] + ["revision"]
 
     def sheet_row(self, session_id, site_id, synced_at):
         """(values, revision) for one participant x site, in sheet_columns() order."""

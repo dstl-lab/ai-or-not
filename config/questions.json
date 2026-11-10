@@ -1,6 +1,107 @@
 {
-  "version": "reviewer-pilot-v1",
-  "_about": "Internal pilot questionnaire. Review questions appear on every website; followup questions appear for two randomly selected websites after all initial ratings are complete. Keep IDs and stored option values stable after collecting data.",
+  "version": "phd-reviewer-v1",
+  "_about": "Combined protocol: background questions, per-website review questions, two follow-up website reviews with layered annotations, and closing questions. Question ids and stored option values must remain stable after data collection starts.",
+  "option_lists": {
+    "features": [
+      {"value": "color_scheme", "label": "Colors"},
+      {"value": "gradients", "label": "Gradients"},
+      {"value": "typography", "label": "Fonts"},
+      {"value": "emoji_icons", "label": "Emoji/icons"},
+      {"value": "buttons", "label": "Buttons and hover effects"},
+      {"value": "layout", "label": "Layout and spacing"},
+      {"value": "animations", "label": "Animations"},
+      {"value": "charts", "label": "Charts"},
+      {"value": "writing", "label": "Writing"},
+      {"value": "navigation", "label": "Navigation"}
+    ],
+    "ai_use_frequency": [
+      {"value": "never", "label": "Never"},
+      {"value": "monthly", "label": "Monthly"},
+      {"value": "weekly", "label": "Weekly"},
+      {"value": "daily", "label": "Daily"}
+    ]
+  },
+  "background": [
+    {
+      "id": "field",
+      "type": "single",
+      "prompt": "What is your field or PhD program?",
+      "options": [
+        {"value": "cs", "label": "Computer Science"},
+        {"value": "data_science", "label": "Data Science"},
+        {"value": "cogsci", "label": "Cognitive Science"},
+        {"value": "design_hci", "label": "Design or HCI"},
+        {"value": "other", "label": "Other"}
+      ]
+    },
+    {
+      "id": "phd_year",
+      "type": "single",
+      "prompt": "What year of your PhD are you in?",
+      "options": [
+        {"value": "y1", "label": "1st"},
+        {"value": "y2", "label": "2nd"},
+        {"value": "y3", "label": "3rd"},
+        {"value": "y4", "label": "4th"},
+        {"value": "y5plus", "label": "5th or later"}
+      ]
+    },
+    {
+      "id": "build_experience",
+      "type": "single",
+      "prompt": "How much experience do you have building websites or data visualizations?",
+      "options": [
+        {"value": "none", "label": "None"},
+        {"value": "a_little", "label": "A little"},
+        {"value": "moderate", "label": "Moderate"},
+        {"value": "a_lot", "label": "A lot"}
+      ]
+    },
+    {
+      "id": "taught_course",
+      "type": "boolean",
+      "prompt": "Have you taught or TA'd a course like DSC 106?"
+    },
+    {
+      "id": "ai_use_code",
+      "type": "single",
+      "prompt": "How often do you use AI tools (ChatGPT, Claude, Copilot, etc.) to write code?",
+      "options": "ai_use_frequency"
+    },
+    {
+      "id": "ai_use_design",
+      "type": "single",
+      "prompt": "How often do you use AI tools for design or writing?",
+      "options": "ai_use_frequency"
+    },
+    {
+      "id": "can_tell_pre",
+      "type": "scale",
+      "prompt": "I can reliably tell whether a website was made with AI.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Strongly disagree",
+      "max_label": "Strongly agree"
+    },
+    {
+      "id": "ai_acceptable",
+      "type": "scale",
+      "prompt": "Using AI to build a course project is acceptable.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Strongly disagree",
+      "max_label": "Strongly agree"
+    },
+    {
+      "id": "ai_less_valuable",
+      "type": "scale",
+      "prompt": "Work made with AI help is less valuable than work made without it.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Strongly disagree",
+      "max_label": "Strongly agree"
+    }
+  ],
   "questions": [
     {
       "id": "ai_appearance",
@@ -14,28 +115,92 @@
       "required_unless": {
         "question_id": "technical_issue",
         "value": "unable"
-      },
+      }
+    },
+    {
+      "id": "ai_marks",
+      "type": "marks",
+      "prompt": "Click the parts of the website that feel AI-generated.",
+      "help": "Press Start marking, then click every spot that feels AI-generated.",
+      "none_label": "Nothing on this site feels AI-generated"
+    },
+    {
+      "id": "feature_rating",
+      "type": "grid",
+      "prompt": "Rate how AI-generated each feature looks.",
+      "help": "Choose N/A if the site doesn't have that feature.",
+      "rows": "features",
+      "min": 0,
+      "max": 10,
+      "min_label": "Human-made",
+      "max_label": "AI-generated",
+      "allow_na": true
+    },
+    {
+      "id": "top_ai_feature",
+      "type": "single",
+      "prompt": "Which feature looks most AI-generated?",
+      "options": "features",
+      "extra_options": [
+        {"value": "none", "label": "None"}
+      ]
+    },
+    {
+      "id": "ai_extent",
+      "type": "single",
+      "prompt": "How much of this site did AI build?",
       "options": [
-        {
-          "value": "1",
-          "label": "Not at all"
-        },
-        {
-          "value": "2",
-          "label": "Slightly"
-        },
-        {
-          "value": "3",
-          "label": "Moderately"
-        },
-        {
-          "value": "4",
-          "label": "Very"
-        },
-        {
-          "value": "5",
-          "label": "Extremely"
-        }
+        {"value": "none", "label": "None"},
+        {"value": "a_little", "label": "A little"},
+        {"value": "about_half", "label": "About half"},
+        {"value": "most", "label": "Most"},
+        {"value": "nearly_all", "label": "Nearly all"}
+      ]
+    },
+    {
+      "id": "design_generic",
+      "type": "scale",
+      "prompt": "The design looks template-like.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Disagree",
+      "max_label": "Agree"
+    },
+    {
+      "id": "writing_ai",
+      "type": "scale",
+      "prompt": "The text sounds AI-written.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Disagree",
+      "max_label": "Agree"
+    },
+    {
+      "id": "polish",
+      "type": "scale",
+      "prompt": "How polished is this site?",
+      "min": 1,
+      "max": 5,
+      "min_label": "Rough",
+      "max_label": "Polished"
+    },
+    {
+      "id": "quality",
+      "type": "scale",
+      "prompt": "How good is this project overall?",
+      "min": 1,
+      "max": 5,
+      "min_label": "Poor",
+      "max_label": "Excellent"
+    },
+    {
+      "id": "ai_changes_view",
+      "type": "single",
+      "prompt": "Would AI use change your view of its quality?",
+      "options": [
+        {"value": "lower", "label": "Lower"},
+        {"value": "no_change", "label": "No change"},
+        {"value": "higher", "label": "Higher"}
       ]
     },
     {
@@ -43,22 +208,10 @@
       "type": "single",
       "prompt": "Had you seen this website before today?",
       "options": [
-        {
-          "value": "no",
-          "label": "No"
-        },
-        {
-          "value": "yes_seen",
-          "label": "Yes, I've seen it"
-        },
-        {
-          "value": "yes_made",
-          "label": "Yes, I helped make it"
-        },
-        {
-          "value": "unsure",
-          "label": "Unsure"
-        }
+        {"value": "no", "label": "No"},
+        {"value": "yes_seen", "label": "Yes, I've seen it"},
+        {"value": "yes_made", "label": "Yes, I helped make it"},
+        {"value": "unsure", "label": "Unsure"}
       ]
     },
     {
@@ -66,18 +219,9 @@
       "type": "single",
       "prompt": "Did a technical problem affect your review?",
       "options": [
-        {
-          "value": "no",
-          "label": "No"
-        },
-        {
-          "value": "some",
-          "label": "Yes, but I could still evaluate the webpage"
-        },
-        {
-          "value": "unable",
-          "label": "I could not evaluate the webpage"
-        }
+        {"value": "no", "label": "No"},
+        {"value": "some", "label": "Yes, but I could still evaluate the webpage"},
+        {"value": "unable", "label": "I could not evaluate the webpage"}
       ],
       "help": "If you could not evaluate it, you may leave the appearance rating blank."
     },
@@ -99,43 +243,58 @@
       "min_selected": 1,
       "max_selected": 3,
       "options": [
-        {
-          "value": "writing",
-          "label": "Wording and writing style"
-        },
-        {
-          "value": "charts",
-          "label": "Charts and data presentation"
-        },
-        {
-          "value": "layout",
-          "label": "Layout, typography, or colors"
-        },
-        {
-          "value": "images",
-          "label": "Images or illustrations"
-        },
-        {
-          "value": "interactions",
-          "label": "Interactions or navigation"
-        },
-        {
-          "value": "errors",
-          "label": "Errors or inconsistencies"
-        },
-        {
-          "value": "gut_feeling",
-          "label": "Gut feeling"
-        },
-        {
-          "value": "other",
-          "label": "Other"
-        }
+        {"value": "writing", "label": "Wording and writing style"},
+        {"value": "charts", "label": "Charts and data presentation"},
+        {"value": "layout", "label": "Layout, typography, or colors"},
+        {"value": "images", "label": "Images or illustrations"},
+        {"value": "interactions", "label": "Interactions or navigation"},
+        {"value": "errors", "label": "Errors or inconsistencies"},
+        {"value": "gut_feeling", "label": "Gut feeling"},
+        {"value": "other", "label": "Other"}
       ],
       "required_unless": {
         "question_id": "technical_issue",
         "value": "unable"
       }
+    }
+  ],
+  "closing": [
+    {
+      "id": "can_tell_post",
+      "type": "scale",
+      "prompt": "I can reliably tell whether a website was made with AI.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Strongly disagree",
+      "max_label": "Strongly agree"
+    },
+    {
+      "id": "reliable_signs",
+      "type": "multi",
+      "prompt": "Overall, which features were the most reliable signs of AI?",
+      "help": "Choose up to 3.",
+      "options": "features",
+      "max_selected": 3
+    },
+    {
+      "id": "difficulty",
+      "type": "scale",
+      "prompt": "How hard was it to judge these websites?",
+      "min": 1,
+      "max": 5,
+      "min_label": "Very easy",
+      "max_label": "Very hard"
+    },
+    {
+      "id": "ai_vs_human",
+      "type": "single",
+      "prompt": "Do you think an AI could judge \"AI-ness\" better than a person?",
+      "options": [
+        {"value": "worse", "label": "Worse"},
+        {"value": "same", "label": "About the same"},
+        {"value": "better", "label": "Better"},
+        {"value": "not_sure", "label": "Not sure"}
+      ]
     }
   ]
 }

@@ -7,6 +7,7 @@ const TABLES = [
   ["sessions", "Sessions"],
   ["site_visits", "Time per site"],
   ["projects", "Project IDs and versions"],
+  ["marks", "Marked spots (one row per click)"],
 ];
 
 function renderExports() {

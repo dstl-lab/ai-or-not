@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 
 from aiornot.app import create_app
 from aiornot.config import ROOT
+from conftest import BACKGROUND, FULL
 
 
 @pytest.fixture
@@ -32,15 +33,23 @@ def study(paths):
 def start(study, **extra):
     res = study.post("/api/sessions", json={"participant_id": "P01", "cohort": "dsc106", **extra})
     assert res.status_code == 201, res.text
-    return res.json()["id"]
+    sid = res.json()["id"]
+    data = study.get(f"/api/sessions/{sid}").json()
+    if data.get("background"):
+        saved = study.put(
+            f"/api/sessions/{sid}/survey/background/answers", json={"answers": BACKGROUND})
+        assert saved.status_code == 200, saved.text
+    return sid
 
 
 def review_all(study, sid):
     data = study.get(f"/api/sessions/{sid}").json()
+    question_ids = {q["id"] for q in data["questions"]}
+    answers = FULL if "ai_marks" in question_ids else {
+        "ai_appearance": 3, "seen_before": "no", "technical_issue": "no"}
     for site in data["sites"]:
         base = f"/api/sessions/{sid}/sites/{site['id']}"
-        assert study.put(base + "/answers", json={"answers": {
-            "ai_appearance": 3, "seen_before": "no", "technical_issue": "no"}}).status_code == 200
+        assert study.put(base + "/answers", json={"answers": answers}).status_code == 200
         assert study.post(base + "/complete").status_code == 200
     return data
 

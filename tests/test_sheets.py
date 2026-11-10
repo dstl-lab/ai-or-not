@@ -1,4 +1,4 @@
-from conftest import FULL
+from conftest import FULL, start
 
 from aiornot.sheets import parse_spreadsheet_id, row_from_range, save_link
 from aiornot.sheets import GwsError
@@ -13,9 +13,7 @@ def finish_site(client, sid, answers=FULL):
 
 
 def new_session(client, pid="P01"):
-    res = client.post("/api/sessions", json={"participant_id": pid, "cohort": "dsc106"})
-    assert res.status_code == 201, res.text
-    return res.json()["id"]
+    return start(client, pid)
 
 
 def test_nothing_syncs_until_a_sheet_is_linked(client, gws):
@@ -40,16 +38,18 @@ def test_completed_site_is_appended_then_updated_in_place(client, gws, paths):
     row = gws.calls[2][2]["values"][0]
     assert header[:3] == ["synced_at", "participant_id", "session_id"]
     assert row[header.index("participant_id")] == "P01"
-    assert row[header.index("cues")] == "gradients; emoji_icons"
+    assert row[header.index("ai_marks__count")] == 2
+    assert row[header.index("feature_rating__gradients")] == 9
+    assert row[header.index("feature_rating__charts")] == "NA"
     assert db.unsynced_visits() == []
 
     # An edit after completion rewrites the same row rather than adding a new one.
-    client.put(f"/api/sessions/{sid}/sites/{site}/answers", json={"answers": {"confidence": 1}})
+    client.put(f"/api/sessions/{sid}/sites/{site}/answers", json={"answers": {"polish": 1}})
     assert db.unsynced_visits() == [(sid, site)]
     sync.sync_one(sid, site)
     last = gws.calls[-1]
     assert last[0] == "update" and last[1]["range"] == "responses!A2"
-    assert last[2]["values"][0][header.index("confidence")] == 1
+    assert last[2]["values"][0][header.index("polish")] == 1
 
 
 def test_failures_are_recorded_and_left_pending(client, gws, paths):
@@ -82,7 +82,7 @@ def test_sync_finds_row_after_rows_move(client, gws, paths):
     other = list(gws.values[1])
     other[2] = "another-session"
     gws.values.insert(1, other)
-    client.put(f"/api/sessions/{sid}/sites/{site}/answers", json={"answers": {"confidence": 1}})
+    client.put(f"/api/sessions/{sid}/sites/{site}/answers", json={"answers": {"polish": 1}})
     sync.sync_one(sid, site)
     assert gws.calls[-1][1]["range"] == "responses!A3"
     assert gws.values[1] == other

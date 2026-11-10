@@ -67,6 +67,18 @@ For a quick internal trial, you can temporarily lower `sites_per_session` in
 list does not need to change. Excluding projects at setup requires enough eligible projects
 to fill the configured session size.
 
+1. Start the server (`uv run aiornot serve`) and check that the laptop is online. The sites load
+   D3 and fonts from the internet.
+2. **Do a practice run first:** enter any ID, tick *Practice run*, and click through a site or two.
+   Practice sessions are flagged and left out of exports.
+3. Enter the participant's ID (e.g. `P01`; no names) and click **Start session**. Hand over the laptop.
+4. The participant answers a few background questions, then explores each site for about 4–5
+   minutes and answers the questions. After the last site come a few closing questions. **Next** unlocks
+   once every question for that site is answered. They can go back to earlier sites and change
+   answers until they click **Finish** on the last site.
+5. Open **Researcher dashboard** (http://localhost:8000/admin) to watch progress, check the Google
+   Sheet sync, and download CSVs.
+
 ## Researcher setup and assignment
 
 The setup form records three background labels: `lower_division`, `dsc106`, and
@@ -163,7 +175,44 @@ across laptops. Collect databases/exports separately and use IDs unique across c
 
 ## Commands and layout
 
-| Command | Purpose |
+Each laptop keeps its own `data/study.db`. To keep things combined:
+
+- Link every laptop to the **same** Google Sheet (above). Rows from all laptops land there
+  together, each tagged with its participant and session id.
+- Give participants IDs that are unique across laptops (e.g. `A01…` on one, `B01…` on the other).
+- For the full data (including answer-change history), export CSVs from each laptop
+  (`uv run aiornot export`) or collect each `data/study.db`.
+
+## Backing up the websites
+
+The sites are downloaded from their authors' GitHub repos. If an author deletes a repo, it can't
+be downloaded again. Once all 10 are downloaded, zip the `mirror/` folder and keep it with the
+lab's files. Unzipping it into a fresh checkout skips the download, and `uv run aiornot check`
+confirms the copies match the pinned versions.
+
+## Changing the study
+
+| To change… | Edit | Then |
+|---|---|---|
+| The questions | `config/questions.json` | restart the server |
+| Which sites, or their order | `study_sites` in `config/sites.json` (ids from its `pool`) | `uv run aiornot mirror`, restart |
+| Refresh sites to their authors' latest version | — | `uv run aiornot mirror --update` |
+
+Question types: `boolean`, `single` (multiple choice), `multi` (multi-select), `scale` (e.g. 1–5).
+Each session records the question and site versions it used, so changes mid-study stay traceable.
+Avoid renaming option `value`s after data collection starts. Labels are safe to reword.
+
+## Data and analysis
+
+- **Dashboard → Download data**, or `uv run aiornot export`, writes five CSV tables, including `marks.csv` (every spot clicked on a website)
+  (described in [docs/data-dictionary.md](docs/data-dictionary.md)).
+- For pandas: `uv run --group analysis python -m analysis.summary` prints a first-look summary,
+  and `analysis/load.py` loads every table as a DataFrame.
+- Back up `data/study.db` after each session day. It's the complete record, including every answer change.
+
+## Commands
+
+| Command | What it does |
 |---|---|
 | `uv run aiornot serve` | Start locally; supports `--no-browser` and `--port 8001` |
 | `uv run aiornot check` | Validate config and check mirrored project commits |

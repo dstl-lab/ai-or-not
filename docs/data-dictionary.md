@@ -36,12 +36,15 @@ One row per session × project that the reviewer reached. In addition to shared 
 | `followup_seconds_on_site` | Visible-tab time during final questions, separate from initial review |
 | One column per question ID | Latest answer; booleans are `TRUE`/`FALSE`, multi-selects are `; `-separated, annotations are JSON |
 | `<question_id>__<option>` | Multi-select indicator: 1 selected, 0 unselected, blank if that question is unanswered |
+| `feature_rating__<feature>` | The 0–10 grid, one column per feature; `NA` = participant chose N/A |
+| `ai_marks` | Short list of the spots clicked on the site (`1. Heading: … \| 2. Chart or graphic`), or `none` |
+| `ai_marks__count` | Number of spots clicked (0 if they ticked "Nothing feels AI-generated") |
 
 Timing is approximate browser-reported time, not gaze or interaction measurement. Hidden
 tabs do not accrue time; a crash or failed timing report can lose time. The five-minute
 review target is guidance rather than an enforced cutoff.
 
-## Current questionnaire: `reviewer-pilot-v1`
+## Current questionnaire: `phd-reviewer-v1`
 
 Three questions appear on every initial review. Two fields appear on each of the two
 selected final webpages: optional annotations and the cue checklist.
@@ -128,6 +131,10 @@ response row; the clear event remains in SQLite's history.
 
 ## `sessions.csv`
 
+`session_id`, `participant_id`, `practice`, `started_at`, `finished_at`, `sites_completed`,
+`total_seconds`, `questions_version`, `sites_version`, `user_agent` (browser), `screen` (resolution),
+then one column per background and closing question (see below).
+
 One row per session. Shared session fields plus:
 
 | Column | Meaning |
@@ -139,12 +146,72 @@ One row per session. Shared session fields plus:
 | `followup_started_at` | When the final-question stage began and initial ratings locked |
 | `user_agent`, `screen` | Browser information and reported screen resolution |
 
+## `marks.csv`
+
+One row per spot a participant clicked on a website.
+
+`participant_id`, `session_id`, `practice`, `site_position`, `site_id`, `site_title`, plus:
+
+| Column | Meaning |
+|---|---|
+| `question_id`, `mark_number` | Which question (`ai_marks`) and the mark's number as shown to the participant (1, 2, …) |
+| `page` | Page within the site (blank = the site's first page) |
+| `kind` | Plain-language type: Heading, Text, Chart or graphic, Button, Link, Image, Navigation, Section, Whole page |
+| `tag` | HTML/SVG element name (`h2`, `p`, `rect`, `canvas`, …) |
+| `text` | First 120 characters of the element's text, if any |
+| `selector` | CSS path to the element. The sites are frozen copies, so `document.querySelector(selector)` finds the same element for every participant |
+| `x`, `y` | Where they clicked, in pixels from the top-left of the whole page |
+| `box_x`, `box_y`, `box_w`, `box_h` | The clicked element's position and size on the page |
+| `scroll_y`, `viewport_w`, `viewport_h` | How far down they had scrolled and the size of the website area at the time |
+| `created_at` | When the spot was marked (browser clock) |
+
+Exact pixel positions depend on screen size, so compare marks across
+participants by `selector` (or by which section contains it) rather than by pixels.
+
+
 ## `site_visits.csv`
 
 One row per session × reached project. Contains shared fields, `site_title`, `site_award`,
 all six initial/final timing fields described above, and `revision` (the answer-change
 revision used to identify pending Sheet updates). Unreached assigned projects do not appear;
 their assignments remain in SQLite.
+
+## Question reference (`config/questions.json`, version `phd-reviewer-v1`)
+
+The feature list is defined once (`option_lists.features`) and shared by `feature_rating`,
+`top_ai_feature` and `reliable_signs`, so the same list can be given to the AI
+rater: `color_scheme` (Colors), `gradients`, `typography` (Fonts), `emoji_icons`, `buttons`
+(Buttons and hover effects), `layout` (Layout and spacing), `animations`, `charts`, `writing`,
+`navigation`.
+
+### Background: once, before the first website (in `sessions.csv`)
+
+| id | Type | Prompt | Stored values |
+|---|---|---|---|
+| `field` | single | What is your field or PhD program? | `cs`, `data_science`, `cogsci`, `design_hci`, `other` |
+| `phd_year` | single | What year of your PhD are you in? | `y1`, `y2`, `y3`, `y4`, `y5plus` |
+| `build_experience` | single | How much experience do you have building websites or data visualizations? | `none`, `a_little`, `moderate`, `a_lot` |
+| `taught_course` | boolean | Have you taught or TA'd a course like DSC 106? | true / false |
+| `ai_use_code` | single | How often do you use AI tools … to write code? | `never`, `monthly`, `weekly`, `daily` |
+| `ai_use_design` | single | How often do you use AI tools for design or writing? | `never`, `monthly`, `weekly`, `daily` |
+| `can_tell_pre` | scale 1–5 | I can reliably tell whether a website was made with AI. | 1 strongly disagree – 5 strongly agree |
+| `ai_acceptable` | scale 1–5 | Using AI to build a course project is acceptable. | 1–5 |
+| `ai_less_valuable` | scale 1–5 | Work made with AI help is less valuable than work made without it. | 1–5 |
+
+### Per website (in `responses_wide.csv` / `responses_long.csv`)
+
+| id | Type | Prompt | Stored values |
+|---|---|---|---|
+| `ai_marks` | marks (click on the site) | Click the parts of the website that feel AI-generated. | list of marks (any number; see `marks.csv`), or `"none"` |
+| `feature_rating` | grid 0–10 + N/A | Rate how AI-generated each feature looks. | `{feature: 0–10 or "na"}`; 0 human-made – 10 AI-generated |
+| `top_ai_feature` | single | Which feature looks most AI-generated? | a feature, or `none` |
+| `ai_extent` | single | How much of this site did AI build? | `none`, `a_little`, `about_half`, `most`, `nearly_all` |
+| `design_generic` | scale 1–5 | The design looks template-like. | 1 disagree – 5 agree |
+| `writing_ai` | scale 1–5 | The text sounds AI-written. | 1 disagree – 5 agree |
+| `polish` | scale 1–5 | How polished is this site? | 1 rough – 5 polished |
+| `quality` | scale 1–5 | How good is this project overall? | 1 poor – 5 excellent |
+| `ai_changes_view` | single | Would AI use change your view of its quality? | `lower`, `no_change`, `higher` |
+| `seen_before` | single | Have you seen this site before? | `no`, `yes_seen`, `yes_made`, `unsure` |
 
 ## `projects.csv`
 
@@ -160,9 +227,18 @@ in several configurations. Join creator and reviewer records using `site_id` + `
 |---|---|
 | `sessions` | Session fields, assigned `site_order`, `followup_order`, and JSON snapshots of question/project definitions |
 | `site_visits` | Every assigned project, its actual position, initial/final timing, and revision |
-| `responses` | Latest JSON answer per session × project × question |
+| `responses` | Latest JSON answer per session × project × question; background and closing use `_background` and `_closing` |
 | `response_history` | Append-only answer-change history; NULL marks a cleared answer |
 | `sheet_rows` | Last synced revision, row reference, and sync errors per session × project |
+
+### Closing: once, after the last website (in `sessions.csv`)
+
+| id | Type | Prompt | Stored values |
+|---|---|---|---|
+| `can_tell_post` | scale 1–5 | I can reliably tell whether a website was made with AI. (repeat of `can_tell_pre`) | 1–5 |
+| `reliable_signs` | multi (1–3) | Overall, which features were the most reliable signs of AI? | up to 3 features |
+| `difficulty` | scale 1–5 | How hard was it to judge these websites? | 1 very easy – 5 very hard |
+| `ai_vs_human` | single | Do you think an AI could judge "AI-ness" better than a person? | `worse`, `same`, `better`, `not_sure` |
 
 Old databases are migrated without deleting responses. Existing sessions without snapshots
 fall back to current definitions during export: their original prompts, removed option types,
