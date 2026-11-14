@@ -127,6 +127,74 @@ characters. No authorship verdict, no probability, no score, no counts (counts
 are derived by code from the arrays). Put the main limits in
 `major_limitations`.
 
+## Study questionnaire
+
+`study_questionnaire` answers the human study's per-website questions
+(`assets/study-questions.json`, copied word for word from the study platform),
+so the audit can be read next to the participants' answers. Fill it after the
+rest of the audit; it never changes the findings.
+
+```json
+"study_questionnaire": {
+  "questionnaire_version": "phd-reviewer-v1",
+  "basis": "which parts of this audit the answers draw on, and what was not seen",
+  "answers": {
+    "ai_appearance": {"value": 3, "reason": "…", "refs": [{"kind": "finding", "id": "F001"}]},
+    "...": "one entry for every question"
+  }
+}
+```
+
+Every answer is `{"value", "reason", "refs"}`: the value in the participants'
+format, one or two sentences on why, and what it rests on. `refs` kinds are
+`finding`, `exception`, `quality`, `candidate` (ids in this audit) and
+`screenshot`, `text`, `interaction`, `dom`, `region`, `route` (ids in the
+bundle) **(checked)**.
+
+| Question | `value` |
+|---|---|
+| `ai_appearance` | 1-5 (1 Not at all, 5 Extremely AI-generated in appearance) |
+| `ai_marks` | `"none"`, or a list of marks: `mark_number` (1, 2, … in order), `page` (a captured route), `kind` (Heading, Text, Chart or graphic, Button, Link, Image, Navigation, Section, Whole page), `tag`, `text` (first characters of the element's text, or empty), `selector` (from `dom_elements`), `element_id` (or null), plus a `reason` and `refs` per mark |
+| `feature_rating` | an object with all ten features (`color_scheme`, `gradients`, `typography`, `emoji_icons`, `buttons`, `layout`, `animations`, `charts`, `writing`, `navigation`), each 0-10 (0 Human-made, 10 AI-generated) or `"na"`; plus `rows`, one `{feature, reason, refs}` per feature |
+| `top_ai_feature` | one of the ten features, or `"none"` |
+| `ai_extent` | `none`, `a_little`, `about_half`, `most`, `nearly_all` |
+| `design_generic`, `writing_ai`, `polish`, `quality` | 1-5 with the study's end labels |
+| `technical_issue` | `no`, `some`, `unable` |
+
+How to answer:
+
+- **Impressions, grounded in the audit.** Rate how the site comes across, as a
+  careful participant would, from what this audit found: accepted findings and
+  their slop-association levels push ratings up, contextual exceptions and
+  specific, coherent content pull them down, and quality-only defects are not
+  AI cues by themselves. Say what a rating rests on; never state a
+  probability or claim to know how the site was made.
+- **The ten features and the codebook** (a guide for grounding, not a formula):
+  colors, gradients, fonts → VIS-01, VIS-02, VIS-03; emoji/icons → VIS-03;
+  buttons and hover effects → INT-01, MOT-01; layout and spacing → LAY-01,
+  LAY-02, DAT-04; animations → MOT-01; charts → DAT-01 to DAT-04; writing →
+  TXT-01, TXT-02, SUB-01, SUB-03; navigation → LAY-02, INT-01, INT-02.
+- **`na` and `null` are different.** `na` means the site does not have that
+  feature (as on the participants' form). `null` means the evidence cannot
+  support an answer, for example colors under a text-only profile; say why in
+  the reason. `technical_issue` is never null.
+- **Marks** are the spots you would click: captured elements only, numbered
+  in order, on the route where they were captured **(checked)**. Use `"none"`
+  when nothing feels AI-generated, as participants may.
+- **`top_ai_feature`** is one of the highest-rated features in the grid, never
+  one rated `na` **(checked)**; `"none"` fits when nothing stands out.
+- **`technical_issue`** comes from the capture: `no` when every state loaded
+  and nothing recorded failed; `some` when a page, state, or recorded
+  interaction failed or loaded partially but the site could still be judged;
+  `unable` when the evidence is unusable (then the audit status is
+  `insufficient_evidence` and `ai_appearance` is null, as participants leave
+  it blank).
+
+Not asked of the auditor: `ai_changes_view` (about the rater's own values),
+`seen_before`, and the follow-up `annotations` and `cues`.
+`scripts/export_study_csv.py` writes the answers as `responses_wide.csv` and
+`marks.csv` rows in the study export's columns, plus a reasons file.
+
 ## Report
 
 The human-readable report is generated from the JSON by

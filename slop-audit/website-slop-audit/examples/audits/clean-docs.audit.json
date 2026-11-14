@@ -170,5 +170,235 @@
       "Interaction and source checks were not possible",
       "Synthetic development fixture"
     ]
+  },
+  "study_questionnaire": {
+    "questionnaire_version": "phd-reviewer-v1",
+    "basis": "Formed from this audit: zero findings or exceptions, specific technical content in the text, and one desktop screenshot of a conventional documentation layout; no interactions or source. A perceived impression, not knowledge of how the page was made.",
+    "answers": {
+      "ai_appearance": {
+        "value": 1,
+        "reason": "Nothing in the assessed scope fits a slop pattern; the content is specific and the layout matches its job.",
+        "refs": [
+          {
+            "kind": "screenshot",
+            "id": "A01"
+          },
+          {
+            "kind": "text",
+            "id": "T006"
+          }
+        ]
+      },
+      "ai_marks": {
+        "value": "none",
+        "reason": "The audit located no slop-associated cue to point to.",
+        "refs": []
+      },
+      "feature_rating": {
+        "value": {
+          "color_scheme": 1,
+          "gradients": "na",
+          "typography": 1,
+          "emoji_icons": "na",
+          "buttons": "na",
+          "layout": 1,
+          "animations": "na",
+          "charts": "na",
+          "writing": 1,
+          "navigation": 2
+        },
+        "reason": "Every present feature is conventional for documentation and specific to the tool.",
+        "refs": [
+          {
+            "kind": "screenshot",
+            "id": "A01"
+          }
+        ],
+        "rows": [
+          {
+            "feature": "color_scheme",
+            "reason": "Plain documentation colors.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "gradients",
+            "reason": "No gradients.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "typography",
+            "reason": "Standard body and monospace type for code.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "emoji_icons",
+            "reason": "No emoji or icons.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "buttons",
+            "reason": "No buttons.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "layout",
+            "reason": "Sidebar, body, and options table: the expected shape of reference documentation.",
+            "refs": [
+              {
+                "kind": "region",
+                "id": "R01"
+              },
+              {
+                "kind": "region",
+                "id": "R03"
+              }
+            ]
+          },
+          {
+            "feature": "animations",
+            "reason": "No animation.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "charts",
+            "reason": "No charts.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "writing",
+            "reason": "Real flags, defaults, file formats, and exit codes.",
+            "refs": [
+              {
+                "kind": "text",
+                "id": "T016"
+              }
+            ]
+          },
+          {
+            "feature": "navigation",
+            "reason": "A standard documentation sidebar; conventional, and it fits.",
+            "refs": [
+              {
+                "kind": "region",
+                "id": "R01"
+              }
+            ]
+          }
+        ]
+      },
+      "top_ai_feature": {
+        "value": "none",
+        "reason": "No feature looks AI-generated; the highest rating is 2 of 10.",
+        "refs": [
+          {
+            "kind": "screenshot",
+            "id": "A01"
+          }
+        ]
+      },
+      "ai_extent": {
+        "value": "none",
+        "reason": "Nothing on the page reads as generated; it is specific throughout.",
+        "refs": [
+          {
+            "kind": "text",
+            "id": "T006"
+          }
+        ]
+      },
+      "design_generic": {
+        "value": 2,
+        "reason": "A conventional documentation layout, but chosen for its job rather than as filler.",
+        "refs": [
+          {
+            "kind": "region",
+            "id": "R01"
+          },
+          {
+            "kind": "region",
+            "id": "R03"
+          }
+        ]
+      },
+      "writing_ai": {
+        "value": 1,
+        "reason": "The text is specific and technical.",
+        "refs": [
+          {
+            "kind": "text",
+            "id": "T016"
+          }
+        ]
+      },
+      "polish": {
+        "value": 3,
+        "reason": "Tidy and functional, without visual refinement.",
+        "refs": [
+          {
+            "kind": "screenshot",
+            "id": "A01"
+          }
+        ]
+      },
+      "quality": {
+        "value": 4,
+        "reason": "Clear, complete reference content for its audience.",
+        "refs": [
+          {
+            "kind": "text",
+            "id": "T006"
+          },
+          {
+            "kind": "region",
+            "id": "R03"
+          }
+        ]
+      },
+      "technical_issue": {
+        "value": "no",
+        "reason": "The page loaded completely and nothing failed during capture.",
+        "refs": [
+          {
+            "kind": "route",
+            "id": "/index.html"
+          }
+        ]
+      }
+    }
   }
 }

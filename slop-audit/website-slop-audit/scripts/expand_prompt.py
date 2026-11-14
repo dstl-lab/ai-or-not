@@ -26,6 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _lib  # noqa: E402
 import build_codebook  # noqa: E402
+import questionnaire  # noqa: E402
 
 FORMAT_VERSION = "website-slop-audit/prompt/0.1"
 CONDITION = "frozen-skill"
@@ -160,6 +161,13 @@ def skill_instructions(profile_id):
         render_codebook_part(profile_id).rstrip(),
         "",
         contract.rstrip(),
+        "",
+        "### The study's questions, verbatim",
+        "",
+        questionnaire.render_for_prompt().rstrip(),
+        "",
+        f"Also fill study_questionnaire: questionnaire_version \"{questionnaire.load()['questionnaire_version']}\" and an answer "
+        f"to each of {', '.join(questionnaire.question_ids())}, in the participants' formats (see Study questionnaire above).",
     ])
 
 
@@ -168,6 +176,7 @@ def input_hashes(extra=()):
     base = _lib.SKILL_ROOT.parent
     files = [_lib.SKILL_ROOT / p for p in ("SKILL.md", "assets/codebook.json", "assets/profiles.json",
                                             "references/output-contract.md", "schemas/audit.schema.json",
+                                            "assets/study-questions.json", "scripts/questionnaire.py",
                                             "scripts/expand_prompt.py", "scripts/build_codebook.py")]
     hashes = {}
     for f in [*files, *extra]:
@@ -197,6 +206,8 @@ def build_package(bundle_dir, profile_id, out_dir, max_chars=None, condition=CON
                               "Select views at capture time instead of truncating.")
     if not any(all(m["modalities"][x] for x in req) for req in prof["requires_any"]):
         raise _lib.UsageError(f"bundle lacks the evidence profile {profile_id} needs (one of {prof['requires_any']})")
+    # The study questionnaire is part of the skill's instructions (Part 2); baselines pass their own instructions,
+    # so the schema, evidence, and response parts stay byte-identical across conditions.
     instructions = instructions if instructions is not None else skill_instructions(profile_id)
     prompt = build_prompt(bundle, profile_id, instructions, condition)
     if max_chars is not None and len(prompt) > max_chars:

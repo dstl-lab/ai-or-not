@@ -21,6 +21,29 @@ impression establishes who or what produced the website.
 
 Claude-specific notes live in [`integrations/claude/`](integrations/claude/), outside the portable core.
 
+## Answers to the human study's questions
+
+Besides the audit, the skill answers the PhD study's per-website questions
+(Steven's version `phd-reviewer-v1` in dstl-lab/ai-or-not PR #6, frozen word
+for word in [`assets/study-questions.json`](website-slop-audit/assets/study-questions.json)):
+`ai_appearance`, `ai_marks`, `feature_rating` (0–10 per feature, or N/A),
+`top_ai_feature`, `ai_extent`, `design_generic`, `writing_ai`, `polish`,
+`quality`, and `technical_issue`. The answers use the participants' formats,
+each with a short reason and the audit or bundle ids it rests on. They are
+perceived impressions formed from the audit, not knowledge of how a site was
+made. They appear in `audit.json` (`study_questionnaire`), at the top of the
+report, and as CSV files in the study export's columns:
+
+```bash
+python website-slop-audit/scripts/export_study_csv.py AUDIT.json --bundle BUNDLE --out answers/ --site-id breathing-smoke --rater anthropic/MODEL --append
+```
+
+`--append` collects several sites into one `responses_wide.csv` and `marks.csv`;
+`questionnaire_reasons.csv` holds every reason. Not answered: `ai_changes_view`,
+`seen_before`, and the follow-up `annotations` and `cues`. When the study's
+wording changes, refresh the frozen copy with
+`website-slop-audit/scripts/sync_study_questions.py`.
+
 ## Shortest commands
 
 From `slop-audit/website-slop-audit/` (Python 3.11+, standard library only):
@@ -38,6 +61,7 @@ python scripts/import_run.py --raw reply.txt --package pkg/ --bundle BUNDLE --co
   --provider PROVIDER --model-id MODEL --access-path "manual chat" --out runs/
 python scripts/validate_audit.py runs/RUN_ID/audit.json --bundle BUNDLE
 python scripts/render_report.py runs/RUN_ID/audit.json --bundle BUNDLE --out report.html
+python scripts/export_study_csv.py runs/RUN_ID/audit.json --bundle BUNDLE --out answers/ --append   # study-format CSVs
 
 # score saved responses against human annotations
 python scripts/score_benchmark.py --runs runs/ --annotations annotations/ --bundles bundles/ --out scores/
@@ -60,7 +84,8 @@ Verified in this workspace (2026-11-08):
 
 | Component | Status |
 |---|---|
-| Schemas, bundle validator, audit validator, codebook generator | Working; 144 tests pass, 1 opt-in live test skipped by default |
+| Schemas, bundle validator, audit validator, codebook generator | Working; 175 tests pass, 1 opt-in live test skipped by default |
+| Study questionnaire (10 per-website questions, `phd-reviewer-v1`): schema, checks, report section, prompt, CSV export | Working on the worked examples; real model check pending |
 | Canonical prompt expansion with hashes, budgets, and freezing | Working; deterministic bytes verified |
 | Report renderer (HTML and Markdown) | Working; escaping and local image paths tested |
 | Run import (manual output path) and offline scorer | Working; known-answer tests for matching, undefined metrics, scope, repeats, bootstrap |

@@ -25,6 +25,7 @@ import render_report  # noqa: E402
 import validate_audit  # noqa: E402
 
 RUBRIC = _lib.load_codebook()["rubric_version"]
+QUESTIONNAIRE = _lib.load_json(SKILL / "assets" / "study-questions.json")["questionnaire_version"]
 DEV = {"annotator_id": "dev-1", "role": "developer",
        "expertise": {"design_years": None, "visualization_years": None, "web_development_years": None,
                      "relevant_training": ["tool developer; wrote the fixtures"], "notes": "not an independent annotator"}}
@@ -171,6 +172,19 @@ def build_annotations():
     return sets
 
 
+def qref(kind, rid):
+    return {"kind": kind, "id": rid}
+
+
+def answer(value, reason, *refs):
+    """One answer to a study question: the value in the participants' format, a short reason, and what it rests on."""
+    return {"value": value, "reason": reason, "refs": list(refs)}
+
+
+def element(bx, selector):
+    return next(e for e in bx.b.elements.values() if e["selector"] == selector)
+
+
 def example_audits():
     """Worked examples use fixtures that no development eval case uses, so evals cannot copy them."""
     ex = SKILL / "examples"
@@ -232,6 +246,42 @@ def example_audits():
         "summary": {"text": "Two substance problems: a literal placeholder caption under the main chart, and a headline statistic (42% faster) that the chart's own values do not support. Typography and palette are plain and showed no default-package pattern. The byline was masked for blinding.",
                     "major_limitations": ["Single desktop screenshot", "No interactions or source", "Synthetic development fixture"]},
     }
+    cap_el, stat_el = element(s, "#chart-caption"), element(s, "#stat-strip > div:nth-of-type(2) > b")
+    audits[s.name]["study_questionnaire"] = {
+        "questionnaire_version": QUESTIONNAIRE,
+        "basis": "Formed from this audit: two findings (F001 placeholder caption, F002 unsupported headline statistic), the plain palette and type seen in A01, and coverage limited to one desktop screenshot with text and DOM, no interactions or source. A perceived impression; the page alone cannot show who or what made it.",
+        "answers": {
+            "ai_appearance": answer(3, "The placeholder caption and the unsupported 42% read as unattended scaffolding, but the plain, specific rest of the page pulls the impression down to moderate.", qref("finding", "F001"), qref("finding", "F002"), qref("screenshot", "A01")),
+            "ai_marks": answer([
+                {"mark_number": 1, "page": "/index.html", "kind": "Text", "tag": "figcaption", "text": cap["text"][:120], "selector": cap_el["selector"],
+                 "element_id": cap_el["element_id"], "reason": "Literal template text where the chart's takeaway belongs.", "refs": [qref("finding", "F001"), qref("text", cap["span_id"])]},
+                {"mark_number": 2, "page": "/index.html", "kind": "Text", "tag": "b", "text": stat["text"][:120], "selector": stat_el["selector"],
+                 "element_id": stat_el["element_id"], "reason": "A headline number the chart's own values do not support.", "refs": [qref("finding", "F002"), qref("text", stat["span_id"])]}],
+                "The two places the audit located a slop-associated cue.", qref("finding", "F001"), qref("finding", "F002")),
+            "feature_rating": {
+                "value": {"color_scheme": 2, "gradients": "na", "typography": 2, "emoji_icons": "na", "buttons": "na", "layout": 3,
+                          "animations": "na", "charts": 5, "writing": 6, "navigation": "na"},
+                "reason": "Writing and the chart carry the two findings; the visual design is plain.", "refs": [qref("finding", "F001"), qref("finding", "F002")],
+                "rows": [
+                    {"feature": "color_scheme", "reason": "Plain, muted palette with no default-package pattern.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "gradients", "reason": "No gradients in the screenshot or captured styles.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "typography", "reason": "Ordinary type, used consistently; nothing template-like.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "emoji_icons", "reason": "The page has no emoji or icons.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "buttons", "reason": "The page has no buttons.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "layout", "reason": "A stock title, stat strip, and chart sequence; serviceable but familiar.", "refs": [qref("region", "R02"), qref("region", "R03")]},
+                    {"feature": "animations", "reason": "No animation was captured or configured.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "charts", "reason": "The chart is specific, but its caption is a placeholder and the headline number does not match it.", "refs": [qref("finding", "F002"), qref("region", "R03")]},
+                    {"feature": "writing", "reason": "A lorem-ipsum caption asking to be replaced is template text left in place.", "refs": [qref("finding", "F001")]},
+                    {"feature": "navigation", "reason": "A single page with no navigation.", "refs": [qref("screenshot", "A01")]}]},
+            "top_ai_feature": answer("writing", "Writing has the highest rating, because of the placeholder caption.", qref("finding", "F001")),
+            "ai_extent": answer("a_little", "Most of the page reads as specific and hand-assembled; two parts look left on autopilot.", qref("finding", "F001"), qref("finding", "F002")),
+            "design_generic": answer(2, "The visual design is plain rather than template-like.", qref("screenshot", "A01")),
+            "writing_ai": answer(3, "The caption is template text, but the introduction is specific to Oakland's lanes and years.", qref("finding", "F001"), qref("text", cap["span_id"])),
+            "polish": answer(3, "Clean visual presentation, undercut by an unfinished caption.", qref("screenshot", "A01"), qref("finding", "F001")),
+            "quality": answer(2, "The story's takeaway is missing and its headline number is unsupported by its own chart.", qref("finding", "F001"), qref("finding", "F002")),
+            "technical_issue": answer("no", "The page loaded completely and nothing failed during capture.", qref("route", "/index.html")),
+        },
+    }
 
     s = B("clean-docs")
     prof = "multimodal-core"
@@ -253,6 +303,37 @@ def example_audits():
         "findings": [], "contextual_exceptions": [], "quality_observations": [], "exploratory_candidates": [], "untrusted_instructions_observed": [],
         "summary": {"text": "No accepted findings and no candidate cues worth recording as exceptions. The page is specific (real flags, defaults, file formats, and exit codes) and its conventional documentation layout matches its job.",
                     "major_limitations": ["Interaction and source checks were not possible", "Synthetic development fixture"]},
+    }
+    usage, options_head = s.span("S01", "tidyclim convert"), s.span("S01", "Comma-separated GHCN element codes")
+    audits[s.name]["study_questionnaire"] = {
+        "questionnaire_version": QUESTIONNAIRE,
+        "basis": "Formed from this audit: zero findings or exceptions, specific technical content in the text, and one desktop screenshot of a conventional documentation layout; no interactions or source. A perceived impression, not knowledge of how the page was made.",
+        "answers": {
+            "ai_appearance": answer(1, "Nothing in the assessed scope fits a slop pattern; the content is specific and the layout matches its job.", qref("screenshot", "A01"), qref("text", usage["span_id"])),
+            "ai_marks": answer("none", "The audit located no slop-associated cue to point to."),
+            "feature_rating": {
+                "value": {"color_scheme": 1, "gradients": "na", "typography": 1, "emoji_icons": "na", "buttons": "na", "layout": 1,
+                          "animations": "na", "charts": "na", "writing": 1, "navigation": 2},
+                "reason": "Every present feature is conventional for documentation and specific to the tool.", "refs": [qref("screenshot", "A01")],
+                "rows": [
+                    {"feature": "color_scheme", "reason": "Plain documentation colors.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "gradients", "reason": "No gradients.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "typography", "reason": "Standard body and monospace type for code.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "emoji_icons", "reason": "No emoji or icons.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "buttons", "reason": "No buttons.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "layout", "reason": "Sidebar, body, and options table: the expected shape of reference documentation.", "refs": [qref("region", "R01"), qref("region", "R03")]},
+                    {"feature": "animations", "reason": "No animation.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "charts", "reason": "No charts.", "refs": [qref("screenshot", "A01")]},
+                    {"feature": "writing", "reason": "Real flags, defaults, file formats, and exit codes.", "refs": [qref("text", options_head["span_id"])]},
+                    {"feature": "navigation", "reason": "A standard documentation sidebar; conventional, and it fits.", "refs": [qref("region", "R01")]}]},
+            "top_ai_feature": answer("none", "No feature looks AI-generated; the highest rating is 2 of 10.", qref("screenshot", "A01")),
+            "ai_extent": answer("none", "Nothing on the page reads as generated; it is specific throughout.", qref("text", usage["span_id"])),
+            "design_generic": answer(2, "A conventional documentation layout, but chosen for its job rather than as filler.", qref("region", "R01"), qref("region", "R03")),
+            "writing_ai": answer(1, "The text is specific and technical.", qref("text", options_head["span_id"])),
+            "polish": answer(3, "Tidy and functional, without visual refinement.", qref("screenshot", "A01")),
+            "quality": answer(4, "Clear, complete reference content for its audience.", qref("text", usage["span_id"]), qref("region", "R03")),
+            "technical_issue": answer("no", "The page loaded completely and nothing failed during capture.", qref("route", "/index.html")),
+        },
     }
 
     for name, audit in audits.items():
@@ -319,7 +400,8 @@ def reference_audits():
     path = out / "scenario-inconsistency.audit.json"
     path.write_text(json.dumps(audit, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     report = validate_audit.validate(path, s.dir)
-    if not report.ok or report.warnings:
+    # This audit deliberately predates the study questionnaire, so tests keep covering older audits.
+    if not report.ok or [w for w in report.warnings if w[0] != "questionnaire_missing"]:
         report.print()
         raise SystemExit("reference audit is invalid")
 

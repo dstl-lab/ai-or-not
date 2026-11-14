@@ -356,5 +356,305 @@
       "No interactions or source",
       "Synthetic development fixture"
     ]
+  },
+  "study_questionnaire": {
+    "questionnaire_version": "phd-reviewer-v1",
+    "basis": "Formed from this audit: two findings (F001 placeholder caption, F002 unsupported headline statistic), the plain palette and type seen in A01, and coverage limited to one desktop screenshot with text and DOM, no interactions or source. A perceived impression; the page alone cannot show who or what made it.",
+    "answers": {
+      "ai_appearance": {
+        "value": 3,
+        "reason": "The placeholder caption and the unsupported 42% read as unattended scaffolding, but the plain, specific rest of the page pulls the impression down to moderate.",
+        "refs": [
+          {
+            "kind": "finding",
+            "id": "F001"
+          },
+          {
+            "kind": "finding",
+            "id": "F002"
+          },
+          {
+            "kind": "screenshot",
+            "id": "A01"
+          }
+        ]
+      },
+      "ai_marks": {
+        "value": [
+          {
+            "mark_number": 1,
+            "page": "/index.html",
+            "kind": "Text",
+            "tag": "figcaption",
+            "text": "Lorem ipsum dolor sit amet — replace with key insight before publishing.",
+            "selector": "#chart-caption",
+            "element_id": "D004",
+            "reason": "Literal template text where the chart's takeaway belongs.",
+            "refs": [
+              {
+                "kind": "finding",
+                "id": "F001"
+              },
+              {
+                "kind": "text",
+                "id": "T018"
+              }
+            ]
+          },
+          {
+            "mark_number": 2,
+            "page": "/index.html",
+            "kind": "Text",
+            "tag": "b",
+            "text": "42%",
+            "selector": "#stat-strip > div:nth-of-type(2) > b",
+            "element_id": "D010",
+            "reason": "A headline number the chart's own values do not support.",
+            "refs": [
+              {
+                "kind": "finding",
+                "id": "F002"
+              },
+              {
+                "kind": "text",
+                "id": "T006"
+              }
+            ]
+          }
+        ],
+        "reason": "The two places the audit located a slop-associated cue.",
+        "refs": [
+          {
+            "kind": "finding",
+            "id": "F001"
+          },
+          {
+            "kind": "finding",
+            "id": "F002"
+          }
+        ]
+      },
+      "feature_rating": {
+        "value": {
+          "color_scheme": 2,
+          "gradients": "na",
+          "typography": 2,
+          "emoji_icons": "na",
+          "buttons": "na",
+          "layout": 3,
+          "animations": "na",
+          "charts": 5,
+          "writing": 6,
+          "navigation": "na"
+        },
+        "reason": "Writing and the chart carry the two findings; the visual design is plain.",
+        "refs": [
+          {
+            "kind": "finding",
+            "id": "F001"
+          },
+          {
+            "kind": "finding",
+            "id": "F002"
+          }
+        ],
+        "rows": [
+          {
+            "feature": "color_scheme",
+            "reason": "Plain, muted palette with no default-package pattern.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "gradients",
+            "reason": "No gradients in the screenshot or captured styles.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "typography",
+            "reason": "Ordinary type, used consistently; nothing template-like.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "emoji_icons",
+            "reason": "The page has no emoji or icons.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "buttons",
+            "reason": "The page has no buttons.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "layout",
+            "reason": "A stock title, stat strip, and chart sequence; serviceable but familiar.",
+            "refs": [
+              {
+                "kind": "region",
+                "id": "R02"
+              },
+              {
+                "kind": "region",
+                "id": "R03"
+              }
+            ]
+          },
+          {
+            "feature": "animations",
+            "reason": "No animation was captured or configured.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          },
+          {
+            "feature": "charts",
+            "reason": "The chart is specific, but its caption is a placeholder and the headline number does not match it.",
+            "refs": [
+              {
+                "kind": "finding",
+                "id": "F002"
+              },
+              {
+                "kind": "region",
+                "id": "R03"
+              }
+            ]
+          },
+          {
+            "feature": "writing",
+            "reason": "A lorem-ipsum caption asking to be replaced is template text left in place.",
+            "refs": [
+              {
+                "kind": "finding",
+                "id": "F001"
+              }
+            ]
+          },
+          {
+            "feature": "navigation",
+            "reason": "A single page with no navigation.",
+            "refs": [
+              {
+                "kind": "screenshot",
+                "id": "A01"
+              }
+            ]
+          }
+        ]
+      },
+      "top_ai_feature": {
+        "value": "writing",
+        "reason": "Writing has the highest rating, because of the placeholder caption.",
+        "refs": [
+          {
+            "kind": "finding",
+            "id": "F001"
+          }
+        ]
+      },
+      "ai_extent": {
+        "value": "a_little",
+        "reason": "Most of the page reads as specific and hand-assembled; two parts look left on autopilot.",
+        "refs": [
+          {
+            "kind": "finding",
+            "id": "F001"
+          },
+          {
+            "kind": "finding",
+            "id": "F002"
+          }
+        ]
+      },
+      "design_generic": {
+        "value": 2,
+        "reason": "The visual design is plain rather than template-like.",
+        "refs": [
+          {
+            "kind": "screenshot",
+            "id": "A01"
+          }
+        ]
+      },
+      "writing_ai": {
+        "value": 3,
+        "reason": "The caption is template text, but the introduction is specific to Oakland's lanes and years.",
+        "refs": [
+          {
+            "kind": "finding",
+            "id": "F001"
+          },
+          {
+            "kind": "text",
+            "id": "T018"
+          }
+        ]
+      },
+      "polish": {
+        "value": 3,
+        "reason": "Clean visual presentation, undercut by an unfinished caption.",
+        "refs": [
+          {
+            "kind": "screenshot",
+            "id": "A01"
+          },
+          {
+            "kind": "finding",
+            "id": "F001"
+          }
+        ]
+      },
+      "quality": {
+        "value": 2,
+        "reason": "The story's takeaway is missing and its headline number is unsupported by its own chart.",
+        "refs": [
+          {
+            "kind": "finding",
+            "id": "F001"
+          },
+          {
+            "kind": "finding",
+            "id": "F002"
+          }
+        ]
+      },
+      "technical_issue": {
+        "value": "no",
+        "reason": "The page loaded completely and nothing failed during capture.",
+        "refs": [
+          {
+            "kind": "route",
+            "id": "/index.html"
+          }
+        ]
+      }
+    }
   }
 }

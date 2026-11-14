@@ -1,0 +1,218 @@
+{
+  "questionnaire_version": "phd-reviewer-v1",
+  "source": {
+    "repository": "dstl-lab/ai-or-not",
+    "pull_request": 6,
+    "branch": "codex/merge-reviewer-phd",
+    "commit": "b02e48d4786c8856057651df38b830793100eb0f",
+    "path": "config/questions.json",
+    "sha256": "3158f463dd3ef61ee7bc83ef9e1a4cd612c664ed553555af3f2ae65408e4b437",
+    "description": "dstl-lab/ai-or-not pull request #6, config/questions.json at b02e48d"
+  },
+  "_about": "Frozen copy of the human study's per-website questions that the skill answers, copied word for word from the study platform's questions file (see source). Do not edit by hand: rerun scripts/sync_study_questions.py when the study changes. `options` or `rows` naming `features` refer to the feature list below.",
+  "features": [
+    {
+      "value": "color_scheme",
+      "label": "Colors"
+    },
+    {
+      "value": "gradients",
+      "label": "Gradients"
+    },
+    {
+      "value": "typography",
+      "label": "Fonts"
+    },
+    {
+      "value": "emoji_icons",
+      "label": "Emoji/icons"
+    },
+    {
+      "value": "buttons",
+      "label": "Buttons and hover effects"
+    },
+    {
+      "value": "layout",
+      "label": "Layout and spacing"
+    },
+    {
+      "value": "animations",
+      "label": "Animations"
+    },
+    {
+      "value": "charts",
+      "label": "Charts"
+    },
+    {
+      "value": "writing",
+      "label": "Writing"
+    },
+    {
+      "value": "navigation",
+      "label": "Navigation"
+    }
+  ],
+  "questions": [
+    {
+      "id": "ai_appearance",
+      "type": "scale",
+      "prompt": "Based on your overall impression, how strongly does this website appear AI-generated?",
+      "help": "Rate the impression the website gives you.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Not at all",
+      "max_label": "Extremely",
+      "required_unless": {
+        "question_id": "technical_issue",
+        "value": "unable"
+      }
+    },
+    {
+      "id": "ai_marks",
+      "type": "marks",
+      "prompt": "Click the parts of the website that feel AI-generated.",
+      "help": "Press Start marking, then click every spot that feels AI-generated.",
+      "none_label": "Nothing on this site feels AI-generated"
+    },
+    {
+      "id": "feature_rating",
+      "type": "grid",
+      "prompt": "Rate how AI-generated each feature looks.",
+      "help": "Choose N/A if the site doesn't have that feature.",
+      "rows": "features",
+      "min": 0,
+      "max": 10,
+      "min_label": "Human-made",
+      "max_label": "AI-generated",
+      "allow_na": true
+    },
+    {
+      "id": "top_ai_feature",
+      "type": "single",
+      "prompt": "Which feature looks most AI-generated?",
+      "options": "features",
+      "extra_options": [
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ]
+    },
+    {
+      "id": "ai_extent",
+      "type": "single",
+      "prompt": "How much of this site did AI build?",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "a_little",
+          "label": "A little"
+        },
+        {
+          "value": "about_half",
+          "label": "About half"
+        },
+        {
+          "value": "most",
+          "label": "Most"
+        },
+        {
+          "value": "nearly_all",
+          "label": "Nearly all"
+        }
+      ]
+    },
+    {
+      "id": "design_generic",
+      "type": "scale",
+      "prompt": "The design looks template-like.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Disagree",
+      "max_label": "Agree"
+    },
+    {
+      "id": "writing_ai",
+      "type": "scale",
+      "prompt": "The text sounds AI-written.",
+      "min": 1,
+      "max": 5,
+      "min_label": "Disagree",
+      "max_label": "Agree"
+    },
+    {
+      "id": "polish",
+      "type": "scale",
+      "prompt": "How polished is this site?",
+      "min": 1,
+      "max": 5,
+      "min_label": "Rough",
+      "max_label": "Polished"
+    },
+    {
+      "id": "quality",
+      "type": "scale",
+      "prompt": "How good is this project overall?",
+      "min": 1,
+      "max": 5,
+      "min_label": "Poor",
+      "max_label": "Excellent"
+    },
+    {
+      "id": "technical_issue",
+      "type": "single",
+      "prompt": "Did a technical problem affect your review?",
+      "options": [
+        {
+          "value": "no",
+          "label": "No"
+        },
+        {
+          "value": "some",
+          "label": "Yes, but I could still evaluate the webpage"
+        },
+        {
+          "value": "unable",
+          "label": "I could not evaluate the webpage"
+        }
+      ],
+      "help": "If you could not evaluate it, you may leave the appearance rating blank."
+    }
+  ],
+  "not_answered": [
+    {
+      "id": "ai_changes_view",
+      "prompt": "Would AI use change your view of its quality?",
+      "reason": "asks about the rater's own values, not the site"
+    },
+    {
+      "id": "seen_before",
+      "prompt": "Had you seen this website before today?",
+      "reason": "not meaningful for a model"
+    },
+    {
+      "id": "annotations",
+      "prompt": "Point to a detail on this webpage.",
+      "reason": "follow-up item asked of participants on two sites; not part of the skill's answers"
+    },
+    {
+      "id": "cues",
+      "prompt": "Which features influenced your judgment?",
+      "reason": "follow-up item asked of participants on two sites; not part of the skill's answers"
+    }
+  ],
+  "mark_kinds": [
+    "Heading",
+    "Text",
+    "Chart or graphic",
+    "Button",
+    "Link",
+    "Image",
+    "Navigation",
+    "Section",
+    "Whole page"
+  ]
+}
