@@ -17,6 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _lib  # noqa: E402
+import questionnaire as study_q  # noqa: E402
 
 EVIDENCE_COLLECTIONS = {
     "screenshot": ("assets", "missing_asset_ref", "screenshot"),
@@ -176,6 +177,7 @@ class AuditCheck:
 
         self.duplicates_and_contradictions()
         self.status()
+        self.questionnaire()
         texts = [a["summary"]["text"]] + [f["slop_association"]["reason"] for f in a["findings"]]
         for t in texts:
             if VERDICT_PATTERNS.search(t):
@@ -297,6 +299,114 @@ class AuditCheck:
                          and _lib.feature_assessable(self.features[fid], self.modalities)]
             if abstained:
                 r.warn("status_overclaims", f"status completed although assessable features were left unassessed: {abstained}")
+
+
+    # --- the human study's questions -------------------------------------------
+
+    def question_refs(self, refs, where):
+        a, b, r = self.a, self.b, self.r
+        audit_ids = {"finding": {f["finding_id"] for f in a["findings"]},
+                     "exception": {x["exception_id"] for x in a["contextual_exceptions"]},
+                     "quality": {q["observation_id"] for q in a["quality_observations"]},
+                     "candidate": {c["candidate_id"] for c in a["exploratory_candidates"]}}
+        bundle_ids = {"screenshot": ("screenshot", b.assets), "text": ("text", b.spans), "interaction": ("interaction", b.events),
+                      "dom": ("dom", b.elements), "region": (None, b.regions), "route": (None, self.routes)}
+        for ref in refs:
+            kind, rid = ref["kind"], ref["id"]
+            if kind in audit_ids:
+                if rid not in audit_ids[kind]:
+                    r.error("missing_questionnaire_ref", f"{where}: cites {kind} {rid!r}, which is not in this audit")
+                continue
+            modality, pool = bundle_ids[kind]
+            if modality and modality not in self.modalities:
+                r.error("modality_unavailable", f"{where}: cites {kind} {rid!r} but that modality is unavailable to this profile")
+            elif rid not in pool:
+                r.error("missing_questionnaire_ref", f"{where}: cites {kind} {rid!r}, which is not in the bundle")
+
+    def capture_problems(self):
+        m = self.b.manifest
+        out = [f"state {s['state_id']} loaded {s['load_status']}" for s in m["states"] if s["load_status"] in ("partial", "failed")]
+        out += [f"interaction {e['event_id']} {e['execution_status']}" for e in m["interactions"] if e["execution_status"] in ("failed", "timed_out")]
+        out += [f"route {c['ref']} {c['status']}" for c in m["coverage"]["routes"] if c["status"] in ("failed", "partial")]
+        return out
+
+    def questionnaire(self):
+        a, b, r = self.a, self.b, self.r
+        sq = a.get("study_questionnaire")
+        if sq is None:
+            r.warn("questionnaire_missing", "no study_questionnaire: the answers to the human study's per-website questions are missing")
+            return
+        study = study_q.load()
+        if sq["questionnaire_version"] != study["questionnaire_version"]:
+            r.error("questionnaire_version_mismatch", f"study_questionnaire answers {sq['questionnaire_version']!r}, but the skill carries "
+                    f"{study['questionnaire_version']!r} (assets/study-questions.json)")
+        self.routes = {s["route"] for s in b.manifest["states"]}
+        ans = sq["answers"]
+        for qid, item in ans.items():
+            self.question_refs(item["refs"], f"study_questionnaire.{qid}")
+
+        feats = [f["value"] for f in study["features"]]
+        rows = ans["feature_rating"]["rows"]
+        if sorted(x["feature"] for x in rows) != sorted(feats):
+            r.error("questionnaire_rows", "study_questionnaire.feature_rating.rows must give each feature exactly once")
+        for x in rows:
+            self.question_refs(x["refs"], f"study_questionnaire.feature_rating[{x['feature']}]")
+        grid = ans["feature_rating"]["value"]
+        numeric = {f: v for f, v in grid.items() if isinstance(v, int)}
+        top = ans["top_ai_feature"]["value"]
+        if top not in (None, "none"):
+            if not isinstance(grid.get(top), int):
+                r.error("top_feature_inconsistent", f"top_ai_feature is {top!r}, but the grid rates it {grid.get(top)!r}")
+            elif grid[top] < max(numeric.values()):
+                higher = sorted(f for f, v in numeric.items() if v > grid[top])
+                r.error("top_feature_inconsistent", f"top_ai_feature is {top!r} ({grid[top]}), but the grid rates {higher} higher")
+        elif top == "none" and numeric and max(numeric.values()) >= 6:
+            r.warn("top_feature_inconsistent", f"top_ai_feature is none although the grid rates a feature {max(numeric.values())} of 10")
+
+        marks = ans["ai_marks"]["value"]
+        if isinstance(marks, list):
+            selectors = b.selectors() if "dom" in self.modalities else set()
+            for i, mk in enumerate(marks, 1):
+                where = f"study_questionnaire.ai_marks[{i}]"
+                if mk["mark_number"] != i:
+                    r.error("questionnaire_marks", f"{where}: marks are numbered 1, 2, … in order; got {mk['mark_number']}")
+                if mk["page"] not in self.routes:
+                    r.error("unknown_route", f"{where}: page {mk['page']!r} is not a captured route")
+                if "dom" not in self.modalities:
+                    r.error("fabricated_selector", f"{where}: a mark needs a captured element, but the bundle has no DOM")
+                elif mk["selector"] not in selectors:
+                    r.error("fabricated_selector", f"{where}: selector {mk['selector']!r} does not appear in captured dom_elements")
+                if mk["element_id"] is not None:
+                    el = b.elements.get(mk["element_id"])
+                    if el is None:
+                        r.error("missing_element_ref", f"{where}: element {mk['element_id']!r} is not in the bundle")
+                    elif el["selector"] != mk["selector"]:
+                        r.error("element_selector_mismatch", f"{where}: element {mk['element_id']} has selector {el['selector']!r}, not {mk['selector']!r}")
+                    elif b.states.get(el["state_id"], {}).get("route") != mk["page"]:
+                        r.error("unknown_route", f"{where}: element {mk['element_id']} is on {b.states[el['state_id']]['route']!r}, not {mk['page']!r}")
+                if mk["text"]:
+                    page_states = {sid for sid, st in b.states.items() if st["route"] == mk["page"]}
+                    needle = _lib.normalize_space(mk["text"])
+                    if not any(needle in _lib.normalize_space(t["text"]) for t in b.spans.values() if t["state_id"] in page_states):
+                        r.warn("mark_text_mismatch", f"{where}: text {mk['text'][:60]!r} is not in any captured text span on {mk['page']!r}")
+                self.question_refs(mk["refs"], where)
+
+        problems = self.capture_problems()
+        issue = ans["technical_issue"]["value"]
+        if issue == "no" and problems:
+            r.warn("technical_issue_understated", f"technical_issue is no, but the capture recorded: {'; '.join(problems[:4])}")
+        if issue == "unable":
+            if a["status"] != "insufficient_evidence":
+                r.warn("technical_issue_overstated", "technical_issue is unable, but the audit status is not insufficient_evidence")
+            if ans["ai_appearance"]["value"] is not None:
+                r.warn("technical_issue_overstated", "technical_issue is unable; the study leaves ai_appearance blank in that case")
+        if "screenshot" not in self.modalities:
+            visual = [f for f in ("color_scheme", "gradients", "emoji_icons", "animations") if isinstance(grid.get(f), int)]
+            if visual:
+                r.warn("rated_without_screenshots", f"feature_rating gives numbers for {visual} without screenshots; say so in their reasons")
+        for text in [sq["basis"]] + [item["reason"] for item in ans.values()]:
+            if VERDICT_PATTERNS.search(text):
+                r.warn("possible_authorship_claim", f"questionnaire text may state an authorship verdict or probability: {text[:120]!r}")
 
 
 def validate(audit_or_path, bundle_dir):

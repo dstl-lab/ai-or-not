@@ -33,8 +33,9 @@ In Codex type `$website-slop-audit URL`; in Gemini CLI, `/website-slop-audit URL
 A script, not the model, captures the site: pages under the URL's folder (up
 to 12), screenshots from one budget of 64, and each safe control clicked once
 (up to 10 per page), frozen into one bundle. The agent then audits the bundle,
-validates the result, and writes `audit.json`, `report.html`, and `report.md`
-to `slop-audit/local-runs/<site>-<time>/` (git-ignored). Options go after the
+validates the result, and writes `audit.json`, `report.html`, `report.md`, and
+the study-format CSV files (below) to `slop-audit/local-runs/<site>-<time>/`
+(git-ignored). Options go after the
 URL: `--single-page`, `--max-pages 3`, `--budget 8`, `--withhold "Name"`.
 
 It needs Python 3.11+ and gstack browse. Setup and per-agent steps are in
@@ -44,6 +45,29 @@ The command is for everyday use. For the controlled comparison with human
 raters and for chat apps, use the step-by-step path below: the bundle the
 command writes can be reused there, because the capture does not depend on
 which model asked for it.
+
+## Answers to the human study's questions
+
+Besides the audit, the skill answers the PhD study's per-website questions
+(Steven's version `phd-reviewer-v1` in dstl-lab/ai-or-not PR #6, frozen word
+for word in [`assets/study-questions.json`](website-slop-audit/assets/study-questions.json)):
+`ai_appearance`, `ai_marks`, `feature_rating` (0–10 per feature, or N/A),
+`top_ai_feature`, `ai_extent`, `design_generic`, `writing_ai`, `polish`,
+`quality`, and `technical_issue`. The answers use the participants' formats,
+each with a short reason and the audit or bundle ids it rests on. They are
+perceived impressions formed from the audit, not knowledge of how a site was
+made. They appear in `audit.json` (`study_questionnaire`), at the top of the
+report, and as CSV files in the study export's columns:
+
+```bash
+python website-slop-audit/scripts/export_study_csv.py AUDIT.json --bundle BUNDLE --out answers/ --site-id breathing-smoke --rater anthropic/MODEL --append
+```
+
+`--append` collects several sites into one `responses_wide.csv` and `marks.csv`;
+`questionnaire_reasons.csv` holds every reason. Not answered: `ai_changes_view`,
+`seen_before`, and the follow-up `annotations` and `cues`. When the study's
+wording changes, refresh the frozen copy with
+`website-slop-audit/scripts/sync_study_questions.py`.
 
 ## Shortest commands (step by step)
 
@@ -65,6 +89,7 @@ python scripts/import_run.py --raw reply.txt --package pkg/ --bundle BUNDLE --co
   --provider PROVIDER --model-id MODEL --access-path "manual chat" --out runs/
 python scripts/validate_audit.py runs/RUN_ID/audit.json --bundle BUNDLE
 python scripts/render_report.py runs/RUN_ID/audit.json --bundle BUNDLE --out report.html
+python scripts/export_study_csv.py runs/RUN_ID/audit.json --bundle BUNDLE --out answers/ --append   # study-format CSVs
 
 # score saved responses against human annotations
 python scripts/score_benchmark.py --runs runs/ --annotations annotations/ --bundles bundles/ --out scores/
@@ -87,7 +112,8 @@ Verified in this workspace (2026-11-08):
 
 | Component | Status |
 |---|---|
-| Schemas, bundle validator, audit validator, codebook generator | Working; 159 tests pass, 2 opt-in live tests skipped by default (both pass with `SLOP_LIVE_CAPTURE=1`) |
+| Schemas, bundle validator, audit validator, codebook generator | Working; 190 tests pass, 2 opt-in live tests skipped by default (both pass with `SLOP_LIVE_CAPTURE=1`) |
+| Study questionnaire (10 per-website questions, `phd-reviewer-v1`): schema, checks, report section, prompt, CSV export | Working on the worked examples; real model check pending |
 | Canonical prompt expansion with hashes, budgets, and freezing | Working; deterministic bytes verified |
 | Report renderer (HTML and Markdown) | Working; escaping and local image paths tested |
 | Run import (manual output path) and offline scorer | Working; known-answer tests for matching, undefined metrics, scope, repeats, bootstrap |

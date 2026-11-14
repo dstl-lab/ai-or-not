@@ -23,13 +23,16 @@ place of the URL.
    them, clicks each safe control once (10 per page at most), and freezes a
    bundle. Expect 1 to 5 minutes. Nothing is typed, submitted, downloaded, or
    followed off-site.
-3. The agent audits the frozen bundle with the codebook, validates its JSON,
-   and renders the report.
-4. It replies with a short summary and the paths.
+3. The agent audits the frozen bundle with the codebook, answers the PhD
+   study's per-website questions from that audit (in the participants'
+   formats, each with a reason), validates its JSON, renders the report, and
+   writes the answers as study-format CSV files.
+4. It replies with a short summary, the study answers, and the paths.
 
 Everything lands in `slop-audit/local-runs/<site>-<time>/`, which git
 ignores: `bundle/` (frozen evidence), `plan.json`, `site.json`,
-`audit.json`, `report.html`, `report.md`.
+`audit.json`, `report.html`, `report.md`, and `responses_wide.csv`,
+`marks.csv`, `questionnaire_reasons.csv`.
 
 Options go after the URL, for example
 `/website-slop-audit https://site.example/ --single-page` or

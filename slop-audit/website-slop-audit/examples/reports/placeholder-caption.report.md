@@ -16,6 +16,43 @@ Two substance problems: a literal placeholder caption under the main chart, and 
 
 These findings identify features that may contribute to a perceived AI-slop impression; they do not establish who or what made the site.
 
+## Study questionnaire
+
+Questionnaire phd-reviewer-v1, the participants' per-website questions in their answer formats. Formed from this audit: two findings (F001 placeholder caption, F002 unsupported headline statistic), the plain palette and type seen in A01, and coverage limited to one desktop screenshot with text and DOM, no interactions or source. A perceived impression; the page alone cannot show who or what made it.
+
+| Question | Answer | Reason | Rests on |
+|---|---|---|---|
+| Based on your overall impression, how strongly does this website appear AI-generated? | 3 (of 1–5: 1 = Not at all, 5 = Extremely) | The placeholder caption and the unsupported 42% read as unattended scaffolding, but the plain, specific rest of the page pulls the impression down to moderate. | finding:F001, finding:F002, screenshot:A01 |
+| Click the parts of the website that feel AI-generated. | 2 mark(s), listed below | The two places the audit located a slop-associated cue. | finding:F001, finding:F002 |
+| Rate how AI-generated each feature looks. | see the feature table below | Writing and the chart carry the two findings; the visual design is plain. | finding:F001, finding:F002 |
+| Which feature looks most AI-generated? | Writing | Writing has the highest rating, because of the placeholder caption. | finding:F001 |
+| How much of this site did AI build? | A little | Most of the page reads as specific and hand-assembled; two parts look left on autopilot. | finding:F001, finding:F002 |
+| The design looks template-like. | 2 (of 1–5: 1 = Disagree, 5 = Agree) | The visual design is plain rather than template-like. | screenshot:A01 |
+| The text sounds AI-written. | 3 (of 1–5: 1 = Disagree, 5 = Agree) | The caption is template text, but the introduction is specific to Oakland's lanes and years. | finding:F001, text:T018 |
+| How polished is this site? | 3 (of 1–5: 1 = Rough, 5 = Polished) | Clean visual presentation, undercut by an unfinished caption. | screenshot:A01, finding:F001 |
+| How good is this project overall? | 2 (of 1–5: 1 = Poor, 5 = Excellent) | The story's takeaway is missing and its headline number is unsupported by its own chart. | finding:F001, finding:F002 |
+| Did a technical problem affect your review? | No | The page loaded completely and nothing failed during capture. | route:/index.html |
+
+Feature ratings (0 = Human-made, 10 = AI-generated; NA = not on the site):
+
+| Feature | Rating | Reason | Rests on |
+|---|---|---|---|
+| Colors | 2 | Plain, muted palette with no default-package pattern. | screenshot:A01 |
+| Gradients | NA | No gradients in the screenshot or captured styles. | screenshot:A01 |
+| Fonts | 2 | Ordinary type, used consistently; nothing template-like. | screenshot:A01 |
+| Emoji/icons | NA | The page has no emoji or icons. | screenshot:A01 |
+| Buttons and hover effects | NA | The page has no buttons. | screenshot:A01 |
+| Layout and spacing | 3 | A stock title, stat strip, and chart sequence; serviceable but familiar. | region:R02, region:R03 |
+| Animations | NA | No animation was captured or configured. | screenshot:A01 |
+| Charts | 5 | The chart is specific, but its caption is a placeholder and the headline number does not match it. | finding:F002, region:R03 |
+| Writing | 6 | A lorem-ipsum caption asking to be replaced is template text left in place. | finding:F001 |
+| Navigation | NA | A single page with no navigation. | screenshot:A01 |
+
+Marked spots:
+
+1. Text on `/index.html` (`#chart-caption`): "Lorem ipsum dolor sit amet — replace with key insight before publishing.". Literal template text where the chart's takeaway belongs.
+2. Text on `/index.html` (`#stat-strip > div:nth-of-type(2) > b`): "42%". A headline number the chart's own values do not support.
+
 ## Findings
 
 ### F001 · SUB-01 Placeholder or unverifiable substance

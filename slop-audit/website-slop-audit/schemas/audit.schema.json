@@ -112,7 +112,8 @@
         "text": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "Bounded, nonprobabilistic description of the pattern and its limits. No authorship verdict, no score."},
         "major_limitations": {"type": "array", "items": {"type": "string", "maxLength": 300}}
       }
-    }
+    },
+    "study_questionnaire": {"$ref": "#/$defs/study_questionnaire", "description": "Optional section (rubric 0.1.1 audits made before it existed stay valid): answers to the human study's per-website questions. See references/output-contract.md, Study questionnaire."}
   },
   "$defs": {
     "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
@@ -263,6 +264,627 @@
         "observation_confidence": {
           "type": "object", "additionalProperties": false, "required": ["level", "reason"],
           "properties": {"level": {"enum": ["high", "medium", "low"]}, "reason": {"$ref": "#/$defs/reason"}}
+        }
+      }
+    },
+    "q_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "description": "What an answer rests on: an item of this audit (finding, exception, quality, candidate) or of the bundle (screenshot, text, interaction, dom, region, route).",
+      "properties": {
+        "kind": {
+          "enum": [
+            "finding",
+            "exception",
+            "quality",
+            "candidate",
+            "screenshot",
+            "text",
+            "interaction",
+            "dom",
+            "region",
+            "route"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        }
+      }
+    },
+    "q_reason": {"type": "string", "minLength": 1, "maxLength": 600, "description": "One or two sentences: why this answer, grounded in the audit. For an unassessed (null) answer, why it could not be answered."},
+    "q_refs": {"type": "array", "maxItems": 20, "items": {"$ref": "#/$defs/q_ref"}},
+    "study_mark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mark_number",
+        "page",
+        "kind",
+        "tag",
+        "text",
+        "selector",
+        "element_id",
+        "reason",
+        "refs"
+      ],
+      "description": "One spot the auditor would click, as a participant does: a captured element on a captured route.",
+      "properties": {
+        "mark_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "page": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "The route (bundle states[].route) the element is on."
+        },
+        "kind": {
+          "enum": [
+            "Heading",
+            "Text",
+            "Chart or graphic",
+            "Button",
+            "Link",
+            "Image",
+            "Navigation",
+            "Section",
+            "Whole page"
+          ]
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "First characters of the element's text, or empty."
+        },
+        "selector": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "A selector from the bundle's dom_elements."
+        },
+        "element_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "$ref": "#/$defs/q_reason"
+        },
+        "refs": {
+          "$ref": "#/$defs/q_refs"
+        }
+      }
+    },
+    "study_questionnaire": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "questionnaire_version",
+        "basis",
+        "answers"
+      ],
+      "description": "Answers to the human study's per-website questions (assets/study-questions.json), in the participants' answer formats. A perceived impression formed from this audit, not knowledge of how the site was made.",
+      "properties": {
+        "questionnaire_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "basis": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800,
+          "description": "How the answers were formed: which parts of the audit and evidence they draw on, and what was not seen."
+        },
+        "answers": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ai_appearance",
+            "ai_marks",
+            "feature_rating",
+            "top_ai_feature",
+            "ai_extent",
+            "design_generic",
+            "writing_ai",
+            "polish",
+            "quality",
+            "technical_issue"
+          ],
+          "properties": {
+            "ai_appearance": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs"
+              ],
+              "description": "Based on your overall impression, how strongly does this website appear AI-generated? 1 = Not at all, 5 = Extremely; null = unassessed.",
+              "properties": {
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                }
+              }
+            },
+            "ai_marks": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs"
+              ],
+              "description": "Click the parts of the website that feel AI-generated: the marked elements, or none; null = unassessed.",
+              "properties": {
+                "value": {
+                  "anyOf": [
+                    {
+                      "const": "none"
+                    },
+                    {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 30,
+                      "items": {
+                        "$ref": "#/$defs/study_mark"
+                      }
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                }
+              }
+            },
+            "feature_rating": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs",
+                "rows"
+              ],
+              "description": "Rate how AI-generated each feature looks. 0 = Human-made, 10 = AI-generated; na = the site does not have that feature; null = unassessed.",
+              "properties": {
+                "value": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "color_scheme",
+                    "gradients",
+                    "typography",
+                    "emoji_icons",
+                    "buttons",
+                    "layout",
+                    "animations",
+                    "charts",
+                    "writing",
+                    "navigation"
+                  ],
+                  "properties": {
+                    "color_scheme": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "gradients": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "typography": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "emoji_icons": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "buttons": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "layout": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "animations": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "charts": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "writing": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "navigation": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        {
+                          "const": "na"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                },
+                "rows": {
+                  "type": "array",
+                  "minItems": 10,
+                  "maxItems": 10,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "feature",
+                      "reason",
+                      "refs"
+                    ],
+                    "properties": {
+                      "feature": {
+                        "enum": [
+                          "color_scheme",
+                          "gradients",
+                          "typography",
+                          "emoji_icons",
+                          "buttons",
+                          "layout",
+                          "animations",
+                          "charts",
+                          "writing",
+                          "navigation"
+                        ]
+                      },
+                      "reason": {
+                        "$ref": "#/$defs/q_reason"
+                      },
+                      "refs": {
+                        "$ref": "#/$defs/q_refs"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "top_ai_feature": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs"
+              ],
+              "description": "Which feature looks most AI-generated?; null = unassessed.",
+              "properties": {
+                "value": {
+                  "enum": [
+                    "color_scheme",
+                    "gradients",
+                    "typography",
+                    "emoji_icons",
+                    "buttons",
+                    "layout",
+                    "animations",
+                    "charts",
+                    "writing",
+                    "navigation",
+                    "none",
+                    null
+                  ]
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                }
+              }
+            },
+            "ai_extent": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs"
+              ],
+              "description": "How much of this site did AI build?; null = unassessed.",
+              "properties": {
+                "value": {
+                  "enum": [
+                    "none",
+                    "a_little",
+                    "about_half",
+                    "most",
+                    "nearly_all",
+                    null
+                  ]
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                }
+              }
+            },
+            "design_generic": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs"
+              ],
+              "description": "The design looks template-like. 1 = Disagree, 5 = Agree; null = unassessed.",
+              "properties": {
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                }
+              }
+            },
+            "writing_ai": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs"
+              ],
+              "description": "The text sounds AI-written. 1 = Disagree, 5 = Agree; null = unassessed.",
+              "properties": {
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                }
+              }
+            },
+            "polish": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs"
+              ],
+              "description": "How polished is this site? 1 = Rough, 5 = Polished; null = unassessed.",
+              "properties": {
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                }
+              }
+            },
+            "quality": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs"
+              ],
+              "description": "How good is this project overall? 1 = Poor, 5 = Excellent; null = unassessed.",
+              "properties": {
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                }
+              }
+            },
+            "technical_issue": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "reason",
+                "refs"
+              ],
+              "description": "Did a technical problem affect your review?",
+              "properties": {
+                "value": {
+                  "enum": [
+                    "no",
+                    "some",
+                    "unable"
+                  ]
+                },
+                "reason": {
+                  "$ref": "#/$defs/q_reason"
+                },
+                "refs": {
+                  "$ref": "#/$defs/q_refs"
+                }
+              }
+            }
+          }
         }
       }
     }

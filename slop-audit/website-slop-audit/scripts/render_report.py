@@ -19,6 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _lib  # noqa: E402
+import questionnaire as study_q  # noqa: E402
 import validate_audit  # noqa: E402
 
 E = html.escape
@@ -92,6 +93,31 @@ def shot(bundle, out_dir, asset_id, marks):
     return f'<div class="shot"><img src="{E(src)}" alt="{E(asset_id)}" loading="lazy">{boxes}</div>'
 
 
+def refs_text(refs):
+    return ", ".join(f"{r['kind']}:{r['id']}" for r in refs) or "none"
+
+
+def questionnaire_rows(audit):
+    """(question, answer label, reason, refs) per study question, plus grid rows and marks; None if absent."""
+    sq = audit.get("study_questionnaire")
+    if sq is None:
+        return None
+    study = study_q.load()
+    answers = sq["answers"]
+    main = []
+    for q in study_q.questions(study):
+        a = answers[q["id"]]
+        shown = (f"{len(a['value'])} mark(s), listed below" if isinstance(a["value"], list)
+                 else "see the feature table below" if q["type"] == "grid" else study_q.label(q, a["value"], study))
+        main.append((q["prompt"], shown, a["reason"], refs_text(a["refs"])))
+    labels = {f["value"]: f["label"] for f in study_q.features(study)}
+    grid = answers["feature_rating"]["value"]
+    grid_rows = [(labels[r["feature"]], study_q.grid_cell(grid[r["feature"]]) if grid[r["feature"]] is not None else "unassessed",
+                  r["reason"], refs_text(r["refs"])) for r in answers["feature_rating"]["rows"]]
+    marks = answers["ai_marks"]["value"] if isinstance(answers["ai_marks"]["value"], list) else []
+    return sq, main, grid_rows, marks
+
+
 def counts(audit):
     """Counts derived from the arrays, labeled singular or plural."""
     unassessed = [c for c in audit["coverage"]["features"] if c["status"] == "unassessed"]
@@ -124,6 +150,21 @@ def render_html(audit, bundle, report, out_dir, features):
 <div><dt>Major limitations</dt><dd><ul class='tight'>{limits}</ul></dd></div></div>
 <div class='counts'>{pills}</div>
 <p class='note'>These findings identify features that may contribute to a perceived AI-slop impression. They do not establish who or what made the site, and the ratings are provisional research scales, not probabilities.</p></div>""")
+
+    qs = questionnaire_rows(audit)
+    h.append("<h2>Study questionnaire</h2>")
+    if qs is None:
+        h.append("<p class='note'>This audit has no answers to the human study's questions (it predates them).</p>")
+    else:
+        sq, main, grid_rows, marks = qs
+        def table(header, rows):
+            head = "".join(f"<th>{E(x)}</th>" for x in header)
+            return "<table><tr>" + head + "</tr>" + "".join("<tr>" + "".join(f"<td>{E(str(c))}</td>" for c in r) + "</tr>" for r in rows) + "</table>"
+        h.append(f"<div class='box'><p class='note'>Questionnaire {E(sq['questionnaire_version'])}, the participants' per-website questions in their answer formats. "
+                 f"{E(sq['basis'])}</p>{table(['question', 'answer', 'reason', 'rests on'], main)}"
+                 f"<h3>Rate how AI-generated each feature looks (0 = Human-made, 10 = AI-generated; NA = not on the site)</h3>{table(['feature', 'rating', 'reason', 'rests on'], grid_rows)}"
+                 + (f"<h3>Marked spots</h3>{table(['#', 'page', 'kind', 'text', 'selector', 'reason', 'rests on'], [(m['mark_number'], m['page'], m['kind'], m['text'], m['selector'], m['reason'], refs_text(m['refs'])) for m in marks])}" if marks else "")
+                 + "</div>")
 
     h.append("<h2>Findings</h2>")
     if not audit["findings"]:
@@ -205,8 +246,25 @@ def render_md(audit, bundle, report, features):
     lines += [f"- Not assessed: {u['modality']} ({u['reason']})" for u in audit["coverage"]["unassessed_modalities"]]
     lines += [f"- Limitation: {x}" for x in audit["summary"]["major_limitations"]]
     lines += ["- Counts: " + ", ".join(f"{v} {k}" for k, v in c.items()), "",
-              "These findings identify features that may contribute to a perceived AI-slop impression; they do not establish who or what made the site.", "",
-              "## Findings", ""]
+              "These findings identify features that may contribute to a perceived AI-slop impression; they do not establish who or what made the site.", ""]
+    qs = questionnaire_rows(audit)
+    lines += ["## Study questionnaire", ""]
+    if qs is None:
+        lines += ["This audit has no answers to the human study's questions (it predates them).", ""]
+    else:
+        sq, main, grid_rows, marks = qs
+        cell = lambda x: str(x).replace("|", "\\|").replace("\n", " ")
+        lines += [f"Questionnaire {sq['questionnaire_version']}, the participants' per-website questions in their answer formats. {sq['basis']}", "",
+                  "| Question | Answer | Reason | Rests on |", "|---|---|---|---|"]
+        lines += [f"| {cell(q)} | {cell(a)} | {cell(r)} | {cell(x)} |" for q, a, r, x in main]
+        lines += ["", "Feature ratings (0 = Human-made, 10 = AI-generated; NA = not on the site):", "",
+                  "| Feature | Rating | Reason | Rests on |", "|---|---|---|---|"]
+        lines += [f"| {cell(f)} | {cell(v)} | {cell(r)} | {cell(x)} |" for f, v, r, x in grid_rows]
+        if marks:
+            lines += ["", "Marked spots:", ""]
+            lines += [f"{m['mark_number']}. {m['kind']} on `{m['page']}` (`{m['selector']}`)" + (f": \"{m['text']}\"" if m["text"] else "") + f". {m['reason']}" for m in marks]
+        lines += [""]
+    lines += ["## Findings", ""]
     if not audit["findings"]:
         lines += ["No accepted findings in the assessed scope.", ""]
     for f in audit["findings"]:

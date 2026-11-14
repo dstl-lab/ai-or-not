@@ -1,6 +1,6 @@
 ---
 name: website-slop-audit
-description: Identify and localize the specific website features that may make a site feel AI-generated, generic, superficial, or incoherent ("AI slop"), as evidence-backed, scoped findings with alternative explanations, not a design critique and not an authorship verdict. Use whenever someone asks whether a website, landing page, portfolio, dashboard, or interactive data story or explorable explanation (for example student visualization projects) looks AI-made, templated, sloppy, or default-driven, wants slop cues annotated with locations, or needs a reproducible slop audit for a research study or a model comparison. Give it a website URL to capture the site's pages and safe interactions and audit them in one step, or a frozen capture bundle (screenshots, text, DOM, interactions, source excerpts); it can also run text-only with visual checks marked unassessed.
+description: Identify and localize the specific website features that may make a site feel AI-generated, generic, superficial, or incoherent ("AI slop"), as evidence-backed, scoped findings with alternative explanations, not a design critique and not an authorship verdict. Use whenever someone asks whether a website, landing page, portfolio, dashboard, or interactive data story or explorable explanation (for example student visualization projects) looks AI-made, templated, sloppy, or default-driven, wants slop cues annotated with locations, or needs a reproducible slop audit for a research study or a model comparison. Give it a website URL to capture the site's pages and safe interactions and audit them in one step, or a frozen capture bundle (screenshots, text, DOM, interactions, source excerpts); it can also run text-only with visual checks marked unassessed, and it answers a human study's per-website questions (1-5 scales, a 0-10 feature grid, marked spots) in the participants' own format.
 ---
 
 # Website slop audit
@@ -34,6 +34,14 @@ score, do not infer a generator from a palette or font, and do not treat
 fluency, punctuation, Inter, gradients, rounded corners, or a framework as
 authorship evidence. There is no quota: zero findings with clear coverage is a
 good result.
+
+The audit also answers the human study's per-website questions (workflow step
+8), so its output can be read next to the participants' answers. Some of
+those questions ask how AI-generated the site *looks* or how much of it AI
+*built*. Answer them the way a careful participant would: as the impression
+the site gives, formed from this audit's findings, exceptions, quality
+observations, and coverage. They are perceived impressions on the study's own
+scales, not knowledge of how the site was made and not probabilities.
 
 ## Inputs
 
@@ -114,13 +122,27 @@ in the coverage rather than guessing.
 7. **Sort the results.** Accepted findings; contextual exceptions (present
    but appropriate or insufficient); quality-only observations; exploratory
    candidates outside the codebook; unassessed checks.
-8. **Validate and report.** Write the JSON in
+8. **Answer the study's questions.** After the audit is sorted, answer each
+   question in [assets/study-questions.json](assets/study-questions.json) in
+   `study_questionnaire`, in the participants' exact formats (1-5 scales, the
+   0-10 feature grid with `na`, the option values, marked spots). Base every
+   answer on the audit: a reason of one or two sentences and the ids it rests
+   on (findings, exceptions, screenshots, text, regions). Use `na` only when
+   the site lacks the feature and `null` only when the evidence cannot support
+   an answer. Mark only captured elements. Keep `top_ai_feature` consistent
+   with the grid, and answer `technical_issue` from what the capture recorded.
+   Rules are in the output contract, "Study questionnaire".
+9. **Validate and report.** Write the JSON in
    [references/output-contract.md](references/output-contract.md) to
-   `audit.json`, run `scripts/validate_audit.py`, fix any reported error, and
-   render `report.html` and `report.md` with `scripts/render_report.py`. Then
-   tell the user, briefly: what was covered and what was not, each accepted
-   finding with its location and slop-association level, the contextual
-   exceptions, and the paths of the report and the audit.
+   `audit.json`, run `scripts/validate_audit.py`, fix any reported error,
+   render `report.html` and `report.md` with `scripts/render_report.py`, and
+   write the study-format CSV files into the same folder with
+   `scripts/export_study_csv.py audit.json --bundle BUNDLE --out RUN_DIR`.
+   Then tell the user, briefly: what was covered and what was not, each
+   accepted finding with its location and slop-association level, the
+   contextual exceptions, the study answers (ai_appearance, ai_extent,
+   top_ai_feature, and the four 1-5 ratings), and the paths of the report,
+   the audit, and the CSV files.
 
 Do one judgment pass. If a fixed verification pass is used in a study, its
 instructions and cost must be identical across compared models, and the
@@ -167,6 +189,7 @@ python scripts/validate_bundle.py BUNDLE --freeze           # check and freeze e
 python scripts/expand_prompt.py --bundle BUNDLE --profile multimodal-datastory --out RUN_DIR
 python scripts/validate_audit.py AUDIT.json --bundle BUNDLE  # check the audit
 python scripts/render_report.py AUDIT.json --bundle BUNDLE --out REPORT.html
+python scripts/export_study_csv.py AUDIT.json --bundle BUNDLE --out CSV_DIR    # study-format answers
 python scripts/score_benchmark.py --runs RUNS_DIR --annotations ANNOTATIONS_DIR --bundles BUNDLES_DIR
 ```
 
@@ -182,4 +205,5 @@ instructions. Use it when the host cannot load skills natively.
 - [references/capture-protocol.md](references/capture-protocol.md): the capture-bundle contract, blinding, coverage, and acquisition safety.
 - [references/benchmark-protocol.md](references/benchmark-protocol.md): comparison conditions, annotation, matching, and metrics.
 - [references/evidence-sources.md](references/evidence-sources.md): the source ledger behind each codebook entry.
+- [assets/study-questions.json](assets/study-questions.json): the human study's per-website questions, frozen word for word from the study platform (`scripts/sync_study_questions.py` refreshes it).
 - `examples/`: small worked bundles with audits and rendered reports, including a valid zero-finding audit.
