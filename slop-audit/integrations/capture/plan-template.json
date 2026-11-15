@@ -1,0 +1,29 @@
+{
+  "bundle_id": "my-site",
+  "site_id": "site-01",
+  "url": "https://example.github.io/my-project/",
+  "route": "/",
+  "target_kind": "public_url",
+  "snapshot_id": null,
+  "capture_profile": "pilot-8",
+  "max_images": 8,
+  "blinding": {
+    "profile": "unblinded",
+    "withhold_terms": [],
+    "withheld_fields": []
+  },
+  "context": {
+    "purpose": {"value": null, "status": "unknown", "provenance": "not supplied"},
+    "genre": {"value": "interactive data story", "status": "provided", "provenance": "capture plan"},
+    "audience": {"value": null, "status": "unknown", "provenance": "not supplied"},
+    "constraints": []
+  },
+  "regions": [
+    {"region_id": "R01", "name": "page header", "selector": "header", "description": ""},
+    {"region_id": "R02", "name": "main content", "selector": "main", "description": ""},
+    {"region_id": "R03", "name": "page footer", "selector": "footer", "description": ""}
+  ],
+  "interactions": [],
+  "untested_controls": [],
+  "coverage_notes": []
+}
