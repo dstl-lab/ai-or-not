@@ -92,8 +92,9 @@ Each location names a `region_id` and `state_id` that exist in the bundle.
 ## Evidence **(checked)**
 
 Each evidence item has `kind` (screenshot, text, interaction, dom, source,
-context), `ref_id` (an id from the matching collection, or a context field
-name), a short `description`, and `quote`.
+context, and in the exploration stage only, exploration), `ref_id` (an id
+from the matching collection, a context field name, or an exploration action
+or screenshot id), a short `description`, and `quote`.
 
 - `quote` is an exact substring of the referenced text span or source
   excerpt, or null. If typography or OCR makes exact text uncertain, set it
@@ -194,6 +195,32 @@ Not asked of the auditor: `ai_changes_view` (about the rater's own values),
 `seen_before`, and the follow-up `annotations` and `cues`.
 `scripts/export_study_csv.py` writes the answers as `responses_wide.csv` and
 `marks.csv` rows in the study export's columns, plus a reasons file.
+
+## Exploration stage **(checked)**
+
+The top level of the audit is the tour stage, written from the frozen bundle
+and locked (its hash, `tour_commit`, is recorded when exploration starts).
+`exploration_stage` holds everything that comes from exploring the live site
+(references/exploration-protocol.md):
+
+| Field | Content |
+|---|---|
+| `status` | `completed`, or `not_done` (then every list is empty and `study_questionnaire` is null). |
+| `reason` | How the exploration went, or why it could not run. |
+| `exploration_id`, `exploration_hash`, `tour_commit` | From `exploration.json` (its id, the hash of the record, and the tour hash it locked). Null when not done. |
+| `findings`, `contextual_exceptions`, `quality_observations`, `exploratory_candidates` | Same shapes as the tour stage. Each cites at least one exploration action; ids continue the tour's numbering (if the tour ends at F003, the next is F004). |
+| `tour_item_updates` | `item_id` of a tour item (F, X, Q, or C id), `update` (confirmed, strengthened, weakened, withdrawn), a reason, and refs including the exploration action that showed it. The tour item itself stays as it was. |
+| `study_questionnaire` | Every study question answered again after exploring, in the same format, including unchanged answers. |
+| `changes_from_tour` | One entry (`question_id`, reason, refs including an exploration action) for every question whose value differs from the tour answer, and none for the others. |
+| `summary` | What exploring added, in a sentence or two, and its limits. |
+
+Checks: `tour_answers_changed` (the tour part no longer matches
+`tour_commit`), `exploration_in_tour` (the tour stage cites exploration),
+`no_exploration_evidence`, `changes_unlisted` and `changes_not_changed`,
+`missing_exploration_ref`, `exploration_mismatch`, and the usual location,
+evidence, and questionnaire checks. A behavior finding (INT-01, INT-02,
+DAT-02) in this stage may rest on a completed exploration click, select,
+slide, or hover.
 
 ## Report
 

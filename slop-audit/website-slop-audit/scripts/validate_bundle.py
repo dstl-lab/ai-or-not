@@ -196,6 +196,30 @@ def validate(bundle_dir):
     if re.search(r"(github\.io|https?://|www\.)", m["site_id"]):
         report.error("blinding_leak", "site_id must be opaque, not a URL")
 
+    for seq in m.get("motion", []):
+        where = f"motion sequence {seq['sequence_id']}"
+        if seq["state_id"] not in bundle.states:
+            report.error("unknown_state", f"{where}: unknown state {seq['state_id']!r}")
+        if seq["viewport_id"] not in bundle.viewports:
+            report.error("unknown_viewport", f"{where}: unknown viewport {seq['viewport_id']!r}")
+        if seq["event_id"] is not None and seq["event_id"] not in bundle.events:
+            report.error("missing_event_ref", f"{where}: unknown interaction {seq['event_id']!r}")
+        for fr in seq["frames"]:
+            a = bundle.assets.get(fr["asset_id"])
+            if a is None:
+                report.error("missing_asset_ref", f"{where}: frame {fr['asset_id']!r} is not an asset")
+            elif a["route"] != seq["route"]:
+                report.error("motion_route_mismatch", f"{where}: frame {fr['asset_id']} is on {a['route']!r}, not {seq['route']!r}")
+            elif fr["settled"] != (a["kind"] != "motion_frame"):
+                report.error("motion_frame_kind", f"{where}: frame {fr['asset_id']} is a {a['kind']} but is marked settled={fr['settled']}")
+    linked = {fr["asset_id"] for seq in m.get("motion", []) for fr in seq["frames"]}
+    for a in m["assets"]:
+        if a["kind"] == "motion_frame" and a["asset_id"] not in linked:
+            report.error("orphan_motion_frame", f"asset {a['asset_id']}: a motion frame must belong to a motion sequence")
+    seq_ids = [seq["sequence_id"] for seq in m.get("motion", [])]
+    if len(seq_ids) != len(set(seq_ids)):
+        report.error("duplicate_id", "motion: duplicate sequence ids")
+
     for item in m["coverage"]["regions"]:
         if item["ref"] not in bundle.regions:
             report.error("unknown_region", f"coverage.regions: unknown region {item['ref']!r}")

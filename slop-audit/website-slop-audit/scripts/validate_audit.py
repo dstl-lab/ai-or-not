@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate an audit JSON against the schema, the codebook, and its frozen bundle.
 
-    python scripts/validate_audit.py AUDIT.json --bundle BUNDLE_DIR [--json]
+    python scripts/validate_audit.py AUDIT.json --bundle BUNDLE_DIR [--exploration EXPLORATION_DIR] [--json]
 
 Exit 0 = valid, 1 = invalid, 2 = unusable input. These are deterministic
 structural and referential checks: they catch invented ids, quotes,
@@ -18,6 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _lib  # noqa: E402
 import questionnaire as study_q  # noqa: E402
+import validate_exploration as vx  # noqa: E402
 
 EVIDENCE_COLLECTIONS = {
     "screenshot": ("assets", "missing_asset_ref", "screenshot"),
@@ -39,17 +40,60 @@ VERDICT_PATTERNS = re.compile(
 
 
 class AuditCheck:
-    def __init__(self, audit, bundle, report):
+    def __init__(self, audit, bundle, report, exploration=None):
         self.a = audit
         self.b = bundle
         self.r = report
+        self.x = exploration      # validate_exploration.Record, or None
+        self.stage = "tour"       # "exploration" while checking exploration_stage
         self.codebook = _lib.load_codebook()
         self.features = _lib.features_by_id(self.codebook)
+
+    # --- exploration ids ------------------------------------------------------
+
+    def x_action(self, ref, where, need_completed=False):
+        """The exploration action behind an action or screenshot id, after checking it may be cited here."""
+        if self.stage != "exploration":
+            self.r.error("exploration_in_tour", f"{where}: cites exploration {ref!r}, but the tour stage may only rest on the frozen bundle")
+            return None
+        if self.x is None:
+            self.r.error("exploration_missing", f"{where}: cites exploration {ref!r}, but no exploration record was supplied")
+            return None
+        act = self.x.actions.get(ref) or (self.x.assets[ref][0] if ref in self.x.assets else None)
+        if act is None:
+            self.r.error("missing_exploration_ref", f"{where}: {ref!r} is not an action or screenshot in exploration {self.x.exploration_id}")
+        elif need_completed and act["status"] != "completed":
+            self.r.error("missing_exploration_ref", f"{where}: exploration action {act['action_id']} was {act['status']}, so it shows nothing")
+        return act
+
+    def x_location(self, loc, where):
+        """A location that points into the exploration (state_id is an action id)."""
+        act = self.x_action(loc["state_id"], where, need_completed=True)
+        if act is None:
+            return
+        region = loc["region_id"]
+        tgt_region = (act.get("target") or {}).get("region_id")
+        if region not in self.b.regions and not (region == "unmapped" and tgt_region is None):
+            self.r.error("unknown_region", f"{where}: region {region!r} is not in the bundle (use 'unmapped' only for an action outside every recorded region)")
+        if loc["asset_id"] is not None:
+            shot = self.x.assets.get(loc["asset_id"])
+            if shot is None or shot[0]["action_id"] != act["action_id"]:
+                self.r.error("missing_asset_ref", f"{where}: {loc['asset_id']!r} is not a screenshot of exploration action {act['action_id']}")
+        elif loc["box"] is not None:
+            self.r.error("box_without_asset", f"{where}: a box needs the asset_id it is normalized to")
+        if loc["box"] is not None and (loc["box"]["x"] + loc["box"]["width"] > 1 + 1e-9 or loc["box"]["y"] + loc["box"]["height"] > 1 + 1e-9):
+            self.r.error("box_out_of_bounds", f"{where}: box {loc['box']} extends past the image")
+        if loc["selector"] is not None and loc["selector"] not in self.b.selectors() | self.x.selectors():
+            self.r.error("fabricated_selector", f"{where}: selector {loc['selector']!r} is neither in the bundle's dom_elements nor an element the exploration acted on")
+        if loc["source_ref"] is not None:
+            self.source_lines(loc["source_ref"]["excerpt_id"], loc["source_ref"]["line_start"], loc["source_ref"]["line_end"], where)
 
     # --- locations and evidence -------------------------------------------
 
     def location(self, loc, where):
         b, r = self.b, self.r
+        if self.stage == "exploration" and self.x is not None and (loc["state_id"] in self.x.actions or loc["state_id"] in self.x.assets):
+            return self.x_location(loc, where)
         if loc["region_id"] not in b.regions:
             r.error("unknown_region", f"{where}: region {loc['region_id']!r} is not in the bundle")
         if loc["state_id"] not in b.states:
@@ -90,6 +134,18 @@ class AuditCheck:
     def evidence(self, ev, where):
         """Check one evidence item; return the referenced interaction record, if any."""
         kind, ref = ev["kind"], ev["ref_id"]
+        if kind == "exploration":
+            act = self.x_action(ref, where)
+            if act is None:
+                return None
+            if ev["quote"] is not None:
+                haystack = " ".join([act.get("text", ""), act["result"]] + [c["detail"] for c in act["observed_changes"]])
+                if _lib.normalize_space(ev["quote"]) not in _lib.normalize_space(haystack):
+                    self.r.error("quote_mismatch", f"{where}: quote {ev['quote']!r} is not in what exploration action {act['action_id']} recorded")
+            if act["command"] in ("click", "select", "slide", "hover"):  # counts as a recorded interaction
+                return {"event_id": act["action_id"], "execution_status": act["status"], "before_state_id": act["action_id"],
+                        "after_state_id": act["action_id"]}
+            return None
         if kind == "context":
             if ref not in CONTEXT_FIELDS:
                 self.r.error("missing_context_ref", f"{where}: context evidence must name one of {sorted(CONTEXT_FIELDS)}")
@@ -178,6 +234,7 @@ class AuditCheck:
         self.duplicates_and_contradictions()
         self.status()
         self.questionnaire()
+        self.exploration_stage()
         texts = [a["summary"]["text"]] + [f["slop_association"]["reason"] for f in a["findings"]]
         for t in texts:
             if VERDICT_PATTERNS.search(t):
@@ -226,7 +283,7 @@ class AuditCheck:
         if not _lib.feature_assessable(feat, self.modalities):
             r.error("modality_unavailable", f"{where}: {fid} needs one of {feat['modality_sets']}; available: {sorted(self.modalities)}")
         cov = self.feature_coverage.get(fid)
-        if cov is not None and cov["status"] != "assessed":
+        if cov is not None and cov["status"] != "assessed" and self.stage == "tour":
             r.error("contradictory_status", f"{where}: coverage marks {fid} {cov['status']} but a finding uses it")
         if f["codebook_evidence_status"] != feat["evidence_status"]:
             r.error("status_upgrade", f"{where}: codebook_evidence_status must be {feat['evidence_status']!r} (from the codebook), got {f['codebook_evidence_status']!r}")
@@ -305,10 +362,12 @@ class AuditCheck:
 
     def question_refs(self, refs, where):
         a, b, r = self.a, self.b, self.r
-        audit_ids = {"finding": {f["finding_id"] for f in a["findings"]},
-                     "exception": {x["exception_id"] for x in a["contextual_exceptions"]},
-                     "quality": {q["observation_id"] for q in a["quality_observations"]},
-                     "candidate": {c["candidate_id"] for c in a["exploratory_candidates"]}}
+        stage = a.get("exploration_stage") if self.stage == "exploration" else None
+        both = lambda key: a[key] + (stage[key] if stage else [])
+        audit_ids = {"finding": {f["finding_id"] for f in both("findings")},
+                     "exception": {x["exception_id"] for x in both("contextual_exceptions")},
+                     "quality": {q["observation_id"] for q in both("quality_observations")},
+                     "candidate": {c["candidate_id"] for c in both("exploratory_candidates")}}
         bundle_ids = {"screenshot": ("screenshot", b.assets), "text": ("text", b.spans), "interaction": ("interaction", b.events),
                       "dom": ("dom", b.elements), "region": (None, b.regions), "route": (None, self.routes)}
         for ref in refs:
@@ -316,6 +375,9 @@ class AuditCheck:
             if kind in audit_ids:
                 if rid not in audit_ids[kind]:
                     r.error("missing_questionnaire_ref", f"{where}: cites {kind} {rid!r}, which is not in this audit")
+                continue
+            if kind == "exploration":
+                self.x_action(rid, where)
                 continue
             modality, pool = bundle_ids[kind]
             if modality and modality not in self.modalities:
@@ -331,26 +393,29 @@ class AuditCheck:
         return out
 
     def questionnaire(self):
-        a, b, r = self.a, self.b, self.r
-        sq = a.get("study_questionnaire")
+        sq = self.a.get("study_questionnaire")
         if sq is None:
-            r.warn("questionnaire_missing", "no study_questionnaire: the answers to the human study's per-website questions are missing")
+            self.r.warn("questionnaire_missing", "no study_questionnaire: the answers to the human study's per-website questions are missing")
             return
+        self.check_questionnaire(sq, "study_questionnaire")
+
+    def check_questionnaire(self, sq, label):
+        a, b, r = self.a, self.b, self.r
         study = study_q.load()
         if sq["questionnaire_version"] != study["questionnaire_version"]:
-            r.error("questionnaire_version_mismatch", f"study_questionnaire answers {sq['questionnaire_version']!r}, but the skill carries "
+            r.error("questionnaire_version_mismatch", f"{label} answers {sq['questionnaire_version']!r}, but the skill carries "
                     f"{study['questionnaire_version']!r} (assets/study-questions.json)")
         self.routes = {s["route"] for s in b.manifest["states"]}
         ans = sq["answers"]
         for qid, item in ans.items():
-            self.question_refs(item["refs"], f"study_questionnaire.{qid}")
+            self.question_refs(item["refs"], f"{label}.{qid}")
 
         feats = [f["value"] for f in study["features"]]
         rows = ans["feature_rating"]["rows"]
         if sorted(x["feature"] for x in rows) != sorted(feats):
-            r.error("questionnaire_rows", "study_questionnaire.feature_rating.rows must give each feature exactly once")
+            r.error("questionnaire_rows", f"{label}.feature_rating.rows must give each feature exactly once")
         for x in rows:
-            self.question_refs(x["refs"], f"study_questionnaire.feature_rating[{x['feature']}]")
+            self.question_refs(x["refs"], f"{label}.feature_rating[{x['feature']}]")
         grid = ans["feature_rating"]["value"]
         numeric = {f: v for f, v in grid.items() if isinstance(v, int)}
         top = ans["top_ai_feature"]["value"]
@@ -364,18 +429,24 @@ class AuditCheck:
             r.warn("top_feature_inconsistent", f"top_ai_feature is none although the grid rates a feature {max(numeric.values())} of 10")
 
         marks = ans["ai_marks"]["value"]
+        explored = self.stage == "exploration" and self.x is not None
         if isinstance(marks, list):
             selectors = b.selectors() if "dom" in self.modalities else set()
+            x_selectors = self.x.selectors() if explored else set()
+            x_routes = self.x.routes() if explored else set()
             for i, mk in enumerate(marks, 1):
-                where = f"study_questionnaire.ai_marks[{i}]"
+                where = f"{label}.ai_marks[{i}]"
                 if mk["mark_number"] != i:
                     r.error("questionnaire_marks", f"{where}: marks are numbered 1, 2, … in order; got {mk['mark_number']}")
-                if mk["page"] not in self.routes:
-                    r.error("unknown_route", f"{where}: page {mk['page']!r} is not a captured route")
-                if "dom" not in self.modalities:
+                if mk["page"] not in self.routes | x_routes:
+                    r.error("unknown_route", f"{where}: page {mk['page']!r} is not a captured route" + (" or a page visited while exploring" if explored else ""))
+                if mk["selector"] in x_selectors:
+                    pass  # an element the exploration acted on
+                elif "dom" not in self.modalities:
                     r.error("fabricated_selector", f"{where}: a mark needs a captured element, but the bundle has no DOM")
                 elif mk["selector"] not in selectors:
-                    r.error("fabricated_selector", f"{where}: selector {mk['selector']!r} does not appear in captured dom_elements")
+                    r.error("fabricated_selector", f"{where}: selector {mk['selector']!r} does not appear in captured dom_elements"
+                            + (" or among the elements the exploration acted on" if explored else ""))
                 if mk["element_id"] is not None:
                     el = b.elements.get(mk["element_id"])
                     if el is None:
@@ -384,11 +455,16 @@ class AuditCheck:
                         r.error("element_selector_mismatch", f"{where}: element {mk['element_id']} has selector {el['selector']!r}, not {mk['selector']!r}")
                     elif b.states.get(el["state_id"], {}).get("route") != mk["page"]:
                         r.error("unknown_route", f"{where}: element {mk['element_id']} is on {b.states[el['state_id']]['route']!r}, not {mk['page']!r}")
-                if mk["text"]:
+                if mk["text"] and mk["page"] in self.routes and mk["selector"] not in x_selectors:
                     page_states = {sid for sid, st in b.states.items() if st["route"] == mk["page"]}
                     needle = _lib.normalize_space(mk["text"])
-                    if not any(needle in _lib.normalize_space(t["text"]) for t in b.spans.values() if t["state_id"] in page_states):
-                        r.warn("mark_text_mismatch", f"{where}: text {mk['text'][:60]!r} is not in any captured text span on {mk['page']!r}")
+                    seen = [t["text"] for t in b.spans.values() if t["state_id"] in page_states]
+                    if explored:  # text that appeared only while exploring (after a click, in a read)
+                        seen += [" ".join([act.get("text", ""), act["result"]] + [c["detail"] for c in act["observed_changes"]])
+                                 for act in self.x.actions.values() if act["route"] == mk["page"]]
+                    if not any(needle in _lib.normalize_space(t) for t in seen):
+                        r.warn("mark_text_mismatch", f"{where}: text {mk['text'][:60]!r} is not in any captured text span on {mk['page']!r}"
+                               + (" or in what the exploration recorded there" if explored else ""))
                 self.question_refs(mk["refs"], where)
 
         problems = self.capture_problems()
@@ -409,7 +485,110 @@ class AuditCheck:
                 r.warn("possible_authorship_claim", f"questionnaire text may state an authorship verdict or probability: {text[:120]!r}")
 
 
-def validate(audit_or_path, bundle_dir):
+    # --- the exploration stage ---------------------------------------------------
+
+    ITEM_KEYS = [("findings", "finding_id"), ("contextual_exceptions", "exception_id"),
+                 ("quality_observations", "observation_id"), ("exploratory_candidates", "candidate_id")]
+
+    def exploration_stage(self):
+        a, r = self.a, self.r
+        st = a.get("exploration_stage")
+        if st is None:
+            return
+        items = [(key, idf, x) for key, idf in self.ITEM_KEYS for x in st[key]]
+        if st["status"] == "not_done":
+            if items or st["tour_item_updates"] or st["study_questionnaire"] is not None or st["changes_from_tour"]:
+                r.error("exploration_stage_inconsistent", "exploration_stage is not_done but carries findings, updates, or answers")
+            return
+        if self.x is None:
+            r.error("exploration_missing", "exploration_stage is completed, but no exploration record was found "
+                    "(pass --exploration DIR, or keep the exploration folder next to the audit)")
+            return
+        x = self.x.data
+        if st["exploration_id"] != x["exploration_id"] or st["exploration_hash"] != self.x.hash:
+            r.error("exploration_mismatch", "exploration_stage names a different exploration record (exploration_id or exploration_hash differ)")
+        if st["tour_commit"] != x["tour_commit"]:
+            r.error("tour_answers_changed", "exploration_stage.tour_commit differs from the one the exploration locked")
+        if vx.tour_commit(a) != x["tour_commit"]:
+            r.error("tour_answers_changed", "the tour stage (everything outside exploration_stage) changed after the exploration locked it; "
+                    "restore the tour audit exactly and put new material in exploration_stage")
+        tour_ids = {item[idf] for key, idf in self.ITEM_KEYS for item in a[key]}
+        self.stage = "exploration"
+        try:
+            for key, idf, item in items:
+                where = f"exploration_stage.{key}[{item[idf]}]"
+                if item[idf] in tour_ids:
+                    r.error("duplicate_id", f"{where}: {item[idf]} is already used in the tour stage; continue the numbering")
+                if not any(ev["kind"] == "exploration" for ev in item["evidence"]):
+                    r.error("no_exploration_evidence", f"{where}: an exploration-stage item must cite at least one exploration action")
+                if key == "findings":
+                    self.finding(item, [f["id"] for f in _lib.profile_features(a["analysis_profile"], self.codebook)])
+                else:
+                    if key in ("contextual_exceptions",) and item["feature_id"] not in self.features:
+                        r.error("unknown_feature", f"{where}: {item['feature_id']} is not in the codebook")
+                    self.common(item, where)
+            for key, idf in self.ITEM_KEYS:
+                ids = [x_[idf] for x_ in st[key]]
+                if len(ids) != len(set(ids)):
+                    r.error("duplicate_id", f"exploration_stage.{key}: duplicate ids")
+            for i, up in enumerate(st["tour_item_updates"]):
+                where = f"exploration_stage.tour_item_updates[{i}]"
+                if up["item_id"] not in tour_ids:
+                    r.error("missing_questionnaire_ref", f"{where}: {up['item_id']} is not a tour-stage item")
+                if not any(ref["kind"] == "exploration" for ref in up["refs"]):
+                    r.error("no_exploration_evidence", f"{where}: an update must cite the exploration action that showed it")
+                self.question_refs(up["refs"], where)
+            sq2 = st["study_questionnaire"]
+            if sq2 is None:
+                r.error("exploration_stage_inconsistent", "a completed exploration_stage must answer the study questions again (study_questionnaire)")
+                return
+            self.check_questionnaire(sq2, "exploration_stage.study_questionnaire")
+            if a.get("study_questionnaire") is not None:
+                changed = changed_answers(a["study_questionnaire"]["answers"], sq2["answers"])
+                listed = [c["question_id"] for c in st["changes_from_tour"]]
+                for qid in sorted(changed - set(listed)):
+                    r.error("changes_unlisted", f"the answer to {qid} changed after exploring but changes_from_tour gives no reason")
+                for qid in sorted(set(listed) - changed):
+                    r.error("changes_not_changed", f"changes_from_tour lists {qid}, but its answer is the same as in the tour stage")
+                if len(listed) != len(set(listed)):
+                    r.error("duplicate_id", "changes_from_tour lists a question twice")
+                for i, c in enumerate(st["changes_from_tour"]):
+                    where = f"exploration_stage.changes_from_tour[{i}]"
+                    if not any(ref["kind"] == "exploration" for ref in c["refs"]):
+                        r.error("no_exploration_evidence", f"{where}: a changed answer must cite what the exploration showed")
+                    self.question_refs(c["refs"], where)
+            for text in [st["summary"]["text"], st["reason"]] + [f["slop_association"]["reason"] for f in st["findings"]]:
+                if VERDICT_PATTERNS.search(text):
+                    r.warn("possible_authorship_claim", f"exploration-stage text may state an authorship verdict or probability: {text[:120]!r}")
+        finally:
+            self.stage = "tour"
+
+
+def answer_key(qid, value):
+    """A comparable form of an answer value (marks compare by page and selector, in order)."""
+    if qid == "ai_marks" and isinstance(value, list):
+        return tuple((m["page"], m["selector"]) for m in value)
+    if isinstance(value, dict):
+        return tuple(sorted(value.items(), key=lambda kv: kv[0]))
+    return value
+
+
+def changed_answers(tour, explored):
+    return {qid for qid in tour if answer_key(qid, tour[qid]["value"]) != answer_key(qid, explored.get(qid, {}).get("value"))}
+
+
+def find_exploration(audit, audit_path, exploration_dir):
+    """The exploration record for a completed exploration_stage: the folder given, or 'exploration' next to the audit."""
+    st = audit.get("exploration_stage")
+    if not st or st.get("status") != "completed":
+        return None, None
+    folder = Path(exploration_dir) if exploration_dir else (Path(audit_path).parent / "exploration" if audit_path else None)
+    if folder is None or not (folder / vx.RECORD_NAME).exists():
+        return None, None
+    return vx.validate(folder)
+
+
+def validate(audit_or_path, bundle_dir, exploration_dir=None):
     """Return a Report. Accepts a parsed audit dict or a path."""
     label = str(audit_or_path) if not isinstance(audit_or_path, dict) else audit_or_path.get("audit_id", "audit")
     report = _lib.Report(label)
@@ -427,7 +606,13 @@ def validate(audit_or_path, bundle_dir):
     except _lib.UsageError as err:
         report.error("bundle_unreadable", str(err))
         return report
-    AuditCheck(audit, bundle, report).run()
+    xreport, record = find_exploration(audit, None if isinstance(audit_or_path, dict) else audit_or_path, exploration_dir)
+    if xreport is not None:
+        for code, msg in xreport.errors:
+            report.error("exploration_invalid", f"exploration record: [{code}] {msg}")
+        if record is not None and (record.data.get("bundle_id") != bundle.bundle_id or record.data.get("bundle_hash") != bundle.hash):
+            report.error("bundle_mismatch", "the exploration record was made from a different bundle")
+    AuditCheck(audit, bundle, report, record).run()
     return report
 
 
@@ -435,9 +620,10 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("audit", help="audit JSON file")
     parser.add_argument("--bundle", required=True, help="the frozen bundle the audit was made from")
+    parser.add_argument("--exploration", help="the exploration folder (default: 'exploration' next to the audit, when exploration_stage is completed)")
     parser.add_argument("--json", action="store_true", help="print a JSON report")
     args = parser.parse_args(argv)
-    report = validate(args.audit, args.bundle)
+    report = validate(args.audit, args.bundle, args.exploration)
     if args.json:
         print(json.dumps(report.as_dict(), indent=2))
     else:

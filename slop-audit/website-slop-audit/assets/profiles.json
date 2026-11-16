@@ -110,6 +110,21 @@
         "no full-page overview images"
       ],
       "note": "Written by integrations/capture/site_capture.py for the one-line URL command. Coverage of long pages is recorded per page; text is captured for whole pages even where screenshots are spread out."
+    },
+    "site-full": {
+      "max_images": 400,
+      "selection_rules": [
+        "pages: the entry URL plus pages linked from it that stay on the same host and under the URL's folder; robots.txt honored; at most 12 pages by default",
+        "regions: each page's top-level sections, detected automatically and named by their own heading",
+        "one image ceiling (300 by default, at most 400) spent in priority order: desktop frames, phone frames, then motion frames, hovers, and after-click views shared across pages",
+        "desktop 1280x800 at DPR 1: every page top to bottom, reached by scrolling smoothly in small steps so scroll-triggered effects fire",
+        "motion: after each load and scroll step the view is watched until it settles; the settled frame is kept, plus one mid-motion frame when the view was still changing, recorded as a motion sequence",
+        "charts: every SVG or canvas graphic of at least 150x100 px has a fixed sample of marks hovered (4 by default, spread left to right); tooltips and visible changes are recorded",
+        "phone 390x844 at DPR 1: every page top to bottom, settled frames only",
+        "each safe control exercised once on a fresh load (at most 25 per page), sliders moved to both ends; typing, dragging, form submission, downloads, and account or payment actions are never performed",
+        "no full-page overview images"
+      ],
+      "note": "The standard tour, written by integrations/capture/site_capture.py for the one-line URL command (the default). Every model in a comparison judges the same frozen tour; what each page's tour covered is recorded as numbers in coverage.tour. --quick takes site-auto instead."
     }
   }
 }

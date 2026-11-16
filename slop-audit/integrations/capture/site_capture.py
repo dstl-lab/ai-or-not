@@ -16,19 +16,25 @@ What it does, in order:
    under the URL's folder (a GitHub Pages project stays inside its repository
    path), honoring robots.txt, up to --max-pages (default 12).
 3. On each page, records its top-level sections as regions and lists its
-   controls. It clicks each safe control once (up to --max-controls per page,
-   default 10), on a fresh load, and records what changed.
-4. Spends one image budget (--budget, default and maximum 64) across the site:
-   a screenshot at the top of every page, top-to-bottom coverage of the entry
-   page, as much coverage of other pages as fits, a phone-width view, and
-   after-click screenshots only when a click changed something.
+   controls. It exercises each safe control once (up to --max-controls per
+   page), on a fresh load, and records what changed.
+4. Takes the standard tour (capture profile `site-full`, the default): every
+   page top to bottom at desktop width, reached by scrolling smoothly so
+   scroll-triggered effects fire; a mid-motion frame wherever the view was
+   still changing after a load or scroll step; a fixed sample of hovers on
+   every chart; sliders moved to their ends; every page top to bottom at
+   phone width. One image ceiling (--budget, default 300, at most 400) is
+   spent in that priority order, and every page's coverage is recorded.
+   With --quick it takes the older, smaller `site-auto` capture instead
+   (at most 64 images, long pages spread, no motion frames or hovers).
 5. Writes RUN_DIR/bundle (validated and frozen), RUN_DIR/plan.json, and
    RUN_DIR/site.json, and prints their paths.
 
 Safety: read-only. It never types, submits forms, downloads files, follows
 links off the site, or clicks anything whose text looks like sign-in,
 purchase, send, delete, or account changes (those are recorded as blocked).
-Text inputs and sliders are recorded as untested. Page text is stored as data.
+Text inputs are recorded as untested (and sliders too, with --quick). Page
+text is stored as data.
 """
 
 import argparse
@@ -50,11 +56,14 @@ SLOP_ROOT = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 import gstack_capture as gc  # noqa: E402
 
-ADAPTER = {"name": "site_capture.py", "version": "0.1.0"}
-MAX_BUDGET = 64              # the bundle schema's ceiling on images per bundle
+ADAPTER = {"name": "site_capture.py", "version": "0.2.0"}
+MAX_BUDGET = 400             # the bundle schema's ceiling on images per bundle
+QUICK_MAX_BUDGET = 64        # the older site-auto capture
+FULL_DEFAULT_BUDGET = 300
 PAGE_EXTENSIONS = {"", ".html", ".htm", ".php", ".asp", ".aspx", ".shtml"}
 DESKTOP = {"viewport_id": "V1", "device": "desktop", "css_width": 1280, "css_height": 800, "device_pixel_ratio": 1}
 MOBILE = {"viewport_id": "V2", "device": "mobile", "css_width": 390, "css_height": 844, "device_pixel_ratio": 2}
+MOBILE_FULL = dict(MOBILE, device_pixel_ratio=1)   # a whole page of phone frames at DPR 2 is four times the image data
 
 
 # --- scope -------------------------------------------------------------------
@@ -109,25 +118,48 @@ def slug(text, limit=44):
 
 # --- planning ----------------------------------------------------------------
 
-def positions(page_h, vh):
-    """Scroll offsets that cover a page top to bottom with viewport-sized tiles."""
-    if page_h <= vh:
-        return [0]
-    n = math.ceil(page_h / vh)
-    return [min(i * vh, page_h - vh) for i in range(n)]
+positions = gc.positions   # scroll offsets that cover a page top to bottom
+spread = gc.spread         # k items spread evenly from the first to the last
 
 
-def spread(all_positions, k):
-    """k offsets spread evenly from the top to the bottom of the page (top and bottom included)."""
-    if k <= 0:
-        return []
-    if k >= len(all_positions):
-        return list(all_positions)
-    if k == 1:
-        return [all_positions[0]]
-    m = len(all_positions) - 1
-    idx = sorted({round(i * m / (k - 1)) for i in range(k)})
-    return [all_positions[i] for i in idx]
+def share(needs, cap, minimum=1):
+    """Split cap across needs in proportion (largest remainder), giving each at least `minimum` (but never more
+    than it needs)."""
+    if sum(needs) <= cap:
+        return list(needs)
+    give = [min(minimum, n) for n in needs]
+    left = cap - sum(give)
+    if left <= 0:
+        return give
+    rest = [n - g for n, g in zip(needs, give)]
+    total = sum(rest)
+    raw = [left * r / total for r in rest]
+    add = [math.floor(x) for x in raw]
+    order = sorted(range(len(raw)), key=lambda i: (raw[i] - add[i], -i), reverse=True)
+    for i in order[: left - sum(add)]:
+        add[i] += 1
+    return [g + a for g, a in zip(give, add)]
+
+
+def allocate_full(heights, budget, vh, mobile=True, max_tiles_per_page=60, desktop_share=0.6, phone_share=0.3,
+                  phone_vh=MOBILE["css_height"]):
+    """The standard tour's image plan. Returns ([{desktop, phone_quota, desktop_needed}], notes, extras).
+
+    Desktop frames for every page come first (up to 60% of the budget), phone frames next (up to 30%,
+    estimated from the desktop height; the capture spreads them over the real phone page), and the rest
+    is left for motion frames, hovers, and after-click views, shared across pages.
+    """
+    need = [positions(h, vh)[:max_tiles_per_page] for h in heights]
+    give = share([len(n) for n in need], int(budget * desktop_share))
+    est = [max(1, math.ceil(h * 2.2 / phone_vh)) for h in heights] if mobile else [0] * len(heights)
+    phone = share(est, int(budget * phone_share)) if mobile else est
+    notes = [f"page {i + 1}: {give[i]} of {len(need[i])} desktop positions screenshotted (spread top to bottom); "
+             "text was captured for the whole page" for i in range(len(need)) if give[i] < len(need[i])]
+    notes += [f"page {i + 1}: only the first {max_tiles_per_page} desktop screens ({max_tiles_per_page * vh} px) are planned"
+              for i, h in enumerate(heights) if len(positions(h, vh)) > max_tiles_per_page]
+    plan = [{"desktop": spread(need[i], give[i]), "phone_quota": phone[i], "desktop_needed": len(positions(heights[i], vh))}
+            for i in range(len(need))]
+    return plan, notes, budget - sum(give) - sum(phone)
 
 
 def allocate(heights, budget, vh, mobile=True, reserve=12, max_tiles_per_page=40):
@@ -185,6 +217,8 @@ def choose_controls(controls, max_n):
             blocked.append(c)
         elif c["tag"] == "select" and not [o for o in c.get("options", []) if not o["selected"]]:
             skipped.append((c, "a dropdown with a single option"))
+        elif c.get("kind") == "range" and c.get("range", {}).get("min") == c.get("range", {}).get("max"):
+            skipped.append((c, "a slider with a single value"))
         else:
             key = (c.get("section"), c.get("kind"), (c.get("text") or "").lower())
             if key in seen and key[2]:
@@ -209,7 +243,12 @@ def describe(c):
 def build_plan(entry_url, scope, pages, skipped_routes, args, robots_note):
     """Turn discovered pages into a gstack_capture plan with a `pages` list."""
     vh = DESKTOP["css_height"]
-    alloc, alloc_notes = allocate([p["info"]["metrics"]["page_h"] for p in pages], args.budget, vh, mobile=not args.no_mobile)
+    full = not getattr(args, "quick", False)
+    heights = [p["info"]["metrics"]["page_h"] for p in pages]
+    if full:
+        alloc, alloc_notes, extras = allocate_full(heights, args.budget, vh, mobile=not args.no_mobile)
+    else:
+        alloc, alloc_notes = allocate(heights, args.budget, vh, mobile=not args.no_mobile)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
     site = slug((urlparse(scope.entry).hostname or "") + urlparse(scope.entry).path)
     masks = [(re.compile(re.escape(t), re.IGNORECASE), f"[WITHHELD-{i}]") for i, t in enumerate(args.withhold or [], 1) if t.strip()]
@@ -239,6 +278,15 @@ def build_plan(entry_url, scope, pages, skipped_routes, args, robots_note):
                 option = next(o for o in c["options"] if not o["selected"])
                 ev.update(action="select", input_value=option["value"],
                           description=mask(f"{describe(c)}, choosing '{option['text']}'")[:160])
+            if c.get("kind") == "range":  # both ends of the slider, each on a fresh load
+                rng = c.get("range", {})
+                ends = [v for v in (rng.get("min"), rng.get("max")) if v is not None and v != rng.get("value")]
+                for j, v in enumerate(ends):
+                    if j:
+                        eid += 1
+                    interactions.append(dict(ev, event_id=f"E{eid:02d}", action="set_range", input_value=str(v),
+                                             description=mask(f"slider {describe(c)}, moved to {v}")[:160]))
+                continue
             interactions.append(ev)
         untested = [{"description": mask(f"{p['route']}: {describe(c)}"), "reason": why} for c, why in extra + skipped]
         untested += [{"description": mask(f"{p['route']}: {describe(c)}"), "status": "blocked",
@@ -247,12 +295,34 @@ def build_plan(entry_url, scope, pages, skipped_routes, args, robots_note):
         untested += [{"description": mask(f"{p['route']}: {u['kind']} input '{u['text']}'".strip()), "reason": "typing and dragging are not exercised"}
                      for u in info["untestable"]]
         shots = [{"viewport_id": "V1", "scroll_y": y} for y in a["desktop"]]
-        if a["mobile"]:
+        if full and a["phone_quota"]:
+            shots.append({"viewport_id": "V2", "auto": True, "quota": a["phone_quota"]})
+        elif not full and a["mobile"]:
             shots.append({"viewport_id": "V2", "scroll_y": 0})
-        plan_pages.append({"route": p["route"], "url": p["url"], "regions": regions, "shots": shots,
-                           "interactions": interactions, "untested_controls": untested})
+        entry = {"route": p["route"], "url": p["url"], "regions": regions, "shots": shots,
+                 "interactions": interactions, "untested_controls": untested}
+        if full:
+            entry.update(desktop_needed=a["desktop_needed"], controls_found=len(info["controls"]) + len(info["untestable"]))
+        plan_pages.append(entry)
     blinded = bool(args.withhold)
-    rules = [f"pages: same host and under {scope.prefix}, robots.txt honored, at most {args.max_pages} pages",
+    if full:
+        rules = [f"pages: same host and under {scope.prefix}, robots.txt honored, at most {args.max_pages} pages",
+                 "regions: each page's top-level sections, detected automatically and named by their own heading",
+                 f"one image ceiling of {args.budget}, spent in this order: desktop frames, then phone frames, then motion "
+                 "frames, hovers, and after-click views (shared across pages)",
+                 f"desktop {DESKTOP['css_width']}x{DESKTOP['css_height']} at DPR 1: every page top to bottom, reached by scrolling "
+                 "smoothly in small steps so scroll-triggered effects fire",
+                 "motion: after the page loads and after each scroll step, the view is watched until it settles; the settled frame is "
+                 "kept, plus one mid-motion frame when the view was still changing (recorded as a motion sequence)",
+                 "charts: every SVG or canvas graphic of at least 150x100 px has a fixed sample of marks hovered "
+                 "(4 by default, spread left to right; canvas charts at points across the middle); what appeared is recorded",
+                 "phone 390x844 at DPR 1: every page top to bottom, settled frames only" if not args.no_mobile else "no phone view",
+                 f"each safe control exercised once on a fresh load (at most {args.max_controls} per page), sliders moved to both "
+                 "ends; after-click screenshot only when something changed",
+                 "typing, dragging, form submission, downloads, and account or payment actions are never performed"]
+    else:
+        rules = None
+    rules = rules or [f"pages: same host and under {scope.prefix}, robots.txt honored, at most {args.max_pages} pages",
              f"desktop {DESKTOP['css_width']}x{DESKTOP['css_height']} viewport tiles from one budget of {args.budget} images: "
              "the top of every page, the entry page top to bottom, then other pages as space allows (spread top to bottom)",
              "phone 390x844 (DPR 2) top-of-page view of the entry page, and of other pages if images remain" if not args.no_mobile else "no phone view",
@@ -266,7 +336,7 @@ def build_plan(entry_url, scope, pages, skipped_routes, args, robots_note):
         "url": entry_url,
         "target_kind": "local_server" if gc.is_local(entry_url) else "public_url",
         "snapshot_id": None,
-        "capture_profile": "site-auto",
+        "capture_profile": "site-full" if full else "site-auto",
         "max_images": args.budget,
         "settle_ms": 1500,
         "scroll_settle_ms": 400,
@@ -276,7 +346,8 @@ def build_plan(entry_url, scope, pages, skipped_routes, args, robots_note):
         "blinding": {"profile": "blinded" if blinded else "unblinded", "withhold_terms": args.withhold or [],
                      "withheld_fields": ["award", "course_year", "team", "creator_ai_report", "generator"] if blinded else []},
         "context": {"purpose": dict(unknown), "genre": dict(unknown), "audience": dict(unknown), "constraints": []},
-        "viewports": [DESKTOP] + ([] if args.no_mobile else [MOBILE]),
+        "viewports": [DESKTOP] + ([] if args.no_mobile else [MOBILE_FULL if full else MOBILE]),
+        **({"tour": {}} if full else {}),
         "pages": plan_pages,
         "skipped_routes": skipped_routes,
         "selection_rules": rules,
@@ -286,10 +357,10 @@ def build_plan(entry_url, scope, pages, skipped_routes, args, robots_note):
 
 # --- discovery ----------------------------------------------------------------
 
-def discover(browser, tmp):
+def discover(browser, tmp, sliders=False):
     src = (HERE / "discover.js").read_text(encoding="utf-8")
     path = tmp / "discover.js"
-    path.write_text("const CONFIG = " + json.dumps({"min_region_h": 80, "max_regions": 14}) + ";\n" + src, encoding="utf-8")
+    path.write_text("const CONFIG = " + json.dumps({"min_region_h": 80, "max_regions": 14, "sliders": sliders}) + ";\n" + src, encoding="utf-8")
     raw = browser.eval_file(path)
     try:
         return json.loads(raw)
@@ -297,10 +368,10 @@ def discover(browser, tmp):
         raise gc.CaptureError(f"page discovery returned non-JSON output: {raw[:200]}") from None
 
 
-def discover_scrolling(browser, tmp):
+def discover_scrolling(browser, tmp, sliders=False):
     """Discover at the top of the page, then at each viewport height down the page, merging controls that only
     appear while scrolling (reveal-on-scroll dashboards, scrollytelling steps)."""
-    info = discover(browser, tmp)
+    info = discover(browser, tmp, sliders)
     vh = info["metrics"]["vh"] or DESKTOP["css_height"]
     known = {c["selector"] for c in info["controls"]}
     known_inputs = {u["selector"] for u in info["untestable"]}
@@ -308,7 +379,7 @@ def discover_scrolling(browser, tmp):
     for y in positions(info["metrics"]["page_h"], vh)[1:40]:
         browser.js(f"(window.scrollTo(0, {int(y)}), window.scrollY)")
         time.sleep(0.9)  # reveal-on-scroll and scrollytelling transitions often take 0.5-1 s
-        more = discover(browser, tmp)
+        more = discover(browser, tmp, sliders)
         info["controls"] += [c for c in more["controls"] if c["selector"] not in known]
         known.update(c["selector"] for c in more["controls"])
         info["untestable"] += [u for u in more["untestable"] if u["selector"] not in known_inputs]
@@ -334,7 +405,7 @@ def load_robots(browser, scope):
     return rp, note
 
 
-def crawl(browser, entry, scope, max_pages, follow, tmp):
+def crawl(browser, entry, scope, max_pages, follow, tmp, sliders=False):
     """Breadth-first over in-scope pages. Returns (pages, skipped_routes, robots_note)."""
     browser.run("viewport", f"{DESKTOP['css_width']}x{DESKTOP['css_height']}", "--scale", "1")
     queue, seen = deque([canonical(entry)]), {canonical(entry)}
@@ -366,7 +437,7 @@ def crawl(browser, entry, scope, max_pages, follow, tmp):
             robots, note = load_robots(browser, scope)
             if not robots.can_fetch("*", url):
                 raise gc.CaptureError(f"robots.txt disallows {url}; nothing was captured")
-        info = discover_scrolling(browser, tmp)
+        info = discover_scrolling(browser, tmp, sliders)
         final = canonical(info["href"])
         if not scope.contains(final):
             skipped.append({"route": scope.route(url), "status": "skipped", "reason": f"redirected outside the site scope to {final[:200]}"})
@@ -395,8 +466,13 @@ def default_run_dir(url):
 
 
 def run(args):
-    if args.budget < 1 or args.budget > MAX_BUDGET:
-        raise gc.CaptureError(f"--budget must be between 1 and {MAX_BUDGET} (the bundle format's ceiling)")
+    ceiling = QUICK_MAX_BUDGET if args.quick else MAX_BUDGET
+    if args.budget is None:
+        args.budget = QUICK_MAX_BUDGET if args.quick else FULL_DEFAULT_BUDGET
+    if args.max_controls is None:
+        args.max_controls = 10 if args.quick else 25
+    if args.budget < 1 or args.budget > ceiling:
+        raise gc.CaptureError(f"--budget must be between 1 and {ceiling}" + (" with --quick" if args.quick else " (the bundle format's ceiling)"))
     if not args.serve and not re.match(r"^https?://", args.target or ""):
         raise gc.CaptureError("give a full http(s) URL, for example https://example.github.io/project/")
     browser = gc.Browser(gc.browse_binary(), [])
@@ -406,7 +482,8 @@ def run(args):
         scope = Scope(entry)
         run_dir = Path(args.out).resolve() if args.out else default_run_dir(args.target if not base else f"local/{Path(args.serve).name}")
         run_dir.mkdir(parents=True, exist_ok=True)
-        pages, skipped, robots_note = crawl(browser, entry, scope, 1 if args.single_page else args.max_pages, not args.single_page, tmp)
+        pages, skipped, robots_note = crawl(browser, entry, scope, 1 if args.single_page else args.max_pages, not args.single_page, tmp,
+                                            sliders=not args.quick)
         if not pages:
             raise gc.CaptureError("no page inside the site scope could be loaded")
         plan = build_plan(entry, scope, pages, skipped, args, robots_note)
@@ -425,6 +502,9 @@ def run(args):
         "interactions": {k: sum(1 for e in manifest["interactions"] if e["execution_status"] == k)
                          for k in ("completed", "failed", "blocked", "skipped", "timed_out")},
         "suggested_profile": "multimodal-datastory" if charts else "multimodal-core",
+        "capture_profile": manifest["evidence_profile"]["capture_profile"],
+        "tour": manifest["coverage"].get("tour", []),
+        "motion_sequences": len(manifest.get("motion", [])),
         "adapter": ADAPTER,
     }
     (run_dir / "site.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -436,8 +516,11 @@ def main(argv=None):
     p.add_argument("target", nargs="?", help="the site URL (or, with --serve, the page path inside the served folder)")
     p.add_argument("--out", help="run directory (default: slop-audit/local-runs/<site>-<time>)")
     p.add_argument("--max-pages", type=int, default=12)
-    p.add_argument("--max-controls", type=int, default=10, help="safe controls clicked per page")
-    p.add_argument("--budget", type=int, default=MAX_BUDGET, help=f"screenshots for the whole site (1-{MAX_BUDGET}); use 8 for chat-app packages")
+    p.add_argument("--max-controls", type=int, default=None, help="safe controls exercised per page (default 25; 10 with --quick)")
+    p.add_argument("--budget", type=int, default=None,
+                   help=f"image ceiling for the whole site (default {FULL_DEFAULT_BUDGET}, at most {MAX_BUDGET}; with --quick default and at most "
+                        f"{QUICK_MAX_BUDGET}; use --quick --budget 8 for chat-app packages)")
+    p.add_argument("--quick", action="store_true", help="the older, smaller site-auto capture: no motion frames or hovers, long pages spread")
     p.add_argument("--single-page", action="store_true", help="capture only the given page")
     p.add_argument("--no-mobile", action="store_true", help="skip the phone-width views")
     p.add_argument("--withhold", action="append", default=[], metavar="TERM",
@@ -451,8 +534,13 @@ def main(argv=None):
         return 1
     report.print()
     s = summary
-    print(f"\nCaptured {len(s['pages'])} page(s) under {s['scope']} with {s['screenshots']} of {s['budget']} screenshots; "
-          f"interactions: {s['interactions']['completed']} completed, {s['interactions']['failed']} failed, {s['interactions']['blocked']} blocked.")
+    print(f"\nCaptured {len(s['pages'])} page(s) under {s['scope']} with {s['screenshots']} of {s['budget']} screenshots "
+          f"({s['capture_profile']}); interactions: {s['interactions']['completed']} completed, {s['interactions']['failed']} failed, "
+          f"{s['interactions']['blocked']} blocked.")
+    for t in s["tour"]:
+        print(f"  tour {t['route']}: desktop {t['desktop_frames']}/{t['desktop_needed']} screens, phone {t['phone_frames']}/{t['phone_needed']}, "
+              f"{t['motion_sequences']} motion sequence(s), {t['charts_hovered']}/{t['charts_found']} chart(s) hovered "
+              f"({t['hovers_with_response']}/{t['hovers']} hovers responded)")
     for page in s["pages"]:
         print(f"  {page['route']}  {page['title'][:70]!r}  ({page['height_px']} px tall, {page['charts']} chart-like graphics)")
     for sk in s["skipped_routes"][:10]:

@@ -47,7 +47,23 @@ STYLE_PROPS = ["font-family", "font-size", "font-weight", "font-style", "color",
                "transition-property", "opacity", "-webkit-background-clip", "background-clip"]
 UNSAFE = re.compile(r"(log ?in|log ?out|sign ?in|sign ?up|sign ?out|password|checkout|purchase|buy|pay\b|payment|"
                     r"subscribe|unsubscribe|send|submit|delete|remove|cancel|account|settings|order)", re.IGNORECASE)
-ALLOWED_ACTIONS = {"click", "hover", "select", "scroll", "keypress"}
+ALLOWED_ACTIONS = {"click", "hover", "select", "scroll", "keypress", "set_range"}
+TOUR_LIMITS = [
+    "motion is sampled as still frames (one mid-motion frame and the settled view); it is not recorded continuously",
+    "chart hovers sample a few marks per chart; native tooltips (SVG <title>, title attributes) are not drawn in screenshots and are recorded as text",
+    "typing, dragging (panning, brushing), and form submission are never performed",
+    "HTML comments, alt text, and hidden elements are not captured as text spans",
+]
+# The standard tour (plan["tour"]): what a careful person would see. Every value can be overridden in the plan.
+TOUR_DEFAULTS = {
+    "motion": True,               # watch for motion after loads and scroll steps; keep a mid-motion frame when the view changed
+    "motion_max_ms": 2500,        # stop waiting for a view to settle after this long (it is then recorded as looping)
+    "motion_frames_per_page": 24,  # mid-motion frames kept per page at most
+    "looping_per_page": 2,        # looping-animation sequences recorded per page at most
+    "hover_marks": 4,             # marks hovered per chart, spread left to right
+    "hover_charts_per_page": 12,
+    "hover_wait_ms": 350,
+}
 LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1", "0.0.0.0"}
 
 
@@ -123,6 +139,66 @@ def norm_box(rect, origin_y, width, height):
     return box if box["width"] > 0 and box["height"] > 0 else None
 
 
+def positions(page_h, vh):
+    """Scroll offsets that cover a page top to bottom with viewport-sized tiles."""
+    if page_h <= vh:
+        return [0]
+    n = -(-page_h // vh)
+    return [int(min(i * vh, page_h - vh)) for i in range(int(n))]
+
+
+def spread(items, k):
+    """k items spread evenly from the first to the last (both included)."""
+    if k <= 0:
+        return []
+    if k >= len(items):
+        return list(items)
+    if k == 1:
+        return [items[0]]
+    m = len(items) - 1
+    idx = sorted({round(i * m / (k - 1)) for i in range(k)})
+    return [items[i] for i in idx]
+
+
+def watch_motion(slop, shoot, max_ms=2500, keep=True):
+    """Wait for the view to settle after a load, scroll, or action. Returns the settled frame and, when the view
+    was still changing, one earlier frame that differs from it. `slop(call)` runs a tour.js helper and `shoot()`
+    returns a temp screenshot path. Call slop("poll()") before acting so mutations are counted from then."""
+    t0 = time.time()
+    ms = lambda: int((time.time() - t0) * 1000)
+    first = (shoot(), ms()) if keep else None
+    mid, detected, looping, quiet = None, set(), False, 0
+    while True:
+        p = slop("poll()")
+        if p["finite"]:
+            detected.add("css_animation")
+        if p["mutations"]:
+            detected.add("dom_mutation")
+        looping = looping or p["looping"] > 0
+        active = p["finite"] or p["mutations"]
+        if keep and mid is None and active and ms() >= 350:
+            mid = (shoot(), ms())
+        quiet = 0 if active else quiet + 1
+        if (quiet >= 2 and ms() >= 300) or ms() >= max_ms:
+            break
+        time.sleep(0.15)
+    timed_out = ms() >= max_ms
+    settled = (shoot(), ms())
+    h = _lib.sha256_file(settled[0])
+    extra = None
+    for cand in (mid, first):
+        if cand and _lib.sha256_file(cand[0]) != h:
+            extra = cand
+            break
+    if extra:
+        detected.add("visual_change")
+    if looping:
+        detected.add("looping_animation")
+    return {"settled": settled, "extra": extra, "detected": sorted(detected),
+            "looping": bool(extra) and (timed_out or (looping and not ({"css_animation", "dom_mutation"} & detected))),
+            "settle_ms": None if timed_out else settled[1]}
+
+
 def plan_pages(plan, base_url):
     """The pages a plan captures. A plan without `pages` is one page built from its top-level fields."""
     if plan.get("pages"):
@@ -152,12 +228,20 @@ class Capture:
         self.coverage_interactions = []
         self.span_index = {}     # (state_id, key) -> span_id
         self.el_index = {}       # (state_id, key) -> element_id
+        self.tour = dict(TOUR_DEFAULTS, **plan["tour"]) if plan.get("tour") is not None else None
+        self.tour_src = (HERE / "tour.js").read_text(encoding="utf-8")
+        self.motion = []          # motion sequences (tour only)
+        self.tour_stats = {}      # route -> coverage numbers (tour only)
+        self.reserved = 0         # planned screenshots not yet taken; extras may not use them
+        self.extra_left = 0       # images this page may spend on motion frames, hovers, and after-click views
+        self.hover_n = 0
 
     # --- page helpers ---------------------------------------------------------
 
     def extract(self, mode):
         cfg = {"regions": [{"region_id": r["region_id"], "selector": r["selector"]} for r in self.page["regions"]],
-               "mode": mode, "style_props": STYLE_PROPS, "max_spans": self.max_spans, "max_elements": self.max_elements}
+               "mode": mode, "style_props": STYLE_PROPS, "max_spans": self.max_spans, "max_elements": self.max_elements,
+               "graphics": bool(self.tour)}
         path = self.tmp / f"extract-{mode}.js"
         path.write_text(f"const CONFIG = {json.dumps(cfg)};\n" + self.extract_src, encoding="utf-8")
         raw = self.br.eval_file(path)
@@ -166,13 +250,46 @@ class Capture:
         except json.JSONDecodeError:
             raise CaptureError(f"extractor returned non-JSON output: {raw[:200]}") from None
 
-    def load(self, viewport_id):
+    def load(self, viewport_id, settle=True):
         vp = self.viewports[viewport_id]
         self.br.run("viewport", f"{vp['css_width']}x{vp['css_height']}", "--scale", str(vp["device_pixel_ratio"]))
         self.br.run("goto", self.url)
         self.br.run("wait", "--load", check=False)
         self.br.js("document.fonts ? document.fonts.ready.then(() => document.fonts.status) : 'none'")
-        time.sleep(self.plan.get("settle_ms", 600) / 1000)
+        if self.tour:
+            self.install()
+        if settle:
+            time.sleep(self.plan.get("settle_ms", 600) / 1000)
+
+    # --- tour helpers (plan["tour"]) ------------------------------------------
+
+    def install(self):
+        path = self.tmp / "tour.js"
+        if not path.exists():
+            path.write_text(self.tour_src, encoding="utf-8")
+        self.br.run("eval", str(path), timeout=90)  # prints nothing; check the install instead
+        if self.br.js("String(!!(window.__slop && window.__slop.version === 2))") != "true":
+            raise CaptureError("the tour helpers (tour.js) did not install on this page")
+
+    def slop(self, call):
+        raw = self.br.js(f"window.__slop.{call}")
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            raise CaptureError(f"tour helper {call.split('(')[0]} returned non-JSON output: {raw[:200]}") from None
+
+    def temp_shot(self):
+        self.shot_n = getattr(self, "shot_n", 0) + 1
+        path = self.tmp / f"t{self.shot_n:04d}.png"
+        self.br.run("screenshot", "--viewport", str(path))
+        return path
+
+    def can_spend(self, n=1):
+        """True if n more images fit without touching planned screenshots or the page's share of extras."""
+        return len(self.assets) + self.reserved + n <= self.plan["max_images"] and self.extra_left >= n
+
+    def observe_motion(self, keep=True):
+        return watch_motion(self.slop, self.temp_shot, self.tour["motion_max_ms"], keep)
 
     def new_state(self, viewport_id, kind, metrics, description):
         sid = f"S{len(self.states) + 1:02d}"
@@ -188,15 +305,10 @@ class Capture:
         return sid
 
     def screenshot(self, state_id, viewport_id, full_page=False):
-        if len(self.assets) >= self.plan["max_images"]:
-            raise CaptureError(f"plan exceeds its image budget of {self.plan['max_images']}")
-        aid = f"A{len(self.assets) + 1:02d}"
-        rel = f"assets/{aid}.png"
-        target = self.out / rel
-        target.parent.mkdir(parents=True, exist_ok=True)
         # The browse daemon only writes inside its own start folder and the system temp folders,
         # so shoot into our temp folder and move the file into the bundle.
-        shot = self.tmp / f"{aid}.png"
+        self.shot_n = getattr(self, "shot_n", 0) + 1
+        shot = self.tmp / f"s{self.shot_n:04d}.png"
         if full_page:
             self.br.run("js", "window.scrollTo(0, 0)")
             self.br.run("screenshot", str(shot))
@@ -204,10 +316,20 @@ class Capture:
         else:
             sx, sy = json.loads(self.br.js("JSON.stringify([window.scrollX, window.scrollY])"))
             self.br.run("screenshot", "--viewport", str(shot))
+        return self.register(shot, state_id, viewport_id, "full_page_screenshot" if full_page else "viewport_screenshot", sx, sy)
+
+    def register(self, shot, state_id, viewport_id, kind, sx, sy):
+        """Move a screenshot taken into the temp folder into the bundle as the next asset."""
+        if len(self.assets) >= self.plan["max_images"]:
+            raise CaptureError(f"plan exceeds its image budget of {self.plan['max_images']}")
+        aid = f"A{len(self.assets) + 1:02d}"
+        rel = f"assets/{aid}.png"
+        target = self.out / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(shot), str(target))
         w, h = _lib.image_size(target)
         vp = self.viewports[viewport_id]
-        self.assets.append({"asset_id": aid, "kind": "full_page_screenshot" if full_page else "viewport_screenshot",
+        self.assets.append({"asset_id": aid, "kind": kind,
                             "path": rel, "sha256": _lib.sha256_file(target), "media_type": "image/png",
                             "pixel_width": w, "pixel_height": h, "viewport_id": viewport_id,
                             "device_pixel_ratio": vp["device_pixel_ratio"], "route": self.page["route"],
@@ -231,6 +353,157 @@ class Capture:
             if time.time() >= deadline:
                 return False
             time.sleep(0.25)
+
+    def quick_state(self, kind, description):
+        """A state that needs no extraction (hover views): load facts are those of the page it was reached from."""
+        return self.new_state(self.primary, kind, {"fonts_failed": [], "fonts_loading": [], "ready_state": "complete",
+                                                   "busy": False, "images_incomplete": 0}, description)
+
+    def stats(self):
+        return self.tour_stats[self.page["route"]]
+
+    def tour_shot(self, sid, vp_id, y, seen, motion):
+        """Scroll smoothly to y, wait for the view to settle, and keep the settled frame (plus a mid-motion frame)."""
+        self.slop("poll()")  # start counting mutations from here
+        actual = self.slop(f"scrollSmooth({int(y)})")["y"]
+        self.reserved -= 1
+        if actual in seen:
+            self.notes.append(f"skipped a {vp_id} screenshot at scroll {y}: the page is shorter, duplicate of scroll {actual}")
+            return None
+        seen.add(actual)
+        obs = self.observe_motion(keep=motion)
+        sx, sy = json.loads(self.br.js("JSON.stringify([window.scrollX, window.scrollY])"))
+        asset = self.register(obs["settled"][0], sid, vp_id, "viewport_screenshot", sx, sy)
+        st = self.stats()
+        st["desktop_frames" if vp_id == self.primary else "phone_frames"] += 1
+        if self.pending_load and vp_id == self.primary and sy == 0:
+            self.pending_load["frames"].append({"asset_id": asset["asset_id"], "elapsed_ms": None, "settled": True})
+            self.pending_load = None
+        if motion and obs["extra"]:
+            self.record_motion(obs, sid, vp_id, "scroll", sy, settled=asset)
+        return asset
+
+    def record_motion(self, obs, sid, vp_id, trigger, scroll_y, settled=None, event_id=None):
+        st, tour = self.stats(), self.tour
+        if obs["looping"] and st["looping_sequences"] >= tour["looping_per_page"]:
+            return None  # this page's looping animations are already on record
+        frames, note = [], ""
+        if st["motion_frames"] < tour["motion_frames_per_page"] and self.can_spend():
+            a = self.register(obs["extra"][0], sid, vp_id, "motion_frame", 0, scroll_y)
+            self.extra_left -= 1
+            st["motion_frames"] += 1
+            frames.append({"asset_id": a["asset_id"], "elapsed_ms": obs["extra"][1], "settled": False})
+        else:
+            note = "the view was changing, but its mid-motion frame was not kept (this page's image share was used up)"
+        if settled is not None:
+            frames.append({"asset_id": settled["asset_id"], "elapsed_ms": obs["settled"][1], "settled": True})
+        seq = {"sequence_id": f"M{len(self.motion) + 1:02d}", "route": self.page["route"], "viewport_id": vp_id, "state_id": sid,
+               "trigger": trigger, "event_id": event_id, "scroll_y": scroll_y, "frames": frames, "detected": obs["detected"],
+               "looping": obs["looping"], "settled_after_ms": obs["settle_ms"], "note": note}
+        self.motion.append(seq)
+        st["motion_sequences"] += 1
+        st["looping_sequences"] += 1 if obs["looping"] else 0
+        return seq
+
+    def park_pointer(self):
+        """Move the real pointer to the top-left corner so no hover state carries over between charts."""
+        self.br.js("(() => { let p = document.getElementById('__slop_park'); if (!p) { p = document.createElement('div'); p.id = '__slop_park';"
+                   " p.style.cssText = 'position:fixed;left:0;top:0;width:3px;height:3px;z-index:2147483647;'; document.body.appendChild(p); } return 1; })()")
+        self.br.run("hover", "#__slop_park", check=False, timeout=20)
+        self.br.js("(document.getElementById('__slop_park') && document.getElementById('__slop_park').remove(), 1)")
+
+    def hover_charts(self, sid):
+        """Hover a fixed sample of marks on every chart-like graphic and record what appeared."""
+        tour, st, route = self.tour, self.stats(), self.page["route"]
+        charts = self.slop("charts()")
+        st["charts_found"] = len(charts)
+        regions = [{"region_id": r["region_id"], "selector": r["selector"]} for r in self.page["regions"] if r.get("selector")]
+        for ci, ch in enumerate(charts, 1):
+            label = ch["label"] or f"{ch['kind']} graphic {ci}"
+            if ci > tour["hover_charts_per_page"]:
+                self.coverage_interactions.append({"ref": f"{route}: hover on {label}"[:300], "status": "untested",
+                                                   "reason": f"the limit of {tour['hover_charts_per_page']} hovered charts per page was reached"})
+                continue
+            center = self.slop(f"scrollIntoCenter({json.dumps(ch['selector'])})")
+            if center is None:
+                continue
+            region = self.slop(f"regionOf({json.dumps(ch['selector'])}, {json.dumps(regions)})")
+            self.park_pointer()
+            self.slop("poll()")
+            self.slop(f"scrollSmooth({int(center)})")
+            self.observe_motion(keep=False)  # let the chart's entry animation finish
+            sx, sy = json.loads(self.br.js("JSON.stringify([window.scrollX, window.scrollY])"))
+            before = _lib.sha256_file(self.temp_shot())
+            snap0 = self.slop("snapshot(null)")
+            if len(ch["marks"]) >= 2:
+                picks = [("mark", m) for m in spread(ch["marks"], tour["hover_marks"])]
+            else:  # canvas or overlay-driven chart: points across the middle of the graphic
+                r, k = ch["rect"], tour["hover_marks"]
+                picks = [("point", (r["x"] + r["w"] * (i + 1) / (k + 1), r["y"] + r["h"] * 0.5)) for i in range(k)]
+            first = self.hover_n + 1
+            shown = sum(self.hover_one(sid, ch, region, label, how, t, n, len(picks), before, snap0, sx, sy)
+                        for n, (how, t) in enumerate(picks, 1))
+            st["charts_hovered"] += 1
+            st["hovers"] += len(picks)
+            st["hovers_with_response"] += shown
+            self.coverage_interactions.append({"ref": f"{route}: hover on {label}"[:300], "status": "captured",
+                                               "reason": f"{len(picks)} point(s) hovered (H{first:03d}-H{self.hover_n:03d}); {shown} showed a tooltip or a visible change"})
+        if charts:
+            self.park_pointer()
+
+    def hover_one(self, sid, ch, region, label, how, t, n, total, before, snap0, sx, sy):
+        """One hover; returns 1 if something visibly appeared or changed."""
+        self.hover_n += 1
+        hid = f"H{self.hover_n:03d}"
+        input_value = None
+        if how == "mark":
+            out = self.br.run("hover", t["selector"], check=False, timeout=25)
+            ok, target = "Hovered" in out, t["selector"]
+            desc = f"pointer on mark {n} of {total} ({t['tag']}) in {label}"
+        else:
+            vx, vy = round(t[0] - sx), round(t[1] - sy)
+            res = self.slop(f"hoverAt({vx}, {vy})")
+            ok, target = res.get("ok"), res.get("selector") or ch["selector"]
+            input_value = f"pointer at viewport point {vx},{vy} (synthetic pointer events)"
+            desc = f"pointer at point {n} of {total} across {label}"
+        base = {"event_id": hid, "action": "hover",
+                "target": {"element_id": None, "region_id": region, "selector": target[:300], "description": desc[:300]},
+                "input_value": input_value, "before_state_id": sid, "after_state_id": None,
+                "timing_rule": f"observe {self.tour['hover_wait_ms']} ms after the pointer reaches the target; no reload between hovers on one chart",
+                "observed_changes": []}
+        if not ok:
+            self.events.append(dict(base, execution_status="failed", observed_result="the pointer could not reach the target"))
+            return 0
+        time.sleep(self.tour["hover_wait_ms"] / 1000)
+        snap = self.slop(f"snapshot({json.dumps(target)})")
+        shot = self.temp_shot()
+        visual = _lib.sha256_file(shot) != before
+        appeared = {k: v for k, v in snap["floating"].items() if (snap0["floating"].get(k) or {}).get("text") != v["text"]}
+        changes = [{"kind": "text_changed", "detail": f"{k}: appeared or changed on hover: {json.dumps(v['text'])}"[:500]} for k, v in appeared.items()]
+        if snap["title"]:
+            changes.append({"kind": "text_changed", "detail": f"native tooltip text on the target (a browser shows it after a delay; never drawn in screenshots): {json.dumps(snap['title'])}"[:500]})
+        changes.append({"kind": "visual_changed" if visual else "visual_unchanged",
+                        "detail": "the view differs from before the hover" if visual else "the view is pixel-identical to before the hover"})
+        hs = self.quick_state("after_interaction", f"after {hid}: {desc}"[:300])
+        if (visual or appeared) and self.can_spend():
+            self.register(shot, hs, self.primary, "viewport_screenshot", sx, sy)
+            self.extra_left -= 1
+            self.stats()["hover_shots"] += 1
+        elif visual or appeared:
+            self.notes.append(f"{hid}: no screenshot (this page's image share was used up); the change is recorded as text")
+        for k, v in appeared.items():
+            sid_t = f"T{len(self.spans) + 1:03d}"
+            self.span_index[(hs, k)] = sid_t
+            self.spans.append({"span_id": sid_t, "region_id": region, "state_id": hs, "text": v["text"][:4000], "source": "dom",
+                               "element_id": None, "appearances": [], "_rect": {"x": v["x"] + sx, "y": v["y"] + sy, "w": v["w"], "h": v["h"]}, "_key": k})
+        if snap["title"]:
+            sid_t = f"T{len(self.spans) + 1:03d}"
+            self.spans.append({"span_id": sid_t, "region_id": region, "state_id": hs, "text": snap["title"], "source": "dom",
+                               "element_id": None, "appearances": [], "_rect": {"x": 0, "y": 0, "w": 0, "h": 0}, "_key": target + "::title"})
+        result = "a tooltip or label appeared" if appeared else ("the view changed" if visual else "no visible response")
+        self.events.append(dict(base, after_state_id=hs, execution_status="completed", observed_result=f"hover completed; {result}",
+                                observed_changes=changes))
+        return 1 if (visual or appeared) else 0
 
     # --- recording extracted data ---------------------------------------------
 
@@ -276,10 +549,21 @@ class Capture:
     def run(self):
         page_h_by_state = {}
         multi = len(self.pages) > 1
-        for page in self.pages:
+        if self.tour:  # planned screenshots are reserved; motion frames, hovers, and after-click views use what is left
+            self.reserved = sum(s.get("quota", 1) for page in self.pages for s in page["shots"] if not s.get("full_page"))
+        for i, page in enumerate(self.pages):
             self.page, self.url = page, page["url"]
             if multi:
                 time.sleep(self.plan.get("page_delay_ms", 500) / 1000)
+            if self.tour:
+                spare = self.plan["max_images"] - len(self.assets) - self.reserved
+                self.extra_left = max(0, spare // (len(self.pages) - i))
+                self.pending_load = None
+                self.tour_stats[page["route"]] = {"desktop_frames": 0, "desktop_needed": page.get("desktop_needed"), "phone_frames": 0,
+                                                  "phone_needed": None, "motion_sequences": 0, "motion_frames": 0, "looping_sequences": 0,
+                                                  "charts_found": 0, "charts_hovered": 0, "hovers": 0, "hovers_with_response": 0,
+                                                  "hover_shots": 0, "controls_found": page.get("controls_found"),
+                                                  "controls_exercised": len(page.get("interactions", []))}
             self.capture_page(page, page_h_by_state)
         # Region and span appearances on every screenshot of their state.
         for s in self.spans:
@@ -294,17 +578,37 @@ class Capture:
         for vp_id in [v["viewport_id"] for v in plan["viewports"]]:
             if vp_id != self.primary and vp_id not in shot_vps:
                 continue  # no screenshots planned at this viewport for this page
-            self.load(vp_id)
+            tour_primary = bool(self.tour) and vp_id == self.primary
+            self.load(vp_id, settle=not tour_primary)
+            load_motion = None
+            if tour_primary and self.tour["motion"]:
+                self.slop("poll()")
+                load_motion = self.observe_motion(keep=True)  # entrance animations, before anything else happens
             mode = "full" if vp_id == self.primary else "regions_only"
             data = self.extract(mode)
             sid = self.new_state(vp_id, "initial", data["metrics"], f"{page['route']} as loaded at viewport {vp_id}")
             page_h_by_state[sid] = data["metrics"]["page_h"]
+            if load_motion and load_motion["extra"]:
+                self.pending_load = self.record_motion(load_motion, sid, vp_id, "load", 0)
             self.region_rects[sid] = {r["region_id"]: r["rect"] for r in data["regions"] if r["found"]}
             for r in data["regions"]:
                 if not r["found"]:
                     self.notes.append(f"region {r['region_id']} selector not found at viewport {vp_id}{where}")
             seen_scrolls = set()
             for shot in [s for s in page["shots"] if s["viewport_id"] == vp_id]:
+                if self.tour and not shot.get("full_page"):
+                    if shot.get("auto"):  # top to bottom at this viewport, within the planned quota
+                        every = positions(data["metrics"]["page_h"], self.viewports[vp_id]["css_height"])
+                        take = spread(every, shot["quota"])
+                        self.reserved -= shot["quota"] - len(take)
+                        self.stats()["phone_needed" if vp_id != self.primary else "desktop_needed"] = len(every)
+                        if len(take) < len(every):
+                            self.notes.append(f"{page['route']}: {len(take)} of {len(every)} {vp_id} positions screenshotted (spread top to bottom)")
+                        for y in take:
+                            self.tour_shot(sid, vp_id, y, seen_scrolls, motion=False)
+                    else:
+                        self.tour_shot(sid, vp_id, shot.get("scroll_y", 0), seen_scrolls, motion=tour_primary and self.tour["motion"])
+                    continue
                 if shot.get("full_page"):
                     if data["metrics"]["page_h"] <= self.viewports[vp_id]["css_height"]:
                         self.notes.append(f"skipped the {vp_id} full-page overview: the page fits in one viewport, so it would duplicate scroll 0")
@@ -332,6 +636,10 @@ class Capture:
                 self.primary_data = data
                 if plan.get("text_sweep") and not visible_only:
                     self.sweep_text(sid, data["metrics"]["page_h"], vp["css_height"])
+                if tour_primary and self.pending_load:  # the page never scrolled back to 0
+                    self.pending_load = None
+                if tour_primary and self.tour.get("hover_marks", 0) > 0:
+                    self.hover_charts(sid)
         for ev in page.get("interactions", []):
             self.interaction(ev)
         for item in page.get("untested_controls", []):
@@ -403,6 +711,10 @@ class Capture:
         try:
             if ev["action"] == "select":
                 self.br.run("select", ev["selector"], ev.get("input_value", ""))
+            elif ev["action"] == "set_range":
+                self.install()
+                if not self.slop(f"setRange({json.dumps(ev['selector'])}, {json.dumps(str(ev.get('input_value', '')))})").get("ok"):
+                    raise CaptureError("the target is not a slider")
             elif ev["action"] == "keypress":
                 self.br.run("press", ev.get("input_value", "Enter"))
             elif ev["action"] == "scroll":
@@ -449,10 +761,14 @@ class Capture:
             changed_here = any(c["kind"] == "text_changed" and not c["detail"].startswith("[outside") for c in changes)
             if not (changed_here or attr_changes):
                 self.notes.append(f"{ev['event_id']}: no after screenshot (nothing changed in the observed regions)")
-            elif len(self.assets) >= self.plan["max_images"]:
+            elif self.tour and not self.can_spend():
+                self.notes.append(f"{ev['event_id']}: no after screenshot (this page's image share was used up)")
+            elif not self.tour and len(self.assets) >= self.plan["max_images"]:
                 self.notes.append(f"{ev['event_id']}: no after screenshot (the image budget of {self.plan['max_images']} was used up)")
             else:
                 self.screenshot(sid, self.primary)
+                if self.tour:
+                    self.extra_left -= 1
         elif shot_after:
             self.screenshot(sid, self.primary)
         self.page_h = after["metrics"]["page_h"]
@@ -509,8 +825,9 @@ class Capture:
             "modalities": {"screenshot": bool(self.assets), "text": bool(spans), "dom": bool(self.elements),
                            "computed_style": any(e["computed_style"] for e in self.elements),
                            "interaction": bool(self.events), "source": bool(excerpts)},
-            "capability_limits": self.limits + ["animation playback is not recorded; motion can only be inferred from captured styles",
-                                                "HTML comments, alt text, and hidden elements are not captured as text spans"],
+            "capability_limits": self.limits + (TOUR_LIMITS if self.tour else
+                                                ["animation playback is not recorded; motion can only be inferred from captured styles",
+                                                 "HTML comments, alt text, and hidden elements are not captured as text spans"]),
             "context": plan["context"],
             "blinding": {"profile": plan["blinding"]["profile"], "transformations": transformations,
                          "withheld_fields": plan["blinding"].get("withheld_fields", []), "known_leakage": leakage},
@@ -530,6 +847,9 @@ class Capture:
                 "notes": plan.get("coverage_notes", []),
             },
         }
+        if self.tour:
+            manifest["motion"] = [m for m in self.motion if m["frames"]]
+            manifest["coverage"]["tour"] = [dict(route=route, **st) for route, st in self.tour_stats.items()]
         return manifest
 
     def blind(self, spans):

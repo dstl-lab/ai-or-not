@@ -168,6 +168,10 @@ def skill_instructions(profile_id):
         "",
         f"Also fill study_questionnaire: questionnaire_version \"{questionnaire.load()['questionnaire_version']}\" and an answer "
         f"to each of {', '.join(questionnaire.question_ids())}, in the participants' formats (see Study questionnaire above).",
+        "",
+        "This interface cannot browse the live site, so the exploration stage is skipped: include exploration_stage with "
+        "status \"not_done\", reason \"run from a prompt package, which cannot browse the live site\", exploration_id, "
+        "exploration_hash, and tour_commit null, every list empty, study_questionnaire null, and a one-sentence summary.",
     ])
 
 

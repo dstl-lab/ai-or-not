@@ -32,8 +32,9 @@ Per the Claude Agent Skills overview (see `references/evidence-sources.md`,
 SRC-CLAUDE-SKILLS), skills uploaded to the API run in a sandboxed container
 without network access or runtime package installation, and custom skills do
 not sync between claude.ai, Claude Code, and the API. The skill's scripts use
-only the Python standard library for this reason. Live capture cannot run in
-that sandbox; supply a frozen bundle.
+only the Python standard library for this reason. Live capture and live
+exploration cannot run in that sandbox; supply a frozen bundle, and the audit
+records its exploration stage as `not_done`.
 
 ## Development smoke tests with subagents
 

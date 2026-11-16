@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reservoir Levels</title>
+<style>
+  body { margin: 0; font: 16px/1.5 Georgia, serif; color: #1d2733; background: #f6f3ec; }
+  header, section, footer { padding: 48px 64px; }
+  section { min-height: 760px; border-top: 1px solid #d8d2c4; }
+  h1 { font-size: 44px; margin: 0 0 8px; animation: rise 1.4s ease-out both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+  .pulse { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #c0392b; animation: pulse 1s infinite alternate; }
+  @keyframes pulse { from { opacity: 1; } to { opacity: 0.2; } }
+  .reveal { opacity: 0; transform: translateX(-60px); transition: opacity 1.2s, transform 1.2s; }
+  .reveal.visible { opacity: 1; transform: none; }
+  #tooltip, #canvas-tip { position: absolute; pointer-events: none; background: #1d2733; color: #fff; padding: 4px 8px; font: 13px sans-serif; opacity: 0; }
+  rect.bar { fill: #4a7aa7; }
+  rect.bar:hover { fill: #e67e22; }
+  circle.dot { fill: #2c7a51; }
+  .controls label { display: block; margin: 12px 0; }
+</style></head>
+<body>
+<header id="top">
+  <h1>Reservoir Levels</h1>
+  <p id="lede"><span class="pulse"></span> Live gauge readings from three reservoirs, updated monthly.</p>
+  <nav><a href="about.html">About</a> <a href="https://example.com/elsewhere">Elsewhere</a></nav>
+</header>
+<main>
+  <section id="intro">
+    <h2>Why levels matter</h2>
+    <p>Storage fell for four straight summers before the wet winter of 2023.</p>
+    <p class="reveal" id="reveal-note">Scroll on: this note slides in when it comes into view.</p>
+  </section>
+  <section id="scatter-section">
+    <h2>Rainfall against storage</h2>
+    <svg id="scatter" width="600" height="300" role="img" aria-label="scatter plot">
+      <g class="axis"><line x1="40" y1="260" x2="580" y2="260" stroke="#888"/></g>
+      <g id="dots"></g>
+      <g id="bars"></g>
+    </svg>
+    <div id="tooltip"></div>
+  </section>
+  <section id="growth-section">
+    <h2>Monthly inflow</h2>
+    <svg id="growth" width="600" height="260" role="img" aria-label="bar chart"></svg>
+    <p id="growth-caption">Bars grow when the chart scrolls into view.</p>
+  </section>
+  <section id="canvas-section">
+    <h2>Storage by reservoir</h2>
+    <canvas id="canvas-chart" width="480" height="240"></canvas>
+    <div id="canvas-tip"></div>
+  </section>
+  <section id="controls-section" class="controls">
+    <h2>Explore a year</h2>
+    <label>Year <input type="range" id="year" min="2000" max="2020" value="2010"></label>
+    <p id="year-label">Showing 2010</p>
+    <label>Metric <select id="metric"><option value="storage" selected>storage</option><option value="inflow">inflow</option></select></label>
+    <p id="metric-label">Metric: storage</p>
+    <button id="toggle" type="button" aria-pressed="false">Show averages</button>
+    <p id="toggle-label">Averages hidden</p>
+    <form action="/subscribe" method="post"><input type="email" placeholder="you@example.com"><button>Subscribe</button></form>
+  </section>
+</main>
+<footer><p>Course project. <a href="about.html">About</a></p></footer>
+<script>
+const ns = "http://www.w3.org/2000/svg";
+const tip = document.getElementById("tooltip");
+const values = [12, 30, 22, 41, 35, 18, 27, 44, 9, 33];
+values.forEach((v, i) => {
+  const c = document.createElementNS(ns, "circle");
+  c.setAttribute("class", "dot"); c.setAttribute("cx", 60 + i * 50); c.setAttribute("cy", 250 - v * 5); c.setAttribute("r", 7);
+  c.addEventListener("mouseover", (e) => {
+    const r = c.getBoundingClientRect();
+    tip.textContent = `Year ${2011 + i}: ${v} cm`; tip.style.opacity = 1;
+    tip.style.left = (r.left + window.scrollX + 12) + "px"; tip.style.top = (r.top + window.scrollY - 30) + "px";
+  });
+  c.addEventListener("mouseout", () => { tip.style.opacity = 0; });
+  document.getElementById("dots").appendChild(c);
+});
+[0, 1, 2].forEach((i) => {
+  const b = document.createElementNS(ns, "rect");
+  b.setAttribute("class", "bar"); b.setAttribute("x", 470 + i * 34); b.setAttribute("y", 40); b.setAttribute("width", 26); b.setAttribute("height", 60);
+  document.getElementById("bars").appendChild(b);
+});
+// A JS-driven transition (like d3.transition): attributes change every frame for ~0.9 s.
+const growth = document.getElementById("growth");
+const heights = [60, 120, 90, 180, 150, 70];
+const gbars = heights.map((h, i) => {
+  const r = document.createElementNS(ns, "rect");
+  r.setAttribute("x", 30 + i * 90); r.setAttribute("width", 60); r.setAttribute("y", 240); r.setAttribute("height", 0); r.setAttribute("fill", "#7a4aa7");
+  growth.appendChild(r); return r;
+});
+let grown = false;
+new IntersectionObserver((es) => es.forEach((e) => {
+  if (!e.isIntersecting || grown) return;
+  grown = true;
+  const t0 = performance.now();
+  const step = (t) => {
+    const k = Math.min(1, (t - t0) / 900);
+    gbars.forEach((r, i) => { const h = heights[i] * k; r.setAttribute("height", h); r.setAttribute("y", 240 - h); });
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}), { threshold: 0.4 }).observe(growth);
+new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); }), { threshold: 0.5 })
+  .observe(document.getElementById("reveal-note"));
+// Canvas chart with a mousemove tooltip.
+const cv = document.getElementById("canvas-chart"), ctx = cv.getContext("2d"), ctip = document.getElementById("canvas-tip");
+const store = [140, 90, 200];
+store.forEach((v, i) => { ctx.fillStyle = "#3d8a8a"; ctx.fillRect(40 + i * 140, 220 - v, 100, v); });
+cv.addEventListener("mousemove", (e) => {
+  const r = cv.getBoundingClientRect(), x = e.clientX - r.left, i = Math.floor((x - 40) / 140);
+  if (i >= 0 && i < store.length && x - 40 - i * 140 <= 100) {
+    ctip.textContent = `Reservoir ${"ABC"[i]}: ${store[i]} GL`; ctip.style.opacity = 1;
+    ctip.style.left = (e.clientX + window.scrollX + 10) + "px"; ctip.style.top = (e.clientY + window.scrollY - 28) + "px";
+  } else { ctip.style.opacity = 0; }
+});
+cv.addEventListener("mouseleave", () => { ctip.style.opacity = 0; });
+document.getElementById("year").addEventListener("input", (e) => { document.getElementById("year-label").textContent = "Showing " + e.target.value; });
+document.getElementById("metric").addEventListener("change", (e) => { document.getElementById("metric-label").textContent = "Metric: " + e.target.value; });
+document.getElementById("toggle").addEventListener("click", (e) => {
+  const on = e.target.getAttribute("aria-pressed") !== "true";
+  e.target.setAttribute("aria-pressed", String(on));
+  document.getElementById("toggle-label").textContent = on ? "Averages shown" : "Averages hidden";
+});
+</script>
+</body></html>

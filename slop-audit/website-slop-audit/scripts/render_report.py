@@ -3,12 +3,16 @@
 
     python scripts/render_report.py AUDIT.json --bundle BUNDLE --out report.html
     python scripts/render_report.py AUDIT.json --bundle BUNDLE --out report.md
+    python scripts/render_report.py AUDIT.json --bundle BUNDLE --exploration RUN/exploration --out report.html
 
 Everything shown is derived from the audit JSON: counts are computed from its
 arrays, boxes are drawn from its locations, and all text (which may contain
 page content or model prose) is HTML-escaped. Images are referenced by local
-relative paths into the bundle; nothing is fetched. The audit is validated
-first and the report states the result.
+relative paths into the bundle (and the exploration folder); nothing is
+fetched. The audit is validated first and the report states the result.
+When the audit has an exploration stage, the report shows the tour answers
+and the answers after exploring side by side, the exploration log, and what
+exploring added or changed.
 """
 
 import argparse
@@ -48,6 +52,10 @@ th, td { text-align:left; vertical-align:top; padding:6px 8px; border-bottom:1px
 .mark { position:absolute; border:2px solid #d9480f; background:rgba(217,72,15,.08); }
 .mark span { position:absolute; top:-1px; left:-1px; transform:translateY(-100%); background:#d9480f; color:#fff; font-size:11px; padding:0 4px; white-space:nowrap; }
 .note { color:var(--muted); font-size:13px; }
+.changed { background:#fff1e6; }
+.thumbs { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px; }
+.thumbs figure { margin:0; } .thumbs figcaption { font-size:12px; color:var(--muted); }
+.thumbs img { width:100%; border:1px solid var(--line); }
 @media (max-width:720px) { .grid { grid-template-columns:1fr; } }
 """
 
@@ -82,11 +90,14 @@ def evidence_list(items, fmt="html"):
     return rows
 
 
-def shot(bundle, out_dir, asset_id, marks):
+def shot(bundle, out_dir, asset_id, marks, xrec=None):
     asset = bundle.assets.get(asset_id)
-    if asset is None:
+    if asset is not None:
+        src = os.path.relpath(bundle.dir / asset["path"], out_dir)
+    elif xrec is not None and asset_id in xrec.assets:
+        src = os.path.relpath(xrec.dir / xrec.assets[asset_id][1]["path"], out_dir)
+    else:
         return ""
-    src = os.path.relpath(bundle.dir / asset["path"], out_dir)
     boxes = "".join(
         f'<div class="mark" style="left:{b["x"]*100:.2f}%;top:{b["y"]*100:.2f}%;width:{b["width"]*100:.2f}%;height:{b["height"]*100:.2f}%"><span>{E(label)}</span></div>'
         for label, b in marks)
@@ -97,9 +108,53 @@ def refs_text(refs):
     return ", ".join(f"{r['kind']}:{r['id']}" for r in refs) or "none"
 
 
-def questionnaire_rows(audit):
+def tour_rows(bundle):
+    """One row per route of a standard-tour capture: what the tour covered, as numbers."""
+    rows = []
+    for t in bundle.manifest["coverage"].get("tour", []):
+        rows.append((t["route"], f"{t['desktop_frames']} of {t['desktop_needed']}", f"{t['phone_frames']} of {t['phone_needed']}",
+                     f"{t['motion_sequences']} ({t['motion_frames']} mid-motion frames)",
+                     f"{t['charts_hovered']} of {t['charts_found']}", f"{t['hovers_with_response']} of {t['hovers']}", str(t["controls_exercised"])))
+    return rows
+
+
+TOUR_HEADER = ["route", "desktop screens", "phone screens", "motion sequences", "charts hovered", "hovers that showed something", "control actions"]
+
+
+def answer_label(q, value, study):
+    if isinstance(value, list):
+        return "; ".join(f"{m['kind']} {m['selector']}" for m in value) or "none"
+    if q["type"] == "grid":
+        return ", ".join(f"{k} {study_q.grid_cell(v) if v is not None else '?'}" for k, v in value.items())
+    return study_q.label(q, value, study)
+
+
+def comparison_rows(audit):
+    """(question, tour answer, explored answer, changed, reason for the change) when both stages answered."""
+    st = audit.get("exploration_stage")
+    if not st or not st.get("study_questionnaire") or not audit.get("study_questionnaire"):
+        return None
+    study = study_q.load()
+    tour, explored = audit["study_questionnaire"]["answers"], st["study_questionnaire"]["answers"]
+    why = {c["question_id"]: c for c in st["changes_from_tour"]}
+    changed = validate_audit.changed_answers(tour, explored)
+    return [(q["prompt"], answer_label(q, tour[q["id"]]["value"], study), answer_label(q, explored[q["id"]]["value"], study), q["id"] in changed,
+             (why[q["id"]]["reason"] + " (" + refs_text(why[q["id"]]["refs"]) + ")") if q["id"] in why else "")
+            for q in study_q.questions(study)]
+
+
+def action_rows(xrec):
+    return [(a["action_id"], a["command"], (a["target"] or {}).get("selector", "") or json_args(a["args"]), a["route"] or "", a["status"], a["result"],
+             ", ".join(s["asset_id"] for s in a["screenshots"])) for a in xrec.data["actions"]]
+
+
+def json_args(args):
+    return " ".join(f"{k}={v}" for k, v in args.items() if k not in ("selector",))[:120]
+
+
+def questionnaire_rows(audit, sq=None):
     """(question, answer label, reason, refs) per study question, plus grid rows and marks; None if absent."""
-    sq = audit.get("study_questionnaire")
+    sq = sq if sq is not None else audit.get("study_questionnaire")
     if sq is None:
         return None
     study = study_q.load()
@@ -129,7 +184,82 @@ def counts(audit):
     return {(one if n == 1 else many): n for one, many, n in raw}, unassessed
 
 
-def render_html(audit, bundle, report, out_dir, features):
+def html_table(header, rows, highlight=None):
+    head = "".join(f"<th>{E(x)}</th>" for x in header)
+    body = "".join(f"<tr{' class=changed' if highlight and highlight[i] else ''}>" + "".join(f"<td>{E(str(c))}</td>" for c in r) + "</tr>"
+                   for i, r in enumerate(rows))
+    return f"<table><tr>{head}</tr>{body}</table>"
+
+
+def questionnaire_html(qs):
+    sq, main, grid_rows, marks = qs
+    return (f"<div class='box'><p class='note'>Questionnaire {E(sq['questionnaire_version'])}, the participants' per-website questions in their answer formats. "
+            f"{E(sq['basis'])}</p>{html_table(['question', 'answer', 'reason', 'rests on'], main)}"
+            f"<h3>Rate how AI-generated each feature looks (0 = Human-made, 10 = AI-generated; NA = not on the site)</h3>{html_table(['feature', 'rating', 'reason', 'rests on'], grid_rows)}"
+            + (f"<h3>Marked spots</h3>{html_table(['#', 'page', 'kind', 'text', 'selector', 'reason', 'rests on'], [(m['mark_number'], m['page'], m['kind'], m['text'], m['selector'], m['reason'], refs_text(m['refs'])) for m in marks])}" if marks else "")
+            + "</div>")
+
+
+def exploration_html(audit, bundle, out_dir, features, xrec, simple_table):
+    st = audit["exploration_stage"]
+    h = ["<h2>Live exploration</h2>"]
+    if xrec is None:
+        h.append(f"<div class='box invalid'><p>The exploration record was not found, so its log and screenshots cannot be shown. {E(st['reason'])}</p></div>")
+        return "\n".join(h)
+    x = xrec.data
+    c, lim = x["counts"], x["limits"]
+    h.append(f"<div class='box scope'><p>{E(st['summary']['text'])}</p><p class='note'>{E(st['reason'])}</p>"
+             f"<p class='note'>Exploration {E(x['exploration_id'])}: {c['actions']} of {lim['max_actions']} actions, {c['screenshots']} of "
+             f"{lim['max_screenshots']} screenshots, {c['refused']} refused; pages visited: {E(', '.join(x['routes_visited']))}. "
+             "Everything here was found after the tour answers were locked.</p></div>")
+    h.append("<h3>Action log</h3><div class='box'>" + html_table(["id", "action", "target", "page", "status", "result", "screenshots"], action_rows(xrec)) + "</div>")
+    thumbs = "".join(f"<figure>{shot(bundle, out_dir, s_['asset_id'], [], xrec)}<figcaption>{E(s_['asset_id'])} · {E(a['command'])} {E((a['target'] or {}).get('selector', '')[:60])}"
+                     f"{' · mid-motion' if s_['kind'] == 'mid_motion' else ''}</figcaption></figure>"
+                     for a in x["actions"] for s_ in a["screenshots"])
+    if thumbs:
+        h.append(f"<div class='box thumbs'>{thumbs}</div>")
+    h.append("<h3>Findings from exploring</h3>")
+    if not st["findings"]:
+        h.append("<p class='note'>Exploring added no findings.</p>")
+    h += [finding_html(f, bundle, out_dir, features, xrec) for f in st["findings"]]
+    if st["tour_item_updates"]:
+        h.append("<h3>What exploring showed about tour findings</h3><div class='box'>" + html_table(
+            ["item", "update", "reason", "rests on"], [(u["item_id"], u["update"], u["reason"], refs_text(u["refs"])) for u in st["tour_item_updates"]]) + "</div>")
+    for title, key, cols, row in [
+            ("Contextual exceptions from exploring", "contextual_exceptions", ["id", "feature", "observation", "why not counted"],
+             lambda x_: [x_["exception_id"], x_["feature_id"], x_["observation"], x_["reason_not_counted"] + ": " + x_["rationale"]]),
+            ("Quality observations from exploring", "quality_observations", ["id", "category", "observation", "consequence"],
+             lambda x_: [x_["observation_id"], x_["category"], x_["observation"], x_["consequence"]["level"] + ": " + x_["consequence"]["reason"]]),
+            ("Exploratory candidates from exploring", "exploratory_candidates", ["id", "label", "observation", "why outside codebook"],
+             lambda x_: [x_["candidate_id"], x_["label"], x_["observation"], x_["why_outside_codebook"]])]:
+        if st[key]:
+            h.append(f"<h3>{E(title)}</h3><div class='box'>" + html_table(cols, [row(i) for i in st[key]]) + "</div>")
+    return "\n".join(h)
+
+
+def finding_html(f, bundle, out_dir, features, xrec=None):
+    feat = features.get(f["feature_id"], {"title": "unknown feature"})
+    locs = "".join(f"<li>{E(loc_text(l, bundle))}</li>" for l in f["locations"])
+    alts = "".join(f"<li>{E(a)}</li>" for a in f["alternative_explanations"])
+    lims = "".join(f"<li>{E(x)}</li>" for x in f["limitations"]) or "<li>none stated</li>"
+    tags = f" · also {E(', '.join(f['secondary_tags']))}" if f["secondary_tags"] else ""
+    shots = "".join(shot(bundle, out_dir, l["asset_id"], [(f["finding_id"], l["box"])] if l["box"] else [], xrec)
+                    for l in f["locations"] if l["asset_id"])
+    return f"""<div class='box'><h3>{E(f['finding_id'])} · {E(f['feature_id'])} {E(feat['title'])}{tags}</h3>
+<div class='grid'>
+<div><dt>What</dt><dd>{E(f['observation'])}</dd>
+<dt>Where ({E(f['scope'])})</dt><dd><ul class='tight'>{locs}</ul></dd>
+<dt>Evidence</dt><dd><ul class='tight'>{''.join(evidence_list(f['evidence']))}</ul></dd></div>
+<div><dt>Observation confidence</dt><dd>{level(f['observation_confidence'])}</dd>
+<dt>Slop association (interpretation)</dt><dd>{level(f['slop_association'])}</dd>
+<dt>Contextual fit</dt><dd>{level(f['contextual_fit'])}</dd>
+<dt>Consequence</dt><dd>{level(f['communication_or_interaction_consequence'])}</dd>
+<dt>Alternative explanations</dt><dd><ul class='tight'>{alts}</ul></dd>
+<dt>Codebook evidence status</dt><dd><code>{E(f['codebook_evidence_status'])}</code></dd>
+<dt>Limitations</dt><dd><ul class='tight'>{lims}</ul></dd></div></div>{shots}</div>"""
+
+
+def render_html(audit, bundle, report, out_dir, features, xrec=None):
     c, unassessed = counts(audit)
     cov = audit["coverage"]
     title = f"Slop-feature audit {audit['audit_id']}"
@@ -151,44 +281,36 @@ def render_html(audit, bundle, report, out_dir, features):
 <div class='counts'>{pills}</div>
 <p class='note'>These findings identify features that may contribute to a perceived AI-slop impression. They do not establish who or what made the site, and the ratings are provisional research scales, not probabilities.</p></div>""")
 
-    qs = questionnaire_rows(audit)
+    trows = tour_rows(bundle)
+    if trows:
+        h.append("<h2>What the standard tour covered</h2><div class='box'><p class='note'>The frozen tour every model judged in the tour stage "
+                 "(capture profile " + E(bundle.manifest["evidence_profile"]["capture_profile"]) + "). Motion is sampled as still frames; "
+                 "chart hovers sample a few marks per chart.</p>" + html_table(TOUR_HEADER, trows) + "</div>")
+
     h.append("<h2>Study questionnaire</h2>")
+    comp = comparison_rows(audit)
+    st = audit.get("exploration_stage")
+    if comp:
+        h.append("<div class='box'><h3>Tour answers and answers after exploring</h3><p class='note'>The tour answers were locked before the live "
+                 "exploration started. Highlighted rows changed; each change gives its reason and the exploration actions it rests on.</p>"
+                 + html_table(["question", "tour", "after exploring", "why it changed"],
+                              [(q, t, x, why) for q, t, x, changed, why in comp], highlight=[changed for *_, changed, _ in comp]) + "</div>")
+    elif st and st["status"] == "not_done":
+        h.append(f"<div class='box'><p class='note'>No exploration stage: {E(st['reason'])}</p></div>")
+    qs = questionnaire_rows(audit)
     if qs is None:
         h.append("<p class='note'>This audit has no answers to the human study's questions (it predates them).</p>")
     else:
-        sq, main, grid_rows, marks = qs
-        def table(header, rows):
-            head = "".join(f"<th>{E(x)}</th>" for x in header)
-            return "<table><tr>" + head + "</tr>" + "".join("<tr>" + "".join(f"<td>{E(str(c))}</td>" for c in r) + "</tr>" for r in rows) + "</table>"
-        h.append(f"<div class='box'><p class='note'>Questionnaire {E(sq['questionnaire_version'])}, the participants' per-website questions in their answer formats. "
-                 f"{E(sq['basis'])}</p>{table(['question', 'answer', 'reason', 'rests on'], main)}"
-                 f"<h3>Rate how AI-generated each feature looks (0 = Human-made, 10 = AI-generated; NA = not on the site)</h3>{table(['feature', 'rating', 'reason', 'rests on'], grid_rows)}"
-                 + (f"<h3>Marked spots</h3>{table(['#', 'page', 'kind', 'text', 'selector', 'reason', 'rests on'], [(m['mark_number'], m['page'], m['kind'], m['text'], m['selector'], m['reason'], refs_text(m['refs'])) for m in marks])}" if marks else "")
-                 + "</div>")
+        h.append("<h3>Tour stage</h3>" if comp else "")
+        h.append(questionnaire_html(qs))
+    if comp:
+        h.append("<h3>After exploring</h3>" + questionnaire_html(questionnaire_rows(audit, st["study_questionnaire"])))
 
     h.append("<h2>Findings</h2>")
     if not audit["findings"]:
         h.append("<div class='box'><p>No accepted findings in the assessed scope. See the scope, exceptions, and unassessed checks.</p></div>")
     for f in audit["findings"]:
-        feat = features.get(f["feature_id"], {"title": "unknown feature"})
-        locs = "".join(f"<li>{E(loc_text(l, bundle))}</li>" for l in f["locations"])
-        alts = "".join(f"<li>{E(a)}</li>" for a in f["alternative_explanations"])
-        lims = "".join(f"<li>{E(x)}</li>" for x in f["limitations"]) or "<li>none stated</li>"
-        tags = f" · also {E(', '.join(f['secondary_tags']))}" if f["secondary_tags"] else ""
-        shots = "".join(shot(bundle, out_dir, l["asset_id"], [(f["finding_id"], l["box"])] if l["box"] else [])
-                        for l in f["locations"] if l["asset_id"])
-        h.append(f"""<div class='box'><h3>{E(f['finding_id'])} · {E(f['feature_id'])} {E(feat['title'])}{tags}</h3>
-<div class='grid'>
-<div><dt>What</dt><dd>{E(f['observation'])}</dd>
-<dt>Where ({E(f['scope'])})</dt><dd><ul class='tight'>{locs}</ul></dd>
-<dt>Evidence</dt><dd><ul class='tight'>{''.join(evidence_list(f['evidence']))}</ul></dd></div>
-<div><dt>Observation confidence</dt><dd>{level(f['observation_confidence'])}</dd>
-<dt>Slop association (interpretation)</dt><dd>{level(f['slop_association'])}</dd>
-<dt>Contextual fit</dt><dd>{level(f['contextual_fit'])}</dd>
-<dt>Consequence</dt><dd>{level(f['communication_or_interaction_consequence'])}</dd>
-<dt>Alternative explanations</dt><dd><ul class='tight'>{alts}</ul></dd>
-<dt>Codebook evidence status</dt><dd><code>{E(f['codebook_evidence_status'])}</code></dd>
-<dt>Limitations</dt><dd><ul class='tight'>{lims}</ul></dd></div></div>{shots}</div>""")
+        h.append(finding_html(f, bundle, out_dir, features, xrec))
 
     def simple_table(title, rows, header, empty):
         h.append(f"<h2>{E(title)}</h2>")
@@ -217,6 +339,9 @@ def render_html(audit, bundle, report, out_dir, features):
                      [[E(u["ref_kind"]), E(u["ref_id"]), E(u["description"])] for u in audit["untrusted_instructions_observed"]],
                      ["kind", "ref", "description"], "")
 
+    if st and st["status"] == "completed":
+        h.append(exploration_html(audit, bundle, out_dir, features, xrec, simple_table))
+
     marks = {}
     for group in ("findings", "contextual_exceptions", "quality_observations", "exploratory_candidates"):
         id_key = {"findings": "finding_id", "contextual_exceptions": "exception_id",
@@ -234,7 +359,12 @@ def render_html(audit, bundle, report, out_dir, features):
     return "\n".join(h) + "\n"
 
 
-def render_md(audit, bundle, report, features):
+def md_table(header, rows):
+    cell = lambda x: str(x).replace("|", "\\|").replace("\n", " ")
+    return ["| " + " | ".join(header) + " |", "|" + "---|" * len(header)] + ["| " + " | ".join(cell(c) for c in r) + " |" for r in rows]
+
+
+def render_md(audit, bundle, report, features, xrec=None):
     c, unassessed = counts(audit)
     lines = [f"# Slop-feature audit {audit['audit_id']}", "",
              f"bundle `{audit['bundle_id']}` · profile `{audit['analysis_profile']}` · rubric {audit['rubric_version']} · status **{audit['status']}**", ""]
@@ -247,8 +377,19 @@ def render_md(audit, bundle, report, features):
     lines += [f"- Limitation: {x}" for x in audit["summary"]["major_limitations"]]
     lines += ["- Counts: " + ", ".join(f"{v} {k}" for k, v in c.items()), "",
               "These findings identify features that may contribute to a perceived AI-slop impression; they do not establish who or what made the site.", ""]
+    trows = tour_rows(bundle)
+    if trows:
+        lines += ["## What the standard tour covered", ""] + md_table(TOUR_HEADER, trows) + [""]
     qs = questionnaire_rows(audit)
     lines += ["## Study questionnaire", ""]
+    comp = comparison_rows(audit)
+    st = audit.get("exploration_stage")
+    if comp:
+        lines += ["Tour answers (locked before exploring) and answers after exploring; changed rows are marked *.", ""]
+        lines += md_table(["question", "tour", "after exploring", "why it changed"],
+                          [(("* " if changed else "") + q, t, x, why) for q, t, x, changed, why in comp]) + [""]
+    elif st and st["status"] == "not_done":
+        lines += [f"No exploration stage: {st['reason']}", ""]
     if qs is None:
         lines += ["This audit has no answers to the human study's questions (it predates them).", ""]
     else:
@@ -286,6 +427,25 @@ def render_md(audit, bundle, report, features):
     if audit["untrusted_instructions_observed"]:
         lines += ["## Page content addressed to the auditor (recorded, not followed)", ""]
         lines += [f"- {u['ref_kind']} {u['ref_id']}: {u['description']}" for u in audit["untrusted_instructions_observed"]] + [""]
+    if st and st["status"] == "completed":
+        lines += ["## Live exploration", "", st["summary"]["text"], "", st["reason"], ""]
+        if xrec is not None:
+            c, lim = xrec.data["counts"], xrec.data["limits"]
+            lines += [f"Exploration {xrec.exploration_id}: {c['actions']} of {lim['max_actions']} actions, {c['screenshots']} of {lim['max_screenshots']} "
+                      f"screenshots, {c['refused']} refused; pages visited: {', '.join(xrec.data['routes_visited'])}.", ""]
+            lines += md_table(["id", "action", "target", "page", "status", "result", "screenshots"], action_rows(xrec)) + [""]
+        lines += ["### Findings from exploring", ""] + ([f"- {f['finding_id']} {f['feature_id']}: {f['observation']} "
+                                                         f"(slop association {f['slop_association']['level']}; evidence "
+                                                         + ", ".join(f"{e['kind']}:{e['ref_id']}" for e in f["evidence"]) + ")" for f in st["findings"]]
+                                                        or ["None."]) + [""]
+        if st["tour_item_updates"]:
+            lines += ["### What exploring showed about tour findings", ""] + [f"- {u['item_id']} {u['update']}: {u['reason']} ({refs_text(u['refs'])})"
+                                                                          for u in st["tour_item_updates"]] + [""]
+        for title, key, fmt in [("Contextual exceptions from exploring", "contextual_exceptions", lambda x: f"- {x['exception_id']} {x['feature_id']}: {x['observation']}"),
+                                ("Quality observations from exploring", "quality_observations", lambda x: f"- {x['observation_id']} [{x['category']}]: {x['observation']}"),
+                                ("Exploratory candidates from exploring", "exploratory_candidates", lambda x: f"- {x['candidate_id']} {x['label']}: {x['observation']}")]:
+            if st[key]:
+                lines += [f"### {title}", ""] + [fmt(x) for x in st[key]] + [""]
     return "\n".join(lines)
 
 
@@ -293,21 +453,23 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("audit")
     parser.add_argument("--bundle", required=True)
+    parser.add_argument("--exploration", help="the exploration folder (default: 'exploration' next to the audit)")
     parser.add_argument("--out", required=True, help="report path ending in .html or .md")
     args = parser.parse_args(argv)
-    report = validate_audit.validate(args.audit, args.bundle)
+    report = validate_audit.validate(args.audit, args.bundle, args.exploration)
     if any(code in ("schema", "invalid_json", "bundle_unreadable") for code, _ in report.errors):
         report.print(sys.stderr)
         raise _lib.UsageError("cannot render an audit that fails schema validation")
     audit = _lib.load_json(args.audit)
     bundle = _lib.Bundle(args.bundle)
+    _, xrec = validate_audit.find_exploration(audit, args.audit, args.exploration)
     features = _lib.features_by_id()
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     if out.suffix == ".md":
-        out.write_text(render_md(audit, bundle, report, features), encoding="utf-8")
+        out.write_text(render_md(audit, bundle, report, features, xrec), encoding="utf-8")
     else:
-        out.write_text(render_html(audit, bundle, report, out.parent.resolve(), features), encoding="utf-8")
+        out.write_text(render_html(audit, bundle, report, out.parent.resolve(), features, xrec), encoding="utf-8")
     print(f"wrote {out} ({'valid' if report.ok else 'INVALID: ' + str(len(report.errors)) + ' error(s)'})")
     return 0 if report.ok else 1
 

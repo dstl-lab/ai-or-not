@@ -6,12 +6,28 @@ also answers the PhD study's per-website questions (for example "How much of
 this site did AI build?" and the 0–10 feature grid) in the same format the PhD
 participants use, so you can put the two side by side.
 
-This branch (`slop-skill-command-questions`) is the **one-command version**.
-Open the repository in Claude Code, Codex, or Gemini CLI and type one line with
-a website address; the rest happens on its own. The step-by-step version (any
-model, including chat apps, with a hand-written capture plan) is on the branch
-`slop-skill-questions`, and every step-by-step command also works here
-(see "Without an agent" below).
+This branch (`slop-skill-command-hybrid`) is the **one-command version with
+hybrid evidence**. Open the repository in Claude Code, Codex, or Gemini CLI and
+type one line with a website address; the rest happens on its own, in two
+stages:
+
+1. **Tour stage.** A script takes a *standard tour* of the site (every page top
+   to bottom at desktop and phone width, animations caught as frames, a sample
+   of hovers on every chart, every safe control) and freezes it. The model
+   audits that frozen tour and answers the study questions. Every model you
+   compare gets exactly the same tour, so these answers compare models on
+   identical evidence. They are then locked.
+2. **Exploration stage.** The model looks around the **live** site itself, like
+   a study participant: scrolls, watches, hovers, clicks, moves sliders, opens
+   other pages, through a logged tool with a fixed budget. It records what that
+   adds or changes and answers the study questions again, giving a reason for
+   every answer that changed.
+
+The design and the reasons for it are in [`docs/hybrid-plan.md`](docs/hybrid-plan.md).
+Earlier versions: `slop-skill-command-questions` (one command, tour of up to 64
+screenshots, no exploration) and `slop-skill-questions` (step by step, any
+model including chat apps). Every step-by-step command also works here (see
+"Without an agent" below).
 
 > The skill reports how a site *comes across*. It never decides who or what
 > made a site, and its "AI" ratings are impressions, not facts about how the
@@ -25,29 +41,35 @@ model, including chat apps, with a hand-written capture plan) is on the branch
 /website-slop-audit https://someone.github.io/project/
 ```
 
-Type that in **Claude Code** opened at the repository root, wait about 10 to 25
-minutes, and open the `report.html` it points you to. In Codex type
-`$website-slop-audit https://…`; in Gemini CLI the same `/website-slop-audit https://…`.
+Type that in **Claude Code** opened at the repository root, wait (about 25
+minutes for a two-page data-story site, longer for bigger ones), and open the
+`report.html` it points you to. In Codex type `$website-slop-audit https://…`; in Gemini CLI the same
+`/website-slop-audit https://…`. To compare models, capture once and give every
+agent the same capture (see "Comparing models").
 
 ---
 
 ## What you get for each website
 
-Everything goes into a new folder, `slop-audit/local-runs/<site>-<time>/`, which
-git ignores (so captures of student sites are never committed by accident):
+Everything goes into `slop-audit/local-runs/<site>-<time>/`, which git ignores
+(so captures of student sites are never committed by accident). The capture is
+shared; each model's run gets its own folder inside it:
 
 | File | What it is |
 |---|---|
-| `bundle/` | A frozen capture of the site: screenshots, the text of every page, the page structure, and what happened when each safe control was clicked. |
-| `plan.json`, `site.json` | What the capture did: which pages it found, what it clicked, what it skipped and why. |
-| `audit.json` | The full result: located findings, cues that were present but fine in context, quality issues, what could not be checked, and the answers to the study's questions. |
-| `report.html` / `report.md` | The same result, readable. The study answers are at the top. |
-| `responses_wide.csv` | The study answers as one row, using the **same column names and values as the PhD study's export** (`ai_appearance`, `feature_rating__charts`, `ai_extent`, …). |
-| `marks.csv` | The spots the model "clicked" as feeling AI-generated, in the study's `marks.csv` columns. |
-| `questionnaire_reasons.csv` | The reason behind every answer and the evidence it rests on. |
+| `bundle/` | The frozen standard tour: screenshots of every page top to bottom (desktop and phone), mid-animation frames, hover and after-click views, the text of every page, the page structure, and what happened on every hover and control. |
+| `plan.json`, `site.json` | What the tour did, with coverage numbers per page (screens taken of needed, charts hovered, motion caught, controls used) and what it skipped and why. |
+| `runs/<time>-<model>/audit.tour.json` | The tour stage: findings, cues present but fine in context, quality issues, what could not be checked, and the study answers, all from the frozen tour only. Locked before exploring. |
+| `runs/<time>-<model>/exploration/` | The live exploration: every action (`L001`, `L002`, …) with its screenshot, in `exploration.json`, locked with a hash. |
+| `runs/<time>-<model>/audit.json` | The tour stage unchanged, plus `exploration_stage`: what exploring added or changed, the study answers again, and the reason for each changed answer. |
+| `runs/<time>-<model>/report.html` / `report.md` | The same, readable: tour coverage, the study answers before and after exploring side by side, the findings, and the exploration log with its screenshots. |
+| `runs/<time>-<model>/responses_wide.csv` | The study answers as **two rows** (`evidence_phase` = `tour` and `explored`), using the **same column names and values as the PhD study's export** (`ai_appearance`, `feature_rating__charts`, `ai_extent`, …). |
+| `runs/<time>-<model>/marks.csv` | The spots the model "clicked" as feeling AI-generated, in the study's `marks.csv` columns, plus `evidence_phase`. |
+| `runs/<time>-<model>/questionnaire_reasons.csv` | The reason behind every answer and the evidence it rests on, for both stages. |
 
 The agent also replies in the chat with a short summary: what was covered, the
-main findings, the study answers, and these paths.
+main findings, the study answers before and after exploring with what changed,
+and these paths.
 
 ---
 
@@ -61,7 +83,7 @@ main findings, the study answers, and these paths.
    git clone https://github.com/dstl-lab/ai-or-not.git
    ```
    ```bash
-   cd ai-or-not && git checkout slop-skill-command-questions
+   cd ai-or-not && git checkout slop-skill-command-hybrid
    ```
 
 3. **gstack browse**, the headless browser that captures the site (it uses no
@@ -105,23 +127,30 @@ It should end with `VALID: …` and then `RUN_DIR=`, `BUNDLE=`, and
 
 4. Approve the `python3 …` commands when Claude asks (or allow
    `Bash(python3:*)` for the session). What happens:
-   - **Capture (1–5 minutes).** A script, not the model, opens the URL, finds
-     the site's pages (same site, under the URL's folder, at most 12), takes
-     up to 64 screenshots (every page's top, the first page top to bottom,
-     phone views), and clicks each safe control once (at most 10 per page).
-     It never types, submits forms, downloads files, follows links to other
-     sites, or clicks anything that looks like sign-in, purchase, send, or
-     delete, and it respects `robots.txt`.
-   - **Audit (5–20 minutes).** Claude reads the capture page by page and
-     records findings with their locations and evidence.
-   - **Study answers.** It answers the ten study questions from that audit,
-     each with a short reason.
-   - **Check and export.** It validates its own result, renders the report,
-     and writes the CSV files.
+   - **Standard tour (about 1–10 minutes).** A script, not the model, opens
+     the URL, finds the site's pages (same site, under the URL's folder, at
+     most 12), and tours each one: scrolls smoothly from top to bottom at
+     desktop and phone width taking a screenshot of every screen, keeps an
+     extra frame wherever something was still animating, hovers a sample of
+     points on every chart and records tooltips, and uses every safe control
+     once (buttons, tabs, dropdowns, sliders; at most 25 per page). At most
+     300 screenshots. It never types, submits forms, downloads files, follows
+     links to other sites, or clicks anything that looks like sign-in,
+     purchase, send, or delete, and it respects `robots.txt`.
+   - **Tour stage (10–30 minutes).** Claude reads the tour page by page,
+     records findings with their locations and evidence, answers the ten
+     study questions, and validates. Those answers are then locked.
+   - **Exploration stage (5–15 minutes).** Claude explores the live site
+     through `scripts/explore.py`: at most 40 actions and 25 screenshots, each
+     logged. The same safety rules apply and are enforced by the tool.
+   - **Answers again, check, and export.** It records what exploring added or
+     changed, answers the questions again with a reason for each change,
+     validates everything, renders the report, and writes the CSV files.
 5. Open `report.html` from the folder it names, in your browser.
 
-Because the capture is done by a script with fixed rules, the same URL gives
-the same kind of evidence whichever agent asked for it.
+Because the tour is taken by a script with fixed rules, the same URL gives
+the same kind of evidence whichever agent asked for it, and a saved capture
+gives every agent identical evidence.
 
 ### Options
 
@@ -132,8 +161,11 @@ Put options after the URL, for example
 |---|---|
 | `--single-page` | Only the page at the URL (fastest, cheapest) |
 | `--max-pages 3` | At most 3 pages (default 12) |
-| `--max-controls 5` | At most 5 clicks per page (default 10) |
-| `--budget 8` | At most 8 screenshots (default and maximum 64); 8 also fits chat apps |
+| `--max-controls 5` | At most 5 control actions per page (default 25) |
+| `--budget 150` | Image ceiling for the tour (default 300, at most 400) |
+| `--quick` | The older, smaller capture: at most 64 screenshots, long pages spread, no motion frames or hovers |
+| `--no-explore` | Tour stage only; the exploration stage is recorded as not done |
+| `--explore-actions 40`, `--explore-screenshots 25` | The exploration budget (keep the defaults when comparing models) |
 | `--withhold "Full Name"` | Masks a name (for example a team member) in the captured text; repeat for several names |
 | `--no-mobile` | Skip the phone-width screenshots |
 
@@ -141,9 +173,11 @@ Put options after the URL, for example
 
 - **Codex:** start `codex` in the repository root, check `/skills` lists
   `website-slop-audit`, and type `$website-slop-audit https://…`. Codex's
-  default sandbox blocks the network the capture needs; either allow it for
-  this run or capture first in a terminal (see "Without an agent") and give
-  Codex the bundle path instead of the URL.
+  default sandbox blocks the network that the capture and the live
+  exploration need; allow it for this run (settings in
+  `integrations/agents/README.md`), or capture first in a terminal and give
+  Codex the bundle path, accepting that its exploration stage will then be
+  recorded as not done.
 - **Gemini CLI:** start `gemini` in the repository root and type
   `/website-slop-audit https://…`. Approve the shell commands it proposes.
   Google has replaced Gemini CLI with Antigravity CLI for unpaid and Google One
@@ -157,11 +191,14 @@ here. Exact settings and a checklist for reporting a test are in
 
 ## Reading the results
 
-- **`report.html`** starts with the study answers (each with its reason and
-  evidence ids), then the findings: what was found, where, the evidence, how
-  strongly it fits a slop pattern, and other explanations. Then come cues that
-  were present but fine in context, quality issues that are not slop, and what
-  could not be checked.
+- **`report.html`** starts with what the tour covered (per page: screens,
+  motion, charts hovered, controls), then the study answers: a table of the
+  tour answers next to the answers after exploring, changed rows highlighted
+  with their reasons, then each stage in full. Then the findings: what was
+  found, where, the evidence, how strongly it fits a slop pattern, and other
+  explanations; cues present but fine in context; quality issues that are not
+  slop; what could not be checked; and the live exploration (its action log,
+  screenshots, and what it added or changed).
 - **The study answers** are the PhD form's ten per-website questions (Steven's
   version `phd-reviewer-v1`, dstl-lab/ai-or-not PR #6), copied word for word
   into [`website-slop-audit/assets/study-questions.json`](website-slop-audit/assets/study-questions.json):
@@ -180,36 +217,59 @@ here. Exact settings and a checklist for reporting a test are in
   `annotations` and `cues`.
 - **The CSV files** use the study export's column names, so you can open them
   next to the PhD export. `participant_id` is `website-slop-audit:<model>`.
+  Each run has two rows: `evidence_phase` `tour` (identical evidence across
+  models) and `explored` (after the model's own exploration).
 
 ---
 
-## Auditing many sites (for example the 10 study sites)
+## Comparing models (for example the 10 study sites)
 
-1. Run the command once per site. Each run gets its own folder under
-   `slop-audit/local-runs/`.
-2. Collect every site's answers into one table, using the **study's project id**
-   for each site (the ids in `config/sites.json`, such as `breathing-smoke`),
-   from the `slop-audit/` folder:
+1. **Capture each site once**, with no model, so every model gets the
+   identical tour. From the repository root:
 
    ```bash
-   python3 website-slop-audit/scripts/export_study_csv.py local-runs/<run-folder>/audit.json --bundle local-runs/<run-folder>/bundle --out local-runs/answers --site-id breathing-smoke --rater "anthropic/claude-opus-5-5" --append
+   python3 slop-audit/website-slop-audit/scripts/acquire_url.py https://someone.github.io/project/ --out slop-audit/local-runs/study/breathing-smoke
    ```
 
-   Repeat for each run folder with its own `--site-id`. Every site adds one
-   row to `local-runs/answers/responses_wide.csv` and its marks to
+2. **Run each agent on the capture**, not the URL:
+
+   ```
+   /website-slop-audit slop-audit/local-runs/study/breathing-smoke/bundle
+   ```
+
+   (`$website-slop-audit …` in Codex.) Each run gets its own
+   `runs/<time>-<model>/` folder next to the bundle, so nothing is
+   overwritten. Keep the exploration budget at its default for every model.
+3. **Collect the answers into one table**, using the **study's project id**
+   for each site (the ids in `config/sites.json`), from the `slop-audit/`
+   folder:
+
+   ```bash
+   python3 website-slop-audit/scripts/export_study_csv.py local-runs/study/breathing-smoke/runs/<run>/audit.json --bundle local-runs/study/breathing-smoke/bundle --out local-runs/answers --site-id breathing-smoke --rater "openai/MODEL_NAME" --append
+   ```
+
+   Repeat for each run. Every run adds two rows (tour and explored) to
+   `local-runs/answers/responses_wide.csv` and its marks to
    `local-runs/answers/marks.csv`.
+
+The tour rows compare models on identical evidence. The explored rows compare
+what each model concluded after looking around for itself; the live site can
+also change between explorations, which the tour cannot.
 
 ---
 
 ## Without an agent (or with a chat app)
 
 You can split the work: capture with a script, then give the capture to any
-model, including ChatGPT or Gemini in a browser. From `slop-audit/`:
+model, including ChatGPT or Gemini in a browser. A chat app cannot browse, so
+this gives the tour stage only (its exploration stage is recorded as not
+done), and chat apps take few images, so the capture must be small. From
+`slop-audit/`:
 
 1. Capture, kept small enough for chat apps:
 
    ```bash
-   python3 website-slop-audit/scripts/acquire_url.py https://someone.github.io/project/ --budget 8 --max-pages 1
+   python3 website-slop-audit/scripts/acquire_url.py https://someone.github.io/project/ --quick --budget 8 --max-pages 1
    ```
 
    Note the `RUN_DIR` and `BUNDLE` it prints.
@@ -243,13 +303,15 @@ capture recommends).
 ## Time and cost
 
 A run uses your agent's normal usage. On a Claude subscription it counts
-against your plan's usage limits; with an API key it is billed per token. As a
-guide, full runs on a two-page DSC 106 site took about 20 minutes and cost
-about $10 at API prices without the study questions and about $16 with them
-(most of it is the conversation being re-read each turn). `--single-page`, a smaller `--max-pages`, or `--budget 8` make runs
-faster and cheaper. If a run stops on a usage limit, resume the same session
-after the limit resets; the capture is already saved, so ask it to continue
-from the existing `bundle/` instead of capturing again.
+against your plan's usage limits; with an API key it is billed per token. The
+hybrid version reads far more images than earlier versions (a whole tour plus
+the exploration screenshots). The measured run on a two-page DSC 106 site took
+about 24 minutes and cost $17.07 at API prices (status table below); bigger
+sites take longer. `--single-page`, a smaller `--max-pages`,
+`--budget`, or `--no-explore` make runs faster and cheaper. If a run stops on a
+usage limit, resume the same session after the limit resets; the capture,
+`audit.tour.json`, and the exploration log are saved as they are made, so ask
+it to continue from where it stopped instead of starting over.
 
 ---
 
@@ -265,13 +327,18 @@ from the existing `bundle/` instead of capturing again.
 | `capture failed: give a full http(s) URL` | Include `https://`. |
 | The agent reports validation errors it cannot fix | The model cited something that is not in the capture; keep the result as a failure or rerun. |
 | `You've hit your … limit` | Resume the session after the limit resets (see "Time and cost"). |
+| `exploration_stage` is `not_done` | The agent could not reach the live site (sandbox without network, no gstack access) or you passed `--no-explore`; the reason is in the report. The tour answers stand. |
+| `tour_answers_changed` | The model edited the tour stage after exploring; it must restore `audit.tour.json` exactly and put new material in `exploration_stage`. |
+| `explore: … already holds an exploration` | Each exploration needs a new folder; start a new run with `start_run.py`. |
 
 ---
 
 ## Privacy and safety
 
-- The capture is read-only and stays on the site you named. It never signs in,
-  types, submits, downloads, or follows links to other sites.
+- The capture and the exploration are read-only and stay on the site you
+  named. They never sign in, type, submit, download, or follow links to other
+  sites; the exploration tool enforces this itself and logs every refused
+  action.
 - Text on a page that addresses an AI ("ignore your instructions…") is treated
   as data and recorded, never followed.
 - The agent sends the captured pages to its model provider. Do not audit
@@ -287,7 +354,7 @@ from the existing `bundle/` instead of capturing again.
 | Layer | Where | What it is |
 |---|---|---|
 | A. Portable reasoning | [`website-slop-audit/`](website-slop-audit/) | The skill: `SKILL.md`, codebook (`assets/codebook.json` → `references/feature-codebook.md`), the study questions, output contract, schemas, standard-library scripts, worked examples. No host tool names. |
-| B. Evidence acquisition | [`integrations/capture/`](integrations/capture/) | Adapters that produce frozen capture bundles through gstack browse: a whole site from one URL (`site_capture.py`), a page from a hand-written plan (`gstack_capture.py`), and a builder for supplied artifacts. |
+| B. Evidence acquisition | [`integrations/capture/`](integrations/capture/) | Adapters that use gstack browse: the standard tour of a whole site from one URL (`site_capture.py`, with page-side helpers `tour.js`, `discover.js`, `extract.js`), a page from a hand-written plan (`gstack_capture.py`), the live exploration session (`explore_session.py`), and a builder for supplied artifacts. |
 | C. Evaluation | `website-slop-audit/scripts/` (validate, expand, import, score, export) and [`integrations/baselines/`](integrations/baselines/) | Model-free validation, canonical prompt packages, run import, offline scoring, study CSV export, and the comparison baselines. |
 
 The agent wiring lives at the repository root: `.claude/skills/website-slop-audit` and
@@ -306,19 +373,20 @@ The agent wiring lives at the repository root: `.claude/skills/website-slop-audi
 
 ### Status: what works and what is untested
 
-Verified in this workspace (2026-11-14):
+Verified in this workspace (2026-11-15):
 
 | Component | Status |
 |---|---|
-| Schemas, bundle validator, audit validator, codebook generator | Working; 190 tests pass, 2 opt-in live tests skipped by default (both pass with `SLOP_LIVE_CAPTURE=1`) |
+| Schemas, bundle validator, audit validator, codebook generator | Working; 214 tests pass, 3 opt-in live tests skipped by default (all pass with `SLOP_LIVE_CAPTURE=1`) |
+| **Hybrid evidence: standard tour, live exploration, two-stage answers** | Working. Live test on `fixtures/sites/motion-site/` (load animation, script-driven bars, SVG and canvas tooltips, slider, refused submit and off-site link). Tested end to end with `/website-slop-audit` in Claude Code (headless, 2026-11-15, the public two-page DSC 106 site `drying-out-atlas`): the tour covered both pages fully at desktop and phone width (46 images, 10 motion sequences, 16 chart hovers, 6 control actions); the tour audit validated and was locked; the model then explored the live site (15 of 40 actions, 16 of 25 screenshots, no refusals), played the site's game through all its stops (the tour reached only the first), added one finding, strengthened three, withdrew one quality note, and changed two answers with reasons (quality 4 → 3, technical_issue some → no). Final audit: 0 errors, 0 warnings. About 24 minutes, 104 turns, and $17.07 at API prices |
 | Study questionnaire (10 per-website questions, `phd-reviewer-v1`): schema, checks, report section, prompt, CSV export | Working. Tested end to end with `/website-slop-audit` in Claude Code (headless, 2026-11-14, a live public DSC 106 site): it captured the site, audited it, answered all ten questions, validated with 0 errors and 0 warnings, and wrote the report and the CSV files. The run was cut off once by a usage limit and resumed from the saved capture; about 21 minutes and $16 at API prices in total |
 | Canonical prompt expansion with hashes, budgets, and freezing | Working; deterministic bytes verified |
 | Report renderer (HTML and Markdown) | Working; escaping and local image paths tested |
 | Run import (manual output path) and offline scorer | Working; known-answer tests for matching, undefined metrics, scope, repeats, bootstrap |
 | gstack capture adapter (headless gstack browse) | Working on local fixture sites and three mirrored DSC 106 sites; one live re-capture test (opt-in) passes |
 | One-line URL capture (`site_capture.py` via `scripts/acquire_url.py`) | Working on a local multi-page fixture (opt-in live test: pages, robots.txt, 404, refused and untested controls, scroll-revealed controls, masking) and on one public DSC 106 site |
-| `/website-slop-audit URL` in Claude Code | Tested end to end (headless, one public DSC 106 site, 2026-11-08): capture, audit, validation, and both reports from one line; the audit validated and its quotes match the captured text. About 21 minutes, 72 turns, and $9.76 at API prices for a two-page site |
-| `$website-slop-audit` in Codex, `/website-slop-audit` in Gemini CLI | Files in place (`.agents/skills/`, `.gemini/commands/`); untested, see `integrations/agents/README.md` |
+| `/website-slop-audit URL` in Claude Code | Tested end to end (headless) three times on the same two-page DSC 106 site: the original version (2026-11-08, $9.76), with the study questions (2026-11-14, about $16), and the hybrid version (2026-11-15, $17.07; row above) |
+| `$website-slop-audit` in Codex, `/website-slop-audit` in Gemini CLI | Files in place (`.agents/skills/`, `.gemini/commands/`); untested, including whether their sandboxes allow the live exploration; see `integrations/agents/README.md` |
 | Supplied-artifact bundle builder | Working (source-only fixture) |
 | Generic-prompt baseline package | Working (package builds; evidence identical to the skill condition) |
 | Deterministic local-checks baseline | Working on all fixtures |
@@ -361,6 +429,8 @@ standard library.
 - How the one-line capture works: [`integrations/capture/README.md`](integrations/capture/README.md)
 - Construct, features, anchors: [`references/feature-codebook.md`](website-slop-audit/references/feature-codebook.md)
 - Output format and the study-questionnaire rules: [`references/output-contract.md`](website-slop-audit/references/output-contract.md)
-- Bundle contract and blinding: [`references/capture-protocol.md`](website-slop-audit/references/capture-protocol.md)
+- Bundle contract, the standard tour, and blinding: [`references/capture-protocol.md`](website-slop-audit/references/capture-protocol.md)
+- Live exploration commands, budget, rules, and record: [`references/exploration-protocol.md`](website-slop-audit/references/exploration-protocol.md)
+- Why the hybrid design: [`docs/hybrid-plan.md`](docs/hybrid-plan.md)
 - Comparison design, annotation, metrics: [`references/benchmark-protocol.md`](website-slop-audit/references/benchmark-protocol.md)
 - Fixtures and their expected invariants: [`fixtures/README.md`](fixtures/README.md)

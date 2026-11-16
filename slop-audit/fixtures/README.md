@@ -35,6 +35,14 @@ that must be refused, a slider that must stay untested, off-site, PDF and
 recorded as a failed route, and a button that appears only after scrolling. `tests/test_site_capture.py` captures it live when
 `SLOP_LIVE_CAPTURE=1`.
 
+`sites/motion-site/` is the test site for the standard tour and the live
+exploration: a load animation, a reveal-on-scroll transition, a looping
+animation, a bar chart that grows by script when scrolled into view, an SVG
+scatter plot with tooltips and CSS hover, a canvas chart with a mousemove
+tooltip, a slider, a dropdown, a toggle, a submit form that must be refused,
+an off-site link, and a second page. `tests/test_tour_and_exploration.py`
+tours and explores it live when `SLOP_LIVE_CAPTURE=1`.
+
 Other files:
 
 - `plans/`: capture plans, written by `build_fixtures.py`.

@@ -81,8 +81,8 @@
 
   // --- controls ----------------------------------------------------------
   const CONTROL = "button, [role=button], [role=tab], [role=switch], [role=checkbox], [role=radio], [role=menuitem], " +
-    "select, summary, input[type=checkbox], input[type=radio], input[type=button], [aria-expanded]";
-  const UNTESTABLE = "input[type=range], input[type=text], input[type=number], input[type=search], input[type=email], " +
+    "select, summary, input[type=checkbox], input[type=radio], input[type=button], [aria-expanded]" + (cfg.sliders ? ", input[type=range]" : "");
+  const UNTESTABLE = (cfg.sliders ? "" : "input[type=range], ") + "input[type=text], input[type=number], input[type=search], input[type=email], " +
     "input[type=date], input[type=color], input:not([type]), textarea, [contenteditable=true]";
   const textOf = (el) => collapse(el.innerText || el.getAttribute("aria-label") || el.getAttribute("title") || el.value || "").slice(0, 100);
   const seen = new Set();
@@ -103,6 +103,7 @@
       in_form: !!form, submits, disabled: !!el.disabled || el.getAttribute("aria-disabled") === "true",
       download: el.hasAttribute("download") };
     if (tag === "select") c.options = [...el.options].slice(0, 40).map((o) => ({ value: o.value, text: collapse(o.text).slice(0, 60), selected: o.selected }));
+    if (type === "range") { c.kind = "range"; c.range = { min: el.min || "0", max: el.max || "100", value: el.value }; }
     controls.push(c);
   }
   const untestable = [...document.querySelectorAll(UNTESTABLE)].filter(visible).slice(0, 40).map((el) => ({

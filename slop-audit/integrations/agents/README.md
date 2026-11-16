@@ -5,7 +5,7 @@ with a single line:
 
 | Agent | Type this | Where it comes from | Status |
 |---|---|---|---|
-| Claude Code | `/website-slop-audit https://site.example/` | `.claude/skills/website-slop-audit` (link to the skill) | Tested end to end once (headless, 2026-11-08) |
+| Claude Code | `/website-slop-audit https://site.example/` | `.claude/skills/website-slop-audit` (link to the skill) | Tested end to end (headless): tour-only version 2026-11-08; hybrid version, see `slop-audit/README.md` |
 | Codex CLI / IDE | `$website-slop-audit https://site.example/` (or pick it from `/skills`) | `.agents/skills/website-slop-audit` (same link) | Written from the official docs; untested |
 | Gemini CLI | `/website-slop-audit https://site.example/` | `.gemini/commands/website-slop-audit.toml`, plus the skill in `.agents/skills/` | Written from the official docs; untested |
 
@@ -17,28 +17,54 @@ place of the URL.
 ## What happens when you run it
 
 1. The agent reads the skill's `SKILL.md`.
-2. It runs `python3 scripts/acquire_url.py URL`, which hands the URL to
-   `integrations/capture/site_capture.py`. That script (not the model)
-   finds the site's pages under the URL's folder (12 at most), screenshots
-   them, clicks each safe control once (10 per page at most), and freezes a
-   bundle. Expect 1 to 5 minutes. Nothing is typed, submitted, downloaded, or
-   followed off-site.
-3. The agent audits the frozen bundle with the codebook, answers the PhD
-   study's per-website questions from that audit (in the participants'
-   formats, each with a reason), validates its JSON, renders the report, and
-   writes the answers as study-format CSV files.
-4. It replies with a short summary, the study answers, and the paths.
+2. Given a URL, it runs `python3 scripts/acquire_url.py URL`, which hands the
+   URL to `integrations/capture/site_capture.py`. That script (not the model)
+   takes the **standard tour**: every page under the URL's folder (12 at
+   most) top to bottom at desktop and phone width, motion caught as frames,
+   a sample of hovers on every chart, and every safe control (25 per page at
+   most), then freezes a bundle. Expect about 1 to 10 minutes. Nothing is
+   typed, submitted, downloaded, or followed off-site. Given a bundle path,
+   it skips this step.
+3. It makes its own run folder with `scripts/start_run.py` (so several
+   models can audit one capture), audits the frozen tour, answers the PhD
+   study's per-website questions, and validates that **tour stage**.
+4. It explores the **live** site through `scripts/explore.py` (scroll,
+   hover, click, choose, slide, other pages; 40 actions and 25 screenshots),
+   each action logged with a screenshot. The tour answers are locked first.
+5. It writes the **exploration stage** (what exploring added or changed, and
+   the study questions answered again with a reason for each change),
+   validates, renders the report, and writes the CSV files.
+6. It replies with a short summary, both sets of study answers, and the paths.
 
-Everything lands in `slop-audit/local-runs/<site>-<time>/`, which git
-ignores: `bundle/` (frozen evidence), `plan.json`, `site.json`,
-`audit.json`, `report.html`, `report.md`, and `responses_wide.csv`,
-`marks.csv`, `questionnaire_reasons.csv`.
+A URL run lands in `slop-audit/local-runs/<site>-<time>/` (git ignores it):
+`bundle/` (the frozen tour), `plan.json`, `site.json`, and
+`runs/<time>-<model>/` with `audit.tour.json`, `audit.json`, `exploration/`
+(the action log and its screenshots), `report.html`, `report.md`,
+`responses_wide.csv`, `marks.csv`, and `questionnaire_reasons.csv`. A bundle
+run adds a new `runs/<time>-<model>/` next to that bundle.
 
-Options go after the URL, for example
-`/website-slop-audit https://site.example/ --single-page` or
-`--max-pages 3`, `--budget 8` (small enough to paste into chat apps), or
+Options go after the URL or bundle, for example
+`/website-slop-audit https://site.example/ --single-page`, `--max-pages 3`,
+`--quick` (the older, smaller capture), `--no-explore` (tour stage only), or
 `--withhold "Team Member Name"` (masks names in captured text and blinds the
 bundle).
+
+## Comparing models on the same sites
+
+1. Capture each site once, with no model, so every model gets the identical
+   tour:
+
+   ```bash
+   python3 slop-audit/website-slop-audit/scripts/acquire_url.py https://site.example/ --out slop-audit/local-runs/study/site-01
+   ```
+
+2. In each agent, give it the bundle instead of the URL:
+   `/website-slop-audit slop-audit/local-runs/study/site-01/bundle`
+   (`$website-slop-audit …` in Codex). Each run gets its own
+   `runs/<time>-<model>/` folder; nothing is overwritten.
+3. Keep the exploration budget at its default for every model. Each model
+   explores the live site differently by design; its tour answers are the
+   ones made on identical evidence.
 
 ## Prerequisites (every agent)
 
@@ -59,6 +85,11 @@ bundle).
   with Developer Mode on) or the skill folders will be plain text files. If
   they are, copy `slop-audit/website-slop-audit` into `.claude/skills/` and
   `.agents/skills/` instead.
+
+- The exploration stage opens the live site, so the agent's commands need
+  network access and gstack's state folder (`~/.gstack`), exactly like the
+  capture. If an agent's sandbox blocks that, the audit still completes with
+  `exploration_stage` recorded as `not_done` and the reason.
 
 Quick check that capture works on your machine, with no model involved:
 
@@ -117,12 +148,15 @@ start it up to the repository root, and you call one by mentioning it.
 
    Or keep the sandbox and run the capture yourself in a terminal, then hand
    Codex the bundle: `python3 slop-audit/website-slop-audit/scripts/acquire_url.py URL`,
-   then `$website-slop-audit slop-audit/local-runs/<run>/bundle`.
+   then `$website-slop-audit slop-audit/local-runs/<run>/bundle`. The live
+   exploration needs the same network access; without it Codex records the
+   exploration stage as `not_done`, so loosen the sandbox if you want
+   explored answers from Codex.
 
-What to check: a `slop-audit/local-runs/<site>-<time>/` folder with
+What to check: a new `<capture>/runs/<time>-<model>/` folder with
 `audit.json` that passes
-`python3 slop-audit/website-slop-audit/scripts/validate_audit.py <run>/audit.json --bundle <run>/bundle`,
-and `report.html`.
+`python3 slop-audit/website-slop-audit/scripts/validate_audit.py <run>/audit.json --bundle <capture>/bundle`,
+an `exploration/` folder (unless exploration was not done), and `report.html`.
 
 ## Gemini CLI
 
@@ -138,15 +172,20 @@ unpaid and Google One users Gemini CLI was replaced by Antigravity CLI on
 2. Type `/website-slop-audit https://jaredw022.github.io/drying-out-atlas/`.
 3. Approve the shell commands it proposes (`cd slop-audit/website-slop-audit && python3 scripts/…`).
    If Gemini asks to activate the `website-slop-audit` skill as well, allow it.
-4. If you run Gemini with its sandbox on, the capture needs network access
-   and write access to `~/.gstack`; otherwise run the capture step yourself
-   as described for Codex and give Gemini the bundle path.
+4. If you run Gemini with its sandbox on, the capture and the exploration
+   need network access and write access to `~/.gstack`; otherwise run the
+   capture step yourself as described for Codex and give Gemini the bundle
+   path (it then records the exploration stage as `not_done`).
+5. The exploration stage is many short `python3 scripts/explore.py …`
+   commands; approving "always allow" for `python3` in the session saves
+   clicking through each one.
 
 What to check: the same files as for Codex.
 
 ## Reporting a test result
 
 When you try Codex or Gemini, note the agent and version, the exact line you
-typed, whether the capture step ran inside the agent, whether `audit.json`
+typed, whether the capture step ran inside the agent, whether the exploration
+ran (or why it was `not_done`), whether `audit.tour.json` and `audit.json`
 validated on the first try, and anything you had to change. Then update the
 status table above and the one in `slop-audit/README.md`.

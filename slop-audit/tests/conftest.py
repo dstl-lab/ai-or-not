@@ -55,3 +55,21 @@ def empty_audit(bundle_dir, profile_id, status="completed"):
         "findings": [], "contextual_exceptions": [], "quality_observations": [], "exploratory_candidates": [],
         "untrusted_instructions_observed": [], "summary": {"text": "test", "major_limitations": []},
     }
+
+
+def questionnaire_audit(bundle_dir, profile_id="multimodal-datastory"):
+    """A minimal valid tour-stage audit with study answers, for any bundle (no findings)."""
+    import questionnaire as q
+    a = empty_audit(bundle_dir, profile_id)
+    b = _lib.Bundle(bundle_dir)
+    ref = [{"kind": "screenshot", "id": b.manifest["assets"][0]["asset_id"]}]
+    ans = lambda v: {"value": v, "reason": "Formed from the tour.", "refs": ref}
+    feats = [f["value"] for f in q.features()]
+    a["study_questionnaire"] = {
+        "questionnaire_version": q.load()["questionnaire_version"], "basis": "Test answers formed from the tour.",
+        "answers": {"ai_appearance": ans(2), "ai_marks": ans("none"),
+                    "feature_rating": {"value": {f: 2 for f in feats}, "reason": "Test.", "refs": ref,
+                                       "rows": [{"feature": f, "reason": "Test.", "refs": ref} for f in feats]},
+                    "top_ai_feature": ans(feats[0]), "ai_extent": ans("a_little"), "design_generic": ans(2), "writing_ai": ans(1),
+                    "polish": ans(3), "quality": ans(4), "technical_issue": ans("no")}}
+    return a

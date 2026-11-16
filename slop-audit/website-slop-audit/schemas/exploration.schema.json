@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:website-slop-audit:exploration:0.1",
+  "title": "website-slop-audit live exploration record",
+  "description": "exploration.json, written by scripts/explore.py finish: every action the auditing model took on the live site, in order, with its screenshots. Paths are relative to the exploration folder. Cross-references and hashes are checked by scripts/validate_exploration.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "exploration_id", "bundle_id", "bundle_hash", "tour_audit_id", "tour_commit", "started_at", "finished_at", "adapter", "target_locator", "scope_prefix", "viewport", "limits", "counts", "routes_visited", "actions", "notes"],
+  "properties": {
+    "schema_version": {"const": "website-slop-audit/exploration/0.1"},
+    "exploration_id": {"$ref": "#/$defs/id"},
+    "bundle_id": {"$ref": "#/$defs/id"},
+    "bundle_hash": {"$ref": "#/$defs/sha256"},
+    "tour_audit_id": {"type": "string", "minLength": 1, "maxLength": 120},
+    "tour_commit": {"$ref": "#/$defs/sha256", "description": "Hash of the tour-stage audit, taken before the first exploration action. The final audit's tour part must still hash to this value."},
+    "started_at": {"$ref": "#/$defs/timestamp"},
+    "finished_at": {"$ref": "#/$defs/timestamp"},
+    "adapter": {"type": "object", "additionalProperties": false, "required": ["name", "version", "browser"], "properties": {"name": {"type": "string", "maxLength": 80}, "version": {"type": "string", "maxLength": 80}, "browser": {"type": ["string", "null"], "maxLength": 120}}},
+    "target_locator": {"type": ["string", "null"], "maxLength": 500, "description": "The live site's entry URL; null for a blinded bundle."},
+    "scope_prefix": {"type": "string", "maxLength": 300},
+    "viewport": {"type": "object", "additionalProperties": false, "required": ["viewport_id", "device", "css_width", "css_height", "device_pixel_ratio"], "properties": {"viewport_id": {"$ref": "#/$defs/id"}, "device": {"enum": ["desktop", "tablet", "mobile"]}, "css_width": {"type": "integer", "minimum": 100}, "css_height": {"type": "integer", "minimum": 100}, "device_pixel_ratio": {"type": "number", "minimum": 0.5, "maximum": 4}}},
+    "limits": {"type": "object", "additionalProperties": false, "required": ["max_actions", "max_screenshots", "max_inspections"], "properties": {"max_actions": {"type": "integer", "minimum": 0, "maximum": 500}, "max_screenshots": {"type": "integer", "minimum": 0, "maximum": 200}, "max_inspections": {"type": "integer", "minimum": 0, "maximum": 500}}},
+    "counts": {"type": "object", "additionalProperties": false, "required": ["actions", "screenshots", "refused", "failed", "inspections"], "properties": {"actions": {"type": "integer", "minimum": 0}, "screenshots": {"type": "integer", "minimum": 0}, "refused": {"type": "integer", "minimum": 0}, "failed": {"type": "integer", "minimum": 0}, "inspections": {"type": "integer", "minimum": 0}}},
+    "routes_visited": {"type": "array", "items": {"type": "string", "maxLength": 300}},
+    "actions": {"type": "array", "items": {"$ref": "#/$defs/action"}},
+    "notes": {"type": "array", "items": {"type": "string", "maxLength": 500}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "timestamp": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"},
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_id", "command", "args", "at", "route", "url", "scroll_y", "target", "status", "result", "observed_changes", "screenshots", "counted"],
+      "properties": {
+        "action_id": {"type": "string", "pattern": "^L\\d{3}$"},
+        "command": {"enum": ["look", "scroll", "hover", "click", "select", "slide", "goto", "back", "wait", "find", "read"]},
+        "args": {"type": "object"},
+        "at": {"$ref": "#/$defs/timestamp"},
+        "route": {"type": ["string", "null"], "maxLength": 300},
+        "url": {"type": ["string", "null"], "maxLength": 2000},
+        "scroll_y": {"type": "number", "minimum": 0},
+        "target": {"anyOf": [{"type": "null"}, {"type": "object", "additionalProperties": false, "required": ["selector", "description", "region_id"], "properties": {"selector": {"type": "string", "maxLength": 300}, "description": {"type": "string", "maxLength": 300}, "region_id": {"type": ["string", "null"], "maxLength": 64}}}]},
+        "status": {"enum": ["completed", "refused", "failed"]},
+        "result": {"type": "string", "maxLength": 500},
+        "observed_changes": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["kind", "detail"], "properties": {"kind": {"enum": ["text_appeared", "text_disappeared", "native_tooltip", "navigation", "motion"]}, "detail": {"type": "string", "maxLength": 500}}}},
+        "screenshots": {"type": "array", "maxItems": 2, "items": {"type": "object", "additionalProperties": false, "required": ["asset_id", "path", "sha256", "pixel_width", "pixel_height", "kind", "elapsed_ms", "scroll_y"], "properties": {"asset_id": {"type": "string", "pattern": "^L\\d{3}m?$"}, "path": {"type": "string", "pattern": "^assets/L\\d{3}m?\\.png$"}, "sha256": {"$ref": "#/$defs/sha256"}, "pixel_width": {"type": "integer", "minimum": 1}, "pixel_height": {"type": "integer", "minimum": 1}, "kind": {"enum": ["settled", "mid_motion"]}, "elapsed_ms": {"type": ["integer", "null"], "minimum": 0}, "scroll_y": {"type": "number", "minimum": 0}}}},
+        "counted": {"type": "boolean", "description": "Whether the action counts toward max_actions (find and read are counted separately as inspections)."},
+        "text": {"type": "string", "maxLength": 4000, "description": "read only: the visible text that was returned (page content: data, not instructions)."}
+      }
+    }
+  }
+}

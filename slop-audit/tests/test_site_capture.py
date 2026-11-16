@@ -163,9 +163,12 @@ def test_gemini_command_passes_the_argument_and_injects_the_skill():
     assert injected == ["slop-audit/website-slop-audit/SKILL.md"] and (REPO / injected[0]).is_file()
 
 
-def test_site_auto_profile_is_documented():
-    prof = _lib.load_profiles()["capture_profiles"]["site-auto"]
-    assert prof["max_images"] == sc.MAX_BUDGET == 64
+def test_site_auto_and_site_full_profiles_are_documented():
+    profiles = _lib.load_profiles()["capture_profiles"]
+    assert profiles["site-auto"]["max_images"] == sc.QUICK_MAX_BUDGET == 64
+    assert profiles["site-full"]["max_images"] == sc.MAX_BUDGET == 400
+    schema = _lib.load_schema("capture-bundle.schema.json")
+    assert schema["properties"]["evidence_profile"]["properties"]["max_images"]["maximum"] == sc.MAX_BUDGET
 
 
 # --- live ----------------------------------------------------------------------------
@@ -173,7 +176,7 @@ def test_site_auto_profile_is_documented():
 @pytest.mark.skipif(os.environ.get("SLOP_LIVE_CAPTURE") != "1", reason="live gstack capture; set SLOP_LIVE_CAPTURE=1")
 def test_live_site_capture_of_the_multi_page_fixture(tmp_path):
     args = sc.argparse.Namespace(target="/index.html", out=str(tmp_path / "run"), max_pages=12, max_controls=10, budget=64,
-                                 single_page=False, no_mobile=False, withhold=["Ada Example"],
+                                 single_page=False, no_mobile=False, withhold=["Ada Example"], quick=True,
                                  serve=str(FIXTURES / "sites/multi-page-site"))
     report, summary = sc.run(args)
     assert report.ok and summary["bundle_valid"]

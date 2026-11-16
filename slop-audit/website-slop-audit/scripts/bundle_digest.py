@@ -38,6 +38,13 @@ def digest(bundle_dir, route=None, max_text=300):
     out += ["capability limits:"] + [f"  - {x}" for x in m["capability_limits"]]
     cov = m["coverage"]
     out += ["route coverage:"] + [f"  - {c['ref']}: {c['status']} ({c['reason']})" for c in cov["routes"]]
+    if cov.get("tour"):
+        out.append("standard tour (what was seen on each route):")
+        for t in cov["tour"]:
+            out.append(f"  - {t['route']}: desktop {t['desktop_frames']} of {t['desktop_needed']} screens, phone {t['phone_frames']} of "
+                       f"{t['phone_needed']} screens; {t['motion_sequences']} motion sequence(s) ({t['motion_frames']} mid-motion frame(s)); "
+                       f"{t['charts_hovered']} of {t['charts_found']} chart(s) hovered, {t['hovers_with_response']} of {t['hovers']} hovers "
+                       f"showed something; {t['controls_exercised']} control action(s)")
     gaps = [c for c in cov["interactions"] if c["status"] != "captured"]
     if gaps:
         out += ["controls not exercised:"] + [f"  - {c['status']}: {c['ref']} ({c['reason']})" for c in gaps]
@@ -56,8 +63,18 @@ def digest(bundle_dir, route=None, max_text=300):
         for a in m["assets"]:
             if a["route"] == r_route:
                 st = states[a["state_id"]]
+                kind = "  MID-MOTION" if a["kind"] == "motion_frame" else ""
                 out.append(f"  {a['asset_id']}  {a['path']}  viewport {a['viewport_id']}  scroll_y {a['scroll_y']}  "
-                           f"state {a['state_id']} ({st['kind']})  {a['pixel_width']}x{a['pixel_height']}")
+                           f"state {a['state_id']} ({st['kind']})  {a['pixel_width']}x{a['pixel_height']}{kind}")
+        seqs = [q for q in m.get("motion", []) if q["route"] == r_route]
+        if seqs:
+            out.append("motion (frames in time order; the settled frame is what stayed on screen):")
+            for q in seqs:
+                frames = ", ".join(f"{f['asset_id']}" + (f" @{f['elapsed_ms']} ms" if f["elapsed_ms"] is not None else "")
+                                   + (" settled" if f["settled"] else " mid-motion") for f in q["frames"])
+                settle = "keeps changing (a looping animation in view)" if q["looping"] else (f"settled after {q['settled_after_ms']} ms" if q["settled_after_ms"] is not None else "")
+                out.append(f"  {q['sequence_id']} after {q['trigger']} at scroll {q['scroll_y']} ({q['viewport_id']}): {frames}; "
+                           f"detected {', '.join(q['detected'])}; {settle}" + (f"; {q['note']}" if q["note"] else ""))
         region_ids = [r["region_id"] for r in regions] + [None]
         spans = [t for t in m["text_spans"] if t["state_id"] in sids]
         out.append("text spans by region:")

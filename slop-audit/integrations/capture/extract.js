@@ -116,5 +116,10 @@
   for (const r of regionNodes) if (r.node) addEl(r.node, "region");
   kept.forEach((el) => addEl(el, "text"));
   document.querySelectorAll(INTERACTIVE).forEach((el) => { if (visible(el)) addEl(el, "interactive"); });
+  // Tour captures also list charts, canvases, images, and videos, so a spot on a graphic can be marked.
+  if (cfg.graphics) document.querySelectorAll("svg, canvas, img, video").forEach((el) => {
+    const r = el.getBoundingClientRect();
+    if (visible(el) && r.width * r.height >= 6000 && !(el.tagName === "svg" && el.parentElement && el.parentElement.closest("svg"))) addEl(el, "graphic");
+  });
   return JSON.stringify({ metrics, regions, spans, elements });
 })()

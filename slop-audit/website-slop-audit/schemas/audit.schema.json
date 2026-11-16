@@ -113,7 +113,8 @@
         "major_limitations": {"type": "array", "items": {"type": "string", "maxLength": 300}}
       }
     },
-    "study_questionnaire": {"$ref": "#/$defs/study_questionnaire", "description": "Optional section (rubric 0.1.1 audits made before it existed stay valid): answers to the human study's per-website questions. See references/output-contract.md, Study questionnaire."}
+    "study_questionnaire": {"$ref": "#/$defs/study_questionnaire", "description": "Optional section (rubric 0.1.1 audits made before it existed stay valid): answers to the human study's per-website questions. See references/output-contract.md, Study questionnaire."},
+    "exploration_stage": {"$ref": "#/$defs/exploration_stage", "description": "Optional second stage: what the auditor found by exploring the live site after the tour stage (everything above) was locked. See references/exploration-protocol.md."}
   },
   "$defs": {
     "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
@@ -173,8 +174,8 @@
       "additionalProperties": false,
       "required": ["kind", "ref_id", "description", "quote"],
       "properties": {
-        "kind": {"enum": ["screenshot", "text", "interaction", "dom", "source", "context"]},
-        "ref_id": {"type": "string", "minLength": 1, "maxLength": 64, "description": "asset_id, span_id, event_id, element_id, excerpt_id, or a context field name (purpose, genre, audience, constraints)."},
+        "kind": {"enum": ["screenshot", "text", "interaction", "dom", "source", "context", "exploration"]},
+        "ref_id": {"type": "string", "minLength": 1, "maxLength": 64, "description": "asset_id, span_id, event_id, element_id, excerpt_id, a context field name (purpose, genre, audience, constraints), or, in exploration_stage only, an exploration action or screenshot id (L007, L007m)."},
         "description": {"type": "string", "minLength": 1, "maxLength": 400},
         "quote": {"type": ["string", "null"], "maxLength": 300, "description": "Exact substring of the referenced text span or source excerpt. Null when exact extraction is uncertain."}
       }
@@ -287,7 +288,8 @@
             "interaction",
             "dom",
             "region",
-            "route"
+            "route",
+            "exploration"
           ]
         },
         "id": {
@@ -295,6 +297,27 @@
           "minLength": 1,
           "maxLength": 300
         }
+      }
+    },
+    "exploration_stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason", "exploration_id", "exploration_hash", "tour_commit", "findings", "contextual_exceptions", "quality_observations", "exploratory_candidates", "tour_item_updates", "study_questionnaire", "changes_from_tour", "summary"],
+      "description": "The live-exploration stage. Everything outside this object is the tour stage, locked before exploring: it must still hash to tour_commit. Items here cite exploration actions (evidence kind 'exploration'); their ids continue the tour's numbering.",
+      "properties": {
+        "status": {"enum": ["completed", "not_done"]},
+        "reason": {"type": "string", "minLength": 1, "maxLength": 600, "description": "completed: how the exploration went (what was looked at, what the budget allowed). not_done: why exploration could not run (no network in this host, a chat interface, a bundle without a live URL, or the user skipped it)."},
+        "exploration_id": {"type": ["string", "null"], "maxLength": 64},
+        "exploration_hash": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "tour_commit": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+        "contextual_exceptions": {"type": "array", "items": {"$ref": "#/$defs/contextual_exception"}},
+        "quality_observations": {"type": "array", "items": {"$ref": "#/$defs/quality_observation"}},
+        "exploratory_candidates": {"type": "array", "items": {"$ref": "#/$defs/exploratory_candidate"}},
+        "tour_item_updates": {"type": "array", "description": "What exploring showed about tour-stage items.", "items": {"type": "object", "additionalProperties": false, "required": ["item_id", "update", "reason", "refs"], "properties": {"item_id": {"type": "string", "pattern": "^[FXQC]\\d{3}$"}, "update": {"enum": ["confirmed", "strengthened", "weakened", "withdrawn"]}, "reason": {"$ref": "#/$defs/q_reason"}, "refs": {"$ref": "#/$defs/q_refs"}}}},
+        "study_questionnaire": {"anyOf": [{"$ref": "#/$defs/study_questionnaire"}, {"type": "null"}], "description": "The study questions answered again after exploring (all of them, including unchanged answers). Null when not_done."},
+        "changes_from_tour": {"type": "array", "description": "One entry for every question whose answer differs from the tour stage, and no others.", "items": {"type": "object", "additionalProperties": false, "required": ["question_id", "reason", "refs"], "properties": {"question_id": {"type": "string", "minLength": 1, "maxLength": 64}, "reason": {"$ref": "#/$defs/q_reason"}, "refs": {"$ref": "#/$defs/q_refs"}}}},
+        "summary": {"type": "object", "additionalProperties": false, "required": ["text", "major_limitations"], "properties": {"text": {"type": "string", "minLength": 1, "maxLength": 1500}, "major_limitations": {"type": "array", "items": {"type": "string", "maxLength": 300}}}}
       }
     },
     "q_reason": {"type": "string", "minLength": 1, "maxLength": 600, "description": "One or two sentences: why this answer, grounded in the audit. For an unassessed (null) answer, why it could not be answered."},
